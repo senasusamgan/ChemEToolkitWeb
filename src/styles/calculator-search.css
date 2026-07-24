@@ -293,3 +293,40 @@
     transition: none;
   }
 }
+
+
+/* UI STABILITY V1: SEARCH MENU */
+.calculator-search {
+  isolation: isolate;
+  z-index: 120;
+}
+
+.calculator-search-menu {
+  right: 0;
+  left: auto;
+  width: min(530px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  scrollbar-gutter: stable;
+  transform-origin: top right;
+  z-index: 160;
+}
+
+.calculator-search-option-copy {
+  padding-left: 1px;
+}
+
+@media (min-width: 701px) {
+  .calculator-search-menu {
+    min-width: min(420px, calc(100vw - 32px));
+  }
+}
+
+@media (max-width: 700px) {
+  .calculator-search-menu {
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    transform-origin: top center;
+  }
+}

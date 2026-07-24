@@ -333,6 +333,23 @@ function App() {
             <p>Towler &amp; Sinnott — Chemical Engineering Design.</p>
           </article>
         </div>
+        <aside
+          className="engineering-use-note"
+          role="note"
+          aria-label="Engineering-use note"
+        >
+          <h3>
+            Engineering-use
+            <br />
+            note
+          </h3>
+          <p>
+            Results are intended for education, preliminary screening and
+            independent design checks. Safety-critical or final design
+            decisions must be verified against the applicable code, standard,
+            property data and a qualified engineer’s review.
+          </p>
+        </aside>
       </section>
 
       <footer id="about">
