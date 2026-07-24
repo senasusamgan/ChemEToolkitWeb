@@ -15,6 +15,12 @@ import { RelativeVolatilityBinaryVLECalculator } from '../features/mass-transfer
 import { SingleStageLeachingRecoveryCalculator } from '../features/mass-transfer/single-stage-leaching-recovery/SingleStageLeachingRecoveryCalculator'
 import { SingleStageLiquidLiquidExtractionCalculator } from '../features/mass-transfer/single-stage-liquid-liquid-extraction/SingleStageLiquidLiquidExtractionCalculator'
 import { UltrafiltrationConcentrationPolarizationCalculator } from '../features/mass-transfer/ultrafiltration-concentration-polarization/UltrafiltrationConcentrationPolarizationCalculator'
+import { BatchSettlingAreaEstimateCalculator } from '../features/separation-processes/batch-settling-area-estimate/BatchSettlingAreaEstimateCalculator'
+import { CentrifugeSigmaScaleUpCalculator } from '../features/separation-processes/centrifuge-sigma-scale-up/CentrifugeSigmaScaleUpCalculator'
+import { ConstantPressureFilterSizingCalculator } from '../features/separation-processes/constant-pressure-filter-sizing/ConstantPressureFilterSizingCalculator'
+import { CoolingCrystallizerYieldCalculator } from '../features/separation-processes/cooling-crystallizer-yield/CoolingCrystallizerYieldCalculator'
+import { EvaporativeCrystallizerBalanceCalculator } from '../features/separation-processes/evaporative-crystallizer-balance/EvaporativeCrystallizerBalanceCalculator'
+import { DryerThermalDutyCalculator } from '../features/separation-processes/dryer-thermal-duty/DryerThermalDutyCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -101,6 +107,66 @@ export function CalculatorWorkbench({
     return <UltrafiltrationConcentrationPolarizationCalculator />
 
   }
+
+
+  if (calculatorId === 'batchSettlingAreaEstimate') {
+
+
+    return <BatchSettlingAreaEstimateCalculator />
+
+
+  }
+
+
+
+  if (calculatorId === 'centrifugeSigmaScaleUp') {
+
+
+    return <CentrifugeSigmaScaleUpCalculator />
+
+
+  }
+
+
+
+  if (calculatorId === 'constantPressureFilterSizing') {
+
+
+    return <ConstantPressureFilterSizingCalculator />
+
+
+  }
+
+
+
+  if (calculatorId === 'coolingCrystallizerYield') {
+
+
+    return <CoolingCrystallizerYieldCalculator />
+
+
+  }
+
+
+
+  if (calculatorId === 'evaporativeCrystallizerBalance') {
+
+
+    return <EvaporativeCrystallizerBalanceCalculator />
+
+
+  }
+
+
+
+  if (calculatorId === 'dryerThermalDuty') {
+
+
+    return <DryerThermalDutyCalculator />
+
+
+  }
+
 
 
   return (

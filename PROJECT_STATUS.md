@@ -3,8 +3,8 @@
 ## Current Checkpoint
 
 - Total calculator catalog: 380
-- Live calculators: 201
-- Queued migrations: 179
+- Live calculators: 207
+- Queued migrations: 173
 - Disciplines: 11
 
 ## Current Architecture
@@ -33,7 +33,7 @@
 
 ## Current Verified State
 
-380 total / 201 live / 179 queued
+380 total / 207 live / 173 queued
 
 ## Local Development
 
@@ -54,3 +54,5 @@ Local address:
     http://localhost:5173
 
 - Added Mass Transfer Batch 04 — Mass Transfer complete at 45/45
+
+- Added Separation Processes Batch 01 — 6 calculators
