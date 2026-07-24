@@ -56,6 +56,12 @@ import { CurveFittingCalculator } from '../features/numerical-methods/curve-fitt
 import { GaussNewtonNonlinearRegressionCalculator } from '../features/numerical-methods/gauss-newton-nonlinear-regression/GaussNewtonNonlinearRegressionCalculator'
 import { GradientDescentOptimizationCalculator } from '../features/numerical-methods/gradient-descent-optimization/GradientDescentOptimizationCalculator'
 import { HighOrderFiniteDifferenceCalculator } from '../features/numerical-methods/high-order-finite-difference/HighOrderFiniteDifferenceCalculator'
+import { InversePowerMethodEigenvalueCalculator } from '../features/numerical-methods/inverse-power-method-eigenvalue/InversePowerMethodEigenvalueCalculator'
+import { LaplaceEquationFiniteDifferenceCalculator } from '../features/numerical-methods/laplace-equation-finite-difference/LaplaceEquationFiniteDifferenceCalculator'
+import { LevenbergMarquardtRegressionCalculator } from '../features/numerical-methods/levenberg-marquardt-regression/LevenbergMarquardtRegressionCalculator'
+import { LUDecompositionSolverCalculator } from '../features/numerical-methods/lu-decomposition-solver/LUDecompositionSolverCalculator'
+import { MethodOfLinesPDESolverCalculator } from '../features/numerical-methods/method-of-lines-pde-solver/MethodOfLinesPDESolverCalculator'
+import { MonteCarloIntegrationCalculator } from '../features/numerical-methods/monte-carlo-integration/MonteCarloIntegrationCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -911,6 +917,192 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'inversePowerMethodEigenvalue') {
+
+
+
+
+
+
+
+
+
+    return <InversePowerMethodEigenvalueCalculator />
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'laplaceEquationFiniteDifference') {
+
+
+
+
+
+
+
+
+
+    return <LaplaceEquationFiniteDifferenceCalculator />
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'levenbergMarquardtRegression') {
+
+
+
+
+
+
+
+
+
+    return <LevenbergMarquardtRegressionCalculator />
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'luDecompositionSolver') {
+
+
+
+
+
+
+
+
+
+    return <LUDecompositionSolverCalculator />
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'methodOfLinesPDESolver') {
+
+
+
+
+
+
+
+
+
+    return <MethodOfLinesPDESolverCalculator />
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'monteCarloIntegration') {
+
+
+
+
+
+
+
+
+
+    return <MonteCarloIntegrationCalculator />
+
+
+
+
+
+
+
+
+
+  }
+
 
 
 
