@@ -39,7 +39,9 @@
     "test:numerical-methods-batch02": "node --experimental-strip-types --test tests/numerical-methods-batch02/*.test.ts",
     "verify:numerical-methods-batch02": "node scripts/verify-numerical-methods-batch02.mjs",
     "test:numerical-methods-batch03": "node --experimental-strip-types --test tests/numerical-methods-batch03/*.test.ts",
-    "verify:numerical-methods-batch03": "node scripts/verify-numerical-methods-batch03.mjs"
+    "verify:numerical-methods-batch03": "node scripts/verify-numerical-methods-batch03.mjs",
+    "test:numerical-methods-batch04": "node --experimental-strip-types --test tests/numerical-methods-batch04/*.test.ts",
+    "verify:numerical-methods-batch04": "node scripts/verify-numerical-methods-batch04.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

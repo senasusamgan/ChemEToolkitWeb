@@ -62,6 +62,12 @@ import { LevenbergMarquardtRegressionCalculator } from '../features/numerical-me
 import { LUDecompositionSolverCalculator } from '../features/numerical-methods/lu-decomposition-solver/LUDecompositionSolverCalculator'
 import { MethodOfLinesPDESolverCalculator } from '../features/numerical-methods/method-of-lines-pde-solver/MethodOfLinesPDESolverCalculator'
 import { MonteCarloIntegrationCalculator } from '../features/numerical-methods/monte-carlo-integration/MonteCarloIntegrationCalculator'
+import { NaturalCubicSplineInterpolationCalculator } from '../features/numerical-methods/natural-cubic-spline-interpolation/NaturalCubicSplineInterpolationCalculator'
+import { NelderMeadOptimizationCalculator } from '../features/numerical-methods/nelder-mead-optimization/NelderMeadOptimizationCalculator'
+import { NewtonMultivariableOptimizationCalculator } from '../features/numerical-methods/newton-multivariable-optimization/NewtonMultivariableOptimizationCalculator'
+import { NewtonRaphsonNonlinearSystemCalculator } from '../features/numerical-methods/newton-raphson-nonlinear-system/NewtonRaphsonNonlinearSystemCalculator'
+import { NumericalJacobianCalculator } from '../features/numerical-methods/numerical-jacobian/NumericalJacobianCalculator'
+import { OneDimensionalWaveEquationCalculator } from '../features/numerical-methods/one-dimensional-wave-equation/OneDimensionalWaveEquationCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -1102,6 +1108,210 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'naturalCubicSplineInterpolation') {
+
+
+
+
+
+
+
+
+
+
+    return <NaturalCubicSplineInterpolationCalculator />
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'nelderMeadOptimization') {
+
+
+
+
+
+
+
+
+
+
+    return <NelderMeadOptimizationCalculator />
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'newtonMultivariableOptimization') {
+
+
+
+
+
+
+
+
+
+
+    return <NewtonMultivariableOptimizationCalculator />
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'newtonRaphsonNonlinearSystem') {
+
+
+
+
+
+
+
+
+
+
+    return <NewtonRaphsonNonlinearSystemCalculator />
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'numericalJacobian') {
+
+
+
+
+
+
+
+
+
+
+    return <NumericalJacobianCalculator />
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'oneDimensionalWaveEquation') {
+
+
+
+
+
+
+
+
+
+
+    return <OneDimensionalWaveEquationCalculator />
+
+
+
+
+
+
+
+
+
+
+  }
+
 
 
 
