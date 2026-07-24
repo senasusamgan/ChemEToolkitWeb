@@ -12,6 +12,9 @@ import { McCabeThieleMethodCalculator } from '../features/mass-transfer/mccabe-t
 import { MSMPRCrystallizerDesignCalculator } from '../features/mass-transfer/msmpr-crystallizer-design/MSMPRCrystallizerDesignCalculator'
 import { PackedColumnHydraulicsCalculator } from '../features/mass-transfer/packed-column-hydraulics/PackedColumnHydraulicsCalculator'
 import { RelativeVolatilityBinaryVLECalculator } from '../features/mass-transfer/relative-volatility-binary-vle/RelativeVolatilityBinaryVLECalculator'
+import { SingleStageLeachingRecoveryCalculator } from '../features/mass-transfer/single-stage-leaching-recovery/SingleStageLeachingRecoveryCalculator'
+import { SingleStageLiquidLiquidExtractionCalculator } from '../features/mass-transfer/single-stage-liquid-liquid-extraction/SingleStageLiquidLiquidExtractionCalculator'
+import { UltrafiltrationConcentrationPolarizationCalculator } from '../features/mass-transfer/ultrafiltration-concentration-polarization/UltrafiltrationConcentrationPolarizationCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -78,6 +81,27 @@ export function CalculatorWorkbench({
   if (calculatorId === 'relativeVolatilityBinaryVLE') {
     return <RelativeVolatilityBinaryVLECalculator />
   }
+
+  if (calculatorId === 'singleStageLeachingRecovery') {
+
+    return <SingleStageLeachingRecoveryCalculator />
+
+  }
+
+
+  if (calculatorId === 'singleStageLiquidLiquidExtraction') {
+
+    return <SingleStageLiquidLiquidExtractionCalculator />
+
+  }
+
+
+  if (calculatorId === 'ultrafiltrationConcentrationPolarization') {
+
+    return <UltrafiltrationConcentrationPolarizationCalculator />
+
+  }
+
 
   return (
     <LegacyWorkbench
