@@ -39,6 +39,11 @@ import { ReverseOsmosisWaterFluxCalculator } from '../features/separation-proces
 import { UltrafiltrationResistanceSeriesCalculator } from '../features/separation-processes/ultrafiltration-resistance-series/UltrafiltrationResistanceSeriesCalculator'
 import { PsychrometricAirStreamMixingCalculator } from '../features/separation-processes/psychrometric-air-stream-mixing/PsychrometricAirStreamMixingCalculator'
 import { RelativeHumidityHumidificationCalculator } from '../features/separation-processes/relative-humidity-humidification/RelativeHumidityHumidificationCalculator'
+import { CombinedDryerTimeCalculator } from '../features/separation-processes/combined-dryer-time/CombinedDryerTimeCalculator'
+import { FixedBedAdsorberBreakthroughCalculator } from '../features/separation-processes/fixed-bed-adsorber-breakthrough/FixedBedAdsorberBreakthroughCalculator'
+import { HydrocycloneSeparationNumberCalculator } from '../features/separation-processes/hydrocyclone-separation-number/HydrocycloneSeparationNumberCalculator'
+import { SingleStageGasAbsorptionCalculator } from '../features/separation-processes/single-stage-gas-absorption/SingleStageGasAbsorptionCalculator'
+import { SingleStageLeachingBalanceCalculator } from '../features/separation-processes/single-stage-leaching-balance/SingleStageLeachingBalanceCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -469,6 +474,116 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+
+
+
+  if (calculatorId === 'combinedDryerTime') {
+
+
+
+
+
+
+    return <CombinedDryerTimeCalculator />
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+  if (calculatorId === 'fixedBedAdsorberBreakthrough') {
+
+
+
+
+
+
+    return <FixedBedAdsorberBreakthroughCalculator />
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+  if (calculatorId === 'hydrocycloneSeparationNumber') {
+
+
+
+
+
+
+    return <HydrocycloneSeparationNumberCalculator />
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+  if (calculatorId === 'singleStageGasAbsorption') {
+
+
+
+
+
+
+    return <SingleStageGasAbsorptionCalculator />
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+  if (calculatorId === 'singleStageLeachingBalance') {
+
+
+
+
+
+
+    return <SingleStageLeachingBalanceCalculator />
+
+
+
+
+
+
+  }
+
 
 
 
