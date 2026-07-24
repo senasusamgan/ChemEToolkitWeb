@@ -24,7 +24,9 @@
     "test:batch04": "node --experimental-strip-types --test tests/batch04/*.test.ts",
     "verify:batch04": "node scripts/verify-batch04.mjs",
     "test:separation-batch01": "node --experimental-strip-types --test tests/separation-batch01/*.test.ts",
-    "verify:separation-batch01": "node scripts/verify-separation-batch01.mjs"
+    "verify:separation-batch01": "node scripts/verify-separation-batch01.mjs",
+    "test:separation-batch02": "node --experimental-strip-types --test tests/separation-batch02/*.test.ts",
+    "verify:separation-batch02": "node scripts/verify-separation-batch02.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

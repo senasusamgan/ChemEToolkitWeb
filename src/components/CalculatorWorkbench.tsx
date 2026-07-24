@@ -21,6 +21,12 @@ import { ConstantPressureFilterSizingCalculator } from '../features/separation-p
 import { CoolingCrystallizerYieldCalculator } from '../features/separation-processes/cooling-crystallizer-yield/CoolingCrystallizerYieldCalculator'
 import { EvaporativeCrystallizerBalanceCalculator } from '../features/separation-processes/evaporative-crystallizer-balance/EvaporativeCrystallizerBalanceCalculator'
 import { DryerThermalDutyCalculator } from '../features/separation-processes/dryer-thermal-duty/DryerThermalDutyCalculator'
+import { BinaryDistillationBalanceCalculator } from '../features/separation-processes/binary-distillation-balance/BinaryDistillationBalanceCalculator'
+import { ExtractionDistributionSelectivityCalculator } from '../features/separation-processes/extraction-distribution-selectivity/ExtractionDistributionSelectivityCalculator'
+import { ExtractionSolventRequirementCalculator } from '../features/separation-processes/extraction-solvent-requirement/ExtractionSolventRequirementCalculator'
+import { CrosscurrentExtractionStagesCalculator } from '../features/separation-processes/crosscurrent-extraction-stages/CrosscurrentExtractionStagesCalculator'
+import { CountercurrentExtractionStagesCalculator } from '../features/separation-processes/countercurrent-extraction-stages/CountercurrentExtractionStagesCalculator'
+import { GillilandStageEstimateCalculator } from '../features/separation-processes/gilliland-stage-estimate/GillilandStageEstimateCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -166,6 +172,84 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+  if (calculatorId === 'binaryDistillationBalance') {
+
+
+
+    return <BinaryDistillationBalanceCalculator />
+
+
+
+  }
+
+
+
+
+  if (calculatorId === 'extractionDistributionSelectivity') {
+
+
+
+    return <ExtractionDistributionSelectivityCalculator />
+
+
+
+  }
+
+
+
+
+  if (calculatorId === 'extractionSolventRequirement') {
+
+
+
+    return <ExtractionSolventRequirementCalculator />
+
+
+
+  }
+
+
+
+
+  if (calculatorId === 'crosscurrentExtractionStages') {
+
+
+
+    return <CrosscurrentExtractionStagesCalculator />
+
+
+
+  }
+
+
+
+
+  if (calculatorId === 'countercurrentExtractionStages') {
+
+
+
+    return <CountercurrentExtractionStagesCalculator />
+
+
+
+  }
+
+
+
+
+  if (calculatorId === 'gillilandStageEstimate') {
+
+
+
+    return <GillilandStageEstimateCalculator />
+
+
+
+  }
+
 
 
 

@@ -1,0 +1,66 @@
+import fs from 'node:fs'
+import path from 'node:path'
+
+const root = process.cwd()
+
+const ids = [
+  'binaryDistillationBalance',
+  'extractionDistributionSelectivity',
+  'extractionSolventRequirement',
+  'crosscurrentExtractionStages',
+  'countercurrentExtractionStages',
+  'gillilandStageEstimate',
+]
+
+const catalog = fs.readFileSync(
+  path.join(root, 'src/data/calculators.ts'),
+  'utf8',
+)
+
+const entries = [
+  ...catalog.matchAll(
+    /\{ id: "([^"]+)", title: "([^"]+)", category: "([^"]+)", available: (true|false) \}/g,
+  ),
+]
+
+const live = entries.filter(
+  (entry) => entry[4] === 'true',
+).length
+
+if (entries.length !== 380 || live !== 213) {
+  console.error(
+    `Catalog mismatch: ${entries.length} total / ${live} live`,
+  )
+  process.exit(1)
+}
+
+for (const id of ids) {
+  if (
+    !new RegExp(
+      `id: "${id}".*category: "Separation Processes".*available: true`,
+    ).test(catalog)
+  ) {
+    console.error(`Calculator is not live: ${id}`)
+    process.exit(1)
+  }
+}
+
+const categories = fs.readFileSync(
+  path.join(root, 'src/data/categories.ts'),
+  'utf8',
+)
+
+if (
+  !/name:\s*"Separation Processes"[^{}]*total:\s*40[^{}]*live:\s*23/s.test(
+    categories,
+  )
+) {
+  console.error(
+    'Separation Processes count is not 23 / 40.',
+  )
+  process.exit(1)
+}
+
+console.log('Separation Batch 02 verification PASS')
+console.log('380 total / 213 live / 167 queued')
+console.log('Separation Processes: 23 live / 40 total')
