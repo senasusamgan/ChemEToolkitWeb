@@ -1,0 +1,7 @@
+.native-limitation {
+  margin: 0;
+  padding: 18px;
+  color: var(--muted);
+  background: var(--paper);
+  line-height: 1.55;
+}

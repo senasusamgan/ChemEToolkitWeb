@@ -1,0 +1,38 @@
+{
+  "name": "chemetoolkitweb-source",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "verify:bridge": "node scripts/verify-bridge.mjs",
+    "test:binary-flash": "node --test src/features/mass-transfer/binary-flash/engine.test.ts",
+    "verify:phase2": "node scripts/verify-phase2.mjs",
+    "test:centrifugal-settling": "node --test tests/centrifugal-settling/engine.test.ts",
+    "verify:phase3": "node scripts/verify-phase3.mjs",
+    "test:batch01": "node --test tests/batch01/*.test.ts",
+    "verify:batch01": "node scripts/verify-batch01.mjs",
+    "test:batch02": "node --test tests/batch02/*.test.ts",
+    "verify:batch02": "node scripts/verify-batch02.mjs",
+    "test:batch03": "node --test tests/batch03/*.test.ts",
+    "verify:batch03": "node scripts/verify-batch03.mjs",
+    "verify:calculator-ui": "node scripts/verify-calculator-ui.mjs",
+    "verify:calculator-search": "node scripts/verify-calculator-search.mjs"
+  },
+  "dependencies": {
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "oxlint": "^1.71.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.1"
+  }
+}

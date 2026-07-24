@@ -1,0 +1,366 @@
+import { useMemo, useState } from 'react'
+import './App.css'
+import { Brand } from './components/Brand'
+import { CalculatorWorkbench } from './components/CalculatorWorkbench'
+import { calculators } from './data/calculators'
+import { categories } from './data/categories'
+
+const defaultCalculator =
+  calculators.find((calculator) => calculator.id === 'reynoldsNumber') ??
+  calculators.find((calculator) => calculator.available) ??
+  calculators[0]
+
+function App() {
+  const [search, setSearch] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All disciplines')
+  const [activeCalculatorId, setActiveCalculatorId] = useState(
+    defaultCalculator.id,
+  )
+
+  const activeCalculator =
+    calculators.find((calculator) => calculator.id === activeCalculatorId) ??
+    defaultCalculator
+
+  const filteredCalculators = useMemo(() => {
+    const normalizedSearch = search.trim().toLocaleLowerCase()
+
+    return calculators.filter((calculator) => {
+      const categoryMatches =
+        selectedCategory === 'All disciplines' ||
+        calculator.category === selectedCategory
+
+      const searchMatches =
+        normalizedSearch.length === 0 ||
+        calculator.title.toLocaleLowerCase().includes(normalizedSearch) ||
+        calculator.category.toLocaleLowerCase().includes(normalizedSearch)
+
+      return categoryMatches && searchMatches
+    })
+  }, [search, selectedCategory])
+
+  function openCategory(category: string) {
+    setSelectedCategory(category)
+    window.requestAnimationFrame(() => {
+      document.querySelector('#calculators')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    })
+  }
+
+  function openCalculator(calculatorId: string) {
+    setActiveCalculatorId(calculatorId)
+    window.requestAnimationFrame(() => {
+      document.querySelector('#workbench')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    })
+  }
+
+  return (
+    <main id="top">
+      <header className="site-header">
+        <Brand />
+        <nav aria-label="Primary navigation">
+          <a href="#calculators">Calculators</a>
+          <a href="#categories">Categories</a>
+          <a href="#method">Method</a>
+          <a href="#references">References</a>
+          <a href="#about">About</a>
+        </nav>
+      </header>
+
+      <section className="hero notebook-grid">
+        <div className="ruler" aria-hidden="true" />
+
+        <div className="category-ribbon">
+          {categories
+            .filter((category) =>
+              [
+                'Thermodynamics',
+                'Fluid Mechanics',
+                'Heat Transfer',
+                'Mass Transfer',
+                'Reaction Engineering',
+              ].includes(category.name),
+            )
+            .map((category) => (
+              <button
+                type="button"
+                className="category-pill"
+                key={category.name}
+                onClick={() => openCategory(category.name)}
+              >
+                <span>{category.icon}</span>
+                {category.name}
+              </button>
+            ))}
+        </div>
+
+        <div className="hero-copy">
+          <p className="eyebrow">A verified chemical engineering workspace</p>
+          <h1>
+            Chemical engineering,
+            <br />
+            calculated clearly<span>.</span>
+          </h1>
+          <p className="hero-deck">
+            380 verified calculators across 11 disciplines—built for study,
+            design checks and everyday engineering work.
+          </p>
+
+          <div className="hero-actions">
+            <a className="button button-primary" href="#calculators">
+              ▦ Explore calculators
+            </a>
+            <a className="button button-secondary" href="#categories">
+              □ Browse categories
+            </a>
+          </div>
+
+          <div className="status-strip">
+            <strong>184</strong>
+            <span>live engines preserved</span>
+            <strong>196</strong>
+            <span>clean-source migrations queued</span>
+          </div>
+        </div>
+
+        <div id="workbench" className="hero-workbench">
+          <label className="calculator-switcher">
+            <span>Live calculator</span>
+            <select
+              value={activeCalculator.id}
+              onChange={(event) => openCalculator(event.target.value)}
+            >
+              {calculators
+                .filter((calculator) => calculator.available)
+                .map((calculator) => (
+                  <option key={calculator.id} value={calculator.id}>
+                    {calculator.title}
+                  </option>
+                ))}
+            </select>
+          </label>
+
+          <CalculatorWorkbench
+            calculatorId={activeCalculator.id}
+            title={activeCalculator.title}
+          />
+        </div>
+      </section>
+
+      <section className="section categories-section" id="categories">
+        <div className="section-heading">
+          <p className="eyebrow">The complete curriculum</p>
+          <h2>Eleven disciplines. One coherent toolkit.</h2>
+          <p>
+            Category selection filters the catalog so only the chosen
+            discipline is shown.
+          </p>
+        </div>
+
+        <div className="category-grid">
+          {categories.map((category) => (
+            <article className="category-card" key={category.name}>
+              <div className="category-number">
+                {String(category.number).padStart(2, '0')}
+              </div>
+              <span className="category-mark">{category.icon}</span>
+              <h3>{category.name}</h3>
+              <p>
+                {category.total} verified · {category.live} live
+              </p>
+              <button
+                type="button"
+                onClick={() => openCategory(category.name)}
+              >
+                Explore <span>↗</span>
+              </button>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section calculators-section" id="calculators">
+        <div className="catalog-top">
+          <div className="section-heading">
+            <p className="eyebrow">Start with a calculation</p>
+            <h2>Find the right tool, quickly.</h2>
+          </div>
+
+          <div className="catalog-controls">
+            <label className="search-box">
+              <span>⌕</span>
+              <input
+                type="search"
+                placeholder="Search all 380 calculators"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
+            </label>
+
+            <select
+              aria-label="Filter by discipline"
+              value={selectedCategory}
+              onChange={(event) => setSelectedCategory(event.target.value)}
+            >
+              <option>All disciplines</option>
+              {categories.map((category) => (
+                <option key={category.name}>{category.name}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <p className="result-count">
+          {filteredCalculators.length} matching calculators
+        </p>
+
+        <div className="calculator-list">
+          {filteredCalculators.map((calculator, index) => (
+            <article key={calculator.id}>
+              <span className="list-index">
+                {String(index + 1).padStart(3, '0')}
+              </span>
+              <div>
+                <p>{calculator.category}</p>
+                <h3>{calculator.title}</h3>
+                <span>
+                  {calculator.available
+                    ? 'Live verified engine'
+                    : 'Verified source · clean web migration queued'}
+                </span>
+              </div>
+
+              {calculator.available ? (
+                <button
+                  type="button"
+                  onClick={() => openCalculator(calculator.id)}
+                >
+                  Open calculator <span>→</span>
+                </button>
+              ) : (
+                <span className="queued-badge">Catalogued</span>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="method-section" id="method">
+        <div>
+          <p className="eyebrow">Built like an engineering notebook</p>
+          <h2>Traceable inputs. Visible formulas. Interpretable results.</h2>
+        </div>
+        <ol>
+          <li>
+            <b>01</b>
+            <span>
+              <strong>Enter known values</strong>
+              Unit-aware fields keep the calculation basis explicit.
+            </span>
+          </li>
+          <li>
+            <b>02</b>
+            <span>
+              <strong>Calculate with context</strong>
+              Verified engines apply the appropriate engineering model.
+            </span>
+          </li>
+          <li>
+            <b>03</b>
+            <span>
+              <strong>Read the engineering meaning</strong>
+              Results retain formulas, regimes and reference context.
+            </span>
+          </li>
+        </ol>
+      </section>
+
+      <section className="references-section section" id="references">
+        <div className="section-heading">
+          <p className="eyebrow">Reference shelf</p>
+          <h2>Equations with a traceable basis.</h2>
+          <p>
+            Calculator engines are translated from verified ChemE Toolkit
+            sources and checked against established engineering texts.
+          </p>
+        </div>
+
+        <div className="reference-grid">
+          <article>
+            <span>01</span>
+            <h3>Core chemical engineering</h3>
+            <p>Perry’s Chemical Engineers’ Handbook.</p>
+            <p>
+              Felder, Rousseau &amp; Bullard — Elementary Principles of
+              Chemical Processes.
+            </p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Thermodynamics &amp; transport</h3>
+            <p>
+              Smith, Van Ness, Abbott &amp; Swihart — Introduction to Chemical
+              Engineering Thermodynamics.
+            </p>
+            <p>Bird, Stewart &amp; Lightfoot — Transport Phenomena.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Heat &amp; fluid flow</h3>
+            <p>
+              Incropera et al. — Fundamentals of Heat and Mass Transfer.
+            </p>
+            <p>
+              Çengel &amp; Cimbala — Fluid Mechanics: Fundamentals and
+              Applications.
+            </p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Reactors &amp; separations</h3>
+            <p>Fogler — Elements of Chemical Reaction Engineering.</p>
+            <p>Wankat — Separation Process Engineering.</p>
+          </article>
+          <article>
+            <span>05</span>
+            <h3>Control &amp; numerical methods</h3>
+            <p>Seborg et al. — Process Dynamics and Control.</p>
+            <p>Chapra &amp; Canale — Numerical Methods for Engineers.</p>
+          </article>
+          <article>
+            <span>06</span>
+            <h3>Safety &amp; economics</h3>
+            <p>CCPS — Quantitative Risk Analysis guidance.</p>
+            <p>Towler &amp; Sinnott — Chemical Engineering Design.</p>
+          </article>
+        </div>
+      </section>
+
+      <footer id="about">
+        <Brand />
+        <div className="footer-copy">
+          <p>
+            A growing chemical engineering calculation platform translated
+            from a verified macOS toolkit.
+          </p>
+          <nav aria-label="Footer navigation">
+            <a href="#calculators">Calculators</a>
+            <a href="#categories">Categories</a>
+            <a href="#method">Method</a>
+            <a href="#references">References</a>
+          </nav>
+        </div>
+        <span>
+          380 calculators · 186 live engines · 11 disciplines · 1,208 source
+          tests
+        </span>
+      </footer>
+    </main>
+  )
+}
+
+export default App

@@ -1,0 +1,44 @@
+.native-symbol {
+  color: var(--teal-dark);
+  font-family: 'Courier New', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.native-input-shell input::placeholder {
+  color: #8b9ba4;
+  font-weight: 500;
+}
+
+.native-limitation,
+.native-result-note {
+  margin: 0;
+  padding: 18px;
+  color: var(--muted);
+  background: var(--paper);
+  line-height: 1.55;
+}
+
+.native-result-note strong {
+  color: var(--ink);
+}
+
+.native-stage-list {
+  margin: 0;
+  padding: 16px 18px 18px 38px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 28px;
+  color: var(--muted);
+  background: var(--paper);
+}
+
+.native-stage-list strong {
+  color: var(--ink);
+}
+
+@media (max-width: 700px) {
+  .native-stage-list {
+    grid-template-columns: 1fr;
+  }
+}
