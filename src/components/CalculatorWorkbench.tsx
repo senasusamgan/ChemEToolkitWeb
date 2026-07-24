@@ -50,6 +50,12 @@ import { BroydenNonlinearSystemCalculator } from '../features/numerical-methods/
 import { CholeskyDecompositionSolverCalculator } from '../features/numerical-methods/cholesky-decomposition-solver/CholeskyDecompositionSolverCalculator'
 import { ConjugateGradientSolverCalculator } from '../features/numerical-methods/conjugate-gradient-solver/ConjugateGradientSolverCalculator'
 import { CoupledODESystemRK4Calculator } from '../features/numerical-methods/coupled-ode-system-rk4/CoupledODESystemRK4Calculator'
+import { CrankNicolsonHeatEquationCalculator } from '../features/numerical-methods/crank-nicolson-heat-equation/CrankNicolsonHeatEquationCalculator'
+import { CubicHermiteInterpolationCalculator } from '../features/numerical-methods/cubic-hermite-interpolation/CubicHermiteInterpolationCalculator'
+import { CurveFittingCalculator } from '../features/numerical-methods/curve-fitting/CurveFittingCalculator'
+import { GaussNewtonNonlinearRegressionCalculator } from '../features/numerical-methods/gauss-newton-nonlinear-regression/GaussNewtonNonlinearRegressionCalculator'
+import { GradientDescentOptimizationCalculator } from '../features/numerical-methods/gradient-descent-optimization/GradientDescentOptimizationCalculator'
+import { HighOrderFiniteDifferenceCalculator } from '../features/numerical-methods/high-order-finite-difference/HighOrderFiniteDifferenceCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -738,6 +744,174 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+
+
+
+
+
+  if (calculatorId === 'crankNicolsonHeatEquation') {
+
+
+
+
+
+
+
+
+    return <CrankNicolsonHeatEquationCalculator />
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'cubicHermiteInterpolation') {
+
+
+
+
+
+
+
+
+    return <CubicHermiteInterpolationCalculator />
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'curveFitting') {
+
+
+
+
+
+
+
+
+    return <CurveFittingCalculator />
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'gaussNewtonNonlinearRegression') {
+
+
+
+
+
+
+
+
+    return <GaussNewtonNonlinearRegressionCalculator />
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'gradientDescentOptimization') {
+
+
+
+
+
+
+
+
+    return <GradientDescentOptimizationCalculator />
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'highOrderFiniteDifference') {
+
+
+
+
+
+
+
+
+    return <HighOrderFiniteDifferenceCalculator />
+
+
+
+
+
+
+
+
+  }
+
 
 
 

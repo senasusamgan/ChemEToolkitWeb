@@ -35,7 +35,9 @@
     "test:separation-batch05": "node --experimental-strip-types --test tests/separation-batch05/*.test.ts",
     "verify:separation-batch05": "node scripts/verify-separation-batch05.mjs",
     "test:numerical-methods-batch01": "node --experimental-strip-types --test tests/numerical-methods-batch01/*.test.ts",
-    "verify:numerical-methods-batch01": "node scripts/verify-numerical-methods-batch01.mjs"
+    "verify:numerical-methods-batch01": "node scripts/verify-numerical-methods-batch01.mjs",
+    "test:numerical-methods-batch02": "node --experimental-strip-types --test tests/numerical-methods-batch02/*.test.ts",
+    "verify:numerical-methods-batch02": "node scripts/verify-numerical-methods-batch02.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
