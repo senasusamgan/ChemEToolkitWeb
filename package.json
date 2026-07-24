@@ -29,7 +29,9 @@
     "verify:separation-batch02": "node scripts/verify-separation-batch02.mjs",
     "verify:ui-stability-v1": "node scripts/verify-ui-stability-v1.mjs",
     "test:separation-batch03": "node --experimental-strip-types --test tests/separation-batch03/*.test.ts",
-    "verify:separation-batch03": "node scripts/verify-separation-batch03.mjs"
+    "verify:separation-batch03": "node scripts/verify-separation-batch03.mjs",
+    "test:separation-batch04": "node --experimental-strip-types --test tests/separation-batch04/*.test.ts",
+    "verify:separation-batch04": "node scripts/verify-separation-batch04.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

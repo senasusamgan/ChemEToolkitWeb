@@ -33,6 +33,12 @@ import { BetMonolayerCapacityCalculator } from '../features/separation-processes
 import { KremserAbsorptionStagesCalculator } from '../features/separation-processes/kremser-absorption-stages/KremserAbsorptionStagesCalculator'
 import { KremserStrippingStagesCalculator } from '../features/separation-processes/kremser-stripping-stages/KremserStrippingStagesCalculator'
 import { StrippingMinimumGasRateCalculator } from '../features/separation-processes/stripping-minimum-gas-rate/StrippingMinimumGasRateCalculator'
+import { GasMembraneAreaRequirementCalculator } from '../features/separation-processes/gas-membrane-area-requirement/GasMembraneAreaRequirementCalculator'
+import { IdealGasMembraneStageCutCalculator } from '../features/separation-processes/ideal-gas-membrane-stage-cut/IdealGasMembraneStageCutCalculator'
+import { ReverseOsmosisWaterFluxCalculator } from '../features/separation-processes/reverse-osmosis-water-flux/ReverseOsmosisWaterFluxCalculator'
+import { UltrafiltrationResistanceSeriesCalculator } from '../features/separation-processes/ultrafiltration-resistance-series/UltrafiltrationResistanceSeriesCalculator'
+import { PsychrometricAirStreamMixingCalculator } from '../features/separation-processes/psychrometric-air-stream-mixing/PsychrometricAirStreamMixingCalculator'
+import { RelativeHumidityHumidificationCalculator } from '../features/separation-processes/relative-humidity-humidification/RelativeHumidityHumidificationCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -350,6 +356,120 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+
+
+  if (calculatorId === 'gasMembraneAreaRequirement') {
+
+
+
+
+
+    return <GasMembraneAreaRequirementCalculator />
+
+
+
+
+
+  }
+
+
+
+
+
+
+  if (calculatorId === 'idealGasMembraneStageCut') {
+
+
+
+
+
+    return <IdealGasMembraneStageCutCalculator />
+
+
+
+
+
+  }
+
+
+
+
+
+
+  if (calculatorId === 'reverseOsmosisWaterFlux') {
+
+
+
+
+
+    return <ReverseOsmosisWaterFluxCalculator />
+
+
+
+
+
+  }
+
+
+
+
+
+
+  if (calculatorId === 'ultrafiltrationResistanceSeries') {
+
+
+
+
+
+    return <UltrafiltrationResistanceSeriesCalculator />
+
+
+
+
+
+  }
+
+
+
+
+
+
+  if (calculatorId === 'psychrometricAirStreamMixing') {
+
+
+
+
+
+    return <PsychrometricAirStreamMixingCalculator />
+
+
+
+
+
+  }
+
+
+
+
+
+
+  if (calculatorId === 'relativeHumidityHumidification') {
+
+
+
+
+
+    return <RelativeHumidityHumidificationCalculator />
+
+
+
+
+
+  }
+
 
 
 
