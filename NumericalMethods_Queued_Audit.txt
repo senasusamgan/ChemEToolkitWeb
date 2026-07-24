@@ -1,0 +1,65 @@
+GENEL: 380 total / 230 live / 150 queued
+NUMERICAL METHODS: 40 total / 10 live / 30 queued
+
+QUEUED MODULES
+------------------------------------------------------------------------
+01. Adams-Bashforth-Moulton ODE
+    ID: adamsBashforthMoulton
+02. Adaptive Runge–Kutta 4/5
+    ID: adaptiveRungeKutta45
+03. Broyden Nonlinear System
+    ID: broydenNonlinearSystem
+04. Cholesky Decomposition Solver
+    ID: choleskyDecompositionSolver
+05. Conjugate Gradient Solver
+    ID: conjugateGradientSolver
+06. Coupled ODE System RK4
+    ID: coupledODESystemRK4
+07. Crank-Nicolson Heat Equation
+    ID: crankNicolsonHeatEquation
+08. Cubic Hermite Interpolation
+    ID: cubicHermiteInterpolation
+09. Curve Fitting & Regression
+    ID: curveFitting
+10. Gauss–Newton Nonlinear Regression
+    ID: gaussNewtonNonlinearRegression
+11. Gradient Descent Optimization
+    ID: gradientDescentOptimization
+12. High-Order Finite Difference
+    ID: highOrderFiniteDifference
+13. Inverse Power Method
+    ID: inversePowerMethodEigenvalue
+14. Laplace Equation Finite Difference
+    ID: laplaceEquationFiniteDifference
+15. Levenberg–Marquardt Regression
+    ID: levenbergMarquardtRegression
+16. LU Decomposition Solver
+    ID: luDecompositionSolver
+17. Method of Lines PDE Solver
+    ID: methodOfLinesPDESolver
+18. Monte Carlo Integration
+    ID: monteCarloIntegration
+19. Natural Cubic Spline Interpolation
+    ID: naturalCubicSplineInterpolation
+20. Nelder–Mead Optimization
+    ID: nelderMeadOptimization
+21. Newton Multivariable Optimization
+    ID: newtonMultivariableOptimization
+22. Newton–Raphson Nonlinear System
+    ID: newtonRaphsonNonlinearSystem
+23. Numerical Jacobian
+    ID: numericalJacobian
+24. One-Dimensional Wave Equation
+    ID: oneDimensionalWaveEquation
+25. Power Method Eigenvalue
+    ID: powerMethodEigenvalue
+26. QR Decomposition Solver
+    ID: qrDecompositionSolver
+27. Richardson Error Estimate
+    ID: richardsonErrorEstimate
+28. Ridders Root Finder
+    ID: riddersRootFinder
+29. Shooting Method Boundary Value
+    ID: shootingMethodBoundaryValue
+30. Thomas Tridiagonal Solver
+    ID: thomasTridiagonalSolver

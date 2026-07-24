@@ -44,6 +44,12 @@ import { FixedBedAdsorberBreakthroughCalculator } from '../features/separation-p
 import { HydrocycloneSeparationNumberCalculator } from '../features/separation-processes/hydrocyclone-separation-number/HydrocycloneSeparationNumberCalculator'
 import { SingleStageGasAbsorptionCalculator } from '../features/separation-processes/single-stage-gas-absorption/SingleStageGasAbsorptionCalculator'
 import { SingleStageLeachingBalanceCalculator } from '../features/separation-processes/single-stage-leaching-balance/SingleStageLeachingBalanceCalculator'
+import { AdamsBashforthMoultonCalculator } from '../features/numerical-methods/adams-bashforth-moulton/AdamsBashforthMoultonCalculator'
+import { AdaptiveRungeKutta45Calculator } from '../features/numerical-methods/adaptive-runge-kutta-45/AdaptiveRungeKutta45Calculator'
+import { BroydenNonlinearSystemCalculator } from '../features/numerical-methods/broyden-nonlinear-system/BroydenNonlinearSystemCalculator'
+import { CholeskyDecompositionSolverCalculator } from '../features/numerical-methods/cholesky-decomposition-solver/CholeskyDecompositionSolverCalculator'
+import { ConjugateGradientSolverCalculator } from '../features/numerical-methods/conjugate-gradient-solver/ConjugateGradientSolverCalculator'
+import { CoupledODESystemRK4Calculator } from '../features/numerical-methods/coupled-ode-system-rk4/CoupledODESystemRK4Calculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -583,6 +589,156 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+
+
+
+
+  if (calculatorId === 'adamsBashforthMoulton') {
+
+
+
+
+
+
+
+    return <AdamsBashforthMoultonCalculator />
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+  if (calculatorId === 'adaptiveRungeKutta45') {
+
+
+
+
+
+
+
+    return <AdaptiveRungeKutta45Calculator />
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+  if (calculatorId === 'broydenNonlinearSystem') {
+
+
+
+
+
+
+
+    return <BroydenNonlinearSystemCalculator />
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+  if (calculatorId === 'choleskyDecompositionSolver') {
+
+
+
+
+
+
+
+    return <CholeskyDecompositionSolverCalculator />
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+  if (calculatorId === 'conjugateGradientSolver') {
+
+
+
+
+
+
+
+    return <ConjugateGradientSolverCalculator />
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+  if (calculatorId === 'coupledODESystemRK4') {
+
+
+
+
+
+
+
+    return <CoupledODESystemRK4Calculator />
+
+
+
+
+
+
+
+  }
+
 
 
 
