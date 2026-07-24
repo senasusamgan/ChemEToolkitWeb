@@ -27,6 +27,12 @@ import { ExtractionSolventRequirementCalculator } from '../features/separation-p
 import { CrosscurrentExtractionStagesCalculator } from '../features/separation-processes/crosscurrent-extraction-stages/CrosscurrentExtractionStagesCalculator'
 import { CountercurrentExtractionStagesCalculator } from '../features/separation-processes/countercurrent-extraction-stages/CountercurrentExtractionStagesCalculator'
 import { GillilandStageEstimateCalculator } from '../features/separation-processes/gilliland-stage-estimate/GillilandStageEstimateCalculator'
+import { AbsorptionStrippingFactorsCalculator } from '../features/separation-processes/absorption-stripping-factors/AbsorptionStrippingFactorsCalculator'
+import { AdsorbentMassRequirementCalculator } from '../features/separation-processes/adsorbent-mass-requirement/AdsorbentMassRequirementCalculator'
+import { BetMonolayerCapacityCalculator } from '../features/separation-processes/bet-monolayer-capacity/BetMonolayerCapacityCalculator'
+import { KremserAbsorptionStagesCalculator } from '../features/separation-processes/kremser-absorption-stages/KremserAbsorptionStagesCalculator'
+import { KremserStrippingStagesCalculator } from '../features/separation-processes/kremser-stripping-stages/KremserStrippingStagesCalculator'
+import { StrippingMinimumGasRateCalculator } from '../features/separation-processes/stripping-minimum-gas-rate/StrippingMinimumGasRateCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -249,6 +255,102 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+
+  if (calculatorId === 'absorptionStrippingFactors') {
+
+
+
+
+    return <AbsorptionStrippingFactorsCalculator />
+
+
+
+
+  }
+
+
+
+
+
+  if (calculatorId === 'adsorbentMassRequirement') {
+
+
+
+
+    return <AdsorbentMassRequirementCalculator />
+
+
+
+
+  }
+
+
+
+
+
+  if (calculatorId === 'betMonolayerCapacity') {
+
+
+
+
+    return <BetMonolayerCapacityCalculator />
+
+
+
+
+  }
+
+
+
+
+
+  if (calculatorId === 'kremserAbsorptionStages') {
+
+
+
+
+    return <KremserAbsorptionStagesCalculator />
+
+
+
+
+  }
+
+
+
+
+
+  if (calculatorId === 'kremserStrippingStages') {
+
+
+
+
+    return <KremserStrippingStagesCalculator />
+
+
+
+
+  }
+
+
+
+
+
+  if (calculatorId === 'strippingMinimumGasRate') {
+
+
+
+
+    return <StrippingMinimumGasRateCalculator />
+
+
+
+
+  }
+
 
 
 
