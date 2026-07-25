@@ -118,3 +118,9 @@ Local address:
 - Added Reaction Engineering Batch 08 — 6 live calculators
 
 - Reaction Engineering COMPLETE — 62 / 62 live calculators
+
+- Hero migration counters removed and hero content aligned upward
+
+- Removed the completed hero migration-stat block with runtime-safe DOM cleanup
+
+- Hero copy aligned dynamically beneath the category ribbon

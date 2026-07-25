@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
 
+import './heroStatsRuntimeCleanup'
 const rootElement = document.getElementById('root')
 
 if (!rootElement) {
