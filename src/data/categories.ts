@@ -7,7 +7,7 @@ export const categories: CategoryDefinition[] = [
   { number: 4, name: "Mass Transfer", icon: "⠿", total: 45, live: 45 },
   { number: 5, name: "Material & Energy Balances", icon: "⇄", total: 25, live: 25 },
   { number: 6, name: "Numerical Methods", icon: "ƒ", total: 40, live: 40 },
-  { number: 7, name: "Process Control", icon: "⌇", total: 40, live: 6 },
+  { number: 7, name: "Process Control", icon: "⌇", total: 40, live: 12 },
   { number: 8, name: "Process Safety & Economics", icon: "◇", total: 40, live: 6 },
   { number: 9, name: "Reaction Engineering", icon: "⚗", total: 62, live: 10 },
   { number: 10, name: "Separation Processes", icon: "⋈", total: 40, live: 40 },

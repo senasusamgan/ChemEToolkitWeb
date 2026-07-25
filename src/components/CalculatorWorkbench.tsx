@@ -74,6 +74,12 @@ import { RichardsonErrorEstimateCalculator } from '../features/numerical-methods
 import { RiddersRootFinderCalculator } from '../features/numerical-methods/ridders-root-finder/RiddersRootFinderCalculator'
 import { ShootingMethodBoundaryValueCalculator } from '../features/numerical-methods/shooting-method-boundary-value/ShootingMethodBoundaryValueCalculator'
 import { ThomasTridiagonalSolverCalculator } from '../features/numerical-methods/thomas-tridiagonal-solver/ThomasTridiagonalSolverCalculator'
+import { BlockDiagramAlgebraCalculator } from '../features/process-control/block-diagram-algebra/BlockDiagramAlgebraCalculator'
+import { CascadeControlCalculator } from '../features/process-control/cascade-control/CascadeControlCalculator'
+import { ClosedLoopFeedbackAnalysisCalculator } from '../features/process-control/closed-loop-feedback-analysis/ClosedLoopFeedbackAnalysisCalculator'
+import { CohenCoonTuningCalculator } from '../features/process-control/cohen-coon-tuning/CohenCoonTuningCalculator'
+import { ProcessControlStrategyComparisonCalculator } from '../features/process-control/process-control-strategy-comparison/ProcessControlStrategyComparisonCalculator'
+import { CubicRouthHurwitzStabilityCalculator } from '../features/process-control/cubic-routh-hurwitz-stability/CubicRouthHurwitzStabilityCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -1538,6 +1544,246 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'blockDiagramAlgebra') {
+
+
+
+
+
+
+
+
+
+
+
+
+    return <BlockDiagramAlgebraCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'cascadeControl') {
+
+
+
+
+
+
+
+
+
+
+
+
+    return <CascadeControlCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'closedLoopFeedbackAnalysis') {
+
+
+
+
+
+
+
+
+
+
+
+
+    return <ClosedLoopFeedbackAnalysisCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'cohenCoonTuning') {
+
+
+
+
+
+
+
+
+
+
+
+
+    return <CohenCoonTuningCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'processControlStrategyComparison') {
+
+
+
+
+
+
+
+
+
+
+
+
+    return <ProcessControlStrategyComparisonCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'cubicRouthHurwitzStability') {
+
+
+
+
+
+
+
+
+
+
+
+
+    return <CubicRouthHurwitzStabilityCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
 
 
 
