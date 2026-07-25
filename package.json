@@ -79,7 +79,9 @@
     "test:reaction-engineering-batch04": "node --experimental-strip-types --test tests/reaction-engineering-batch04/*.test.ts",
     "verify:reaction-engineering-batch04": "node scripts/verify-reaction-engineering-batch04.mjs",
     "test:reaction-engineering-batch05": "node --experimental-strip-types --test tests/reaction-engineering-batch05/*.test.ts",
-    "verify:reaction-engineering-batch05": "node scripts/verify-reaction-engineering-batch05.mjs"
+    "verify:reaction-engineering-batch05": "node scripts/verify-reaction-engineering-batch05.mjs",
+    "test:reaction-engineering-batch06": "node --experimental-strip-types --test tests/reaction-engineering-batch06/*.test.ts",
+    "verify:reaction-engineering-batch06": "node scripts/verify-reaction-engineering-batch06.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
