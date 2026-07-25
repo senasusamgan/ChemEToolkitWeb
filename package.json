@@ -69,7 +69,9 @@
     "test:process-safety-economics-batch06": "node --experimental-strip-types --test tests/process-safety-economics-batch06/*.test.ts",
     "verify:process-safety-economics-batch06": "node scripts/verify-process-safety-economics-batch06.mjs",
     "test:process-safety-economics-batch07": "node --experimental-strip-types --test tests/process-safety-economics-batch07/*.test.ts",
-    "verify:process-safety-economics-batch07": "node scripts/verify-process-safety-economics-batch07.mjs"
+    "verify:process-safety-economics-batch07": "node scripts/verify-process-safety-economics-batch07.mjs",
+    "test:reaction-engineering-batch01": "node --experimental-strip-types --test tests/reaction-engineering-batch01/*.test.ts",
+    "verify:reaction-engineering-batch01": "node scripts/verify-reaction-engineering-batch01.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
