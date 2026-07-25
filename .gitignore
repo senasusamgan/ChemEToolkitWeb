@@ -46,3 +46,4 @@ coverage/
 tmp/
 temp/
 audit-reports/
+.vercel

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+audit-reports/
+manual-backups/
+tests/
+coverage/
+.git/
+.DS_Store
+*.log
+*.zip
