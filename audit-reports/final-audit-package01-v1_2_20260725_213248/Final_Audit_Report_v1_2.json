@@ -1,0 +1,584 @@
+{
+  "generatedAt": "2026-07-25T18:33:00.676Z",
+  "projectRoot": "/Users/senasusamgan/Desktop/ChemEToolkitWeb_Source",
+  "durationMs": 12203,
+  "finalPassed": true,
+  "expected": {
+    "total": 380,
+    "live": 380,
+    "queued": 0,
+    "categories": 11
+  },
+  "catalog": {
+    "total": 380,
+    "live": 380,
+    "queued": 0,
+    "duplicateIds": [],
+    "duplicateTitles": [],
+    "invalidIds": []
+  },
+  "categories": {
+    "count": 11,
+    "liveSum": 380,
+    "totalSum": 380,
+    "rows": [
+      {
+        "name": "Engineering Fundamentals",
+        "live": 18,
+        "total": 18,
+        "queued": 0
+      },
+      {
+        "name": "Fluid Mechanics",
+        "live": 17,
+        "total": 17,
+        "queued": 0
+      },
+      {
+        "name": "Heat Transfer",
+        "live": 28,
+        "total": 28,
+        "queued": 0
+      },
+      {
+        "name": "Mass Transfer",
+        "live": 45,
+        "total": 45,
+        "queued": 0
+      },
+      {
+        "name": "Material & Energy Balances",
+        "live": 25,
+        "total": 25,
+        "queued": 0
+      },
+      {
+        "name": "Numerical Methods",
+        "live": 40,
+        "total": 40,
+        "queued": 0
+      },
+      {
+        "name": "Process Control",
+        "live": 40,
+        "total": 40,
+        "queued": 0
+      },
+      {
+        "name": "Process Safety & Economics",
+        "live": 40,
+        "total": 40,
+        "queued": 0
+      },
+      {
+        "name": "Reaction Engineering",
+        "live": 62,
+        "total": 62,
+        "queued": 0
+      },
+      {
+        "name": "Separation Processes",
+        "live": 40,
+        "total": 40,
+        "queued": 0
+      },
+      {
+        "name": "Thermodynamics",
+        "live": 25,
+        "total": 25,
+        "queued": 0
+      }
+    ],
+    "mismatches": []
+  },
+  "routes": {
+    "effectiveCoverage": 380,
+    "expected": 380,
+    "directNativeCoverage": 204,
+    "legacyFallbackCoverage": 176,
+    "legacyFallbackDetected": true,
+    "legacyComponentFile": "src/components/LegacyWorkbench.tsx",
+    "missing": [],
+    "orphanExplicitIds": []
+  },
+  "sourceInventory": {
+    "engineFiles": 113,
+    "typesFiles": 113,
+    "calculatorComponents": 113,
+    "focusedTestFiles": 201,
+    "referenceBasisFiles": 112,
+    "todoHits": [],
+    "implementationPlaceholderHits": []
+  },
+  "commands": [
+    {
+      "name": "lint",
+      "command": "oxlint --ignore-pattern 'public/legacy/**' --ignore-pattern 'audit-reports/**' --ignore-pattern 'manual-backups/**'",
+      "exitCode": 0,
+      "elapsedMs": 274,
+      "tests": null,
+      "passes": null,
+      "failures": null,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/lint.log"
+    },
+    {
+      "name": "test:batch01",
+      "command": "node --test tests/batch01/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 272,
+      "tests": 12,
+      "passes": 12,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_batch01.log"
+    },
+    {
+      "name": "test:batch02",
+      "command": "node --test tests/batch02/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 215,
+      "tests": 12,
+      "passes": 12,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_batch02.log"
+    },
+    {
+      "name": "test:batch03",
+      "command": "node --test tests/batch03/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 226,
+      "tests": 12,
+      "passes": 12,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_batch03.log"
+    },
+    {
+      "name": "test:batch04",
+      "command": "node --experimental-strip-types --test tests/batch04/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 208,
+      "tests": 9,
+      "passes": 9,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_batch04.log"
+    },
+    {
+      "name": "test:binary-flash",
+      "command": "node --test src/features/mass-transfer/binary-flash/engine.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 193,
+      "tests": 3,
+      "passes": 3,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_binary-flash.log"
+    },
+    {
+      "name": "test:centrifugal-settling",
+      "command": "node --test tests/centrifugal-settling/engine.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 196,
+      "tests": 3,
+      "passes": 3,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_centrifugal-settling.log"
+    },
+    {
+      "name": "test:numerical-methods-batch01",
+      "command": "node --experimental-strip-types --test tests/numerical-methods-batch01/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 258,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_numerical-methods-batch01.log"
+    },
+    {
+      "name": "test:numerical-methods-batch02",
+      "command": "node --experimental-strip-types --test tests/numerical-methods-batch02/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 242,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_numerical-methods-batch02.log"
+    },
+    {
+      "name": "test:numerical-methods-batch03",
+      "command": "node --experimental-strip-types --test tests/numerical-methods-batch03/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 257,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_numerical-methods-batch03.log"
+    },
+    {
+      "name": "test:numerical-methods-batch04",
+      "command": "node --experimental-strip-types --test tests/numerical-methods-batch04/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 245,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_numerical-methods-batch04.log"
+    },
+    {
+      "name": "test:numerical-methods-batch05",
+      "command": "node --experimental-strip-types --test tests/numerical-methods-batch05/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 246,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_numerical-methods-batch05.log"
+    },
+    {
+      "name": "test:process-control-batch01",
+      "command": "node --experimental-strip-types --test tests/process-control-batch01/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 238,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch01.log"
+    },
+    {
+      "name": "test:process-control-batch02",
+      "command": "node --experimental-strip-types --test tests/process-control-batch02/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 247,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch02.log"
+    },
+    {
+      "name": "test:process-control-batch03",
+      "command": "node --experimental-strip-types --test tests/process-control-batch03/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 250,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch03.log"
+    },
+    {
+      "name": "test:process-control-batch04",
+      "command": "node --experimental-strip-types --test tests/process-control-batch04/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 234,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch04.log"
+    },
+    {
+      "name": "test:process-control-batch05",
+      "command": "node --experimental-strip-types --test tests/process-control-batch05/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 240,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch05.log"
+    },
+    {
+      "name": "test:process-control-batch06",
+      "command": "node --experimental-strip-types --test tests/process-control-batch06/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 213,
+      "tests": 12,
+      "passes": 12,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch06.log"
+    },
+    {
+      "name": "test:process-safety-economics-batch01",
+      "command": "node --experimental-strip-types --test tests/process-safety-economics-batch01/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 242,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch01.log"
+    },
+    {
+      "name": "test:process-safety-economics-batch02",
+      "command": "node --experimental-strip-types --test tests/process-safety-economics-batch02/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 245,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch02.log"
+    },
+    {
+      "name": "test:process-safety-economics-batch03",
+      "command": "node --experimental-strip-types --test tests/process-safety-economics-batch03/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 235,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch03.log"
+    },
+    {
+      "name": "test:process-safety-economics-batch04",
+      "command": "node --experimental-strip-types --test tests/process-safety-economics-batch04/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 293,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch04.log"
+    },
+    {
+      "name": "test:process-safety-economics-batch05",
+      "command": "node --experimental-strip-types --test tests/process-safety-economics-batch05/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 250,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch05.log"
+    },
+    {
+      "name": "test:process-safety-economics-batch06",
+      "command": "node --experimental-strip-types --test tests/process-safety-economics-batch06/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 241,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch06.log"
+    },
+    {
+      "name": "test:process-safety-economics-batch07",
+      "command": "node --experimental-strip-types --test tests/process-safety-economics-batch07/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 228,
+      "tests": 12,
+      "passes": 12,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch07.log"
+    },
+    {
+      "name": "test:reaction-engineering-batch01",
+      "command": "node --experimental-strip-types --test tests/reaction-engineering-batch01/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 247,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch01.log"
+    },
+    {
+      "name": "test:reaction-engineering-batch02",
+      "command": "node --experimental-strip-types --test tests/reaction-engineering-batch02/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 248,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch02.log"
+    },
+    {
+      "name": "test:reaction-engineering-batch03",
+      "command": "node --experimental-strip-types --test tests/reaction-engineering-batch03/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 274,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch03.log"
+    },
+    {
+      "name": "test:reaction-engineering-batch04",
+      "command": "node --experimental-strip-types --test tests/reaction-engineering-batch04/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 254,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch04.log"
+    },
+    {
+      "name": "test:reaction-engineering-batch05",
+      "command": "node --experimental-strip-types --test tests/reaction-engineering-batch05/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 260,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch05.log"
+    },
+    {
+      "name": "test:reaction-engineering-batch06",
+      "command": "node --experimental-strip-types --test tests/reaction-engineering-batch06/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 257,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch06.log"
+    },
+    {
+      "name": "test:reaction-engineering-batch07",
+      "command": "node --experimental-strip-types --test tests/reaction-engineering-batch07/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 249,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch07.log"
+    },
+    {
+      "name": "test:reaction-engineering-batch08",
+      "command": "node --experimental-strip-types --test tests/reaction-engineering-batch08/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 274,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch08.log"
+    },
+    {
+      "name": "test:reaction-engineering-batch09",
+      "command": "node --experimental-strip-types --test tests/reaction-engineering-batch09/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 228,
+      "tests": 12,
+      "passes": 12,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch09.log"
+    },
+    {
+      "name": "test:separation-batch01",
+      "command": "node --experimental-strip-types --test tests/separation-batch01/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 391,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_separation-batch01.log"
+    },
+    {
+      "name": "test:separation-batch02",
+      "command": "node --experimental-strip-types --test tests/separation-batch02/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 264,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_separation-batch02.log"
+    },
+    {
+      "name": "test:separation-batch03",
+      "command": "node --experimental-strip-types --test tests/separation-batch03/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 240,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_separation-batch03.log"
+    },
+    {
+      "name": "test:separation-batch04",
+      "command": "node --experimental-strip-types --test tests/separation-batch04/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 241,
+      "tests": 18,
+      "passes": 18,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_separation-batch04.log"
+    },
+    {
+      "name": "test:separation-batch05",
+      "command": "node --experimental-strip-types --test tests/separation-batch05/*.test.ts",
+      "exitCode": 0,
+      "elapsedMs": 228,
+      "tests": 15,
+      "passes": 15,
+      "failures": 0,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_separation-batch05.log"
+    },
+    {
+      "name": "build",
+      "command": "tsc -b && vite build",
+      "exitCode": 0,
+      "elapsedMs": 2427,
+      "tests": null,
+      "passes": null,
+      "failures": null,
+      "logFile": "audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/build.log"
+    }
+  ],
+  "reportedTests": 606,
+  "reportedPasses": 606,
+  "reportedFailures": 0,
+  "checks": [
+    {
+      "name": "Catalog total",
+      "passed": true,
+      "details": "found 380; expected 380"
+    },
+    {
+      "name": "Live calculator count",
+      "passed": true,
+      "details": "found 380; expected 380"
+    },
+    {
+      "name": "Queued migration count",
+      "passed": true,
+      "details": "found 0; expected 0"
+    },
+    {
+      "name": "Unique calculator IDs",
+      "passed": true,
+      "details": "no duplicate IDs"
+    },
+    {
+      "name": "Unique normalized titles",
+      "passed": true,
+      "details": "no duplicate titles"
+    },
+    {
+      "name": "Calculator ID format",
+      "passed": true,
+      "details": "all IDs are camel-safe alphanumerics"
+    },
+    {
+      "name": "Category record count",
+      "passed": true,
+      "details": "found 11; expected 11"
+    },
+    {
+      "name": "Category/catalog agreement",
+      "passed": true,
+      "details": "all category counts agree"
+    },
+    {
+      "name": "Category live sum",
+      "passed": true,
+      "details": "found 380; expected 380"
+    },
+    {
+      "name": "Category total sum",
+      "passed": true,
+      "details": "found 380; expected 380"
+    },
+    {
+      "name": "Effective live route coverage",
+      "passed": true,
+      "details": "380/380 (204 native/direct + 176 LegacyWorkbench fallback)"
+    },
+    {
+      "name": "Legacy fallback integrity",
+      "passed": true,
+      "details": "LegacyWorkbench import, component file and calculatorId fallback found: src/components/LegacyWorkbench.tsx"
+    }
+  ],
+  "blockingIssues": [],
+  "warnings": [
+    "42 historical verify:* script(s) were intentionally skipped because they encode intermediate batch counts."
+  ]
+}

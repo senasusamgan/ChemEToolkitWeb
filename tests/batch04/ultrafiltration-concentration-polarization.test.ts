@@ -31,7 +31,7 @@ test('calculates gel-polarization performance', () => {
   assert.ok(
     Math.abs(
       result.volumetricRecoveryFraction -
-        0.18420680743952366,
+        0.18420680743952367,
     ) < 1e-12,
   )
   assert.ok(

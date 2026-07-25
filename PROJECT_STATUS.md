@@ -124,3 +124,5 @@ Local address:
 - Removed the completed hero migration-stat block with runtime-safe DOM cleanup
 
 - Hero copy aligned dynamically beneath the category ribbon
+
+- Final Audit 01 lint cleanup: generated legacy assets ignored; BET conversion and precision warnings resolved

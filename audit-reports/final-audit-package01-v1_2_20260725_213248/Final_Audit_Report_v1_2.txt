@@ -1,0 +1,133 @@
+CHEME TOOLKIT WEB — FINAL AUDIT PACKAGE 01 v1.2
+380 CALCULATOR INTEGRITY AUDIT
+================================================================================
+Generated: 2026-07-25T18:33:00.676Z
+Project:   /Users/senasusamgan/Desktop/ChemEToolkitWeb_Source
+Duration:  12.20 s
+
+FINAL RESULT: PASS
+
+CATALOG
+--------------------------------------------------------------------------------
+Total:  380 / 380
+Live:   380 / 380
+Queued: 0 / 0
+Duplicate IDs:    0
+Duplicate titles: 0
+
+CATEGORIES
+--------------------------------------------------------------------------------
+Category                    Live  Total  Queued
+--------------------------  ----  -----  ------
+Engineering Fundamentals    18    18     0     
+Fluid Mechanics             17    17     0     
+Heat Transfer               28    28     0     
+Mass Transfer               45    45     0     
+Material & Energy Balances  25    25     0     
+Numerical Methods           40    40     0     
+Process Control             40    40     0     
+Process Safety & Economics  40    40     0     
+Reaction Engineering        62    62     0     
+Separation Processes        40    40     0     
+Thermodynamics              25    25     0     
+
+Records: 11 / 11
+Sums:    380 live / 380 total
+
+EFFECTIVE ROUTE COVERAGE
+--------------------------------------------------------------------------------
+Direct/native coverage:      204
+LegacyWorkbench fallback:    176
+Effective live coverage:     380/380
+Legacy fallback detected:    YES
+Legacy component:            src/components/LegacyWorkbench.tsx
+
+SOURCE INVENTORY
+--------------------------------------------------------------------------------
+Engine files:                    113
+Types files:                     113
+Calculator components:           113
+Focused test files:              201
+ReferenceBasis files:            112
+TODO/FIXME/HACK markers:         0
+Implementation placeholders:     0
+
+COMMANDS
+--------------------------------------------------------------------------------
+Command                                        Result  Duration  Tests  Fails  Log                                                                                                            
+---------------------------------------------  ------  --------  -----  -----  ---------------------------------------------------------------------------------------------------------------
+npm run lint                                   PASS    0.27 s    —      —      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/lint.log                                 
+npm run test:batch01                           PASS    0.27 s    12     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_batch01.log                         
+npm run test:batch02                           PASS    0.21 s    12     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_batch02.log                         
+npm run test:batch03                           PASS    0.23 s    12     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_batch03.log                         
+npm run test:batch04                           PASS    0.21 s    9      0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_batch04.log                         
+npm run test:binary-flash                      PASS    0.19 s    3      0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_binary-flash.log                    
+npm run test:centrifugal-settling              PASS    0.20 s    3      0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_centrifugal-settling.log            
+npm run test:numerical-methods-batch01         PASS    0.26 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_numerical-methods-batch01.log       
+npm run test:numerical-methods-batch02         PASS    0.24 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_numerical-methods-batch02.log       
+npm run test:numerical-methods-batch03         PASS    0.26 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_numerical-methods-batch03.log       
+npm run test:numerical-methods-batch04         PASS    0.24 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_numerical-methods-batch04.log       
+npm run test:numerical-methods-batch05         PASS    0.25 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_numerical-methods-batch05.log       
+npm run test:process-control-batch01           PASS    0.24 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch01.log         
+npm run test:process-control-batch02           PASS    0.25 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch02.log         
+npm run test:process-control-batch03           PASS    0.25 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch03.log         
+npm run test:process-control-batch04           PASS    0.23 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch04.log         
+npm run test:process-control-batch05           PASS    0.24 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch05.log         
+npm run test:process-control-batch06           PASS    0.21 s    12     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-control-batch06.log         
+npm run test:process-safety-economics-batch01  PASS    0.24 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch01.log
+npm run test:process-safety-economics-batch02  PASS    0.24 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch02.log
+npm run test:process-safety-economics-batch03  PASS    0.23 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch03.log
+npm run test:process-safety-economics-batch04  PASS    0.29 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch04.log
+npm run test:process-safety-economics-batch05  PASS    0.25 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch05.log
+npm run test:process-safety-economics-batch06  PASS    0.24 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch06.log
+npm run test:process-safety-economics-batch07  PASS    0.23 s    12     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_process-safety-economics-batch07.log
+npm run test:reaction-engineering-batch01      PASS    0.25 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch01.log    
+npm run test:reaction-engineering-batch02      PASS    0.25 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch02.log    
+npm run test:reaction-engineering-batch03      PASS    0.27 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch03.log    
+npm run test:reaction-engineering-batch04      PASS    0.25 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch04.log    
+npm run test:reaction-engineering-batch05      PASS    0.26 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch05.log    
+npm run test:reaction-engineering-batch06      PASS    0.26 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch06.log    
+npm run test:reaction-engineering-batch07      PASS    0.25 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch07.log    
+npm run test:reaction-engineering-batch08      PASS    0.27 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch08.log    
+npm run test:reaction-engineering-batch09      PASS    0.23 s    12     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_reaction-engineering-batch09.log    
+npm run test:separation-batch01                PASS    0.39 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_separation-batch01.log              
+npm run test:separation-batch02                PASS    0.26 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_separation-batch02.log              
+npm run test:separation-batch03                PASS    0.24 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_separation-batch03.log              
+npm run test:separation-batch04                PASS    0.24 s    18     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_separation-batch04.log              
+npm run test:separation-batch05                PASS    0.23 s    15     0      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/test_separation-batch05.log              
+npm run build                                  PASS    2.43 s    —      —      audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs/build.log                                
+
+Reported test executions: 606
+Reported passes:          606
+Reported failures:        0
+
+CORE CHECKS
+--------------------------------------------------------------------------------
+[PASS] Catalog total — found 380; expected 380
+[PASS] Live calculator count — found 380; expected 380
+[PASS] Queued migration count — found 0; expected 0
+[PASS] Unique calculator IDs — no duplicate IDs
+[PASS] Unique normalized titles — no duplicate titles
+[PASS] Calculator ID format — all IDs are camel-safe alphanumerics
+[PASS] Category record count — found 11; expected 11
+[PASS] Category/catalog agreement — all category counts agree
+[PASS] Category live sum — found 380; expected 380
+[PASS] Category total sum — found 380; expected 380
+[PASS] Effective live route coverage — 380/380 (204 native/direct + 176 LegacyWorkbench fallback)
+[PASS] Legacy fallback integrity — LegacyWorkbench import, component file and calculatorId fallback found: src/components/LegacyWorkbench.tsx
+
+BLOCKING ISSUES
+--------------------------------------------------------------------------------
+No blocking integrity issue detected.
+
+WARNINGS
+--------------------------------------------------------------------------------
+1. 42 historical verify:* script(s) were intentionally skipped because they encode intermediate batch counts.
+
+REPORT FILES
+--------------------------------------------------------------------------------
+Text: audit-reports/final-audit-package01-v1_2_20260725_213248/Final_Audit_Report_v1_2.txt
+JSON: audit-reports/final-audit-package01-v1_2_20260725_213248/Final_Audit_Report_v1_2.json
+Logs: audit-reports/final-audit-package01-v1_2_20260725_213248/command-logs
+
+END OF REPORT

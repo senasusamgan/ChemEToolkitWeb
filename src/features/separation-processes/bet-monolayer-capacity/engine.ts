@@ -76,8 +76,7 @@ export function calculateBetMonolayerCapacity(
   }
 
   const molecularAreaSquareMetres =
-    input.molecularCrossSectionArea *
-    1e-18
+    input.molecularCrossSectionArea / 10 ** 18
 
   const specificSurfaceArea =
     monolayerCapacity *

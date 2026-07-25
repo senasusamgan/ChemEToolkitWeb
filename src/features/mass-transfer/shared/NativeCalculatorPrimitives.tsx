@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import './batch01.css'
 
+// oxlint-disable-next-line react/only-export-components
 export function formatEngineeringNumber(value: number): string {
   if (Object.is(value, -0) || Math.abs(value) < 1e-14) {
     return '0'
