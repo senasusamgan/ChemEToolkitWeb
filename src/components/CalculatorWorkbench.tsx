@@ -80,6 +80,12 @@ import { ClosedLoopFeedbackAnalysisCalculator } from '../features/process-contro
 import { CohenCoonTuningCalculator } from '../features/process-control/cohen-coon-tuning/CohenCoonTuningCalculator'
 import { ProcessControlStrategyComparisonCalculator } from '../features/process-control/process-control-strategy-comparison/ProcessControlStrategyComparisonCalculator'
 import { CubicRouthHurwitzStabilityCalculator } from '../features/process-control/cubic-routh-hurwitz-stability/CubicRouthHurwitzStabilityCalculator'
+import { FeedforwardControlCalculator } from '../features/process-control/feedforward-control/FeedforwardControlCalculator'
+import { FirstOrderFrequencyResponseCalculator } from '../features/process-control/first-order-frequency-response/FirstOrderFrequencyResponseCalculator'
+import { GainSchedulingCalculator } from '../features/process-control/gain-scheduling/GainSchedulingCalculator'
+import { IntegratingProcessResponseCalculator } from '../features/process-control/integrating-process-response/IntegratingProcessResponseCalculator'
+import { InteractingTankSystemCalculator } from '../features/process-control/interacting-tank-system/InteractingTankSystemCalculator'
+import { InternalModelControlAnalysisCalculator } from '../features/process-control/internal-model-control-analysis/InternalModelControlAnalysisCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -1783,6 +1789,264 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'feedforwardControl') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <FeedforwardControlCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'firstOrderFrequencyResponse') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <FirstOrderFrequencyResponseCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'gainScheduling') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <GainSchedulingCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'integratingProcessResponse') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <IntegratingProcessResponseCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'interactingTankSystem') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <InteractingTankSystemCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'internalModelControlAnalysis') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <InternalModelControlAnalysisCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
 
 
 
