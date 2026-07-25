@@ -68,6 +68,12 @@ import { NewtonMultivariableOptimizationCalculator } from '../features/numerical
 import { NewtonRaphsonNonlinearSystemCalculator } from '../features/numerical-methods/newton-raphson-nonlinear-system/NewtonRaphsonNonlinearSystemCalculator'
 import { NumericalJacobianCalculator } from '../features/numerical-methods/numerical-jacobian/NumericalJacobianCalculator'
 import { OneDimensionalWaveEquationCalculator } from '../features/numerical-methods/one-dimensional-wave-equation/OneDimensionalWaveEquationCalculator'
+import { PowerMethodEigenvalueCalculator } from '../features/numerical-methods/power-method-eigenvalue/PowerMethodEigenvalueCalculator'
+import { QRDecompositionSolverCalculator } from '../features/numerical-methods/qr-decomposition-solver/QRDecompositionSolverCalculator'
+import { RichardsonErrorEstimateCalculator } from '../features/numerical-methods/richardson-error-estimate/RichardsonErrorEstimateCalculator'
+import { RiddersRootFinderCalculator } from '../features/numerical-methods/ridders-root-finder/RiddersRootFinderCalculator'
+import { ShootingMethodBoundaryValueCalculator } from '../features/numerical-methods/shooting-method-boundary-value/ShootingMethodBoundaryValueCalculator'
+import { ThomasTridiagonalSolverCalculator } from '../features/numerical-methods/thomas-tridiagonal-solver/ThomasTridiagonalSolverCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -1311,6 +1317,228 @@ export function CalculatorWorkbench({
 
 
   }
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'powerMethodEigenvalue') {
+
+
+
+
+
+
+
+
+
+
+
+    return <PowerMethodEigenvalueCalculator />
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'qrDecompositionSolver') {
+
+
+
+
+
+
+
+
+
+
+
+    return <QRDecompositionSolverCalculator />
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'richardsonErrorEstimate') {
+
+
+
+
+
+
+
+
+
+
+
+    return <RichardsonErrorEstimateCalculator />
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'riddersRootFinder') {
+
+
+
+
+
+
+
+
+
+
+
+    return <RiddersRootFinderCalculator />
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'shootingMethodBoundaryValue') {
+
+
+
+
+
+
+
+
+
+
+
+    return <ShootingMethodBoundaryValueCalculator />
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'thomasTridiagonalSolver') {
+
+
+
+
+
+
+
+
+
+
+
+    return <ThomasTridiagonalSolverCalculator />
+
+
+
+
+
+
+
+
+
+
+
+  }
+
 
 
 
