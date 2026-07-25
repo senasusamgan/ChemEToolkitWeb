@@ -87,6 +87,12 @@ import { IntegratingProcessResponseCalculator } from '../features/process-contro
 import { InteractingTankSystemCalculator } from '../features/process-control/interacting-tank-system/InteractingTankSystemCalculator'
 import { InternalModelControlAnalysisCalculator } from '../features/process-control/internal-model-control-analysis/InternalModelControlAnalysisCalculator'
 import { ProcessControlBatch03Calculator } from '../features/process-control/batch03/ProcessControlBatch03Calculator'
+import { OpenLoopResponseCalculator } from '../features/process-control/open-loop-response/OpenLoopResponseCalculator'
+import { OverrideSelectiveControlCalculator } from '../features/process-control/override-selective-control/OverrideSelectiveControlCalculator'
+import { PDControllerCalculator } from '../features/process-control/pd-controller/PDControllerCalculator'
+import { PIControllerCalculator } from '../features/process-control/pi-controller/PIControllerCalculator'
+import { PressureProcessDynamicsCalculator } from '../features/process-control/pressure-process-dynamics/PressureProcessDynamicsCalculator'
+import { ProportionalControllerCalculator } from '../features/process-control/proportional-controller/ProportionalControllerCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -2057,6 +2063,300 @@ export function CalculatorWorkbench({
   ].includes(calculatorId)) {
     return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} />
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'openLoopResponse') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <OpenLoopResponseCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'overrideSelectiveControl') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <OverrideSelectiveControlCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'pdController') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <PDControllerCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'piController') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <PIControllerCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'pressureProcessDynamics') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <PressureProcessDynamicsCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (calculatorId === 'proportionalController') {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return <ProportionalControllerCalculator />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
 
 
 
