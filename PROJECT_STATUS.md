@@ -3,8 +3,8 @@
 ## Current Checkpoint
 
 - Total calculator catalog: 380
-- Live calculators: 290
-- Queued migrations: 90
+- Live calculators: 294
+- Queued migrations: 86
 - Disciplines: 11
 
 ## Current Architecture
@@ -33,7 +33,7 @@
 
 ## Current Verified State
 
-380 total / 290 live / 90 queued
+380 total / 294 live / 86 queued
 
 ## Local Development
 
@@ -84,3 +84,5 @@ Local address:
 - Added Process Control Batch 04 — 6 live calculators
 
 - Added Process Control Batch 05 — 6 live calculators
+
+- Completed Process Control migration — 40 / 40 live calculators
