@@ -86,6 +86,7 @@ import { GainSchedulingCalculator } from '../features/process-control/gain-sched
 import { IntegratingProcessResponseCalculator } from '../features/process-control/integrating-process-response/IntegratingProcessResponseCalculator'
 import { InteractingTankSystemCalculator } from '../features/process-control/interacting-tank-system/InteractingTankSystemCalculator'
 import { InternalModelControlAnalysisCalculator } from '../features/process-control/internal-model-control-analysis/InternalModelControlAnalysisCalculator'
+import { ProcessControlBatch03Calculator } from '../features/process-control/batch03/ProcessControlBatch03Calculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -2046,6 +2047,17 @@ export function CalculatorWorkbench({
 
 
   }
+  if ([
+    'inverseLaplaceTransformHelper',
+    'laplaceTransformHelper',
+    'liquidControlValveSizing',
+    'liquidLevelDynamics',
+    'modelPredictiveControl',
+    'nonInteractingTankSystem',
+  ].includes(calculatorId)) {
+    return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} />
+  }
+
 
 
 

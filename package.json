@@ -47,7 +47,9 @@
     "test:process-control-batch01": "node --experimental-strip-types --test tests/process-control-batch01/*.test.ts",
     "verify:process-control-batch01": "node scripts/verify-process-control-batch01.mjs",
     "test:process-control-batch02": "node --experimental-strip-types --test tests/process-control-batch02/*.test.ts",
-    "verify:process-control-batch02": "node scripts/verify-process-control-batch02.mjs"
+    "verify:process-control-batch02": "node scripts/verify-process-control-batch02.mjs",
+    "test:process-control-batch03": "node --experimental-strip-types --test tests/process-control-batch03/*.test.ts",
+    "verify:process-control-batch03": "node scripts/verify-process-control-batch03.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
