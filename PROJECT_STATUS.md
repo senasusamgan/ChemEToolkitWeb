@@ -86,3 +86,5 @@ Local address:
 - Added Process Control Batch 05 — 6 live calculators
 
 - Completed Process Control migration — 40 / 40 live calculators
+
+- Migrated the six existing live Process Safety & Economics calculators to native implementations

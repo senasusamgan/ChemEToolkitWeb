@@ -55,7 +55,9 @@
     "test:process-control-batch05": "node --experimental-strip-types --test tests/process-control-batch05/*.test.ts",
     "verify:process-control-batch05": "node scripts/verify-process-control-batch05.mjs",
     "test:process-control-batch06": "node --experimental-strip-types --test tests/process-control-batch06/*.test.ts",
-    "verify:process-control-batch06": "node scripts/verify-process-control-batch06.mjs"
+    "verify:process-control-batch06": "node scripts/verify-process-control-batch06.mjs",
+    "test:process-safety-economics-batch01": "node --experimental-strip-types --test tests/process-safety-economics-batch01/*.test.ts",
+    "verify:process-safety-economics-batch01": "node scripts/verify-process-safety-economics-batch01.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
