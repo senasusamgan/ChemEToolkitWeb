@@ -195,6 +195,71 @@ export function LegacyWorkbench({
               24px !important;
           }
         }
+
+
+        /* LEGACY MOBILE EDGE SPACING */
+
+        @media (max-width: 700px) {
+          .calculator-card.workbench,
+          .workbench {
+            width: calc(100% - 32px) !important;
+            max-width: calc(100% - 32px) !important;
+            margin-right: 16px !important;
+            margin-left: 16px !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+          }
+
+          .calculator-main,
+          .native-calculator {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding:
+              22px
+              18px
+              26px !important;
+            box-sizing: border-box !important;
+          }
+
+          .native-calculator-header,
+          .native-reference,
+          .native-input-grid,
+          .native-actions,
+          .native-result-panel,
+          .native-formula {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-right: 0 !important;
+            margin-left: 0 !important;
+            box-sizing: border-box !important;
+          }
+
+          .native-input-shell,
+          .native-input-shell input,
+          .native-input-shell select {
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+        }
+
+        @media (max-width: 390px) {
+          .calculator-card.workbench,
+          .workbench {
+            width: calc(100% - 28px) !important;
+            max-width: calc(100% - 28px) !important;
+            margin-right: 14px !important;
+            margin-left: 14px !important;
+          }
+
+          .calculator-main,
+          .native-calculator {
+            padding:
+              20px
+              16px
+              24px !important;
+          }
+        }
       `
       document.head.appendChild(style)
     }
