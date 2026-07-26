@@ -39,8 +39,76 @@ export function LegacyWorkbench({
           overflow: hidden !important;
           background: #fffdfa !important;
         }
-        .calculator-switcher { display: none !important; }
-        .calculator-card.workbench, .workbench {
+
+        body > * {
+          min-width: 0 !important;
+        }
+
+        .site-header,
+        .category-ribbon,
+        .hero-copy,
+        .ruler,
+        .categories-section,
+        .calculators-section,
+        .method-section,
+        .references-section,
+        footer,
+        #categories,
+        #calculators,
+        #method,
+        #references,
+        #about {
+          display: none !important;
+        }
+
+        main,
+        .hero,
+        .notebook-grid {
+          width: 100% !important;
+          min-width: 0 !important;
+          min-height: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          display: block !important;
+          background: #fffdfa !important;
+          background-image: none !important;
+        }
+
+        .hero-workbench,
+        #workbench {
+          width: 100% !important;
+          max-width: none !important;
+          min-width: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          position: static !important;
+          display: block !important;
+        }
+
+        .calculator-stage {
+          width: 100% !important;
+          max-width: none !important;
+          margin: 0 !important;
+          border: 0 !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+        }
+
+        .calculator-stage-toolbar,
+        .calculator-stage-footer,
+        .calculator-switcher {
+          display: none !important;
+        }
+
+        .calculator-stage-body,
+        .legacy-workbench {
+          width: 100% !important;
+          min-width: 0 !important;
+          overflow: visible !important;
+        }
+
+        .calculator-card.workbench,
+        .workbench {
           width: 100% !important;
           max-width: none !important;
           min-height: 0 !important;
@@ -50,15 +118,23 @@ export function LegacyWorkbench({
           box-shadow: none !important;
           background: #fffdfa !important;
         }
-        .calculator-main { padding-top: 26px !important; }
+
+        .calculator-main {
+          padding-top: 26px !important;
+        }
+
         @media (max-width: 700px) {
-          .calculator-main { padding: 22px 18px 24px !important; }
+          .calculator-main {
+            padding: 20px 16px 24px !important;
+          }
         }
       `
       document.head.appendChild(style)
     }
 
     const target =
+      document.querySelector<HTMLElement>('.calculator-stage-body') ??
+      document.querySelector<HTMLElement>('.calculator-stage') ??
       document.querySelector<HTMLElement>('.calculator-card.workbench') ??
       document.querySelector<HTMLElement>('.workbench') ??
       document.body
@@ -89,6 +165,8 @@ export function LegacyWorkbench({
     if (!document) return
 
     const target =
+      document.querySelector<HTMLElement>('.calculator-stage-body') ??
+      document.querySelector<HTMLElement>('.calculator-stage') ??
       document.querySelector<HTMLElement>('.calculator-card.workbench') ??
       document.querySelector<HTMLElement>('.workbench') ??
       document.body
