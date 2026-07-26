@@ -127,6 +127,73 @@ export function LegacyWorkbench({
           .calculator-main {
             padding: 20px 16px 24px !important;
           }
+
+          .calculator-stage-body,
+          .native-calculator,
+          .calculator-card.workbench,
+          .workbench {
+            box-sizing: border-box !important;
+          }
+
+          .native-calculator {
+            padding:
+              22px
+              18px
+              26px !important;
+          }
+
+          .native-calculator-header,
+          .native-reference,
+          .native-input-grid,
+          .native-actions,
+          .native-result-panel,
+          .native-formula {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+
+          .native-calculator-header {
+            padding-right: 2px !important;
+            padding-left: 2px !important;
+          }
+
+          .native-reference {
+            margin-right: 0 !important;
+            margin-left: 0 !important;
+          }
+
+          .native-input-grid {
+            gap: 15px !important;
+          }
+
+          .native-input-grid label {
+            width: 100% !important;
+            min-width: 0 !important;
+          }
+
+          .native-input-shell {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+
+          .native-actions {
+            margin-top: 22px !important;
+          }
+
+          .native-result-panel {
+            margin-top: 20px !important;
+          }
+        }
+
+        @media (max-width: 390px) {
+          .native-calculator {
+            padding:
+              20px
+              16px
+              24px !important;
+          }
         }
       `
       document.head.appendChild(style)
