@@ -12,6 +12,14 @@ const STORAGE_KEY =
 const CHANGE_EVENT =
   'cheme-toolkit:saved-calculations-changed'
 
+const SAVED_COMPARISONS_KEY =
+  'cheme-toolkit.saved-comparisons.v1'
+
+const SAVED_COMPARISONS_CHANGE_EVENT =
+  'cheme-toolkit:saved-comparisons-changed'
+
+const MAX_SAVED_COMPARISONS = 50
+
 const MAX_SELECTIONS = 4
 
 interface CalculationComparisonPanelProps {
@@ -67,12 +75,28 @@ interface DifferenceRow {
   comparisons: DifferenceItem[]
 }
 
+interface SavedComparison {
+  id: string
+  name: string
+  calculatorId: string
+  calculatorTitle: string
+  category: string
+  createdAt: string
+  baselineCalculationId: string
+  calculationIds: string[]
+  calculationSnapshots: SavedCalculation[]
+  inputRows: ComparisonRow[]
+  resultRows: ComparisonRow[]
+  differenceRows: DifferenceRow[]
+}
+
 type Status =
   | 'idle'
   | 'maximum'
   | 'minimum'
   | 'csv'
   | 'print'
+  | 'saved'
   | 'error'
 
 function normalizeText(
@@ -105,6 +129,22 @@ function createSlug(value: string): string {
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
+}
+
+function createComparisonId(): string {
+  if (
+    typeof crypto !== 'undefined' &&
+    'randomUUID' in crypto
+  ) {
+    return crypto.randomUUID()
+  }
+
+  return [
+    Date.now().toString(36),
+    Math.random()
+      .toString(36)
+      .slice(2),
+  ].join('-')
 }
 
 function readSavedCalculations():
@@ -978,6 +1018,11 @@ export function CalculationComparisonPanel({
   const [isExpanded, setIsExpanded] =
     useState(false)
 
+  const [
+    comparisonName,
+    setComparisonName,
+  ] = useState('')
+
   const [status, setStatus] =
     useState<Status>('idle')
 
@@ -1221,6 +1266,117 @@ export function CalculationComparisonPanel({
         calculationId,
       ]
     })
+  }
+
+  function handleSaveComparison() {
+    if (
+      selectedCalculations.length <
+      2
+    ) {
+      setStatus('minimum')
+      return
+    }
+
+    const now =
+      new Date()
+
+    const fallbackName =
+      `${calculator.title} comparison · ${
+        new Intl.DateTimeFormat(
+          'tr-TR',
+          {
+            dateStyle: 'short',
+            timeStyle: 'short',
+          },
+        ).format(now)
+      }`
+
+    const savedComparison:
+      SavedComparison = {
+      id: createComparisonId(),
+      name:
+        comparisonName.trim() ||
+        fallbackName,
+      calculatorId:
+        calculator.id,
+      calculatorTitle:
+        calculator.title,
+      category:
+        calculator.category,
+      createdAt:
+        now.toISOString(),
+      baselineCalculationId:
+        selectedCalculations[0].id,
+      calculationIds:
+        selectedCalculations.map(
+          (calculation) =>
+            calculation.id,
+        ),
+      calculationSnapshots:
+        JSON.parse(
+          JSON.stringify(
+            selectedCalculations,
+          ),
+        ) as SavedCalculation[],
+      inputRows:
+        JSON.parse(
+          JSON.stringify(inputRows),
+        ) as ComparisonRow[],
+      resultRows:
+        JSON.parse(
+          JSON.stringify(resultRows),
+        ) as ComparisonRow[],
+      differenceRows:
+        JSON.parse(
+          JSON.stringify(
+            differenceRows,
+          ),
+        ) as DifferenceRow[],
+    }
+
+    let existing:
+      SavedComparison[] = []
+
+    try {
+      const raw =
+        localStorage.getItem(
+          SAVED_COMPARISONS_KEY,
+        )
+
+      const parsed: unknown =
+        raw
+          ? JSON.parse(raw)
+          : []
+
+      existing =
+        Array.isArray(parsed)
+          ? parsed as SavedComparison[]
+          : []
+    } catch {
+      existing = []
+    }
+
+    localStorage.setItem(
+      SAVED_COMPARISONS_KEY,
+      JSON.stringify(
+        [
+          savedComparison,
+          ...existing,
+        ].slice(
+          0,
+          MAX_SAVED_COMPARISONS,
+        ),
+      ),
+    )
+
+    window.dispatchEvent(
+      new Event(
+        SAVED_COMPARISONS_CHANGE_EVENT,
+      ),
+    )
+
+    setComparisonName('')
+    setStatus('saved')
   }
 
   function handleCsvExport() {
@@ -1514,6 +1670,11 @@ export function CalculationComparisonPanel({
                   : null}
 
                 {status ===
+                'saved'
+                  ? 'Comparison saved permanently as a snapshot.'
+                  : null}
+
+                {status ===
                 'error'
                   ? 'The report window was blocked by the browser.'
                   : null}
@@ -1555,6 +1716,39 @@ export function CalculationComparisonPanel({
                         ▦ Print / Save PDF
                       </button>
                     </div>
+                  </div>
+
+                  <div className="comparison-save-snapshot">
+                    <label>
+                      <span>
+                        Comparison name
+                      </span>
+
+                      <input
+                        type="text"
+                        value={
+                          comparisonName
+                        }
+                        placeholder="Example: Low flow vs design flow"
+                        maxLength={90}
+                        onChange={(
+                          event,
+                        ) =>
+                          setComparisonName(
+                            event.target.value,
+                          )
+                        }
+                      />
+                    </label>
+
+                    <button
+                      type="button"
+                      onClick={
+                        handleSaveComparison
+                      }
+                    >
+                      ＋ Save comparison
+                    </button>
                   </div>
 
                   <div className="comparison-table-section">

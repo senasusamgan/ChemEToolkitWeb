@@ -1,0 +1,397 @@
+.project-files-panel {
+  padding: 22px 20px;
+  border-top:
+    1px solid var(--line, #d9d0bd);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(228, 243, 240, 0.62),
+      rgba(255, 253, 250, 0.98)
+    );
+}
+
+.project-files-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.project-files-header
+> div > span,
+.project-file-group-heading span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.project-files-header h3 {
+  margin: 5px 0 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 1.28rem;
+}
+
+.project-files-header p {
+  max-width: 620px;
+  margin: 7px 0 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.project-files-header
+> button {
+  min-height: 40px;
+  padding: 0 13px;
+  border:
+    1px solid
+    var(--teal, #049b96);
+  border-radius: 9px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(255, 255, 255, 0.72);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 850;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.project-files-status {
+  min-height: 1em;
+  margin: 10px 0 0;
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.69rem;
+  font-weight: 750;
+}
+
+.project-files-content {
+  margin-top: 17px;
+  padding-top: 17px;
+  border-top:
+    1px dashed
+    var(--line, #d9d0bd);
+}
+
+.project-files-toolbar {
+  padding: 13px;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    auto;
+  align-items: end;
+  gap: 13px;
+  border:
+    1px solid
+    var(--line, #d9d0bd);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.project-files-toolbar label {
+  display: grid;
+  gap: 6px;
+}
+
+.project-files-toolbar
+label > span {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.project-files-toolbar select {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 11px;
+  border:
+    1px solid
+    var(--line, #d9d0bd);
+  border-radius: 8px;
+  color:
+    var(--ink, #0b3556);
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.72rem;
+}
+
+.project-files-counts {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.67rem;
+}
+
+.project-files-counts strong {
+  color:
+    var(--teal-dark, #007b78);
+}
+
+.project-files-export {
+  display: flex;
+  gap: 7px;
+}
+
+.project-files-export button {
+  min-height: 42px;
+  padding: 0 11px;
+  border:
+    1px solid
+    var(--teal, #049b96);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.67rem;
+  font-weight: 850;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.project-files-export
+.project-files-primary {
+  color: #ffffff;
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.project-file-groups {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.project-file-group {
+  min-width: 0;
+  padding: 14px;
+  border:
+    1px solid
+    var(--line, #d9d0bd);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.project-comparison-files {
+  border-color:
+    rgba(4, 155, 150, 0.55);
+}
+
+.project-file-group-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.project-file-group-heading h4 {
+  margin: 5px 0 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 1rem;
+}
+
+.project-file-group-heading
+> strong {
+  min-width: 30px;
+  min-height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(228, 243, 240, 0.85);
+  font-size: 0.72rem;
+}
+
+.project-file-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.project-file-list article {
+  padding: 11px;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+  align-items: center;
+  gap: 11px;
+  border:
+    1px solid
+    var(--line, #d9d0bd);
+  border-radius: 8px;
+}
+
+.project-file-list
+article > div {
+  min-width: 0;
+}
+
+.project-file-list
+article span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.project-file-list h5 {
+  margin: 4px 0 0;
+  overflow: hidden;
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-file-list p,
+.project-file-list small {
+  display: block;
+  margin: 3px 0 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.62rem;
+}
+
+.project-file-list button {
+  min-height: 34px;
+  padding: 0 9px;
+  border:
+    1px solid
+    var(--line, #d9d0bd);
+  border-radius: 7px;
+  color: #a5473d;
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.61rem;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.project-files-empty {
+  padding: 22px;
+  border:
+    1px dashed
+    var(--line, #d9d0bd);
+  border-radius: 9px;
+  text-align: center;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.72rem;
+}
+
+.project-files-empty p {
+  margin: 7px 0 0;
+}
+
+.project-files-empty-small {
+  margin-top: 12px;
+  padding: 16px;
+}
+
+.project-files-panel
+button:hover {
+  transform:
+    translateY(-1px);
+}
+
+@media (max-width: 900px) {
+  .project-files-toolbar {
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto;
+  }
+
+  .project-files-export {
+    grid-column: 1 / -1;
+  }
+
+  .project-files-export button {
+    flex: 1;
+  }
+
+  .project-file-groups {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .project-files-panel {
+    padding: 18px 16px;
+  }
+
+  .project-files-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .project-files-header
+  > button {
+    width: 100%;
+  }
+
+  .project-files-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .project-files-counts {
+    justify-content: space-between;
+  }
+
+  .project-files-export {
+    grid-column: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .project-files-export button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .project-file-list article {
+    grid-template-columns: 1fr;
+  }
+
+  .project-file-list button {
+    width: 100%;
+    min-height: 41px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-files-panel
+  button:hover {
+    transform: none;
+  }
+}

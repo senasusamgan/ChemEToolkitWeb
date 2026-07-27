@@ -4,7 +4,9 @@ import { CalculatorWorkbench } from './CalculatorWorkbench'
 import { CalculationExportPanel } from './CalculationExportPanel'
 import { CalculationHistoryPanel } from './CalculationHistoryPanel'
 import { CalculationComparisonPanel } from './CalculationComparisonPanel'
+import { SavedComparisonsPanel } from './SavedComparisonsPanel'
 import { ProjectWorkspacesPanel } from './ProjectWorkspacesPanel'
+import { ProjectFilesPanel } from './ProjectFilesPanel'
 
 interface CalculatorStageProps {
   activeCalculator: CalculatorDefinition
@@ -58,9 +60,13 @@ export function CalculatorStage({
         calculator={activeCalculator}
       />
 
+      <SavedComparisonsPanel />
+
       <ProjectWorkspacesPanel
         calculator={activeCalculator}
       />
+
+      <ProjectFilesPanel />
 
       <footer className="calculator-stage-footer">
         <span>Verified engineering engine</span>
