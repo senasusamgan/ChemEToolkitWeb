@@ -2,6 +2,7 @@ import type { CalculatorDefinition } from '../types/calculator'
 import { CalculatorSearchCombobox } from './CalculatorSearchCombobox'
 import { CalculatorWorkbench } from './CalculatorWorkbench'
 import { CalculationExportPanel } from './CalculationExportPanel'
+import { CalculationHistoryPanel } from './CalculationHistoryPanel'
 
 interface CalculatorStageProps {
   activeCalculator: CalculatorDefinition
@@ -44,6 +45,11 @@ export function CalculatorStage({
 
       <CalculationExportPanel
         calculator={activeCalculator}
+      />
+
+      <CalculationHistoryPanel
+        calculator={activeCalculator}
+        onOpenCalculator={onSelect}
       />
 
       <footer className="calculator-stage-footer">
