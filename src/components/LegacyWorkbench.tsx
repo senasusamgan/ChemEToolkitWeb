@@ -283,150 +283,26 @@ export function LegacyWorkbench({
 
       desktopStyle.id = desktopStyleId
       desktopStyle.textContent = `
-        html.cheme-parent-desktop
-        body
-        .calculator-stage
-        .native-calculator {
-          padding:
-            18px
-            20px
-            22px !important;
+        html.cheme-parent-desktop,
+        html.cheme-parent-desktop body {
+          transform-origin: top left !important;
+        }
+
+        html.cheme-parent-desktop body {
+          font-size: 16px !important;
         }
 
         html.cheme-parent-desktop
-        body
-        .native-calculator-header {
-          gap: 12px !important;
-        }
-
+        .calculator-stage,
         html.cheme-parent-desktop
-        body
-        .native-icon {
-          width: 46px !important;
-          height: 46px !important;
-          flex-basis: 46px !important;
-          font-size: 1.25rem !important;
-        }
-
+        .calculator-stage-body,
         html.cheme-parent-desktop
-        body
-        .native-calculator-header h2 {
-          margin:
-            2px
-            0
-            4px !important;
-          font-size: 1.95rem !important;
-          line-height: 1 !important;
-        }
-
+        .native-calculator,
         html.cheme-parent-desktop
-        body
-        .native-calculator-header small,
+        .calculator-card.workbench,
         html.cheme-parent-desktop
-        body
-        .native-calculator-header p {
-          font-size: 0.7rem !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-reference {
-          margin:
-            14px
-            0
-            12px !important;
-          padding:
-            11px
-            13px !important;
-          font-size: 0.72rem !important;
-          line-height: 1.45 !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-input-grid {
-          margin-top: 13px !important;
-          gap: 10px !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-input-grid label {
-          gap: 5px !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-input-grid label > span:first-child {
-          margin-bottom: 0 !important;
-          font-size: 0.78rem !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-input-shell {
-          min-height: 42px !important;
-          border-radius: 7px !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-input-shell input,
-        html.cheme-parent-desktop
-        body
-        .native-input-shell select {
-          min-height: 40px !important;
-          padding-top: 0 !important;
-          padding-bottom: 0 !important;
-          font-size: 0.88rem !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-input-shell span {
-          font-size: 0.76rem !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-actions {
-          margin-top: 14px !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-actions button {
-          min-height: 44px !important;
-          font-size: 0.86rem !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-result-panel {
-          margin-top: 15px !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-result-heading {
-          padding:
-            13px
-            15px !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-result-heading strong {
-          font-size: 1.75rem !important;
-        }
-
-        html.cheme-parent-desktop
-        body
-        .native-result-grid article {
-          min-height: 78px !important;
-          padding:
-            11px
-            13px !important;
+        .workbench {
+          box-sizing: border-box !important;
         }
       `
 
@@ -445,18 +321,46 @@ export function LegacyWorkbench({
     const isMobile =
       window.matchMedia('(max-width: 700px)').matches
 
+    const embeddedDesktopScale =
+      isMobile ? 1 : 0.68
+
+    const expandedDesktopWidth =
+      100 / embeddedDesktopScale
+
+    document.documentElement.style.overflow =
+      'hidden'
+
+    document.body.style.transformOrigin =
+      'top left'
+
+    document.body.style.zoom =
+      String(embeddedDesktopScale)
+
+    document.body.style.width =
+      isMobile
+        ? '100%'
+        : `${expandedDesktopWidth}%`
+
+    document.body.style.maxWidth =
+      isMobile
+        ? '100%'
+        : `${expandedDesktopWidth}%`
+
     target.style.boxSizing = 'border-box'
     target.style.width = '100%'
     target.style.maxWidth = '100%'
+
     target.style.padding = isMobile
       ? '20px 18px 26px'
-      : '26px 30px 30px'
+      : '20px 22px 24px'
 
     const measuredHeight = Math.ceil(
       Math.max(
-        target.scrollHeight,
+        target.scrollHeight *
+          embeddedDesktopScale,
         target.getBoundingClientRect().height,
-        document.documentElement.scrollHeight,
+        document.documentElement.scrollHeight *
+          embeddedDesktopScale,
       ),
     )
 
