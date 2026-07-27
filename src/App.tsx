@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import './styles/calculator-polish.css'
 import './styles/mobile-v1.css'
+import './styles/personal-toolkit.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -12,6 +13,37 @@ const defaultCalculator =
   calculators.find((calculator) => calculator.id === 'reynoldsNumber') ??
   calculators.find((calculator) => calculator.available) ??
   calculators[0]
+
+const FAVORITES_STORAGE_KEY =
+  'cheme-toolkit-favorites-v1'
+
+const RECENT_STORAGE_KEY =
+  'cheme-toolkit-recent-v1'
+
+function readStoredIds(key: string): string[] {
+  try {
+    const storedValue =
+      window.localStorage.getItem(key)
+
+    if (!storedValue) {
+      return []
+    }
+
+    const parsedValue: unknown =
+      JSON.parse(storedValue)
+
+    if (!Array.isArray(parsedValue)) {
+      return []
+    }
+
+    return parsedValue.filter(
+      (value): value is string =>
+        typeof value === 'string',
+    )
+  } catch {
+    return []
+  }
+}
 
 function App() {
   const liveCalculatorCount = calculators.filter(
@@ -28,9 +60,77 @@ function App() {
   )
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+  const [favoriteCalculatorIds, setFavoriteCalculatorIds] =
+    useState<string[]>(() =>
+      readStoredIds(FAVORITES_STORAGE_KEY),
+    )
+
+  const [recentCalculatorIds, setRecentCalculatorIds] =
+    useState<string[]>(() =>
+      readStoredIds(RECENT_STORAGE_KEY),
+    )
+
   const activeCalculator =
     calculators.find((calculator) => calculator.id === activeCalculatorId) ??
     defaultCalculator
+
+
+  const favoriteCalculators = useMemo(
+    () =>
+      favoriteCalculatorIds
+        .map((calculatorId) =>
+          calculators.find(
+            (calculator) =>
+              calculator.id === calculatorId &&
+              calculator.available,
+          ),
+        )
+        .filter(
+          (
+            calculator,
+          ): calculator is (typeof calculators)[number] =>
+            Boolean(calculator),
+        ),
+    [favoriteCalculatorIds],
+  )
+
+  const recentCalculators = useMemo(
+    () =>
+      recentCalculatorIds
+        .map((calculatorId) =>
+          calculators.find(
+            (calculator) =>
+              calculator.id === calculatorId &&
+              calculator.available,
+          ),
+        )
+        .filter(
+          (
+            calculator,
+          ): calculator is (typeof calculators)[number] =>
+            Boolean(calculator),
+        ),
+    [recentCalculatorIds],
+  )
+
+  const activeCalculatorIsFavorite =
+    favoriteCalculatorIds.includes(
+      activeCalculator.id,
+    )
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      FAVORITES_STORAGE_KEY,
+      JSON.stringify(favoriteCalculatorIds),
+    )
+  }, [favoriteCalculatorIds])
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      RECENT_STORAGE_KEY,
+      JSON.stringify(recentCalculatorIds),
+    )
+  }, [recentCalculatorIds])
 
 
   const filteredCalculators = useMemo(() => {
@@ -62,12 +162,43 @@ function App() {
 
   function openCalculator(calculatorId: string) {
     setActiveCalculatorId(calculatorId)
+
+    setRecentCalculatorIds((currentIds) => [
+      calculatorId,
+      ...currentIds.filter(
+        (currentId) =>
+          currentId !== calculatorId,
+      ),
+    ].slice(0, 5))
+
     window.requestAnimationFrame(() => {
       document.querySelector('#workbench')?.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
       })
     })
+  }
+
+  function toggleFavorite(calculatorId: string) {
+    setFavoriteCalculatorIds((currentIds) =>
+      currentIds.includes(calculatorId)
+        ? currentIds.filter(
+            (currentId) =>
+              currentId !== calculatorId,
+          )
+        : [
+            calculatorId,
+            ...currentIds,
+          ],
+    )
+  }
+
+  function clearFavorites() {
+    setFavoriteCalculatorIds([])
+  }
+
+  function clearRecentCalculators() {
+    setRecentCalculatorIds([])
   }
 
 
@@ -204,6 +335,27 @@ function App() {
         </div>
 
         <div id="workbench" className="hero-workbench">
+          <div className="active-calculator-tools">
+            <button
+              type="button"
+              className="active-favorite-button"
+              data-favorite={activeCalculatorIsFavorite}
+              aria-pressed={activeCalculatorIsFavorite}
+              onClick={() =>
+                toggleFavorite(activeCalculator.id)
+              }
+            >
+              <span aria-hidden="true">
+                {activeCalculatorIsFavorite
+                  ? '★'
+                  : '☆'}
+              </span>
+              {activeCalculatorIsFavorite
+                ? 'Saved to favorites'
+                : 'Add to favorites'}
+            </button>
+          </div>
+
           <CalculatorStage
             activeCalculator={activeCalculator}
             liveCalculators={calculators.filter(
@@ -211,6 +363,156 @@ function App() {
             )}
             onSelect={openCalculator}
           />
+        </div>
+      </section>
+
+
+      <section
+        className="section personal-toolkit-section"
+        id="your-toolkit"
+      >
+        <div className="personal-toolkit-header">
+          <div>
+            <p className="eyebrow">
+              Your personal workspace
+            </p>
+            <h2>Your Toolkit</h2>
+            <p>
+              Keep your most useful calculators close
+              and return to recently opened tools
+              without searching again.
+            </p>
+          </div>
+
+          <div className="personal-toolkit-summary">
+            <span>
+              {favoriteCalculators.length} favorites
+            </span>
+            <span>
+              {recentCalculators.length} recent
+            </span>
+          </div>
+        </div>
+
+        <div className="personal-toolkit-grid">
+          <article className="personal-toolkit-panel">
+            <div className="personal-toolkit-panel-header">
+              <h3>Favorites</h3>
+
+              {favoriteCalculators.length > 0 ? (
+                <button
+                  type="button"
+                  onClick={clearFavorites}
+                >
+                  Clear favorites
+                </button>
+              ) : null}
+            </div>
+
+            {favoriteCalculators.length > 0 ? (
+              <ul className="personal-toolkit-list">
+                {favoriteCalculators.map(
+                  (calculator) => (
+                    <li
+                      className="personal-toolkit-item"
+                      key={calculator.id}
+                    >
+                      <div className="personal-toolkit-item-copy">
+                        <p>{calculator.category}</p>
+                        <strong>
+                          {calculator.title}
+                        </strong>
+                      </div>
+
+                      <div className="personal-toolkit-item-actions">
+                        <button
+                          type="button"
+                          aria-label={`Remove ${calculator.title} from favorites`}
+                          onClick={() =>
+                            toggleFavorite(
+                              calculator.id,
+                            )
+                          }
+                        >
+                          ★
+                        </button>
+
+                        <button
+                          type="button"
+                          aria-label={`Open ${calculator.title}`}
+                          onClick={() =>
+                            openCalculator(
+                              calculator.id,
+                            )
+                          }
+                        >
+                          →
+                        </button>
+                      </div>
+                    </li>
+                  ),
+                )}
+              </ul>
+            ) : (
+              <div className="personal-toolkit-empty">
+                Select the star beside a calculator
+                to keep it here.
+              </div>
+            )}
+          </article>
+
+          <article className="personal-toolkit-panel">
+            <div className="personal-toolkit-panel-header">
+              <h3>Recently used</h3>
+
+              {recentCalculators.length > 0 ? (
+                <button
+                  type="button"
+                  onClick={clearRecentCalculators}
+                >
+                  Clear history
+                </button>
+              ) : null}
+            </div>
+
+            {recentCalculators.length > 0 ? (
+              <ul className="personal-toolkit-list">
+                {recentCalculators.map(
+                  (calculator) => (
+                    <li
+                      className="personal-toolkit-item"
+                      key={calculator.id}
+                    >
+                      <div className="personal-toolkit-item-copy">
+                        <p>{calculator.category}</p>
+                        <strong>
+                          {calculator.title}
+                        </strong>
+                      </div>
+
+                      <div className="personal-toolkit-item-actions">
+                        <button
+                          type="button"
+                          aria-label={`Open ${calculator.title}`}
+                          onClick={() =>
+                            openCalculator(
+                              calculator.id,
+                            )
+                          }
+                        >
+                          →
+                        </button>
+                      </div>
+                    </li>
+                  ),
+                )}
+              </ul>
+            ) : (
+              <div className="personal-toolkit-empty">
+                Calculators you open will appear here.
+              </div>
+            )}
+          </article>
         </div>
       </section>
 
@@ -298,12 +600,47 @@ function App() {
               </div>
 
               {calculator.available ? (
-                <button
-                  type="button"
-                  onClick={() => openCalculator(calculator.id)}
-                >
-                  Open calculator <span>→</span>
-                </button>
+                <div className="calculator-list-item-actions">
+                  <button
+                    type="button"
+                    className="calculator-list-favorite"
+                    data-favorite={
+                      favoriteCalculatorIds.includes(
+                        calculator.id,
+                      )
+                    }
+                    aria-label={
+                      favoriteCalculatorIds.includes(
+                        calculator.id,
+                      )
+                        ? `Remove ${calculator.title} from favorites`
+                        : `Add ${calculator.title} to favorites`
+                    }
+                    aria-pressed={
+                      favoriteCalculatorIds.includes(
+                        calculator.id,
+                      )
+                    }
+                    onClick={() =>
+                      toggleFavorite(calculator.id)
+                    }
+                  >
+                    {favoriteCalculatorIds.includes(
+                      calculator.id,
+                    )
+                      ? '★'
+                      : '☆'}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      openCalculator(calculator.id)
+                    }
+                  >
+                    Open calculator <span>→</span>
+                  </button>
+                </div>
               ) : (
                 <span className="queued-badge">Catalogued</span>
               )}
