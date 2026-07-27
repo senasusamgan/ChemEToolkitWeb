@@ -1047,6 +1047,12 @@ export function CalculationHistoryPanel({
       STORAGE_KEY,
       JSON.stringify(calculations),
     )
+
+    window.dispatchEvent(
+      new Event(
+        'cheme-toolkit:saved-calculations-changed',
+      ),
+    )
   }, [calculations])
 
   useEffect(() => {
