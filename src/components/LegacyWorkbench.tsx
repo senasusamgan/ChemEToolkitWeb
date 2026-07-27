@@ -285,10 +285,10 @@ export function LegacyWorkbench({
       desktopStyle.textContent = `
         html.cheme-parent-desktop,
         html.cheme-parent-desktop body {
-          transform-origin: top left !important;
-        }
-
-        html.cheme-parent-desktop body {
+          transform: none !important;
+          zoom: 1 !important;
+          width: 100% !important;
+          max-width: 100% !important;
           font-size: 16px !important;
         }
 
@@ -302,6 +302,39 @@ export function LegacyWorkbench({
         .calculator-card.workbench,
         html.cheme-parent-desktop
         .workbench {
+          box-sizing: border-box !important;
+        }
+
+        html.cheme-parent-desktop
+        .native-calculator {
+          padding-left: 28px !important;
+          padding-right: 28px !important;
+        }
+
+        html.cheme-parent-desktop
+        .native-calculator-header,
+        html.cheme-parent-desktop
+        .native-reference,
+        html.cheme-parent-desktop
+        .native-input-grid,
+        html.cheme-parent-desktop
+        .native-actions,
+        html.cheme-parent-desktop
+        .native-result-panel,
+        html.cheme-parent-desktop
+        .native-formula {
+          width: auto !important;
+          max-width: none !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+        }
+
+        html.cheme-parent-desktop
+        .native-input-grid label,
+        html.cheme-parent-desktop
+        .native-input-shell {
+          width: 100% !important;
+          max-width: 100% !important;
           box-sizing: border-box !important;
         }
       `
@@ -321,46 +354,19 @@ export function LegacyWorkbench({
     const isMobile =
       window.matchMedia('(max-width: 700px)').matches
 
-    const embeddedDesktopScale =
-      isMobile ? 1 : 0.68
-
-    const expandedDesktopWidth =
-      100 / embeddedDesktopScale
-
-    document.documentElement.style.overflow =
-      'hidden'
-
-    document.body.style.transformOrigin =
-      'top left'
-
-    document.body.style.zoom =
-      String(embeddedDesktopScale)
-
-    document.body.style.width =
-      isMobile
-        ? '100%'
-        : `${expandedDesktopWidth}%`
-
-    document.body.style.maxWidth =
-      isMobile
-        ? '100%'
-        : `${expandedDesktopWidth}%`
-
     target.style.boxSizing = 'border-box'
     target.style.width = '100%'
     target.style.maxWidth = '100%'
 
     target.style.padding = isMobile
       ? '20px 18px 26px'
-      : '20px 22px 24px'
+      : '0'
 
     const measuredHeight = Math.ceil(
       Math.max(
-        target.scrollHeight *
-          embeddedDesktopScale,
+        target.scrollHeight,
         target.getBoundingClientRect().height,
-        document.documentElement.scrollHeight *
-          embeddedDesktopScale,
+        document.documentElement.scrollHeight,
       ),
     )
 
