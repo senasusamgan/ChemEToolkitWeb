@@ -1,6 +1,7 @@
 import type { CalculatorDefinition } from '../types/calculator'
 import { CalculatorSearchCombobox } from './CalculatorSearchCombobox'
 import { CalculatorWorkbench } from './CalculatorWorkbench'
+import { CalculationExportPanel } from './CalculationExportPanel'
 
 interface CalculatorStageProps {
   activeCalculator: CalculatorDefinition
@@ -40,6 +41,10 @@ export function CalculatorStage({
           title={activeCalculator.title}
         />
       </div>
+
+      <CalculationExportPanel
+        calculator={activeCalculator}
+      />
 
       <footer className="calculator-stage-footer">
         <span>Verified engineering engine</span>
