@@ -6,6 +6,7 @@ import './styles/personal-toolkit.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
+import { EngineeringWorkspace } from './components/EngineeringWorkspace'
 import { calculators } from './data/calculators'
 import { categories } from './data/categories'
 
@@ -366,6 +367,18 @@ function App() {
         </div>
       </section>
 
+
+      <section
+        id="engineering-workspace"
+        className="workspace-page-section notebook-grid"
+      >
+        <div className="workspace-page-inner">
+          <EngineeringWorkspace
+            calculator={activeCalculator}
+            onOpenCalculator={openCalculator}
+          />
+        </div>
+      </section>
 
       <section
         className="section personal-toolkit-section"
