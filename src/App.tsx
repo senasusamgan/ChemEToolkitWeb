@@ -3,6 +3,7 @@ import './App.css'
 import './styles/calculator-polish.css'
 import './styles/mobile-v1.css'
 import { Brand } from './components/Brand'
+import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
 import { calculators } from './data/calculators'
 import { categories } from './data/categories'
@@ -439,6 +440,10 @@ function App() {
         </span>
       </footer>
 
+      <FeedbackPanel
+        calculatorTitle={activeCalculator.title}
+        calculatorCategory={activeCalculator.category}
+      />
     </main>
   )
 }
