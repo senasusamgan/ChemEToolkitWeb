@@ -21,6 +21,9 @@ const FAVORITES_STORAGE_KEY =
 const RECENT_STORAGE_KEY =
   'cheme-toolkit-recent-v1'
 
+const PERSONAL_DATA_CHANGE_EVENT =
+  'cheme-toolkit:personal-data-changed'
+
 function readStoredIds(key: string): string[] {
   try {
     const storedValue =
@@ -133,6 +136,35 @@ function App() {
     )
   }, [recentCalculatorIds])
 
+
+
+  useEffect(() => {
+    function refreshPersonalToolkit() {
+      setFavoriteCalculatorIds(
+        readStoredIds(
+          FAVORITES_STORAGE_KEY,
+        ),
+      )
+
+      setRecentCalculatorIds(
+        readStoredIds(
+          RECENT_STORAGE_KEY,
+        ),
+      )
+    }
+
+    window.addEventListener(
+      PERSONAL_DATA_CHANGE_EVENT,
+      refreshPersonalToolkit,
+    )
+
+    return () => {
+      window.removeEventListener(
+        PERSONAL_DATA_CHANGE_EVENT,
+        refreshPersonalToolkit,
+      )
+    }
+  }, [])
 
   const filteredCalculators = useMemo(() => {
     const normalizedSearch = search.trim().toLocaleLowerCase()
