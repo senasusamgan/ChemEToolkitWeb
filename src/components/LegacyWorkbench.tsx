@@ -26,6 +26,11 @@ export function LegacyWorkbench({
     const document = frame?.contentDocument
     if (!frame || !document) return
 
+    document.documentElement.classList.toggle(
+      'cheme-parent-desktop',
+      window.innerWidth >= 1024,
+    )
+
     const styleId = 'cheme-local-calculator-polish'
     let style = document.getElementById(styleId) as HTMLStyleElement | null
 
@@ -262,6 +267,172 @@ export function LegacyWorkbench({
         }
       `
       document.head.appendChild(style)
+    }
+
+    const desktopStyleId =
+      'cheme-embedded-desktop-density'
+
+    let desktopStyle =
+      document.getElementById(
+        desktopStyleId,
+      ) as HTMLStyleElement | null
+
+    if (!desktopStyle) {
+      desktopStyle =
+        document.createElement('style')
+
+      desktopStyle.id = desktopStyleId
+      desktopStyle.textContent = `
+        html.cheme-parent-desktop
+        body
+        .calculator-stage
+        .native-calculator {
+          padding:
+            18px
+            20px
+            22px !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-calculator-header {
+          gap: 12px !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-icon {
+          width: 46px !important;
+          height: 46px !important;
+          flex-basis: 46px !important;
+          font-size: 1.25rem !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-calculator-header h2 {
+          margin:
+            2px
+            0
+            4px !important;
+          font-size: 1.95rem !important;
+          line-height: 1 !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-calculator-header small,
+        html.cheme-parent-desktop
+        body
+        .native-calculator-header p {
+          font-size: 0.7rem !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-reference {
+          margin:
+            14px
+            0
+            12px !important;
+          padding:
+            11px
+            13px !important;
+          font-size: 0.72rem !important;
+          line-height: 1.45 !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-input-grid {
+          margin-top: 13px !important;
+          gap: 10px !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-input-grid label {
+          gap: 5px !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-input-grid label > span:first-child {
+          margin-bottom: 0 !important;
+          font-size: 0.78rem !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-input-shell {
+          min-height: 42px !important;
+          border-radius: 7px !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-input-shell input,
+        html.cheme-parent-desktop
+        body
+        .native-input-shell select {
+          min-height: 40px !important;
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
+          font-size: 0.88rem !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-input-shell span {
+          font-size: 0.76rem !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-actions {
+          margin-top: 14px !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-actions button {
+          min-height: 44px !important;
+          font-size: 0.86rem !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-result-panel {
+          margin-top: 15px !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-result-heading {
+          padding:
+            13px
+            15px !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-result-heading strong {
+          font-size: 1.75rem !important;
+        }
+
+        html.cheme-parent-desktop
+        body
+        .native-result-grid article {
+          min-height: 78px !important;
+          padding:
+            11px
+            13px !important;
+        }
+      `
+
+      document.head.appendChild(
+        desktopStyle,
+      )
     }
 
     const target =

@@ -368,3 +368,13 @@
     border-radius: 50%;
   }
 }
+
+
+/* Feedback destination clarification */
+
+.feedback-helper {
+  margin-top: -2px;
+  color: var(--muted);
+  text-align: left !important;
+  line-height: 1.4;
+}

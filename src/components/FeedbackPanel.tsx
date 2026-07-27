@@ -69,7 +69,7 @@ export function FeedbackPanel({
       [
         `Feedback type: ${feedbackType}`,
         `Name: ${name.trim() || 'Not provided'}`,
-        `Email: ${email.trim() || 'Not provided'}`,
+        `Reply email: ${email.trim() || 'Not provided'}`,
         '',
         'Current calculator:',
         `${calculatorTitle} — ${calculatorCategory}`,
@@ -140,9 +140,19 @@ export function FeedbackPanel({
       feedbackBody,
     )
 
-    window.location.href =
+    const mailtoUrl =
       `mailto:${FEEDBACK_EMAIL}` +
       `?subject=${subject}&body=${body}`
+
+    const mailLink =
+      document.createElement('a')
+
+    mailLink.href = mailtoUrl
+    mailLink.style.display = 'none'
+
+    document.body.appendChild(mailLink)
+    mailLink.click()
+    mailLink.remove()
   }
 
   return (
@@ -214,6 +224,19 @@ export function FeedbackPanel({
                 </select>
               </label>
 
+              <label>
+                <span>Feedback destination</span>
+                <input
+                  type="email"
+                  readOnly
+                  value={FEEDBACK_EMAIL}
+                />
+                <small className="feedback-helper">
+                  Your message will always be addressed
+                  to this ChemE Toolkit inbox.
+                </small>
+              </label>
+
               <div className="feedback-two-column">
                 <label>
                   <span>Name</span>
@@ -229,11 +252,13 @@ export function FeedbackPanel({
                 </label>
 
                 <label>
-                  <span>Email</span>
+                  <span>
+                    Your email
+                  </span>
                   <input
                     type="email"
                     autoComplete="email"
-                    placeholder="Optional"
+                    placeholder="Optional — for replies only"
                     value={email}
                     onChange={(event) =>
                       setEmail(event.target.value)
