@@ -344,6 +344,81 @@ export function LegacyWorkbench({
       )
     }
 
+    const gutterStyleId =
+      'cheme-embedded-content-gutters'
+
+    let gutterStyle =
+      document.getElementById(
+        gutterStyleId,
+      ) as HTMLStyleElement | null
+
+    if (!gutterStyle) {
+      gutterStyle =
+        document.createElement('style')
+
+      gutterStyle.id = gutterStyleId
+      gutterStyle.textContent = `
+        /* EMBEDDED CALCULATOR CONTENT GUTTERS */
+
+        .native-input-grid {
+          width: 100% !important;
+          padding-right: 24px !important;
+          padding-left: 24px !important;
+          box-sizing: border-box !important;
+        }
+
+        .native-input-grid label {
+          width: 100% !important;
+          min-width: 0 !important;
+          box-sizing: border-box !important;
+        }
+
+        .native-input-grid
+        label > span:first-child {
+          display: block !important;
+          padding-right: 2px !important;
+          padding-left: 2px !important;
+          box-sizing: border-box !important;
+        }
+
+        .native-input-shell {
+          width: 100% !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        .native-actions,
+        .native-result-panel,
+        .native-formula {
+          width: calc(100% - 48px) !important;
+          max-width: calc(100% - 48px) !important;
+          margin-right: 24px !important;
+          margin-left: 24px !important;
+          box-sizing: border-box !important;
+        }
+
+        @media (max-width: 700px) {
+          .native-input-grid {
+            padding-right: 16px !important;
+            padding-left: 16px !important;
+          }
+
+          .native-actions,
+          .native-result-panel,
+          .native-formula {
+            width: calc(100% - 32px) !important;
+            max-width: calc(100% - 32px) !important;
+            margin-right: 16px !important;
+            margin-left: 16px !important;
+          }
+        }
+      `
+
+      document.head.appendChild(
+        gutterStyle,
+      )
+    }
+
     const target =
       document.querySelector<HTMLElement>('.calculator-stage-body') ??
       document.querySelector<HTMLElement>('.calculator-stage') ??
@@ -353,6 +428,57 @@ export function LegacyWorkbench({
 
     const isMobile =
       window.matchMedia('(max-width: 700px)').matches
+
+    const fieldHorizontalInset =
+      isMobile ? '16px' : '28px'
+
+    const fieldControls =
+      document.querySelectorAll<
+        HTMLInputElement |
+        HTMLSelectElement |
+        HTMLTextAreaElement
+      >('input, select, textarea')
+
+    fieldControls.forEach((control) => {
+      const fieldContainer =
+        control.closest<HTMLElement>('label') ??
+        control.parentElement?.parentElement
+
+      if (!fieldContainer) {
+        return
+      }
+
+      fieldContainer.style.width = '100%'
+      fieldContainer.style.maxWidth = '100%'
+      fieldContainer.style.paddingLeft =
+        fieldHorizontalInset
+      fieldContainer.style.paddingRight =
+        fieldHorizontalInset
+      fieldContainer.style.boxSizing =
+        'border-box'
+    })
+
+    const alignedSections =
+      document.querySelectorAll<HTMLElement>(
+        [
+          '.native-actions',
+          '.native-result-panel',
+          '.native-formula',
+        ].join(','),
+      )
+
+    alignedSections.forEach((section) => {
+      section.style.width = isMobile
+        ? 'calc(100% - 32px)'
+        : 'calc(100% - 56px)'
+
+      section.style.maxWidth = section.style.width
+      section.style.marginLeft =
+        fieldHorizontalInset
+      section.style.marginRight =
+        fieldHorizontalInset
+      section.style.boxSizing = 'border-box'
+    })
 
     target.style.boxSizing = 'border-box'
     target.style.width = '100%'
