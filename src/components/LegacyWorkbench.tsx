@@ -26,6 +26,11 @@ export function LegacyWorkbench({
     const document = frame?.contentDocument
     if (!frame || !document) return
 
+    document.documentElement.classList.toggle(
+      'cheme-parent-desktop',
+      window.innerWidth >= 1024,
+    )
+
     const styleId = 'cheme-local-calculator-polish'
     let style = document.getElementById(styleId) as HTMLStyleElement | null
 
@@ -264,6 +269,81 @@ export function LegacyWorkbench({
       document.head.appendChild(style)
     }
 
+    const desktopStyleId =
+      'cheme-embedded-desktop-density'
+
+    let desktopStyle =
+      document.getElementById(
+        desktopStyleId,
+      ) as HTMLStyleElement | null
+
+    if (!desktopStyle) {
+      desktopStyle =
+        document.createElement('style')
+
+      desktopStyle.id = desktopStyleId
+      desktopStyle.textContent = `
+        html.cheme-parent-desktop,
+        html.cheme-parent-desktop body {
+          transform: none !important;
+          zoom: 1 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          font-size: 16px !important;
+        }
+
+        html.cheme-parent-desktop
+        .calculator-stage,
+        html.cheme-parent-desktop
+        .calculator-stage-body,
+        html.cheme-parent-desktop
+        .native-calculator,
+        html.cheme-parent-desktop
+        .calculator-card.workbench,
+        html.cheme-parent-desktop
+        .workbench {
+          box-sizing: border-box !important;
+        }
+
+        html.cheme-parent-desktop
+        .native-calculator {
+          padding-left: 28px !important;
+          padding-right: 28px !important;
+        }
+
+        html.cheme-parent-desktop
+        .native-calculator-header,
+        html.cheme-parent-desktop
+        .native-reference,
+        html.cheme-parent-desktop
+        .native-input-grid,
+        html.cheme-parent-desktop
+        .native-actions,
+        html.cheme-parent-desktop
+        .native-result-panel,
+        html.cheme-parent-desktop
+        .native-formula {
+          width: auto !important;
+          max-width: none !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+        }
+
+        html.cheme-parent-desktop
+        .native-input-grid label,
+        html.cheme-parent-desktop
+        .native-input-shell {
+          width: 100% !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+        }
+      `
+
+      document.head.appendChild(
+        desktopStyle,
+      )
+    }
+
     const target =
       document.querySelector<HTMLElement>('.calculator-stage-body') ??
       document.querySelector<HTMLElement>('.calculator-stage') ??
@@ -277,9 +357,10 @@ export function LegacyWorkbench({
     target.style.boxSizing = 'border-box'
     target.style.width = '100%'
     target.style.maxWidth = '100%'
+
     target.style.padding = isMobile
       ? '20px 18px 26px'
-      : '26px 30px 30px'
+      : '0'
 
     const measuredHeight = Math.ceil(
       Math.max(
