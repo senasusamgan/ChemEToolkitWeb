@@ -271,6 +271,16 @@ export function LegacyWorkbench({
       document.querySelector<HTMLElement>('.workbench') ??
       document.body
 
+    const isMobile =
+      window.matchMedia('(max-width: 700px)').matches
+
+    target.style.boxSizing = 'border-box'
+    target.style.width = '100%'
+    target.style.maxWidth = '100%'
+    target.style.padding = isMobile
+      ? '20px 18px 26px'
+      : '26px 30px 30px'
+
     const measuredHeight = Math.ceil(
       Math.max(
         target.scrollHeight,
