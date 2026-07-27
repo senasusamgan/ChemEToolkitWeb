@@ -9,6 +9,7 @@ import { CalculationComparisonPanel } from './CalculationComparisonPanel'
 import { SavedComparisonsPanel } from './SavedComparisonsPanel'
 import { ProjectWorkspacesPanel } from './ProjectWorkspacesPanel'
 import { ProjectFilesPanel } from './ProjectFilesPanel'
+import { PersonalDataBackupPanel } from './PersonalDataBackupPanel'
 import '../styles/engineering-workspace.css'
 
 const ACTIVE_TAB_KEY =
@@ -38,6 +39,14 @@ const WORKSPACE_TABS = [
     title: 'Project workspace',
     description:
       'Organize calculations and comparisons inside combined project files.',
+  },
+  {
+    id: 'data',
+    number: '04',
+    label: 'Data & Backup',
+    title: 'Personal data management',
+    description:
+      'Export, restore or clear the workspace data stored in this browser.',
   },
 ] as const
 
@@ -308,6 +317,18 @@ export function EngineeringWorkspace({
           <ProjectFilesPanel />
         </div>
       </div>
+      <div
+        id="workspace-panel-data"
+        className="engineering-workspace-panel engineering-workspace-panel-data"
+        role="tabpanel"
+        aria-labelledby="workspace-tab-data"
+        hidden={activeTab !== 'data'}
+      >
+        <div className="engineering-workspace-module">
+          <PersonalDataBackupPanel />
+        </div>
+      </div>
+
     </section>
   )
 }

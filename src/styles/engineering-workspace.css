@@ -811,3 +811,15 @@ textarea:focus {
   }
 }
 
+/* Data and backup tab layout v1 */
+
+.engineering-workspace-tabs {
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+}
+
+.engineering-workspace-panel-data {
+  grid-template-columns:
+    minmax(0, 1fr);
+}
+
