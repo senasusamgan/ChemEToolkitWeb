@@ -3,6 +3,7 @@ import { CalculatorSearchCombobox } from './CalculatorSearchCombobox'
 import { CalculatorWorkbench } from './CalculatorWorkbench'
 import { CalculationExportPanel } from './CalculationExportPanel'
 import { CalculationHistoryPanel } from './CalculationHistoryPanel'
+import { CalculationComparisonPanel } from './CalculationComparisonPanel'
 
 interface CalculatorStageProps {
   activeCalculator: CalculatorDefinition
@@ -50,6 +51,10 @@ export function CalculatorStage({
       <CalculationHistoryPanel
         calculator={activeCalculator}
         onOpenCalculator={onSelect}
+      />
+
+      <CalculationComparisonPanel
+        calculator={activeCalculator}
       />
 
       <footer className="calculator-stage-footer">
