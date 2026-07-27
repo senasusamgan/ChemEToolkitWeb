@@ -4,6 +4,7 @@ import { CalculatorWorkbench } from './CalculatorWorkbench'
 import { CalculationExportPanel } from './CalculationExportPanel'
 import { CalculationHistoryPanel } from './CalculationHistoryPanel'
 import { CalculationComparisonPanel } from './CalculationComparisonPanel'
+import { ProjectWorkspacesPanel } from './ProjectWorkspacesPanel'
 
 interface CalculatorStageProps {
   activeCalculator: CalculatorDefinition
@@ -54,6 +55,10 @@ export function CalculatorStage({
       />
 
       <CalculationComparisonPanel
+        calculator={activeCalculator}
+      />
+
+      <ProjectWorkspacesPanel
         calculator={activeCalculator}
       />
 
