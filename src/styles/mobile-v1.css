@@ -1,0 +1,993 @@
+/* ChemE Toolkit — Mobile Redesign Package 01 */
+
+@media (max-width: 700px) {
+  :root {
+    --site-header-height: 64px;
+  }
+
+  html {
+    scroll-padding-top: calc(var(--site-header-height) + 12px);
+  }
+
+  body {
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  main {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+
+  .site-header {
+    width: 100%;
+    min-height: var(--site-header-height);
+    height: var(--site-header-height);
+    padding: 0 16px;
+  }
+
+  .brand {
+    gap: 10px;
+    font-size: 1.38rem;
+    white-space: nowrap;
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 38px;
+    flex: 0 0 32px;
+    border-width: 2px;
+  }
+
+  .brand-mark > span {
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+
+  /* Hero */
+
+  .hero {
+    width: 100%;
+    min-height: auto;
+    padding: 14px 16px 40px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: 26px;
+  }
+
+  .ruler {
+    display: none;
+  }
+
+  .notebook-grid {
+    background-size: 34px 34px;
+  }
+
+  .category-ribbon {
+    width: auto;
+    margin: 0 -16px;
+    padding: 4px 16px 10px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    scroll-snap-type: inline proximity;
+  }
+
+  .category-ribbon::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-pill {
+    min-height: 44px;
+    padding: 0 15px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    font-size: 0.84rem;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+
+  .category-pill span {
+    margin-right: 8px;
+    font-size: 1rem;
+  }
+
+  .hero-copy {
+    width: 100%;
+    align-self: auto;
+  }
+
+  .eyebrow {
+    margin-bottom: 12px;
+    font-size: 0.68rem;
+    line-height: 1.45;
+    letter-spacing: 0.13em;
+  }
+
+  .hero h1 {
+    max-width: 9ch;
+    font-size: clamp(3rem, 13.5vw, 3.75rem);
+    line-height: 0.91;
+    letter-spacing: -0.045em;
+  }
+
+  .hero h1 br {
+    display: none;
+  }
+
+  .hero-deck {
+    max-width: none;
+    margin: 22px 0;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 18px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .status-strip {
+    display: none;
+  }
+
+  .hero-workbench {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    position: static;
+    justify-self: stretch;
+  }
+
+  /* Calculator shell */
+
+  .calculator-stage {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow:
+      0 16px 40px rgba(12, 54, 88, 0.1),
+      0 2px 8px rgba(12, 54, 88, 0.05);
+  }
+
+  .calculator-stage-toolbar {
+    min-height: auto;
+    padding: 13px;
+    grid-template-columns: 1fr;
+    gap: 9px;
+    border-radius: 15px 15px 0 0;
+  }
+
+  .calculator-stage-label {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .calculator-stage-label > small {
+    text-align: right;
+  }
+
+  .calculator-stage-select select,
+  .calculator-stage-toolbar input,
+  .calculator-stage-toolbar button {
+    min-height: 46px;
+    font-size: 16px;
+  }
+
+  .calculator-stage .native-calculator {
+    padding: 20px 16px 22px;
+  }
+
+  .calculator-stage .native-calculator-header {
+    gap: 12px;
+  }
+
+  .calculator-stage .native-icon {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    font-size: 1.35rem;
+  }
+
+  .calculator-stage .native-calculator-header h2 {
+    margin-top: 3px;
+    font-size: 2rem;
+    line-height: 0.98;
+  }
+
+  .calculator-stage .native-reference {
+    margin: 18px 0 16px;
+    padding: 13px;
+  }
+
+  .calculator-stage .native-formula {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .calculator-stage .native-input-grid {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .calculator-stage .native-input-shell {
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+  }
+
+  .calculator-stage input,
+  .calculator-stage select,
+  .calculator-stage textarea {
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  .calculator-stage .native-actions {
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+
+  .calculator-stage .native-actions button {
+    min-height: 48px;
+  }
+
+  .calculator-stage .native-actions .native-primary-action {
+    grid-column: 1 / -1;
+  }
+
+  .calculator-stage .native-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calculator-stage-footer {
+    padding: 11px 14px;
+    border-radius: 0 0 15px 15px;
+  }
+
+  /* General sections */
+
+  .section,
+  .method-section {
+    padding: 56px 16px;
+  }
+
+  .section-heading {
+    margin-bottom: 28px;
+  }
+
+  .section-heading h2,
+  .method-section h2 {
+    font-size: clamp(2.25rem, 10.5vw, 3rem);
+    line-height: 0.98;
+  }
+
+  .section-heading > p:last-child {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  /* Category cards */
+
+  .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    border: 0;
+  }
+
+  .category-card {
+    min-height: 184px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    background: rgba(255, 253, 250, 0.58);
+  }
+
+  .category-number {
+    font-size: 0.72rem;
+  }
+
+  .category-mark {
+    margin: 13px 0 10px;
+    font-size: 1.5rem;
+  }
+
+  .category-card h3 {
+    min-height: 0;
+    margin: 0;
+    font-size: 1.12rem;
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+  }
+
+  .category-card p {
+    margin: 10px 0;
+    font-size: 0.76rem;
+    line-height: 1.4;
+  }
+
+  .category-card button {
+    min-height: 42px;
+    margin-top: auto;
+    text-align: left;
+  }
+
+  /* Calculator catalog */
+
+  .catalog-top {
+    display: block;
+  }
+
+  .catalog-controls {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 24px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .search-box,
+  .catalog-controls select {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .search-box input,
+  .catalog-controls select {
+    font-size: 16px;
+  }
+
+  .calculator-list {
+    display: grid;
+    gap: 10px;
+    border-top: 0;
+  }
+
+  .calculator-list article {
+    min-height: 0;
+    padding: 15px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgba(255, 253, 250, 0.58);
+  }
+
+  .list-index {
+    display: none;
+  }
+
+  .calculator-list h3 {
+    font-size: 1.22rem;
+    line-height: 1.15;
+  }
+
+  .calculator-list article > button,
+  .calculator-list article > .queued-badge {
+    grid-column: 1;
+    min-height: 42px;
+    justify-self: stretch;
+    text-align: left;
+  }
+
+  /* Method, references and footer */
+
+  .method-section {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .method-section li {
+    padding: 18px 0;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .reference-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    border: 0;
+  }
+
+  .reference-grid article {
+    min-height: 0;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+
+  .engineering-use-note {
+    padding: 20px;
+  }
+
+  footer {
+    padding: 42px 16px;
+    gap: 28px;
+  }
+
+  footer nav {
+    flex-wrap: wrap;
+    gap: 14px 22px;
+  }
+
+  footer > span {
+    max-width: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-card {
+    min-height: 158px;
+  }
+
+  .hero h1 {
+    font-size: 2.85rem;
+  }
+}
+
+
+/* ChemE Toolkit — MOBILE PACKAGE 02 */
+
+.mobile-menu-toggle,
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  /* Clean mobile header */
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .site-header .brand {
+    min-width: 0;
+    font-size: 1.3rem;
+  }
+
+  .site-header .brand-mark {
+    display: none;
+  }
+
+  .site-header .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    flex: 0 0 46px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(7, 156, 153, 0.42);
+    border-radius: 12px;
+    color: var(--teal-dark);
+    background: rgba(255, 253, 250, 0.92);
+    cursor: pointer;
+  }
+
+  .mobile-menu-toggle span {
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  .site-header .mobile-nav {
+    position: absolute;
+    top: calc(100% + 1px);
+    right: 12px;
+    left: 12px;
+    padding: 10px;
+    display: grid;
+    gap: 4px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: rgba(255, 253, 250, 0.99);
+    box-shadow: 0 18px 46px rgba(12, 54, 88, 0.16);
+    backdrop-filter: blur(16px);
+  }
+
+  .site-header .mobile-nav a {
+    min-height: 46px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    border-radius: 9px;
+    color: var(--ink);
+    font-size: 0.92rem;
+    font-weight: 800;
+  }
+
+  .site-header .mobile-nav a:hover,
+  .site-header .mobile-nav a:focus-visible {
+    color: var(--teal-dark);
+    background: rgba(223, 243, 239, 0.78);
+  }
+
+  /* Repair hero line wrapping */
+
+  .hero h1 {
+    width: 100%;
+    max-width: none;
+    font-size: clamp(2.9rem, 12.2vw, 3.35rem);
+    line-height: 0.94;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .hero h1 br {
+    display: block;
+  }
+
+  /* More usable calculator selector */
+
+  .calculator-search-control {
+    grid-template-columns: minmax(0, 1fr) 44px;
+  }
+
+  .calculator-search-icon {
+    display: none;
+  }
+
+  .calculator-search-control input {
+    min-width: 0;
+    padding-left: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .calculator-search-toggle {
+    width: 44px;
+    min-width: 44px;
+  }
+
+  /* Sticky calculation controls */
+
+  .calculator-stage .native-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 30;
+    margin-right: -16px;
+    margin-bottom: -22px;
+    margin-left: -16px;
+    padding:
+      12px
+      16px
+      calc(12px + env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(181, 167, 142, 0.58);
+    background: rgba(255, 253, 250, 0.96);
+    box-shadow: 0 -12px 28px rgba(12, 54, 88, 0.09);
+    backdrop-filter: blur(14px);
+  }
+
+  .calculator-stage .native-actions button {
+    min-height: 50px;
+  }
+
+  .calculator-stage .native-actions .native-primary-action {
+    font-size: 1rem;
+  }
+
+  /* Prevent content from hiding under the sticky actions */
+
+  .calculator-stage .native-result-panel {
+    margin-bottom: 74px;
+  }
+
+  /* Cleaner category cards */
+
+  .category-card {
+    overflow: hidden;
+  }
+
+  .category-card h3 {
+    hyphens: auto;
+  }
+}
+
+
+/* ChemE Toolkit — MOBILE PACKAGE 03 */
+
+@media (max-width: 700px) {
+  /*
+   * Calculator search:
+   * The component stylesheet is loaded with strong grid rules,
+   * so explicitly collapse the hidden icon column.
+   */
+
+  .calculator-stage
+  .calculator-stage-toolbar
+  .calculator-search-control {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 46px !important;
+  }
+
+  .calculator-stage
+  .calculator-search-icon {
+    display: none !important;
+  }
+
+  .calculator-stage
+  .calculator-search-control input {
+    width: 100%;
+    min-width: 0;
+    padding: 0 14px;
+    font-size: 16px;
+    text-overflow: ellipsis;
+  }
+
+  .calculator-stage
+  .calculator-search-toggle {
+    width: 46px;
+    min-width: 46px;
+    max-width: 46px;
+    grid-column: 2;
+  }
+
+  /*
+   * Sticky actions:
+   * Remove overflow boundaries that prevent position: sticky
+   * from following the mobile viewport.
+   */
+
+  .calculator-stage,
+  .calculator-stage-body,
+  .calculator-stage .native-calculator {
+    overflow: visible !important;
+  }
+
+  .calculator-stage .native-actions {
+    position: sticky !important;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+
+    margin:
+      20px
+      -16px
+      -22px;
+
+    padding:
+      11px
+      16px
+      calc(11px + env(safe-area-inset-bottom));
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+
+    border-top: 1px solid rgba(181, 167, 142, 0.7);
+    background: rgba(255, 253, 250, 0.97);
+    box-shadow:
+      0 -12px 32px rgba(12, 54, 88, 0.12);
+
+    backdrop-filter: blur(16px);
+  }
+
+  .calculator-stage
+  .native-actions
+  button:not(.native-primary-action) {
+    display: none;
+  }
+
+  .calculator-stage
+  .native-actions
+  .native-primary-action {
+    width: 100%;
+    min-height: 52px;
+    margin: 0;
+    grid-column: 1;
+    border-radius: 9px;
+    font-size: 1rem;
+  }
+
+  /*
+   * Keep the result readable while the sticky action bar
+   * occupies the lower edge of the viewport.
+   */
+
+  .calculator-stage .native-result-panel {
+    scroll-margin-top: calc(var(--site-header-height) + 18px);
+    margin-bottom: 82px;
+  }
+
+  .calculator-stage-footer {
+    overflow: hidden;
+  }
+}
+
+
+/* ChemE Toolkit — MOBILE PACKAGE 04 */
+
+.mobile-calculate-dock {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  /*
+   * Keep the original action section in document flow.
+   * A separate viewport dock handles long mobile forms.
+   */
+
+  .calculator-stage .native-actions {
+    position: static !important;
+    margin: 20px 0 0 !important;
+    padding: 0 !important;
+    border-top: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .calculator-stage .native-result-panel {
+    margin-bottom: 20px;
+  }
+
+  .mobile-calculate-dock {
+    position: fixed;
+    right: auto;
+    bottom:
+      calc(
+        12px +
+        env(safe-area-inset-bottom)
+      );
+    left: 50%;
+    z-index: 2500;
+
+    width: min(
+      calc(100% - 32px),
+      560px
+    );
+    min-height: 56px;
+    padding: 0 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    border: 1px solid
+      rgba(0, 122, 121, 0.72);
+    border-radius: 13px;
+
+    color: white;
+    background:
+      linear-gradient(
+        135deg,
+        var(--teal-dark),
+        #0aafa9
+      );
+
+    box-shadow:
+      0 18px 46px
+        rgba(12, 54, 88, 0.24),
+      0 4px 14px
+        rgba(12, 54, 88, 0.14);
+
+    font-size: 1rem;
+    font-weight: 900;
+    cursor: pointer;
+
+    transform: translateX(-50%);
+    animation:
+      mobile-calculate-dock-enter
+      180ms ease-out;
+  }
+
+  .mobile-calculate-dock:active {
+    transform:
+      translateX(-50%)
+      translateY(1px);
+  }
+
+  main:has(> .mobile-calculate-dock) {
+    padding-bottom:
+      calc(
+        84px +
+        env(safe-area-inset-bottom)
+      );
+  }
+}
+
+@keyframes mobile-calculate-dock-enter {
+  from {
+    opacity: 0;
+    transform:
+      translateX(-50%)
+      translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateX(-50%)
+      translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-calculate-dock {
+    animation: none;
+  }
+}
+
+
+/* MOBILE FINAL CLEANUP */
+
+.mobile-calculate-dock {
+  display: none !important;
+}
+
+@media (max-width: 700px) {
+  .calculator-stage .native-actions {
+    position: static !important;
+    margin: 20px 0 0 !important;
+    padding: 0 !important;
+    border-top: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .calculator-stage .native-actions button {
+    display: block;
+  }
+
+  .calculator-stage .native-actions .native-primary-action {
+    width: 100%;
+    grid-column: 1 / -1;
+  }
+
+  .calculator-stage .native-result-panel {
+    margin-bottom: 20px;
+  }
+}
+
+
+/* MOBILE REAL-DEVICE FIX */
+
+@media screen and (max-width: 700px) {
+  .site-header {
+    min-height: 64px !important;
+    height: 64px !important;
+    padding: 0 16px !important;
+  }
+
+  .site-header .brand {
+    gap: 0 !important;
+    font-size: 1.28rem !important;
+  }
+
+  .site-header .brand-mark {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+  }
+
+  .site-header .mobile-menu-toggle {
+    width: 44px !important;
+    height: 44px !important;
+    flex-basis: 44px !important;
+  }
+
+  .site-header .mobile-nav {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 12px !important;
+    left: auto !important;
+
+    width: min(250px, calc(100vw - 24px)) !important;
+    max-height: calc(100vh - 96px) !important;
+    padding: 8px !important;
+
+    display: grid !important;
+    gap: 2px !important;
+
+    overflow-y: auto !important;
+    border-radius: 14px !important;
+    background: rgba(255, 253, 250, 0.99) !important;
+    box-shadow:
+      0 20px 50px rgba(12, 54, 88, 0.2),
+      0 4px 12px rgba(12, 54, 88, 0.08) !important;
+  }
+
+  .site-header .mobile-nav a {
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .hero {
+    padding-top: 14px !important;
+  }
+}
+
+
+/* MOBILE REAL-DEVICE FIX */
+
+@media screen and (max-width: 700px) {
+  .site-header {
+    min-height: 64px !important;
+    height: 64px !important;
+    padding: 0 16px !important;
+  }
+
+  .site-header .brand {
+    gap: 0 !important;
+    font-size: 1.28rem !important;
+  }
+
+  .site-header .brand-mark {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+  }
+
+  .site-header .mobile-menu-toggle {
+    width: 44px !important;
+    height: 44px !important;
+    flex-basis: 44px !important;
+  }
+
+  .site-header .mobile-nav {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 12px !important;
+    left: auto !important;
+
+    width: min(250px, calc(100vw - 24px)) !important;
+    max-height: calc(100vh - 96px) !important;
+    padding: 8px !important;
+
+    display: grid !important;
+    gap: 2px !important;
+
+    overflow-y: auto !important;
+    border-radius: 14px !important;
+    background: rgba(255, 253, 250, 0.99) !important;
+    box-shadow:
+      0 20px 50px rgba(12, 54, 88, 0.2),
+      0 4px 12px rgba(12, 54, 88, 0.08) !important;
+  }
+
+  .site-header .mobile-nav a {
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .hero {
+    padding-top: 14px !important;
+  }
+}

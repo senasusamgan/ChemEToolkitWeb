@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import './App.css'
 import './styles/calculator-polish.css'
+import './styles/mobile-v1.css'
 import { Brand } from './components/Brand'
 import { CalculatorStage } from './components/CalculatorStage'
 import { calculators } from './data/calculators'
@@ -24,10 +25,12 @@ function App() {
   const [activeCalculatorId, setActiveCalculatorId] = useState(
     defaultCalculator.id,
   )
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const activeCalculator =
     calculators.find((calculator) => calculator.id === activeCalculatorId) ??
     defaultCalculator
+
 
   const filteredCalculators = useMemo(() => {
     const normalizedSearch = search.trim().toLocaleLowerCase()
@@ -66,17 +69,81 @@ function App() {
     })
   }
 
+
   return (
     <main id="top">
-      <header className="site-header">
+      <header
+        className="site-header"
+        data-menu-open={isMobileMenuOpen}
+      >
         <Brand />
-        <nav aria-label="Primary navigation">
+
+        <nav
+          className="desktop-nav"
+          aria-label="Primary navigation"
+        >
           <a href="#calculators">Calculators</a>
           <a href="#categories">Categories</a>
           <a href="#method">Method</a>
           <a href="#references">References</a>
           <a href="#about">About</a>
         </nav>
+
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          aria-label={
+            isMobileMenuOpen
+              ? 'Close navigation menu'
+              : 'Open navigation menu'
+          }
+          aria-expanded={isMobileMenuOpen}
+          onClick={() =>
+            setIsMobileMenuOpen((current) => !current)
+          }
+        >
+          <span aria-hidden="true">
+            {isMobileMenuOpen ? '×' : '☰'}
+          </span>
+        </button>
+
+        {isMobileMenuOpen ? (
+          <nav
+            className="mobile-nav"
+            aria-label="Mobile navigation"
+          >
+            <a
+              href="#calculators"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Calculators
+            </a>
+            <a
+              href="#categories"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Categories
+            </a>
+            <a
+              href="#method"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Method
+            </a>
+            <a
+              href="#references"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              References
+            </a>
+            <a
+              href="#about"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              About
+            </a>
+          </nav>
+        ) : null}
       </header>
 
       <section className="hero notebook-grid">
@@ -371,6 +438,7 @@ function App() {
           engines · 11 disciplines · 1,208 source tests
         </span>
       </footer>
+
     </main>
   )
 }
