@@ -30,6 +30,9 @@ const STORAGE_KEYS = {
   projects:
     'cheme-toolkit.project-workspaces.v1',
 
+  templates:
+    'cheme-toolkit.workspace-templates.v1',
+
   activeTab:
     'cheme-toolkit.workspace-active-tab.v1',
 
@@ -51,6 +54,7 @@ const REFRESH_EVENTS = [
   'cheme-toolkit:saved-calculations-changed',
   'cheme-toolkit:saved-comparisons-changed',
   'cheme-toolkit:project-workspaces-changed',
+  'cheme-toolkit:workspace-templates-changed',
 ]
 
 const VALID_WORKSPACE_TABS = [
@@ -62,6 +66,7 @@ const VALID_WORKSPACE_TABS = [
   'metadata',
   'management',
   'dashboard',
+  'templates',
 ] as const
 
 type WorkspaceTabId =
@@ -86,6 +91,7 @@ interface BackupData {
   savedCalculations: unknown[]
   savedComparisons: unknown[]
   projects: unknown[]
+  templates: unknown[]
   activeWorkspaceTab: WorkspaceTabId
 }
 
@@ -103,6 +109,7 @@ interface DataSummary {
   calculations: number
   comparisons: number
   projects: number
+  templates: number
 }
 
 function isRecord(
@@ -188,6 +195,11 @@ function readCurrentData():
         STORAGE_KEYS.projects,
       ),
 
+    templates:
+      readArray(
+        STORAGE_KEYS.templates,
+      ),
+
     activeWorkspaceTab:
       readWorkspaceTab(),
   }
@@ -211,6 +223,9 @@ function createSummary(
 
     projects:
       data.projects.length,
+
+    templates:
+      data.templates.length,
   }
 }
 
@@ -278,6 +293,13 @@ function parseBackupFile(
     !Array.isArray(
       data.projects,
     ) ||
+    (
+      data.templates !==
+        undefined &&
+      !Array.isArray(
+        data.templates,
+      )
+    ) ||
     typeof data.activeWorkspaceTab !==
       'string'
   ) {
@@ -312,6 +334,13 @@ function parseBackupFile(
 
       projects:
         data.projects,
+
+      templates:
+        Array.isArray(
+          data.templates,
+        )
+          ? data.templates
+          : [],
 
       activeWorkspaceTab,
     },
@@ -442,6 +471,13 @@ function writeData(
   )
 
   localStorage.setItem(
+    STORAGE_KEYS.templates,
+    JSON.stringify(
+      data.templates,
+    ),
+  )
+
+  localStorage.setItem(
     STORAGE_KEYS.activeTab,
     data.activeWorkspaceTab,
   )
@@ -469,6 +505,12 @@ function dispatchDataEvents() {
   window.dispatchEvent(
     new Event(
       'cheme-toolkit:project-workspaces-changed',
+    ),
+  )
+
+  window.dispatchEvent(
+    new Event(
+      'cheme-toolkit:workspace-templates-changed',
     ),
   )
 }
@@ -759,6 +801,12 @@ export function PersonalDataBackupPanel() {
             imported.projects,
           ),
 
+        templates:
+          mergeRecords(
+            current.templates,
+            imported.templates,
+          ),
+
         activeWorkspaceTab:
           imported.activeWorkspaceTab,
       }
@@ -783,7 +831,7 @@ export function PersonalDataBackupPanel() {
   function handleClearAll() {
     const confirmed =
       window.confirm(
-        'Delete all ChemE Toolkit personal data stored in this browser? This includes favorites, recent calculators, saved calculations, comparisons and projects.',
+        'Delete all ChemE Toolkit personal data stored in this browser? This includes favorites, recent calculators, saved calculations, comparisons, projects and templates.',
       )
 
     if (!confirmed) {
@@ -901,6 +949,16 @@ export function PersonalDataBackupPanel() {
             Projects
           </span>
         </article>
+
+        <article>
+          <strong>
+            {currentSummary.templates}
+          </strong>
+
+          <span>
+            Templates
+          </span>
+        </article>
       </div>
 
       <div className="personal-data-action-grid">
@@ -917,8 +975,8 @@ export function PersonalDataBackupPanel() {
             <p>
               Download favorites, recent tools,
               calculations, comparison
-              snapshots, projects and workspace
-              settings in one file.
+              snapshots, projects, templates and
+              workspace settings in one file.
             </p>
           </div>
 
@@ -1057,6 +1115,15 @@ export function PersonalDataBackupPanel() {
                 }
               </strong>{' '}
               projects
+            </span>
+
+            <span>
+              <strong>
+                {
+                  pendingSummary.templates
+                }
+              </strong>{' '}
+              templates
             </span>
           </div>
 

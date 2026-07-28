@@ -12,6 +12,9 @@ const STORAGE_KEY =
 const PENDING_RESTORE_KEY =
   'cheme-toolkit.pending-calculation-restore.v1'
 
+const RESTORE_REQUEST_EVENT =
+  'cheme-toolkit:calculation-restore-requested'
+
 const WORKSPACE_TARGET_EVENT =
   'cheme-toolkit:workspace-open-target'
 
@@ -1222,6 +1225,65 @@ export function CalculationHistoryPanel({
           window.clearTimeout(
             timer,
           ),
+      )
+    }
+  }, [calculator.id])
+
+  useEffect(() => {
+    function handleRestoreRequest() {
+      const pendingRaw =
+        sessionStorage.getItem(
+          PENDING_RESTORE_KEY,
+        )
+
+      if (!pendingRaw) {
+        return
+      }
+
+      let pending:
+        | SavedCalculation
+        | null = null
+
+      try {
+        pending =
+          JSON.parse(
+            pendingRaw,
+          ) as SavedCalculation
+      } catch {
+        sessionStorage.removeItem(
+          PENDING_RESTORE_KEY,
+        )
+        return
+      }
+
+      if (
+        pending.calculatorId !==
+        calculator.id
+      ) {
+        return
+      }
+
+      if (
+        restoreCalculation(
+          pending,
+        )
+      ) {
+        sessionStorage.removeItem(
+          PENDING_RESTORE_KEY,
+        )
+        setStatus('restored')
+      }
+    }
+
+    window.addEventListener(
+      RESTORE_REQUEST_EVENT,
+      handleRestoreRequest,
+    )
+
+    return () => {
+      window.removeEventListener(
+        RESTORE_REQUEST_EVENT,
+        handleRestoreRequest,
       )
     }
   }, [calculator.id])

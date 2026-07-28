@@ -915,3 +915,30 @@ textarea:focus {
     scroll-snap-align: start;
   }
 }
+
+
+/* Workspace templates layout v1 */
+
+.engineering-workspace-tabs {
+  grid-template-columns:
+    repeat(9, minmax(0, 1fr));
+}
+
+.engineering-workspace-panel-templates {
+  grid-template-columns:
+    minmax(0, 1fr);
+}
+
+@media (max-width: 1600px) {
+  .engineering-workspace-tabs {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .engineering-workspace-tabs button {
+    min-width: 150px;
+    flex: 1 0 auto;
+    scroll-snap-align: start;
+  }
+}
