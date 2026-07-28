@@ -13,6 +13,7 @@ import { PersonalDataBackupPanel } from './PersonalDataBackupPanel'
 import { WorkspaceSearchPanel } from './WorkspaceSearchPanel'
 import { WorkspaceMetadataPanel } from './WorkspaceMetadataPanel'
 import { WorkspaceRecordManagementPanel } from './WorkspaceRecordManagementPanel'
+import { WorkspaceDashboardPanel } from './WorkspaceDashboardPanel'
 import '../styles/engineering-workspace.css'
 
 const ACTIVE_TAB_KEY =
@@ -74,6 +75,14 @@ const WORKSPACE_TABS = [
     title: 'Record management',
     description:
       'Rename, duplicate, tag, organize and safely delete saved workspace records.',
+  },
+  {
+    id: 'dashboard',
+    number: '08',
+    label: 'Overview',
+    title: 'Workspace dashboard',
+    description:
+      'Review recent work, project activity, metadata quality and personal data health.',
   },
 ] as const
 
@@ -394,6 +403,23 @@ export function EngineeringWorkspace({
       >
         <div className="engineering-workspace-module">
           <WorkspaceRecordManagementPanel />
+        </div>
+      </div>
+
+      <div
+        id="workspace-panel-dashboard"
+        className="engineering-workspace-panel engineering-workspace-panel-dashboard"
+        role="tabpanel"
+        aria-labelledby="workspace-tab-dashboard"
+        hidden={activeTab !== 'dashboard'}
+      >
+        <div className="engineering-workspace-module">
+          <WorkspaceDashboardPanel
+            onOpenCalculator={
+              onOpenCalculator
+            }
+            onOpenTab={selectTab}
+          />
         </div>
       </div>
 

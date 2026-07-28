@@ -35,10 +35,16 @@ const STORAGE_KEYS = {
 
   pendingRestore:
     'cheme-toolkit.pending-calculation-restore.v1',
+
+  lastBackup:
+    'cheme-toolkit.last-backup-at.v1',
 } as const
 
 const PERSONAL_DATA_EVENT =
   'cheme-toolkit:personal-data-changed'
+
+const BACKUP_EXPORTED_EVENT =
+  'cheme-toolkit:backup-exported'
 
 const REFRESH_EVENTS = [
   PERSONAL_DATA_EVENT,
@@ -55,6 +61,7 @@ const VALID_WORKSPACE_TABS = [
   'search',
   'metadata',
   'management',
+  'dashboard',
 ] as const
 
 type WorkspaceTabId =
@@ -622,6 +629,17 @@ export function PersonalDataBackupPanel() {
       createBackupFile()
 
     downloadBackup(backup)
+
+    localStorage.setItem(
+      STORAGE_KEYS.lastBackup,
+      backup.exportedAt,
+    )
+
+    window.dispatchEvent(
+      new Event(
+        BACKUP_EXPORTED_EVENT,
+      ),
+    )
 
     setCurrentSummary(
       createSummary(
