@@ -10,6 +10,7 @@ import { SavedComparisonsPanel } from './SavedComparisonsPanel'
 import { ProjectWorkspacesPanel } from './ProjectWorkspacesPanel'
 import { ProjectFilesPanel } from './ProjectFilesPanel'
 import { PersonalDataBackupPanel } from './PersonalDataBackupPanel'
+import { WorkspaceSearchPanel } from './WorkspaceSearchPanel'
 import '../styles/engineering-workspace.css'
 
 const ACTIVE_TAB_KEY =
@@ -47,6 +48,14 @@ const WORKSPACE_TABS = [
     title: 'Personal data management',
     description:
       'Export, restore or clear the workspace data stored in this browser.',
+  },
+  {
+    id: 'search',
+    number: '05',
+    label: 'Search',
+    title: 'Workspace search',
+    description:
+      'Search calculations, comparison snapshots and project files from one index.',
   },
 ] as const
 
@@ -326,6 +335,23 @@ export function EngineeringWorkspace({
       >
         <div className="engineering-workspace-module">
           <PersonalDataBackupPanel />
+        </div>
+      </div>
+
+      <div
+        id="workspace-panel-search"
+        className="engineering-workspace-panel engineering-workspace-panel-search"
+        role="tabpanel"
+        aria-labelledby="workspace-tab-search"
+        hidden={activeTab !== 'search'}
+      >
+        <div className="engineering-workspace-module">
+          <WorkspaceSearchPanel
+            onOpenCalculator={
+              onOpenCalculator
+            }
+            onOpenTab={selectTab}
+          />
         </div>
       </div>
 

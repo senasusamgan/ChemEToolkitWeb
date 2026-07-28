@@ -17,6 +17,12 @@ const PROJECTS_KEY =
 const PROJECTS_CHANGE_EVENT =
   'cheme-toolkit:project-workspaces-changed'
 
+const WORKSPACE_TARGET_EVENT =
+  'cheme-toolkit:workspace-open-target'
+
+const PENDING_WORKSPACE_TARGET_KEY =
+  'cheme-toolkit.pending-workspace-target.v1'
+
 interface SavedCalculation {
   id: string
   name: string
@@ -909,6 +915,88 @@ export function SavedComparisonsPanel() {
   }, [])
 
   useEffect(() => {
+    function handleWorkspaceTarget(
+      event: Event,
+    ) {
+      const detail =
+        (
+          event as CustomEvent<{
+            type?: string
+            id?: string
+          }>
+        ).detail
+
+      if (
+        detail?.type !==
+          'comparison' ||
+        typeof detail.id !==
+          'string' ||
+        !comparisons.some(
+          (comparison) =>
+            comparison.id ===
+            detail.id,
+        )
+      ) {
+        return
+      }
+
+      setIsExpanded(true)
+      setActiveComparisonId(
+        detail.id,
+      )
+
+      sessionStorage.removeItem(
+        PENDING_WORKSPACE_TARGET_KEY,
+      )
+
+      window.setTimeout(() => {
+        const element =
+          document.getElementById(
+            `saved-comparison-${detail.id}`,
+          )
+
+        element?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+
+        element?.animate(
+          [
+            {
+              boxShadow:
+                '0 0 0 0 rgba(7, 156, 153, 0)',
+            },
+            {
+              boxShadow:
+                '0 0 0 5px rgba(7, 156, 153, 0.28)',
+            },
+            {
+              boxShadow:
+                '0 0 0 0 rgba(7, 156, 153, 0)',
+            },
+          ],
+          {
+            duration: 1800,
+            easing: 'ease-out',
+          },
+        )
+      }, 300)
+    }
+
+    window.addEventListener(
+      WORKSPACE_TARGET_EVENT,
+      handleWorkspaceTarget,
+    )
+
+    return () => {
+      window.removeEventListener(
+        WORKSPACE_TARGET_EVENT,
+        handleWorkspaceTarget,
+      )
+    }
+  }, [comparisons])
+
+  useEffect(() => {
     if (status === 'idle') {
       return
     }
@@ -1167,6 +1255,7 @@ export function SavedComparisonsPanel() {
 
                   return (
                     <article
+                      id={`saved-comparison-${comparison.id}`}
                       key={
                         comparison.id
                       }

@@ -52,6 +52,7 @@ const VALID_WORKSPACE_TABS = [
   'compare',
   'projects',
   'data',
+  'search',
 ] as const
 
 type WorkspaceTabId =

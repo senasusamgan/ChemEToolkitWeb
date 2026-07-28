@@ -15,6 +15,12 @@ const PROJECTS_KEY =
 const CALCULATIONS_CHANGE_EVENT =
   'cheme-toolkit:saved-calculations-changed'
 
+const WORKSPACE_TARGET_EVENT =
+  'cheme-toolkit:workspace-open-target'
+
+const PENDING_WORKSPACE_TARGET_KEY =
+  'cheme-toolkit.pending-workspace-target.v1'
+
 interface ProjectWorkspacesPanelProps {
   calculator: CalculatorDefinition
 }
@@ -1028,6 +1034,88 @@ export function ProjectWorkspacesPanel({
   }, [])
 
   useEffect(() => {
+    function handleWorkspaceTarget(
+      event: Event,
+    ) {
+      const detail =
+        (
+          event as CustomEvent<{
+            type?: string
+            id?: string
+          }>
+        ).detail
+
+      if (
+        detail?.type !==
+          'project' ||
+        typeof detail.id !==
+          'string' ||
+        !projects.some(
+          (project) =>
+            project.id ===
+            detail.id,
+        )
+      ) {
+        return
+      }
+
+      setIsExpanded(true)
+      setSelectedProjectId(
+        detail.id,
+      )
+
+      sessionStorage.removeItem(
+        PENDING_WORKSPACE_TARGET_KEY,
+      )
+
+      window.setTimeout(() => {
+        const element =
+          document.getElementById(
+            `project-workspace-${detail.id}`,
+          )
+
+        element?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+
+        element?.animate(
+          [
+            {
+              boxShadow:
+                '0 0 0 0 rgba(7, 156, 153, 0)',
+            },
+            {
+              boxShadow:
+                '0 0 0 5px rgba(7, 156, 153, 0.28)',
+            },
+            {
+              boxShadow:
+                '0 0 0 0 rgba(7, 156, 153, 0)',
+            },
+          ],
+          {
+            duration: 1800,
+            easing: 'ease-out',
+          },
+        )
+      }, 300)
+    }
+
+    window.addEventListener(
+      WORKSPACE_TARGET_EVENT,
+      handleWorkspaceTarget,
+    )
+
+    return () => {
+      window.removeEventListener(
+        WORKSPACE_TARGET_EVENT,
+        handleWorkspaceTarget,
+      )
+    }
+  }, [projects])
+
+  useEffect(() => {
     const projectStillExists =
       projects.some(
         (project) =>
@@ -1438,6 +1526,7 @@ export function ProjectWorkspacesPanel({
                 {projects.map(
                   (project) => (
                     <button
+                      id={`project-workspace-${project.id}`}
                       key={project.id}
                       type="button"
                       className={
