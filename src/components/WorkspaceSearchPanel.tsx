@@ -20,6 +20,9 @@ const TEMPLATES_KEY =
 const COLLECTIONS_KEY =
   'cheme-toolkit.workspace-collections.v1'
 
+const REPORTS_KEY =
+  'cheme-toolkit.workspace-reports.v1'
+
 const OPEN_TARGET_EVENT =
   'cheme-toolkit:workspace-open-target'
 
@@ -33,6 +36,7 @@ const DATA_EVENTS = [
   'cheme-toolkit:project-workspaces-changed',
   'cheme-toolkit:workspace-templates-changed',
   'cheme-toolkit:workspace-collections-changed',
+  'cheme-toolkit:workspace-reports-changed',
 ]
 
 type SearchResultType =
@@ -41,6 +45,7 @@ type SearchResultType =
   | 'project'
   | 'template'
   | 'collection'
+  | 'report'
 
 type TypeFilter =
   | 'all'
@@ -57,6 +62,7 @@ type DestinationTab =
   | 'projects'
   | 'templates'
   | 'collections'
+  | 'reports'
 
 interface WorkspaceSearchPanelProps {
   onOpenCalculator: (
@@ -126,6 +132,20 @@ interface StoredCollection {
   updatedAt: string
   manualItemKeys: string[]
   rule: unknown
+}
+
+interface StoredReport {
+  id: string
+  title: string
+  subtitle: string
+  author: string
+  organization: string
+  purpose: string
+  executiveSummary: string
+  conclusion: string
+  createdAt: string
+  updatedAt: string
+  sections: unknown[]
 }
 
 interface SearchItem {
@@ -470,6 +490,76 @@ function readCollections():
   })
 }
 
+function readReports():
+  StoredReport[] {
+  return readArray(
+    REPORTS_KEY,
+  ).flatMap((value) => {
+    if (
+      !isRecord(value) ||
+      typeof value.id !==
+        'string' ||
+      typeof value.title !==
+        'string'
+    ) {
+      return []
+    }
+
+    const createdAt =
+      typeof value.createdAt ===
+      'string'
+        ? value.createdAt
+        : ''
+
+    return [{
+      id: value.id,
+      title: value.title,
+      subtitle:
+        typeof value.subtitle ===
+        'string'
+          ? value.subtitle
+          : '',
+      author:
+        typeof value.author ===
+        'string'
+          ? value.author
+          : '',
+      organization:
+        typeof value.organization ===
+        'string'
+          ? value.organization
+          : '',
+      purpose:
+        typeof value.purpose ===
+        'string'
+          ? value.purpose
+          : '',
+      executiveSummary:
+        typeof value.executiveSummary ===
+        'string'
+          ? value.executiveSummary
+          : '',
+      conclusion:
+        typeof value.conclusion ===
+        'string'
+          ? value.conclusion
+          : '',
+      createdAt,
+      updatedAt:
+        typeof value.updatedAt ===
+        'string'
+          ? value.updatedAt
+          : createdAt,
+      sections:
+        Array.isArray(
+          value.sections,
+        )
+          ? value.sections
+          : [],
+    }]
+  })
+}
+
 function normalizeSearch(
   value: string,
 ): string {
@@ -616,7 +706,11 @@ function resultTypeLabel(
     return 'Reusable template'
   }
 
-  return 'Workspace collection'
+  if (type === 'collection') {
+    return 'Workspace collection'
+  }
+
+  return 'Engineering report draft'
 }
 
 export function WorkspaceSearchPanel({
@@ -656,6 +750,13 @@ export function WorkspaceSearchPanel({
     setCollections,
   ] = useState<StoredCollection[]>(
     readCollections,
+  )
+
+  const [
+    reports,
+    setReports,
+  ] = useState<StoredReport[]>(
+    readReports,
   )
 
   const [
@@ -984,11 +1085,85 @@ export function WorkspaceSearchPanel({
             }
           },
         ),
+
+        ...reports.map(
+          (report) => {
+            const sectionText =
+              report.sections
+                .map((section) => {
+                  if (
+                    typeof section !==
+                      'object' ||
+                    section === null
+                  ) {
+                    return ''
+                  }
+
+                  return JSON.stringify(
+                    section,
+                  )
+                })
+                .join(' ')
+
+            const notes =
+              [
+                report.purpose,
+                report.executiveSummary,
+                report.conclusion,
+              ]
+                .filter(Boolean)
+                .join(' ')
+
+            const searchText =
+              normalizeSearch(
+                [
+                  report.title,
+                  report.subtitle,
+                  report.author,
+                  report.organization,
+                  report.purpose,
+                  report.executiveSummary,
+                  report.conclusion,
+                  sectionText,
+                  'engineering report draft',
+                ].join(' '),
+              )
+
+            return {
+              id: report.id,
+              type:
+                'report' as const,
+              title:
+                report.title,
+              subtitle:
+                report.subtitle ||
+                report.organization ||
+                report.author ||
+                'Engineering report draft',
+              description:
+                report.executiveSummary ||
+                report.purpose ||
+                `${report.sections.length} report sections.`,
+              category:
+                'Engineering report',
+              calculatorId: '',
+              calculatorTitle: '',
+              createdAt:
+                report.updatedAt,
+              itemCount:
+                report.sections.length,
+              tags: [],
+              notes,
+              searchText,
+            }
+          },
+        ),
       ],
       [
         baseItems,
         templates,
         collections,
+        reports,
       ],
     )
 
@@ -1154,6 +1329,10 @@ export function WorkspaceSearchPanel({
       setCollections(
         readCollections(),
       )
+
+      setReports(
+        readReports(),
+      )
     }
 
     DATA_EVENTS.forEach(
@@ -1238,11 +1417,15 @@ export function WorkspaceSearchPanel({
             : item.type ===
                 'template'
               ? 'templates'
-              : 'collections'
+              : item.type ===
+                  'collection'
+                ? 'collections'
+                : 'reports'
 
     if (
       item.type === 'template' ||
-      item.type === 'collection'
+      item.type === 'collection' ||
+      item.type === 'report'
     ) {
       onOpenTab(destination)
       setStatus('opened')
@@ -1327,8 +1510,9 @@ export function WorkspaceSearchPanel({
 
           <p>
             Find calculations, comparisons,
-            projects, templates and collections
-            from one searchable index.
+            projects, templates, collections
+            and report drafts from one searchable
+            index.
           </p>
         </div>
 
@@ -1352,7 +1536,7 @@ export function WorkspaceSearchPanel({
           <input
             type="search"
             value={query}
-            placeholder="Search workspace names, calculators, categories, tags or collection rules…"
+            placeholder="Search workspace names, calculators, reports, tags or collection rules…"
             onChange={(event) =>
               setQuery(
                 event.target.value,
@@ -1397,6 +1581,10 @@ export function WorkspaceSearchPanel({
 
             <option value="collection">
               Collections
+            </option>
+
+            <option value="report">
+              Reports
             </option>
           </select>
         </label>
@@ -1641,7 +1829,11 @@ export function WorkspaceSearchPanel({
 
                   {item.itemCount > 1 ? (
                     <small>
-                      {item.itemCount} files
+                      {item.itemCount}
+                      {' '}
+                      {item.type === 'report'
+                        ? 'sections'
+                        : 'files'}
                     </small>
                   ) : null}
                 </div>
