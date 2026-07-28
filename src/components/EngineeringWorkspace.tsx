@@ -16,6 +16,7 @@ import { WorkspaceRecordManagementPanel } from './WorkspaceRecordManagementPanel
 import { WorkspaceDashboardPanel } from './WorkspaceDashboardPanel'
 import { WorkspaceTemplatesPanel } from './WorkspaceTemplatesPanel'
 import { WorkspaceCollectionsPanel } from './WorkspaceCollectionsPanel'
+import { WorkspaceReportBuilderPanel } from './WorkspaceReportBuilderPanel'
 import '../styles/engineering-workspace.css'
 
 const ACTIVE_TAB_KEY =
@@ -23,8 +24,16 @@ const ACTIVE_TAB_KEY =
 
 const WORKSPACE_TABS = [
   {
-    id: 'records',
+    id: 'dashboard',
     number: '01',
+    label: 'Overview',
+    title: 'Workspace dashboard',
+    description:
+      'Review recent work, project activity, metadata quality and personal data health.',
+  },
+  {
+    id: 'records',
+    number: '02',
     label: 'Save & History',
     title: 'Calculation records',
     description:
@@ -32,7 +41,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'compare',
-    number: '02',
+    number: '03',
     label: 'Compare',
     title: 'Engineering comparison',
     description:
@@ -40,31 +49,31 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'projects',
-    number: '03',
+    number: '04',
     label: 'Projects',
     title: 'Project workspace',
     description:
       'Organize calculations and comparisons inside combined project files.',
   },
   {
-    id: 'data',
-    number: '04',
-    label: 'Data & Backup',
-    title: 'Personal data management',
+    id: 'reports',
+    number: '05',
+    label: 'Reports',
+    title: 'Engineering report builder',
     description:
-      'Export, restore or clear the workspace data stored in this browser.',
+      'Combine saved workspace records into structured printable engineering reports.',
   },
   {
     id: 'search',
-    number: '05',
+    number: '06',
     label: 'Search',
     title: 'Workspace search',
     description:
-      'Search calculations, comparison snapshots and project files from one index.',
+      'Search calculations, comparisons, projects, templates and collections from one index.',
   },
   {
     id: 'metadata',
-    number: '06',
+    number: '07',
     label: 'Tags & Notes',
     title: 'Workspace metadata',
     description:
@@ -72,19 +81,11 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'management',
-    number: '07',
+    number: '08',
     label: 'Manage',
     title: 'Record management',
     description:
       'Rename, duplicate, tag, organize and safely delete saved workspace records.',
-  },
-  {
-    id: 'dashboard',
-    number: '08',
-    label: 'Overview',
-    title: 'Workspace dashboard',
-    description:
-      'Review recent work, project activity, metadata quality and personal data health.',
   },
   {
     id: 'templates',
@@ -101,6 +102,14 @@ const WORKSPACE_TABS = [
     title: 'Smart workspace collections',
     description:
       'Organize records and reusable cases with manual selections or saved smart rules.',
+  },
+  {
+    id: 'data',
+    number: '11',
+    label: 'Data & Backup',
+    title: 'Personal data management',
+    description:
+      'Export, restore or clear the workspace data stored in this browser.',
   },
 ] as const
 
@@ -472,6 +481,18 @@ export function EngineeringWorkspace({
             }
             onOpenTab={selectTab}
           />
+        </div>
+      </div>
+
+      <div
+        id="workspace-panel-reports"
+        className="engineering-workspace-panel engineering-workspace-panel-reports"
+        role="tabpanel"
+        aria-labelledby="workspace-tab-reports"
+        hidden={activeTab !== 'reports'}
+      >
+        <div className="engineering-workspace-module">
+          <WorkspaceReportBuilderPanel />
         </div>
       </div>
 

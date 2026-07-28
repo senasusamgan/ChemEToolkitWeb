@@ -261,51 +261,6 @@ p {
   box-shadow: none;
 }
 
-@media (max-width: 760px) {
-  .engineering-workspace-header {
-    padding:
-      20px 16px 16px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  .engineering-workspace-context {
-    min-width: 0;
-    width: 100%;
-  }
-
-  .engineering-workspace-tabs {
-    margin: 0 16px;
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-
-  .engineering-workspace-tabs
-  button {
-    min-width: 150px;
-    min-height: 48px;
-    flex: 1 0 auto;
-    scroll-snap-align: start;
-  }
-
-  .engineering-workspace-active-heading {
-    padding:
-      18px 16px 13px;
-  }
-
-  .engineering-workspace-panel {
-    padding:
-      0 16px 20px;
-  }
-
-  .engineering-workspace-module {
-    padding: 15px;
-    border-radius: 10px;
-  }
-}
-
 @media (max-width: 460px) {
   .engineering-workspace-title h2 {
     font-size: 1.35rem;
@@ -847,22 +802,6 @@ textarea:focus {
     minmax(0, 1fr);
 }
 
-@media (max-width: 1180px) {
-  .engineering-workspace-tabs {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-
-  .engineering-workspace-tabs button {
-    min-width: 150px;
-    flex: 1 0 auto;
-    scroll-snap-align: start;
-  }
-}
-
-
-
 /* Workspace record management layout v1 */
 
 .engineering-workspace-tabs {
@@ -874,21 +813,6 @@ textarea:focus {
   grid-template-columns:
     minmax(0, 1fr);
 }
-
-@media (max-width: 1320px) {
-  .engineering-workspace-tabs {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-
-  .engineering-workspace-tabs button {
-    min-width: 150px;
-    flex: 1 0 auto;
-    scroll-snap-align: start;
-  }
-}
-
 
 /* Workspace dashboard layout v1 */
 
@@ -902,21 +826,6 @@ textarea:focus {
     minmax(0, 1fr);
 }
 
-@media (max-width: 1480px) {
-  .engineering-workspace-tabs {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-
-  .engineering-workspace-tabs button {
-    min-width: 150px;
-    flex: 1 0 auto;
-    scroll-snap-align: start;
-  }
-}
-
-
 /* Workspace templates layout v1 */
 
 .engineering-workspace-tabs {
@@ -928,21 +837,6 @@ textarea:focus {
   grid-template-columns:
     minmax(0, 1fr);
 }
-
-@media (max-width: 1600px) {
-  .engineering-workspace-tabs {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-
-  .engineering-workspace-tabs button {
-    min-width: 150px;
-    flex: 1 0 auto;
-    scroll-snap-align: start;
-  }
-}
-
 
 /* Workspace smart collections layout v1 */
 
@@ -956,16 +850,57 @@ textarea:focus {
     minmax(0, 1fr);
 }
 
-@media (max-width: 1720px) {
+/* Workspace navigation grid v4 */
+
+.engineering-workspace-tabs {
+  display: grid !important;
+  grid-template-columns:
+    repeat(6, minmax(0, 1fr)) !important;
+  overflow: visible !important;
+  overflow-x: visible !important;
+  scroll-snap-type: none !important;
+}
+
+.engineering-workspace-tabs button {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 66px;
+  flex: initial !important;
+  white-space: normal !important;
+  scroll-snap-align: none !important;
+}
+
+.engineering-workspace-tabs button strong {
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.engineering-workspace-panel-reports {
+  grid-template-columns:
+    minmax(0, 1fr);
+}
+
+@media (max-width: 1500px) {
   .engineering-workspace-tabs {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 1050px) {
+  .engineering-workspace-tabs {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .engineering-workspace-tabs {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
   }
 
   .engineering-workspace-tabs button {
-    min-width: 150px;
-    flex: 1 0 auto;
-    scroll-snap-align: start;
+    min-height: 60px;
   }
 }

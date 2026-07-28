@@ -20,6 +20,9 @@ const TEMPLATES_KEY =
 const COLLECTIONS_KEY =
   'cheme-toolkit.workspace-collections.v1'
 
+const REPORTS_KEY =
+  'cheme-toolkit.workspace-reports.v1'
+
 const LAST_BACKUP_KEY =
   'cheme-toolkit.last-backup-at.v1'
 
@@ -36,6 +39,7 @@ const DATA_EVENTS = [
   'cheme-toolkit:project-workspaces-changed',
   'cheme-toolkit:workspace-templates-changed',
   'cheme-toolkit:workspace-collections-changed',
+  'cheme-toolkit:workspace-reports-changed',
   'cheme-toolkit:backup-exported',
 ]
 
@@ -49,6 +53,7 @@ type DashboardTab =
   | 'management'
   | 'templates'
   | 'collections'
+  | 'reports'
 
 type RecordType =
   | 'calculation'
@@ -110,12 +115,24 @@ interface DashboardCollection {
   manualItemKeys: string[]
 }
 
+interface DashboardReport {
+  id: string
+  title: string
+  subtitle: string
+  author: string
+  organization: string
+  reportDate: string
+  updatedAt: string
+  sectionCount: number
+}
+
 interface DashboardData {
   calculations: DashboardRecord[]
   comparisons: DashboardRecord[]
   projects: DashboardProject[]
   templates: DashboardTemplate[]
   collections: DashboardCollection[]
+  reports: DashboardReport[]
   lastBackupAt: string
 }
 
@@ -446,6 +463,65 @@ function readCollections():
   })
 }
 
+function readReports():
+  DashboardReport[] {
+  return readArray(
+    REPORTS_KEY,
+  ).flatMap((value) => {
+    if (
+      !isRecord(value) ||
+      typeof value.id !==
+        'string' ||
+      typeof value.title !==
+        'string'
+    ) {
+      return []
+    }
+
+    const createdAt =
+      typeof value.createdAt ===
+      'string'
+        ? value.createdAt
+        : ''
+
+    return [{
+      id: value.id,
+      title: value.title,
+      subtitle:
+        typeof value.subtitle ===
+        'string'
+          ? value.subtitle
+          : '',
+      author:
+        typeof value.author ===
+        'string'
+          ? value.author
+          : '',
+      organization:
+        typeof value.organization ===
+        'string'
+          ? value.organization
+          : '',
+      reportDate:
+        typeof value.reportDate ===
+        'string'
+          ? value.reportDate
+          : '',
+      updatedAt:
+        typeof value.updatedAt ===
+        'string'
+          ? value.updatedAt
+          : createdAt,
+      sectionCount:
+        Array.isArray(
+          value.sections,
+        )
+          ? value.sections.length
+          : 0,
+    }]
+  })
+}
+
 function readDashboardData():
   DashboardData {
   let lastBackupAt = ''
@@ -474,6 +550,8 @@ function readDashboardData():
       readTemplates(),
     collections:
       readCollections(),
+    reports:
+      readReports(),
     lastBackupAt,
   }
 }
@@ -625,6 +703,23 @@ export function WorkspaceDashboardPanel({
           )
           .slice(0, 4),
       [data.collections],
+    )
+
+  const recentReports =
+    useMemo(
+      () =>
+        [...data.reports]
+          .sort(
+            (first, second) =>
+              timestamp(
+                second.updatedAt,
+              ) -
+              timestamp(
+                first.updatedAt,
+              ),
+          )
+          .slice(0, 4),
+      [data.reports],
     )
 
   const popularTags =
@@ -1000,6 +1095,32 @@ export function WorkspaceDashboardPanel({
 
         <article>
           <span>
+            Reports
+          </span>
+
+          <strong>
+            {data.reports.length}
+          </strong>
+
+          <small>
+            {
+              data.reports.reduce(
+                (
+                  total,
+                  report,
+                ) =>
+                  total +
+                  report.sectionCount,
+                0,
+              )
+            }
+            {' '}
+            report sections
+          </small>
+        </article>
+
+        <article>
+          <span>
             Metadata health
           </span>
 
@@ -1268,6 +1389,97 @@ export function WorkspaceDashboardPanel({
                       onClick={() =>
                         openSection(
                           'collections',
+                        )
+                      }
+                    >
+                      Open
+                    </button>
+                  </article>
+                ),
+              )}
+            </div>
+          )}
+        </section>
+
+        <section className="workspace-dashboard-card workspace-dashboard-reports">
+          <header>
+            <div>
+              <span>
+                Engineering documentation
+              </span>
+
+              <h4>
+                Recent report drafts
+              </h4>
+            </div>
+
+            <button
+              type="button"
+              onClick={() =>
+                openSection('reports')
+              }
+            >
+              Report builder
+            </button>
+          </header>
+
+          {recentReports.length ===
+          0 ? (
+            <div className="workspace-dashboard-empty">
+              <strong>
+                No report drafts
+              </strong>
+
+              <p>
+                Combine saved workspace records
+                into a structured engineering
+                report.
+              </p>
+            </div>
+          ) : (
+            <div className="workspace-dashboard-report-list">
+              {recentReports.map(
+                (report) => (
+                  <article
+                    key={report.id}
+                  >
+                    <div>
+                      <span>
+                        Report draft
+                      </span>
+
+                      <strong>
+                        {report.title}
+                      </strong>
+
+                      {report.subtitle ? (
+                        <p>
+                          {report.subtitle}
+                        </p>
+                      ) : null}
+
+                      <small>
+                        {report.sectionCount}
+                        {' '}
+                        section
+                        {report.sectionCount ===
+                        1
+                          ? ''
+                          : 's'}
+                        {' · '}
+                        Updated
+                        {' '}
+                        {formatDate(
+                          report.updatedAt,
+                        )}
+                      </small>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openSection(
+                          'reports',
                         )
                       }
                     >
@@ -1569,6 +1781,15 @@ export function WorkspaceDashboardPanel({
           }
         >
           Collections
+        </button>
+
+        <button
+          type="button"
+          onClick={() =>
+            openSection('reports')
+          }
+        >
+          Reports
         </button>
 
         <button

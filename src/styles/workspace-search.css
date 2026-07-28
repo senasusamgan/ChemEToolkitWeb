@@ -530,3 +530,13 @@ button:hover:not(:disabled) {
   background:
     rgba(49, 94, 130, 0.12);
 }
+
+
+/* Workspace search reports v1 */
+
+.workspace-search-type
+> span[data-type='report'] {
+  color: #7a4f22;
+  background:
+    rgba(179, 118, 54, 0.14);
+}
