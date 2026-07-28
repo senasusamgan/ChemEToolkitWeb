@@ -33,6 +33,9 @@ const STORAGE_KEYS = {
   templates:
     'cheme-toolkit.workspace-templates.v1',
 
+  collections:
+    'cheme-toolkit.workspace-collections.v1',
+
   activeTab:
     'cheme-toolkit.workspace-active-tab.v1',
 
@@ -55,6 +58,7 @@ const REFRESH_EVENTS = [
   'cheme-toolkit:saved-comparisons-changed',
   'cheme-toolkit:project-workspaces-changed',
   'cheme-toolkit:workspace-templates-changed',
+  'cheme-toolkit:workspace-collections-changed',
 ]
 
 const VALID_WORKSPACE_TABS = [
@@ -67,6 +71,7 @@ const VALID_WORKSPACE_TABS = [
   'management',
   'dashboard',
   'templates',
+  'collections',
 ] as const
 
 type WorkspaceTabId =
@@ -92,6 +97,7 @@ interface BackupData {
   savedComparisons: unknown[]
   projects: unknown[]
   templates: unknown[]
+  collections: unknown[]
   activeWorkspaceTab: WorkspaceTabId
 }
 
@@ -110,6 +116,7 @@ interface DataSummary {
   comparisons: number
   projects: number
   templates: number
+  collections: number
 }
 
 function isRecord(
@@ -200,6 +207,11 @@ function readCurrentData():
         STORAGE_KEYS.templates,
       ),
 
+    collections:
+      readArray(
+        STORAGE_KEYS.collections,
+      ),
+
     activeWorkspaceTab:
       readWorkspaceTab(),
   }
@@ -226,6 +238,9 @@ function createSummary(
 
     templates:
       data.templates.length,
+
+    collections:
+      data.collections.length,
   }
 }
 
@@ -300,6 +315,13 @@ function parseBackupFile(
         data.templates,
       )
     ) ||
+    (
+      data.collections !==
+        undefined &&
+      !Array.isArray(
+        data.collections,
+      )
+    ) ||
     typeof data.activeWorkspaceTab !==
       'string'
   ) {
@@ -340,6 +362,13 @@ function parseBackupFile(
           data.templates,
         )
           ? data.templates
+          : [],
+
+      collections:
+        Array.isArray(
+          data.collections,
+        )
+          ? data.collections
           : [],
 
       activeWorkspaceTab,
@@ -478,6 +507,13 @@ function writeData(
   )
 
   localStorage.setItem(
+    STORAGE_KEYS.collections,
+    JSON.stringify(
+      data.collections,
+    ),
+  )
+
+  localStorage.setItem(
     STORAGE_KEYS.activeTab,
     data.activeWorkspaceTab,
   )
@@ -511,6 +547,12 @@ function dispatchDataEvents() {
   window.dispatchEvent(
     new Event(
       'cheme-toolkit:workspace-templates-changed',
+    ),
+  )
+
+  window.dispatchEvent(
+    new Event(
+      'cheme-toolkit:workspace-collections-changed',
     ),
   )
 }
@@ -807,6 +849,12 @@ export function PersonalDataBackupPanel() {
             imported.templates,
           ),
 
+        collections:
+          mergeRecords(
+            current.collections,
+            imported.collections,
+          ),
+
         activeWorkspaceTab:
           imported.activeWorkspaceTab,
       }
@@ -831,7 +879,7 @@ export function PersonalDataBackupPanel() {
   function handleClearAll() {
     const confirmed =
       window.confirm(
-        'Delete all ChemE Toolkit personal data stored in this browser? This includes favorites, recent calculators, saved calculations, comparisons, projects and templates.',
+        'Delete all ChemE Toolkit personal data stored in this browser? This includes favorites, recent calculators, saved calculations, comparisons, projects, templates and collections.',
       )
 
     if (!confirmed) {
@@ -959,6 +1007,16 @@ export function PersonalDataBackupPanel() {
             Templates
           </span>
         </article>
+
+        <article>
+          <strong>
+            {currentSummary.collections}
+          </strong>
+
+          <span>
+            Collections
+          </span>
+        </article>
       </div>
 
       <div className="personal-data-action-grid">
@@ -975,8 +1033,9 @@ export function PersonalDataBackupPanel() {
             <p>
               Download favorites, recent tools,
               calculations, comparison
-              snapshots, projects, templates and
-              workspace settings in one file.
+              snapshots, projects, templates,
+              collections and workspace settings
+              in one file.
             </p>
           </div>
 
@@ -1124,6 +1183,15 @@ export function PersonalDataBackupPanel() {
                 }
               </strong>{' '}
               templates
+            </span>
+
+            <span>
+              <strong>
+                {
+                  pendingSummary.collections
+                }
+              </strong>{' '}
+              collections
             </span>
           </div>
 

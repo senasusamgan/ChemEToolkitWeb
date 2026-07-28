@@ -17,6 +17,9 @@ const PROJECTS_KEY =
 const TEMPLATES_KEY =
   'cheme-toolkit.workspace-templates.v1'
 
+const COLLECTIONS_KEY =
+  'cheme-toolkit.workspace-collections.v1'
+
 const LAST_BACKUP_KEY =
   'cheme-toolkit.last-backup-at.v1'
 
@@ -32,6 +35,7 @@ const DATA_EVENTS = [
   'cheme-toolkit:saved-comparisons-changed',
   'cheme-toolkit:project-workspaces-changed',
   'cheme-toolkit:workspace-templates-changed',
+  'cheme-toolkit:workspace-collections-changed',
   'cheme-toolkit:backup-exported',
 ]
 
@@ -44,6 +48,7 @@ type DashboardTab =
   | 'metadata'
   | 'management'
   | 'templates'
+  | 'collections'
 
 type RecordType =
   | 'calculation'
@@ -95,11 +100,22 @@ interface DashboardTemplate {
   useCount: number
 }
 
+interface DashboardCollection {
+  id: string
+  name: string
+  description: string
+  mode: 'manual' | 'smart'
+  isFavorite: boolean
+  updatedAt: string
+  manualItemKeys: string[]
+}
+
 interface DashboardData {
   calculations: DashboardRecord[]
   comparisons: DashboardRecord[]
   projects: DashboardProject[]
   templates: DashboardTemplate[]
+  collections: DashboardCollection[]
   lastBackupAt: string
 }
 
@@ -373,6 +389,63 @@ function readTemplates():
   })
 }
 
+function readCollections():
+  DashboardCollection[] {
+  return readArray(
+    COLLECTIONS_KEY,
+  ).flatMap((value) => {
+    if (
+      !isRecord(value) ||
+      typeof value.id !==
+        'string' ||
+      typeof value.name !==
+        'string'
+    ) {
+      return []
+    }
+
+    const createdAt =
+      typeof value.createdAt ===
+      'string'
+        ? value.createdAt
+        : ''
+
+    const manualItemKeys =
+      Array.isArray(
+        value.manualItemKeys,
+      )
+        ? value.manualItemKeys.filter(
+            (
+              key,
+            ): key is string =>
+              typeof key === 'string',
+          )
+        : []
+
+    return [{
+      id: value.id,
+      name: value.name,
+      description:
+        typeof value.description ===
+        'string'
+          ? value.description
+          : '',
+      mode:
+        value.mode === 'smart'
+          ? 'smart'
+          : 'manual',
+      isFavorite:
+        value.isFavorite === true,
+      updatedAt:
+        typeof value.updatedAt ===
+        'string'
+          ? value.updatedAt
+          : createdAt,
+      manualItemKeys,
+    }]
+  })
+}
+
 function readDashboardData():
   DashboardData {
   let lastBackupAt = ''
@@ -399,6 +472,8 @@ function readDashboardData():
       readProjects(),
     templates:
       readTemplates(),
+    collections:
+      readCollections(),
     lastBackupAt,
   }
 }
@@ -529,6 +604,27 @@ export function WorkspaceDashboardPanel({
           )
           .slice(0, 4),
       [data.templates],
+    )
+
+  const favoriteCollections =
+    useMemo(
+      () =>
+        data.collections
+          .filter(
+            (collection) =>
+              collection.isFavorite,
+          )
+          .sort(
+            (first, second) =>
+              timestamp(
+                second.updatedAt,
+              ) -
+              timestamp(
+                first.updatedAt,
+              ),
+          )
+          .slice(0, 4),
+      [data.collections],
     )
 
   const popularTags =
@@ -883,6 +979,27 @@ export function WorkspaceDashboardPanel({
 
         <article>
           <span>
+            Collections
+          </span>
+
+          <strong>
+            {data.collections.length}
+          </strong>
+
+          <small>
+            {
+              data.collections.filter(
+                (collection) =>
+                  collection.isFavorite,
+              ).length
+            }
+            {' '}
+            pinned collections
+          </small>
+        </article>
+
+        <article>
+          <span>
             Metadata health
           </span>
 
@@ -1069,6 +1186,95 @@ export function WorkspaceDashboardPanel({
                     </article>
                   )
                 },
+              )}
+            </div>
+          )}
+        </section>
+
+        <section className="workspace-dashboard-card workspace-dashboard-collections">
+          <header>
+            <div>
+              <span>
+                Saved workspace views
+              </span>
+
+              <h4>
+                Pinned collections
+              </h4>
+            </div>
+
+            <button
+              type="button"
+              onClick={() =>
+                openSection(
+                  'collections',
+                )
+              }
+            >
+              All collections
+            </button>
+          </header>
+
+          {favoriteCollections.length ===
+          0 ? (
+            <div className="workspace-dashboard-empty">
+              <strong>
+                No pinned collections
+              </strong>
+
+              <p>
+                Pin a manual or smart collection
+                to keep it available on the
+                engineering dashboard.
+              </p>
+            </div>
+          ) : (
+            <div className="workspace-dashboard-collection-list">
+              {favoriteCollections.map(
+                (collection) => (
+                  <article
+                    key={collection.id}
+                  >
+                    <div>
+                      <span>
+                        {collection.mode ===
+                        'smart'
+                          ? 'Smart collection'
+                          : 'Manual collection'}
+                      </span>
+
+                      <strong>
+                        {collection.name}
+                      </strong>
+
+                      <small>
+                        {collection.mode ===
+                        'smart'
+                          ? 'Updates automatically'
+                          : `${collection.manualItemKeys.length} selected records`}
+                      </small>
+
+                      <small>
+                        Updated
+                        {' '}
+                        {formatDate(
+                          collection.updatedAt,
+                        )}
+                      </small>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openSection(
+                          'collections',
+                        )
+                      }
+                    >
+                      Open
+                    </button>
+                  </article>
+                ),
               )}
             </div>
           )}
@@ -1352,6 +1558,17 @@ export function WorkspaceDashboardPanel({
           }
         >
           Tags & Notes
+        </button>
+
+        <button
+          type="button"
+          onClick={() =>
+            openSection(
+              'collections',
+            )
+          }
+        >
+          Collections
         </button>
 
         <button

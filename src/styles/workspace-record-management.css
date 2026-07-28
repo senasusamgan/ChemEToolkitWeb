@@ -438,3 +438,30 @@ button:hover:not(:disabled) {
     transform: none;
   }
 }
+
+
+/* Workspace record collections v1 */
+
+.workspace-record-actions
+select:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.workspace-record-collection-action {
+  border-color:
+    rgba(7, 156, 153, 0.42) !important;
+  background:
+    rgba(228, 243, 240, 0.3) !important;
+}
+
+.workspace-record-collection-action
+select {
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+  .workspace-record-collection-action {
+    min-width: 0;
+  }
+}
