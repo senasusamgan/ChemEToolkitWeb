@@ -54,6 +54,7 @@ const VALID_WORKSPACE_TABS = [
   'data',
   'search',
   'metadata',
+  'management',
 ] as const
 
 type WorkspaceTabId =

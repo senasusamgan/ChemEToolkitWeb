@@ -12,6 +12,7 @@ import { ProjectFilesPanel } from './ProjectFilesPanel'
 import { PersonalDataBackupPanel } from './PersonalDataBackupPanel'
 import { WorkspaceSearchPanel } from './WorkspaceSearchPanel'
 import { WorkspaceMetadataPanel } from './WorkspaceMetadataPanel'
+import { WorkspaceRecordManagementPanel } from './WorkspaceRecordManagementPanel'
 import '../styles/engineering-workspace.css'
 
 const ACTIVE_TAB_KEY =
@@ -65,6 +66,14 @@ const WORKSPACE_TABS = [
     title: 'Workspace metadata',
     description:
       'Add searchable tags, notes and descriptions to saved engineering records.',
+  },
+  {
+    id: 'management',
+    number: '07',
+    label: 'Manage',
+    title: 'Record management',
+    description:
+      'Rename, duplicate, tag, organize and safely delete saved workspace records.',
   },
 ] as const
 
@@ -373,6 +382,18 @@ export function EngineeringWorkspace({
       >
         <div className="engineering-workspace-module">
           <WorkspaceMetadataPanel />
+        </div>
+      </div>
+
+      <div
+        id="workspace-panel-management"
+        className="engineering-workspace-panel engineering-workspace-panel-management"
+        role="tabpanel"
+        aria-labelledby="workspace-tab-management"
+        hidden={activeTab !== 'management'}
+      >
+        <div className="engineering-workspace-module">
+          <WorkspaceRecordManagementPanel />
         </div>
       </div>
 
