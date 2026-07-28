@@ -17,6 +17,7 @@ import { WorkspaceDashboardPanel } from './WorkspaceDashboardPanel'
 import { WorkspaceTemplatesPanel } from './WorkspaceTemplatesPanel'
 import { WorkspaceCollectionsPanel } from './WorkspaceCollectionsPanel'
 import { WorkspaceReportBuilderPanel } from './WorkspaceReportBuilderPanel'
+import { WorkspaceInsightsPanel } from './WorkspaceInsightsPanel'
 import '../styles/engineering-workspace.css'
 
 const ACTIVE_TAB_KEY =
@@ -32,8 +33,16 @@ const WORKSPACE_TABS = [
       'Review recent work, project activity, metadata quality and personal data health.',
   },
   {
-    id: 'records',
+    id: 'insights',
     number: '02',
+    label: 'Insights',
+    title: 'Workspace insights and analytics',
+    description:
+      'Review activity trends, record distribution, calculator usage and workspace data quality.',
+  },
+  {
+    id: 'records',
+    number: '03',
     label: 'Save & History',
     title: 'Calculation records',
     description:
@@ -41,7 +50,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'compare',
-    number: '03',
+    number: '04',
     label: 'Compare',
     title: 'Engineering comparison',
     description:
@@ -49,7 +58,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'projects',
-    number: '04',
+    number: '05',
     label: 'Projects',
     title: 'Project workspace',
     description:
@@ -57,7 +66,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'reports',
-    number: '05',
+    number: '06',
     label: 'Reports',
     title: 'Engineering report builder',
     description:
@@ -65,15 +74,15 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'search',
-    number: '06',
+    number: '07',
     label: 'Search',
     title: 'Workspace search',
     description:
-      'Search calculations, comparisons, projects, templates and collections from one index.',
+      'Search calculations, comparisons, projects, templates, collections and reports from one index.',
   },
   {
     id: 'metadata',
-    number: '07',
+    number: '08',
     label: 'Tags & Notes',
     title: 'Workspace metadata',
     description:
@@ -81,7 +90,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'management',
-    number: '08',
+    number: '09',
     label: 'Manage',
     title: 'Record management',
     description:
@@ -89,7 +98,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'templates',
-    number: '09',
+    number: '10',
     label: 'Templates',
     title: 'Reusable engineering cases',
     description:
@@ -97,7 +106,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'collections',
-    number: '10',
+    number: '11',
     label: 'Collections',
     title: 'Smart workspace collections',
     description:
@@ -105,7 +114,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'data',
-    number: '11',
+    number: '12',
     label: 'Data & Backup',
     title: 'Personal data management',
     description:
@@ -319,6 +328,18 @@ export function EngineeringWorkspace({
               {activeDefinition.description}
             </p>
           </div>
+        </div>
+      </div>
+
+      <div
+        id="workspace-panel-insights"
+        className="engineering-workspace-panel engineering-workspace-panel-insights"
+        role="tabpanel"
+        aria-labelledby="workspace-tab-insights"
+        hidden={activeTab !== 'insights'}
+      >
+        <div className="engineering-workspace-module">
+          <WorkspaceInsightsPanel />
         </div>
       </div>
 
