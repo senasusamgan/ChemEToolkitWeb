@@ -11,6 +11,7 @@ import { ProjectWorkspacesPanel } from './ProjectWorkspacesPanel'
 import { ProjectFilesPanel } from './ProjectFilesPanel'
 import { PersonalDataBackupPanel } from './PersonalDataBackupPanel'
 import { WorkspaceSearchPanel } from './WorkspaceSearchPanel'
+import { WorkspaceMetadataPanel } from './WorkspaceMetadataPanel'
 import '../styles/engineering-workspace.css'
 
 const ACTIVE_TAB_KEY =
@@ -56,6 +57,14 @@ const WORKSPACE_TABS = [
     title: 'Workspace search',
     description:
       'Search calculations, comparison snapshots and project files from one index.',
+  },
+  {
+    id: 'metadata',
+    number: '06',
+    label: 'Tags & Notes',
+    title: 'Workspace metadata',
+    description:
+      'Add searchable tags, notes and descriptions to saved engineering records.',
   },
 ] as const
 
@@ -352,6 +361,18 @@ export function EngineeringWorkspace({
             }
             onOpenTab={selectTab}
           />
+        </div>
+      </div>
+
+      <div
+        id="workspace-panel-metadata"
+        className="engineering-workspace-panel engineering-workspace-panel-metadata"
+        role="tabpanel"
+        aria-labelledby="workspace-tab-metadata"
+        hidden={activeTab !== 'metadata'}
+      >
+        <div className="engineering-workspace-module">
+          <WorkspaceMetadataPanel />
         </div>
       </div>
 

@@ -40,6 +40,8 @@ interface SavedCalculation {
   results: SavedValue[]
   formula: string
   reference: string
+  tags?: string[]
+  notes?: string
 }
 
 interface ComparisonRow {
@@ -78,6 +80,8 @@ interface SavedComparison {
   inputRows: ComparisonRow[]
   resultRows: ComparisonRow[]
   differenceRows: DifferenceRow[]
+  tags?: string[]
+  description?: string
 }
 
 interface ProjectWorkspace {
@@ -133,6 +137,59 @@ function formatNumber(
       maximumSignificantDigits: 9,
     },
   ).format(value)
+}
+
+function normalizeTags(
+  value: string[] | undefined,
+): string[] {
+  if (!Array.isArray(value)) {
+    return []
+  }
+
+  const seen = new Set<string>()
+
+  return value
+    .map((tag) => tag.trim())
+    .filter((tag) => {
+      if (!tag) {
+        return false
+      }
+
+      const key =
+        tag.toLocaleLowerCase('en-US')
+
+      if (seen.has(key)) {
+        return false
+      }
+
+      seen.add(key)
+      return true
+    })
+}
+
+function createTagMarkup(
+  tags: string[] | undefined,
+): string {
+  const normalized =
+    normalizeTags(tags)
+
+  if (normalized.length === 0) {
+    return ''
+  }
+
+  return `
+    <div class="tag-list">
+      ${normalized
+        .map(
+          (tag) => `
+            <span class="tag">
+              ${escapeHtml(tag)}
+            </span>
+          `,
+        )
+        .join('')}
+    </div>
+  `
 }
 
 function readCalculations():
@@ -362,6 +419,22 @@ function createProjectCsv(
           '',
         ],
         [
+          'Tags',
+          normalizeTags(
+            calculation.tags,
+          ).join(' | ') ||
+            'Not provided',
+          '',
+          '',
+        ],
+        [
+          'Engineering notes',
+          calculation.notes ||
+            'Not provided',
+          '',
+          '',
+        ],
+        [
           'Section',
           'Variable',
           'Value',
@@ -425,6 +498,22 @@ function createProjectCsv(
           new Date(
             comparison.createdAt,
           ).toLocaleString('tr-TR'),
+          '',
+          '',
+        ],
+        [
+          'Tags',
+          normalizeTags(
+            comparison.tags,
+          ).join(' | ') ||
+            'Not provided',
+          '',
+          '',
+        ],
+        [
+          'Comparison description',
+          comparison.description ||
+            'Not provided',
           '',
           '',
         ],
@@ -749,6 +838,28 @@ function printProjectReport(
                   )}
                 </p>
 
+                ${createTagMarkup(
+                  calculation.tags,
+                )}
+
+                ${
+                  calculation.notes
+                    ? `
+                      <div class="note">
+                        <strong>
+                          Engineering notes
+                        </strong>
+
+                        <p>
+                          ${escapeHtml(
+                            calculation.notes,
+                          )}
+                        </p>
+                      </div>
+                    `
+                    : ''
+                }
+
                 ${createValueTable(
                   'Inputs',
                   calculation.inputs,
@@ -913,6 +1024,28 @@ function printProjectReport(
                       ),
                     )}
                   </p>
+
+                  ${createTagMarkup(
+                    comparison.tags,
+                  )}
+
+                  ${
+                    comparison.description
+                      ? `
+                        <div class="note">
+                          <strong>
+                            Comparison description
+                          </strong>
+
+                          <p>
+                            ${escapeHtml(
+                              comparison.description,
+                            )}
+                          </p>
+                        </div>
+                      `
+                      : ''
+                  }
 
                   <div class="note">
                     <strong>
@@ -1118,6 +1251,25 @@ function printProjectReport(
 
           .note p {
             margin: 5px 0 0;
+            white-space: pre-wrap;
+          }
+
+          .tag-list {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+          }
+
+          .tag {
+            padding: 5px 8px;
+            border:
+              1px solid #c9c0ad;
+            border-radius: 999px;
+            color: #0b3556;
+            background: #f9f6ee;
+            font-size: 10px;
+            font-weight: 700;
           }
 
           .difference-grid {
