@@ -14,6 +14,9 @@ const COMPARISONS_KEY =
 const PROJECTS_KEY =
   'cheme-toolkit.project-workspaces.v1'
 
+const COLLECTIONS_KEY =
+  'cheme-toolkit.workspace-collections.v1'
+
 const CALCULATIONS_EVENT =
   'cheme-toolkit:saved-calculations-changed'
 
@@ -22,6 +25,9 @@ const COMPARISONS_EVENT =
 
 const PROJECTS_EVENT =
   'cheme-toolkit:project-workspaces-changed'
+
+const COLLECTIONS_EVENT =
+  'cheme-toolkit:workspace-collections-changed'
 
 const PERSONAL_DATA_EVENT =
   'cheme-toolkit:personal-data-changed'
@@ -43,6 +49,7 @@ type Status =
   | 'duplicated'
   | 'tagged'
   | 'assigned'
+  | 'collected'
   | 'deleted'
   | 'select-one'
   | 'select-records'
@@ -330,6 +337,60 @@ function readProjects():
   })
 }
 
+interface WorkspaceCollection {
+  id: string
+  name: string
+  mode: 'manual'
+  updatedAt: string
+  manualItemKeys: string[]
+}
+
+function readManualCollections():
+  WorkspaceCollection[] {
+  return readArray(
+    COLLECTIONS_KEY,
+  ).flatMap((value) => {
+    if (
+      !isRecord(value) ||
+      typeof value.id !==
+        'string' ||
+      typeof value.name !==
+        'string' ||
+      value.mode !== 'manual'
+    ) {
+      return []
+    }
+
+    return [{
+      id: value.id,
+      name: value.name,
+      mode: 'manual' as const,
+      updatedAt:
+        typeof value.updatedAt ===
+        'string'
+          ? value.updatedAt
+          : '',
+      manualItemKeys:
+        Array.isArray(
+          value.manualItemKeys,
+        )
+          ? value.manualItemKeys.filter(
+              (
+                key,
+              ): key is string =>
+                typeof key ===
+                'string',
+            )
+          : [],
+    }]
+  }).sort(
+    (first, second) =>
+      first.name.localeCompare(
+        second.name,
+      ),
+  )
+}
+
 function formatDate(
   value: string,
 ): string {
@@ -357,6 +418,7 @@ function dispatchEvents(
   calculationChanged = false,
   comparisonChanged = false,
   projectsChanged = false,
+  collectionsChanged = false,
 ) {
   if (calculationChanged) {
     window.dispatchEvent(
@@ -382,6 +444,14 @@ function dispatchEvents(
     )
   }
 
+  if (collectionsChanged) {
+    window.dispatchEvent(
+      new Event(
+        COLLECTIONS_EVENT,
+      ),
+    )
+  }
+
   window.dispatchEvent(
     new Event(
       PERSONAL_DATA_EVENT,
@@ -402,6 +472,13 @@ export function WorkspaceRecordManagementPanel() {
     setProjects,
   ] = useState<ProjectWorkspace[]>(
     readProjects,
+  )
+
+  const [
+    manualCollections,
+    setManualCollections,
+  ] = useState<WorkspaceCollection[]>(
+    readManualCollections,
   )
 
   const [
@@ -434,6 +511,11 @@ export function WorkspaceRecordManagementPanel() {
   const [
     projectId,
     setProjectId,
+  ] = useState('')
+
+  const [
+    collectionId,
+    setCollectionId,
   ] = useState('')
 
   const [
@@ -523,6 +605,10 @@ export function WorkspaceRecordManagementPanel() {
       readProjects(),
     )
 
+    setManualCollections(
+      readManualCollections(),
+    )
+
     setSelectedIds(
       (current) =>
         current.filter((id) =>
@@ -561,6 +647,11 @@ export function WorkspaceRecordManagementPanel() {
     )
 
     window.addEventListener(
+      COLLECTIONS_EVENT,
+      handleDataChange,
+    )
+
+    window.addEventListener(
       PERSONAL_DATA_EVENT,
       handleDataChange,
     )
@@ -588,6 +679,11 @@ export function WorkspaceRecordManagementPanel() {
 
       window.removeEventListener(
         PROJECTS_EVENT,
+        handleDataChange,
+      )
+
+      window.removeEventListener(
+        COLLECTIONS_EVENT,
         handleDataChange,
       )
 
@@ -1087,6 +1183,102 @@ export function WorkspaceRecordManagementPanel() {
     setStatus('assigned')
   }
 
+  function handleCollectionAssignment() {
+    if (
+      selectedRecords.length ===
+      0
+    ) {
+      setStatus('select-records')
+      return
+    }
+
+    if (!collectionId) {
+      setStatus('enter-value')
+      return
+    }
+
+    const selectedKeys =
+      selectedRecords.map(
+        (record) =>
+          `${record.type}:${record.id}`,
+      )
+
+    const now =
+      new Date().toISOString()
+
+    let collectionFound = false
+
+    const nextCollections =
+      readArray(
+        COLLECTIONS_KEY,
+      ).map((value) => {
+        if (
+          !isRecord(value) ||
+          value.id !== collectionId ||
+          value.mode !== 'manual'
+        ) {
+          return value
+        }
+
+        collectionFound = true
+
+        const currentKeys =
+          Array.isArray(
+            value.manualItemKeys,
+          )
+            ? value.manualItemKeys.filter(
+                (
+                  key,
+                ): key is string =>
+                  typeof key ===
+                  'string',
+              )
+            : []
+
+        return {
+          ...value,
+          manualItemKeys:
+            Array.from(
+              new Set([
+                ...currentKeys,
+                ...selectedKeys,
+              ]),
+            ).slice(0, 200),
+          updatedAt: now,
+        }
+      })
+
+    if (!collectionFound) {
+      setStatus('error')
+      return
+    }
+
+    try {
+      localStorage.setItem(
+        COLLECTIONS_KEY,
+        JSON.stringify(
+          nextCollections,
+        ),
+      )
+    } catch {
+      setStatus('error')
+      return
+    }
+
+    dispatchEvents(
+      false,
+      false,
+      false,
+      true,
+    )
+
+    setManualCollections(
+      readManualCollections(),
+    )
+
+    setStatus('collected')
+  }
+
   function handleDelete() {
     if (
       selectedRecords.length ===
@@ -1187,6 +1379,70 @@ export function WorkspaceRecordManagementPanel() {
         }),
       )
 
+    const deletedItemKeys =
+      new Set([
+        ...Array.from(
+          calculationIds,
+        ).map(
+          (id) =>
+            `calculation:${id}`,
+        ),
+        ...Array.from(
+          comparisonIds,
+        ).map(
+          (id) =>
+            `comparison:${id}`,
+        ),
+      ])
+
+    let collectionsChanged = false
+    const now =
+      new Date().toISOString()
+
+    const nextCollections =
+      readArray(
+        COLLECTIONS_KEY,
+      ).map((value) => {
+        if (
+          !isRecord(value) ||
+          !Array.isArray(
+            value.manualItemKeys,
+          )
+        ) {
+          return value
+        }
+
+        const currentKeys =
+          value.manualItemKeys.filter(
+            (
+              key,
+            ): key is string =>
+              typeof key === 'string',
+          )
+
+        const cleanKeys =
+          currentKeys.filter(
+            (key) =>
+              !deletedItemKeys.has(key),
+          )
+
+        if (
+          cleanKeys.length ===
+          currentKeys.length
+        ) {
+          return value
+        }
+
+        collectionsChanged = true
+
+        return {
+          ...value,
+          manualItemKeys:
+            cleanKeys,
+          updatedAt: now,
+        }
+      })
+
     localStorage.setItem(
       CALCULATIONS_KEY,
       JSON.stringify(
@@ -1208,10 +1464,18 @@ export function WorkspaceRecordManagementPanel() {
       ),
     )
 
+    localStorage.setItem(
+      COLLECTIONS_KEY,
+      JSON.stringify(
+        nextCollections,
+      ),
+    )
+
     dispatchEvents(
       calculationIds.size > 0,
       comparisonIds.size > 0,
       true,
+      collectionsChanged,
     )
 
     setSelectedIds([])
@@ -1548,6 +1812,74 @@ export function WorkspaceRecordManagementPanel() {
             </button>
           </section>
 
+          <section className="workspace-record-collection-action">
+            <span>
+              Manual filing
+            </span>
+
+            <h4>
+              Add to collection
+            </h4>
+
+            <p>
+              Add selected records to a manual
+              collection. Smart collections
+              continue to update from their rules.
+            </p>
+
+            <select
+              value={collectionId}
+              disabled={
+                manualCollections.length ===
+                0
+              }
+              onChange={(event) =>
+                setCollectionId(
+                  event.target.value,
+                )
+              }
+            >
+              <option value="">
+                {manualCollections.length ===
+                0
+                  ? 'No manual collections'
+                  : 'Select a manual collection'}
+              </option>
+
+              {manualCollections.map(
+                (collection) => (
+                  <option
+                    key={collection.id}
+                    value={collection.id}
+                  >
+                    {collection.name}
+                    {' · '}
+                    {
+                      collection
+                        .manualItemKeys
+                        .length
+                    }
+                    {' '}
+                    records
+                  </option>
+                ),
+              )}
+            </select>
+
+            <button
+              type="button"
+              disabled={
+                manualCollections.length ===
+                0
+              }
+              onClick={
+                handleCollectionAssignment
+              }
+            >
+              Add selection to collection
+            </button>
+          </section>
+
           <section className="workspace-record-secondary-actions">
             <button
               type="button"
@@ -1587,6 +1919,10 @@ export function WorkspaceRecordManagementPanel() {
 
         {status === 'assigned'
           ? 'Selected records added to the project.'
+          : null}
+
+        {status === 'collected'
+          ? 'Selected records added to the manual collection.'
           : null}
 
         {status === 'deleted'

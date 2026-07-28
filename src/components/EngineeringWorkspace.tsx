@@ -15,6 +15,7 @@ import { WorkspaceMetadataPanel } from './WorkspaceMetadataPanel'
 import { WorkspaceRecordManagementPanel } from './WorkspaceRecordManagementPanel'
 import { WorkspaceDashboardPanel } from './WorkspaceDashboardPanel'
 import { WorkspaceTemplatesPanel } from './WorkspaceTemplatesPanel'
+import { WorkspaceCollectionsPanel } from './WorkspaceCollectionsPanel'
 import '../styles/engineering-workspace.css'
 
 const ACTIVE_TAB_KEY =
@@ -92,6 +93,14 @@ const WORKSPACE_TABS = [
     title: 'Reusable engineering cases',
     description:
       'Create reusable calculator starting cases from saved engineering work.',
+  },
+  {
+    id: 'collections',
+    number: '10',
+    label: 'Collections',
+    title: 'Smart workspace collections',
+    description:
+      'Organize records and reusable cases with manual selections or saved smart rules.',
   },
 ] as const
 
@@ -441,6 +450,23 @@ export function EngineeringWorkspace({
       >
         <div className="engineering-workspace-module">
           <WorkspaceTemplatesPanel
+            onOpenCalculator={
+              onOpenCalculator
+            }
+            onOpenTab={selectTab}
+          />
+        </div>
+      </div>
+
+      <div
+        id="workspace-panel-collections"
+        className="engineering-workspace-panel engineering-workspace-panel-collections"
+        role="tabpanel"
+        aria-labelledby="workspace-tab-collections"
+        hidden={activeTab !== 'collections'}
+      >
+        <div className="engineering-workspace-module">
+          <WorkspaceCollectionsPanel
             onOpenCalculator={
               onOpenCalculator
             }

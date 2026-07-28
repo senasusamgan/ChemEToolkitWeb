@@ -513,3 +513,20 @@ button:hover:not(:disabled) {
   font-weight: 800;
 }
 
+
+
+/* Workspace search templates and collections v1 */
+
+.workspace-search-type
+> span[data-type='template'] {
+  color: #6d5c24;
+  background:
+    rgba(190, 160, 65, 0.14);
+}
+
+.workspace-search-type
+> span[data-type='collection'] {
+  color: #315e82;
+  background:
+    rgba(49, 94, 130, 0.12);
+}

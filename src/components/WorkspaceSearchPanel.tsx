@@ -14,6 +14,12 @@ const COMPARISONS_KEY =
 const PROJECTS_KEY =
   'cheme-toolkit.project-workspaces.v1'
 
+const TEMPLATES_KEY =
+  'cheme-toolkit.workspace-templates.v1'
+
+const COLLECTIONS_KEY =
+  'cheme-toolkit.workspace-collections.v1'
+
 const OPEN_TARGET_EVENT =
   'cheme-toolkit:workspace-open-target'
 
@@ -25,12 +31,16 @@ const DATA_EVENTS = [
   'cheme-toolkit:saved-calculations-changed',
   'cheme-toolkit:saved-comparisons-changed',
   'cheme-toolkit:project-workspaces-changed',
+  'cheme-toolkit:workspace-templates-changed',
+  'cheme-toolkit:workspace-collections-changed',
 ]
 
 type SearchResultType =
   | 'calculation'
   | 'comparison'
   | 'project'
+  | 'template'
+  | 'collection'
 
 type TypeFilter =
   | 'all'
@@ -45,6 +55,8 @@ type DestinationTab =
   | 'records'
   | 'compare'
   | 'projects'
+  | 'templates'
+  | 'collections'
 
 interface WorkspaceSearchPanelProps {
   onOpenCalculator: (
@@ -88,6 +100,32 @@ interface StoredProject {
   updatedAt: string
   calculationIds: string[]
   comparisonIds?: string[]
+}
+
+interface StoredTemplate {
+  id: string
+  name: string
+  description: string
+  calculatorId: string
+  calculatorTitle: string
+  category: string
+  createdAt: string
+  updatedAt: string
+  useCount: number
+  inputs: unknown[]
+  tags: string[]
+}
+
+interface StoredCollection {
+  id: string
+  name: string
+  description: string
+  mode: 'manual' | 'smart'
+  isFavorite: boolean
+  createdAt: string
+  updatedAt: string
+  manualItemKeys: string[]
+  rule: unknown
 }
 
 interface SearchItem {
@@ -296,6 +334,142 @@ function readProjects():
   }))
 }
 
+function readTemplates():
+  StoredTemplate[] {
+  return readArray(
+    TEMPLATES_KEY,
+  ).flatMap((value) => {
+    if (
+      !isRecord(value) ||
+      typeof value.id !==
+        'string' ||
+      typeof value.name !==
+        'string'
+    ) {
+      return []
+    }
+
+    const createdAt =
+      typeof value.createdAt ===
+      'string'
+        ? value.createdAt
+        : ''
+
+    return [{
+      id: value.id,
+      name: value.name,
+      description:
+        typeof value.description ===
+        'string'
+          ? value.description
+          : '',
+      calculatorId:
+        typeof value.calculatorId ===
+        'string'
+          ? value.calculatorId
+          : '',
+      calculatorTitle:
+        typeof value.calculatorTitle ===
+        'string'
+          ? value.calculatorTitle
+          : 'Unknown calculator',
+      category:
+        typeof value.category ===
+        'string'
+          ? value.category
+          : 'Uncategorized',
+      createdAt,
+      updatedAt:
+        typeof value.updatedAt ===
+        'string'
+          ? value.updatedAt
+          : createdAt,
+      useCount:
+        typeof value.useCount ===
+          'number' &&
+        Number.isFinite(
+          value.useCount,
+        )
+          ? Math.max(
+              0,
+              Math.floor(
+                value.useCount,
+              ),
+            )
+          : 0,
+      inputs:
+        Array.isArray(
+          value.inputs,
+        )
+          ? value.inputs
+          : [],
+      tags:
+        normalizeTags(
+          value.tags,
+        ),
+    }]
+  })
+}
+
+function readCollections():
+  StoredCollection[] {
+  return readArray(
+    COLLECTIONS_KEY,
+  ).flatMap((value) => {
+    if (
+      !isRecord(value) ||
+      typeof value.id !==
+        'string' ||
+      typeof value.name !==
+        'string'
+    ) {
+      return []
+    }
+
+    const createdAt =
+      typeof value.createdAt ===
+      'string'
+        ? value.createdAt
+        : ''
+
+    return [{
+      id: value.id,
+      name: value.name,
+      description:
+        typeof value.description ===
+        'string'
+          ? value.description
+          : '',
+      mode:
+        value.mode === 'smart'
+          ? 'smart'
+          : 'manual',
+      isFavorite:
+        value.isFavorite === true,
+      createdAt,
+      updatedAt:
+        typeof value.updatedAt ===
+        'string'
+          ? value.updatedAt
+          : createdAt,
+      manualItemKeys:
+        Array.isArray(
+          value.manualItemKeys,
+        )
+          ? value.manualItemKeys.filter(
+              (
+                item,
+              ): item is string =>
+                typeof item ===
+                'string',
+            )
+          : [],
+      rule:
+        value.rule ?? null,
+    }]
+  })
+}
+
 function normalizeSearch(
   value: string,
 ): string {
@@ -434,7 +608,15 @@ function resultTypeLabel(
     return 'Comparison snapshot'
   }
 
-  return 'Project workspace'
+  if (type === 'project') {
+    return 'Project workspace'
+  }
+
+  if (type === 'template') {
+    return 'Reusable template'
+  }
+
+  return 'Workspace collection'
 }
 
 export function WorkspaceSearchPanel({
@@ -460,6 +642,20 @@ export function WorkspaceSearchPanel({
     setProjects,
   ] = useState<StoredProject[]>(
     readProjects,
+  )
+
+  const [
+    templates,
+    setTemplates,
+  ] = useState<StoredTemplate[]>(
+    readTemplates,
+  )
+
+  const [
+    collections,
+    setCollections,
+  ] = useState<StoredCollection[]>(
+    readCollections,
   )
 
   const [
@@ -499,7 +695,7 @@ export function WorkspaceSearchPanel({
   const [status, setStatus] =
     useState<Status>('idle')
 
-  const allItems =
+  const baseItems =
     useMemo<SearchItem[]>(
       () => [
         ...calculations.map(
@@ -673,6 +869,129 @@ export function WorkspaceSearchPanel({
       ],
     )
 
+  const allItems =
+    useMemo<SearchItem[]>(
+      () => [
+        ...baseItems,
+
+        ...templates.map(
+          (template) => {
+            const searchText =
+              normalizeSearch(
+                [
+                  template.name,
+                  template.description,
+                  template.calculatorTitle,
+                  template.category,
+                  ...template.tags,
+                  'reusable template',
+                ].join(' '),
+              )
+
+            return {
+              id: template.id,
+              type:
+                'template' as const,
+              title:
+                template.name,
+              subtitle:
+                template.calculatorTitle,
+              description:
+                template.description ||
+                `${template.inputs.length} stored calculator inputs.`,
+              category:
+                template.category,
+              calculatorId:
+                template.calculatorId,
+              calculatorTitle:
+                template.calculatorTitle,
+              createdAt:
+                template.updatedAt,
+              itemCount:
+                template.inputs.length,
+              tags:
+                template.tags,
+              notes:
+                template.description,
+              searchText,
+            }
+          },
+        ),
+
+        ...collections.map(
+          (collection) => {
+            const ruleText =
+              typeof collection.rule ===
+              'object' &&
+              collection.rule !== null
+                ? JSON.stringify(
+                    collection.rule,
+                  )
+                : ''
+
+            const count =
+              collection.mode ===
+              'manual'
+                ? collection
+                    .manualItemKeys
+                    .length
+                : 0
+
+            const searchText =
+              normalizeSearch(
+                [
+                  collection.name,
+                  collection.description,
+                  collection.mode,
+                  collection.isFavorite
+                    ? 'pinned'
+                    : '',
+                  ruleText,
+                  'workspace collection',
+                ].join(' '),
+              )
+
+            return {
+              id: collection.id,
+              type:
+                'collection' as const,
+              title:
+                collection.name,
+              subtitle:
+                collection.mode ===
+                'smart'
+                  ? 'Smart collection'
+                  : 'Manual collection',
+              description:
+                collection.description ||
+                (
+                  collection.mode ===
+                  'smart'
+                    ? 'Automatically updated saved workspace view.'
+                    : `${count} selected workspace records.`
+                ),
+              category:
+                'Workspace collection',
+              calculatorId: '',
+              calculatorTitle: '',
+              createdAt:
+                collection.updatedAt,
+              itemCount: count,
+              tags: [],
+              notes:
+                collection.description,
+              searchText,
+            }
+          },
+        ),
+      ],
+      [
+        baseItems,
+        templates,
+        collections,
+      ],
+    )
+
   const categoryOptions =
     useMemo(
       () =>
@@ -827,6 +1146,14 @@ export function WorkspaceSearchPanel({
       setProjects(
         readProjects(),
       )
+
+      setTemplates(
+        readTemplates(),
+      )
+
+      setCollections(
+        readCollections(),
+      )
     }
 
     DATA_EVENTS.forEach(
@@ -905,7 +1232,34 @@ export function WorkspaceSearchPanel({
         : item.type ===
             'comparison'
           ? 'compare'
-          : 'projects'
+          : item.type ===
+              'project'
+            ? 'projects'
+            : item.type ===
+                'template'
+              ? 'templates'
+              : 'collections'
+
+    if (
+      item.type === 'template' ||
+      item.type === 'collection'
+    ) {
+      onOpenTab(destination)
+      setStatus('opened')
+
+      window.setTimeout(() => {
+        document
+          .querySelector(
+            '#engineering-workspace',
+          )
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+      }, 180)
+
+      return
+    }
 
     sessionStorage.setItem(
       PENDING_TARGET_KEY,
@@ -972,9 +1326,9 @@ export function WorkspaceSearchPanel({
           </h3>
 
           <p>
-            Find calculations, comparison
-            snapshots and project files from
-            one searchable index.
+            Find calculations, comparisons,
+            projects, templates and collections
+            from one searchable index.
           </p>
         </div>
 
@@ -998,7 +1352,7 @@ export function WorkspaceSearchPanel({
           <input
             type="search"
             value={query}
-            placeholder="Search names, calculators, categories or project notes…"
+            placeholder="Search workspace names, calculators, categories, tags or collection rules…"
             onChange={(event) =>
               setQuery(
                 event.target.value,
@@ -1035,6 +1389,14 @@ export function WorkspaceSearchPanel({
 
             <option value="project">
               Projects
+            </option>
+
+            <option value="template">
+              Templates
+            </option>
+
+            <option value="collection">
+              Collections
             </option>
           </select>
         </label>
