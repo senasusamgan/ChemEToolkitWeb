@@ -12,6 +12,12 @@ const STORAGE_KEY =
 const PENDING_RESTORE_KEY =
   'cheme-toolkit.pending-calculation-restore.v1'
 
+const WORKSPACE_TARGET_EVENT =
+  'cheme-toolkit:workspace-open-target'
+
+const PENDING_WORKSPACE_TARGET_KEY =
+  'cheme-toolkit.pending-workspace-target.v1'
+
 const MAX_SAVED_CALCULATIONS = 50
 
 interface CalculationHistoryPanelProps {
@@ -1060,6 +1066,85 @@ export function CalculationHistoryPanel({
   }, [calculator.id])
 
   useEffect(() => {
+    function handleWorkspaceTarget(
+      event: Event,
+    ) {
+      const detail =
+        (
+          event as CustomEvent<{
+            type?: string
+            id?: string
+          }>
+        ).detail
+
+      if (
+        detail?.type !==
+          'calculation' ||
+        typeof detail.id !==
+          'string' ||
+        !calculations.some(
+          (calculation) =>
+            calculation.id ===
+            detail.id,
+        )
+      ) {
+        return
+      }
+
+      setIsExpanded(true)
+
+      sessionStorage.removeItem(
+        PENDING_WORKSPACE_TARGET_KEY,
+      )
+
+      window.setTimeout(() => {
+        const element =
+          document.getElementById(
+            `saved-calculation-${detail.id}`,
+          )
+
+        element?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+
+        element?.animate(
+          [
+            {
+              boxShadow:
+                '0 0 0 0 rgba(7, 156, 153, 0)',
+            },
+            {
+              boxShadow:
+                '0 0 0 5px rgba(7, 156, 153, 0.28)',
+            },
+            {
+              boxShadow:
+                '0 0 0 0 rgba(7, 156, 153, 0)',
+            },
+          ],
+          {
+            duration: 1800,
+            easing: 'ease-out',
+          },
+        )
+      }, 280)
+    }
+
+    window.addEventListener(
+      WORKSPACE_TARGET_EVENT,
+      handleWorkspaceTarget,
+    )
+
+    return () => {
+      window.removeEventListener(
+        WORKSPACE_TARGET_EVENT,
+        handleWorkspaceTarget,
+      )
+    }
+  }, [calculations])
+
+  useEffect(() => {
     const pendingRaw =
       sessionStorage.getItem(
         PENDING_RESTORE_KEY,
@@ -1443,6 +1528,7 @@ export function CalculationHistoryPanel({
 
                   return (
                     <article
+                      id={`saved-calculation-${calculation.id}`}
                       key={
                         calculation.id
                       }

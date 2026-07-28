@@ -823,3 +823,15 @@ textarea:focus {
     minmax(0, 1fr);
 }
 
+/* Workspace search tab layout v2 */
+
+.engineering-workspace-tabs {
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+}
+
+.engineering-workspace-panel-search {
+  grid-template-columns:
+    minmax(0, 1fr);
+}
+
