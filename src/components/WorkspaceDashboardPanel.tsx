@@ -14,6 +14,9 @@ const COMPARISONS_KEY =
 const PROJECTS_KEY =
   'cheme-toolkit.project-workspaces.v1'
 
+const TEMPLATES_KEY =
+  'cheme-toolkit.workspace-templates.v1'
+
 const LAST_BACKUP_KEY =
   'cheme-toolkit.last-backup-at.v1'
 
@@ -28,6 +31,7 @@ const DATA_EVENTS = [
   'cheme-toolkit:saved-calculations-changed',
   'cheme-toolkit:saved-comparisons-changed',
   'cheme-toolkit:project-workspaces-changed',
+  'cheme-toolkit:workspace-templates-changed',
   'cheme-toolkit:backup-exported',
 ]
 
@@ -39,6 +43,7 @@ type DashboardTab =
   | 'search'
   | 'metadata'
   | 'management'
+  | 'templates'
 
 type RecordType =
   | 'calculation'
@@ -79,10 +84,22 @@ interface DashboardProject {
   comparisonIds: string[]
 }
 
+interface DashboardTemplate {
+  id: string
+  name: string
+  calculatorTitle: string
+  category: string
+  createdAt: string
+  updatedAt: string
+  lastUsedAt: string
+  useCount: number
+}
+
 interface DashboardData {
   calculations: DashboardRecord[]
   comparisons: DashboardRecord[]
   projects: DashboardProject[]
+  templates: DashboardTemplate[]
   lastBackupAt: string
 }
 
@@ -294,6 +311,68 @@ function readProjects():
   })
 }
 
+function readTemplates():
+  DashboardTemplate[] {
+  return readArray(
+    TEMPLATES_KEY,
+  ).flatMap((value) => {
+    if (
+      !isRecord(value) ||
+      typeof value.id !==
+        'string' ||
+      typeof value.name !==
+        'string'
+    ) {
+      return []
+    }
+
+    const createdAt =
+      typeof value.createdAt ===
+      'string'
+        ? value.createdAt
+        : ''
+
+    return [{
+      id: value.id,
+      name: value.name,
+      calculatorTitle:
+        typeof value.calculatorTitle ===
+        'string'
+          ? value.calculatorTitle
+          : 'Unknown calculator',
+      category:
+        typeof value.category ===
+        'string'
+          ? value.category
+          : 'Uncategorized',
+      createdAt,
+      updatedAt:
+        typeof value.updatedAt ===
+        'string'
+          ? value.updatedAt
+          : createdAt,
+      lastUsedAt:
+        typeof value.lastUsedAt ===
+        'string'
+          ? value.lastUsedAt
+          : '',
+      useCount:
+        typeof value.useCount ===
+          'number' &&
+        Number.isFinite(
+          value.useCount,
+        )
+          ? Math.max(
+              0,
+              Math.floor(
+                value.useCount,
+              ),
+            )
+          : 0,
+    }]
+  })
+}
+
 function readDashboardData():
   DashboardData {
   let lastBackupAt = ''
@@ -318,6 +397,8 @@ function readDashboardData():
       ),
     projects:
       readProjects(),
+    templates:
+      readTemplates(),
     lastBackupAt,
   }
 }
@@ -427,6 +508,27 @@ export function WorkspaceDashboardPanel({
           )
           .slice(0, 4),
       [data.projects],
+    )
+
+  const topTemplates =
+    useMemo(
+      () =>
+        [...data.templates]
+          .sort(
+            (first, second) =>
+              second.useCount -
+                first.useCount ||
+              timestamp(
+                second.lastUsedAt ||
+                second.updatedAt,
+              ) -
+              timestamp(
+                first.lastUsedAt ||
+                first.updatedAt,
+              ),
+          )
+          .slice(0, 4),
+      [data.templates],
     )
 
   const popularTags =
@@ -755,6 +857,32 @@ export function WorkspaceDashboardPanel({
 
         <article>
           <span>
+            Templates
+          </span>
+
+          <strong>
+            {data.templates.length}
+          </strong>
+
+          <small>
+            {
+              data.templates.reduce(
+                (
+                  total,
+                  template,
+                ) =>
+                  total +
+                  template.useCount,
+                0,
+              )
+            }
+            {' '}
+            total uses
+          </small>
+        </article>
+
+        <article>
+          <span>
             Metadata health
           </span>
 
@@ -946,6 +1074,101 @@ export function WorkspaceDashboardPanel({
           )}
         </section>
 
+        <section className="workspace-dashboard-card workspace-dashboard-templates">
+          <header>
+            <div>
+              <span>
+                Reusable cases
+              </span>
+
+              <h4>
+                Most used templates
+              </h4>
+            </div>
+
+            <button
+              type="button"
+              onClick={() =>
+                openSection(
+                  'templates',
+                )
+              }
+            >
+              Template library
+            </button>
+          </header>
+
+          {topTemplates.length ===
+          0 ? (
+            <div className="workspace-dashboard-empty">
+              <strong>
+                No templates created
+              </strong>
+
+              <p>
+                Convert a saved calculation into
+                a reusable engineering starting
+                case.
+              </p>
+            </div>
+          ) : (
+            <div className="workspace-dashboard-template-list">
+              {topTemplates.map(
+                (template) => (
+                  <article
+                    key={template.id}
+                  >
+                    <div>
+                      <span>
+                        {template.category}
+                      </span>
+
+                      <strong>
+                        {template.name}
+                      </strong>
+
+                      <small>
+                        {
+                          template.calculatorTitle
+                        }
+                        {' · '}
+                        {template.useCount}
+                        {' '}
+                        use
+                        {template.useCount ===
+                        1
+                          ? ''
+                          : 's'}
+                      </small>
+
+                      <small>
+                        Last used:
+                        {' '}
+                        {template.lastUsedAt
+                          ? formatDate(
+                              template.lastUsedAt,
+                            )
+                          : 'Not used yet'}
+                      </small>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openSection(
+                          'templates',
+                        )
+                      }
+                    >
+                      Open
+                    </button>
+                  </article>
+                ),
+              )}
+            </div>
+          )}
+        </section>
+
         <section className="workspace-dashboard-card workspace-dashboard-tags">
           <header>
             <div>
@@ -1129,6 +1352,15 @@ export function WorkspaceDashboardPanel({
           }
         >
           Tags & Notes
+        </button>
+
+        <button
+          type="button"
+          onClick={() =>
+            openSection('templates')
+          }
+        >
+          Templates
         </button>
 
         <button

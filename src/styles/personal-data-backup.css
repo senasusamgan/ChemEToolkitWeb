@@ -425,3 +425,25 @@ button:hover:not(:disabled) {
     transform: none;
   }
 }
+
+
+/* Personal data templates summary v1 */
+
+.personal-data-summary-grid {
+  grid-template-columns:
+    repeat(6, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  .personal-data-summary-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .personal-data-summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}

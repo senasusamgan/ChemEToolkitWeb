@@ -527,3 +527,126 @@ button:hover {
     transform: none;
   }
 }
+
+
+/* Workspace dashboard templates v1 */
+
+.workspace-dashboard-stats {
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+}
+
+.workspace-dashboard-actions {
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+}
+
+.workspace-dashboard-template-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 7px;
+}
+
+.workspace-dashboard-template-list
+article {
+  min-width: 0;
+  padding: 11px;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+  align-items: center;
+  gap: 10px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.82);
+  border-radius: 8px;
+  background:
+    rgba(249, 246, 238, 0.46);
+}
+
+.workspace-dashboard-template-list
+article > div {
+  min-width: 0;
+}
+
+.workspace-dashboard-template-list
+article span {
+  display: block;
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.55rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.workspace-dashboard-template-list
+article strong,
+.workspace-dashboard-template-list
+article small {
+  display: block;
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.workspace-dashboard-template-list
+article strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.7rem;
+}
+
+.workspace-dashboard-template-list
+article small {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.57rem;
+}
+
+.workspace-dashboard-template-list
+article > button {
+  min-height: 34px;
+  padding: 0 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.48);
+  border-radius: 7px;
+  color:
+    var(--teal-dark, #007b78);
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.61rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+  .workspace-dashboard-stats {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .workspace-dashboard-stats {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .workspace-dashboard-actions {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .workspace-dashboard-stats,
+  .workspace-dashboard-actions {
+    grid-template-columns: 1fr;
+  }
+}
