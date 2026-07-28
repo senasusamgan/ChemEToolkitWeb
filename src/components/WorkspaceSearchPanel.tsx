@@ -63,6 +63,8 @@ interface StoredCalculation {
   calculatorTitle: string
   category: string
   createdAt: string
+  tags?: string[]
+  notes?: string
 }
 
 interface StoredComparison {
@@ -73,6 +75,8 @@ interface StoredComparison {
   category: string
   createdAt: string
   calculationSnapshots?: unknown[]
+  tags?: string[]
+  description?: string
 }
 
 interface StoredProject {
@@ -97,6 +101,8 @@ interface SearchItem {
   calculatorTitle: string
   createdAt: string
   itemCount: number
+  tags: string[]
+  notes: string
   searchText: string
 }
 
@@ -113,6 +119,45 @@ function isRecord(
     value !== null &&
     !Array.isArray(value)
   )
+}
+
+function normalizeTags(
+  value: unknown,
+): string[] {
+  if (!Array.isArray(value)) {
+    return []
+  }
+
+  const seen =
+    new Set<string>()
+
+  return value
+    .filter(
+      (tag): tag is string =>
+        typeof tag === 'string',
+    )
+    .map((tag) =>
+      tag
+        .trim()
+        .replace(/\s+/g, ' '),
+    )
+    .filter((tag) => {
+      if (!tag) {
+        return false
+      }
+
+      const key =
+        tag.toLocaleLowerCase(
+          'en-US',
+        )
+
+      if (seen.has(key)) {
+        return false
+      }
+
+      seen.add(key)
+      return true
+    })
 }
 
 function readArray(
@@ -326,6 +371,8 @@ function downloadSearchCsv(
       'Calculator / Project',
       'Category',
       'Created / updated',
+      'Tags',
+      'Notes / description',
     ],
     ...items.map((item) => [
       item.type,
@@ -333,6 +380,8 @@ function downloadSearchCsv(
       item.subtitle,
       item.category,
       formatDate(item.createdAt),
+      item.tags.join(' | '),
+      item.notes,
     ]),
   ]
 
@@ -436,6 +485,11 @@ export function WorkspaceSearchPanel({
   ] = useState('all')
 
   const [
+    tagFilter,
+    setTagFilter,
+  ] = useState('all')
+
+  const [
     sortMode,
     setSortMode,
   ] = useState<SortMode>(
@@ -450,12 +504,25 @@ export function WorkspaceSearchPanel({
       () => [
         ...calculations.map(
           (calculation) => {
+            const tags =
+              normalizeTags(
+                calculation.tags,
+              )
+
+            const notes =
+              typeof calculation.notes ===
+              'string'
+                ? calculation.notes
+                : ''
+
             const searchText =
               normalizeSearch(
                 [
                   calculation.name,
                   calculation.calculatorTitle,
                   calculation.category,
+                  notes,
+                  ...tags,
                 ].join(' '),
               )
 
@@ -469,6 +536,7 @@ export function WorkspaceSearchPanel({
               subtitle:
                 calculation.calculatorTitle,
               description:
+                notes ||
                 'Saved calculator inputs and results.',
               category:
                 calculation.category,
@@ -479,6 +547,8 @@ export function WorkspaceSearchPanel({
               createdAt:
                 calculation.createdAt,
               itemCount: 1,
+              tags,
+              notes,
               searchText,
             }
           },
@@ -491,12 +561,25 @@ export function WorkspaceSearchPanel({
                 .calculationSnapshots
                 ?.length ?? 0
 
+            const tags =
+              normalizeTags(
+                comparison.tags,
+              )
+
+            const description =
+              typeof comparison.description ===
+              'string'
+                ? comparison.description
+                : ''
+
             const searchText =
               normalizeSearch(
                 [
                   comparison.name,
                   comparison.calculatorTitle,
                   comparison.category,
+                  description,
+                  ...tags,
                 ].join(' '),
               )
 
@@ -510,6 +593,7 @@ export function WorkspaceSearchPanel({
               subtitle:
                 comparison.calculatorTitle,
               description:
+                description ||
                 `${count} source calculation${
                   count === 1
                     ? ''
@@ -524,6 +608,8 @@ export function WorkspaceSearchPanel({
               createdAt:
                 comparison.createdAt,
               itemCount: count,
+              tags,
+              notes: description,
               searchText,
             }
           },
@@ -572,6 +658,9 @@ export function WorkspaceSearchPanel({
               itemCount:
                 calculationCount +
                 comparisonCount,
+              tags: [],
+              notes:
+                project.notes,
               searchText,
             }
           },
@@ -630,6 +719,25 @@ export function WorkspaceSearchPanel({
       )
     }, [allItems])
 
+  const tagOptions =
+    useMemo(
+      () =>
+        Array.from(
+          new Set(
+            allItems.flatMap(
+              (item) =>
+                item.tags,
+            ),
+          ),
+        ).sort(
+          (first, second) =>
+            first.localeCompare(
+              second,
+            ),
+        ),
+      [allItems],
+    )
+
   const filteredItems =
     useMemo(() => {
       const normalizedQuery =
@@ -659,11 +767,19 @@ export function WorkspaceSearchPanel({
             item.calculatorId ===
               calculatorFilter
 
+          const tagMatches =
+            tagFilter === 'all' ||
+            item.tags.some(
+              (tag) =>
+                tag === tagFilter,
+            )
+
           return (
             queryMatches &&
             typeMatches &&
             categoryMatches &&
-            calculatorMatches
+            calculatorMatches &&
+            tagMatches
           )
         })
 
@@ -694,6 +810,7 @@ export function WorkspaceSearchPanel({
       typeFilter,
       categoryFilter,
       calculatorFilter,
+      tagFilter,
       sortMode,
     ])
 
@@ -774,6 +891,7 @@ export function WorkspaceSearchPanel({
     setTypeFilter('all')
     setCategoryFilter('all')
     setCalculatorFilter('all')
+    setTagFilter('all')
     setSortMode('newest')
   }
 
@@ -983,6 +1101,36 @@ export function WorkspaceSearchPanel({
 
         <label>
           <span>
+            Tag
+          </span>
+
+          <select
+            value={tagFilter}
+            onChange={(event) =>
+              setTagFilter(
+                event.target.value,
+              )
+            }
+          >
+            <option value="all">
+              All tags
+            </option>
+
+            {tagOptions.map(
+              (tag) => (
+                <option
+                  key={tag}
+                  value={tag}
+                >
+                  {tag}
+                </option>
+              ),
+            )}
+          </select>
+        </label>
+
+        <label>
+          <span>
             Sort
           </span>
 
@@ -1102,6 +1250,26 @@ export function WorkspaceSearchPanel({
                   <small>
                     {item.description}
                   </small>
+
+                  {item.tags.length > 0 ? (
+                    <div className="workspace-search-result-tags">
+                      {item.tags
+                        .slice(0, 4)
+                        .map((tag) => (
+                          <span
+                            key={tag}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+
+                      {item.tags.length > 4 ? (
+                        <small>
+                          +{item.tags.length - 4}
+                        </small>
+                      ) : null}
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="workspace-search-result-meta">

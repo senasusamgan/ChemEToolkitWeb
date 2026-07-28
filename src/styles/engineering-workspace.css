@@ -835,3 +835,29 @@ textarea:focus {
     minmax(0, 1fr);
 }
 
+/* Workspace metadata tab layout v2 */
+
+.engineering-workspace-tabs {
+  grid-template-columns:
+    repeat(6, minmax(0, 1fr));
+}
+
+.engineering-workspace-panel-metadata {
+  grid-template-columns:
+    minmax(0, 1fr);
+}
+
+@media (max-width: 1180px) {
+  .engineering-workspace-tabs {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .engineering-workspace-tabs button {
+    min-width: 150px;
+    flex: 1 0 auto;
+    scroll-snap-align: start;
+  }
+}
+

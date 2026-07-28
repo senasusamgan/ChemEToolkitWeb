@@ -79,8 +79,8 @@
   grid-template-columns:
     minmax(230px, 1.5fr)
     repeat(
-      4,
-      minmax(130px, 0.7fr)
+      5,
+      minmax(120px, 0.7fr)
     );
   gap: 9px;
 }
@@ -476,3 +476,40 @@ button:hover:not(:disabled) {
     transform: none;
   }
 }
+
+/* Workspace search metadata v1 */
+
+.workspace-search-result-tags {
+  margin-top: 7px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.workspace-search-result-tags
+> span {
+  min-height: 24px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  border:
+    1px solid
+    var(--line, #d9d0bd);
+  border-radius: 999px;
+  color:
+    var(--ink, #0b3556);
+  background:
+    rgba(249, 246, 238, 0.82);
+  font-size: 0.57rem;
+  font-weight: 750;
+}
+
+.workspace-search-result-tags
+> small {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.58rem;
+  font-weight: 800;
+}
+
