@@ -21,6 +21,7 @@ import { WorkspaceInsightsPanel } from './WorkspaceInsightsPanel'
 import { WorkspaceCommandCenterPanel } from './WorkspaceCommandCenterPanel'
 import { WorkspaceSmartLauncherPanel } from './WorkspaceSmartLauncherPanel'
 import { WorkspaceActivityFeedPanel } from './WorkspaceActivityFeedPanel'
+import { WorkspaceDataQualityAssistantPanel } from './WorkspaceDataQualityAssistantPanel'
 import '../styles/engineering-workspace.css'
 
 const ACTIVE_TAB_KEY =
@@ -52,8 +53,16 @@ const WORKSPACE_TABS = [
       'Review calculations, comparisons, projects, templates, collections and reports in one timeline.',
   },
   {
-    id: 'dashboard',
+    id: 'quality',
     number: '04',
+    label: 'Quality Assistant',
+    title: 'Workspace data quality assistant',
+    description:
+      'Find incomplete metadata, missing dates and empty workspace structures with local recommendations.',
+  },
+  {
+    id: 'dashboard',
+    number: '05',
     label: 'Overview',
     title: 'Workspace dashboard',
     description:
@@ -61,7 +70,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'insights',
-    number: '05',
+    number: '06',
     label: 'Insights',
     title: 'Workspace insights and analytics',
     description:
@@ -69,7 +78,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'records',
-    number: '06',
+    number: '07',
     label: 'Save & History',
     title: 'Calculation records',
     description:
@@ -77,7 +86,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'compare',
-    number: '07',
+    number: '08',
     label: 'Compare',
     title: 'Engineering comparison',
     description:
@@ -85,7 +94,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'projects',
-    number: '08',
+    number: '09',
     label: 'Projects',
     title: 'Project workspace',
     description:
@@ -93,7 +102,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'reports',
-    number: '09',
+    number: '10',
     label: 'Reports',
     title: 'Engineering report builder',
     description:
@@ -101,7 +110,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'search',
-    number: '10',
+    number: '11',
     label: 'Search',
     title: 'Workspace search',
     description:
@@ -109,7 +118,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'metadata',
-    number: '11',
+    number: '12',
     label: 'Tags & Notes',
     title: 'Workspace metadata',
     description:
@@ -117,7 +126,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'management',
-    number: '12',
+    number: '13',
     label: 'Manage',
     title: 'Record management',
     description:
@@ -125,7 +134,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'templates',
-    number: '13',
+    number: '14',
     label: 'Templates',
     title: 'Reusable engineering cases',
     description:
@@ -133,7 +142,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'collections',
-    number: '14',
+    number: '15',
     label: 'Collections',
     title: 'Smart workspace collections',
     description:
@@ -141,7 +150,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'data',
-    number: '15',
+    number: '16',
     label: 'Data & Backup',
     title: 'Personal data management',
     description:
@@ -410,6 +419,20 @@ export function EngineeringWorkspace({
             onOpenCalculator={
               onOpenCalculator
             }
+            onOpenTab={selectTab}
+          />
+        </div>
+      </div>
+
+      <div
+        id="workspace-panel-quality"
+        className="engineering-workspace-panel engineering-workspace-panel-quality"
+        role="tabpanel"
+        aria-labelledby="workspace-tab-quality"
+        hidden={activeTab !== 'quality'}
+      >
+        <div className="engineering-workspace-module">
+          <WorkspaceDataQualityAssistantPanel
             onOpenTab={selectTab}
           />
         </div>
