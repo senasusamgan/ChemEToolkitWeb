@@ -1,0 +1,24 @@
+{
+  "name": "ChemE Toolkit",
+  "short_name": "ChemE Toolkit",
+  "description": "A verified chemical engineering workspace with 380 calculators across 11 disciplines.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f3e8",
+  "theme_color": "#0b3556",
+  "lang": "en",
+  "categories": [
+    "education",
+    "productivity",
+    "engineering"
+  ],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

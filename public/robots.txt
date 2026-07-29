@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cheme-toolkit-web.vercel.app/sitemap.xml
