@@ -24,11 +24,38 @@ export function CalculatorStage({
           <small>{activeCalculator.category}</small>
         </div>
 
-        <CalculatorSearchCombobox
-          activeCalculator={activeCalculator}
-          calculators={liveCalculators}
-          onSelect={onSelect}
-        />
+        <div className="calculator-stage-desktop-search">
+          <CalculatorSearchCombobox
+            activeCalculator={activeCalculator}
+            calculators={liveCalculators}
+            onSelect={onSelect}
+          />
+        </div>
+
+        <label className="calculator-stage-mobile-select">
+          <span className="sr-only">
+            Choose a calculator
+          </span>
+
+          <select
+            aria-label="Choose a live calculator"
+            value={activeCalculator.id}
+            onChange={(event) =>
+              onSelect(event.target.value)
+            }
+          >
+            {liveCalculators.map(
+              (calculator) => (
+                <option
+                  key={calculator.id}
+                  value={calculator.id}
+                >
+                  {calculator.title}
+                </option>
+              ),
+            )}
+          </select>
+        </label>
       </header>
 
       <div

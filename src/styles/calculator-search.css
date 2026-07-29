@@ -330,3 +330,48 @@
     transform-origin: top center;
   }
 }
+
+/* Mobile native calculator selector v1 */
+
+.calculator-stage-desktop-search {
+  min-width: 0;
+}
+
+.calculator-stage-mobile-select {
+  display: none;
+  min-width: 0;
+}
+
+@media (max-width: 700px) {
+  .calculator-stage-desktop-search {
+    display: none;
+  }
+
+  .calculator-stage-mobile-select {
+    display: block;
+    width: 100%;
+  }
+
+  .calculator-stage-mobile-select select {
+    width: 100%;
+    min-width: 0;
+    min-height: 52px;
+    padding: 0 44px 0 15px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    outline: none;
+    color: var(--ink);
+    background: #ffffff;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  .calculator-stage-mobile-select
+  select:focus-visible {
+    border-color: var(--teal);
+    box-shadow:
+      0 0 0 4px
+      rgba(7, 156, 153, 0.11);
+  }
+}
