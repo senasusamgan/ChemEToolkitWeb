@@ -789,23 +789,13 @@ main {
   }
 }
 
-/* Modern process logo v1 */
-
-.brand {
-  color: var(--ink);
-  text-decoration: none;
-}
+/* Modern process logo v2 — layout preserving */
 
 .brand-logo {
-  width: 72px;
-  height: 72px;
-  flex: 0 0 72px;
+  width: 52px;
+  height: 62px;
+  flex: 0 0 52px;
   overflow: visible;
-}
-
-.brand-wordmark {
-  line-height: 1;
-  white-space: nowrap;
 }
 
 .brand-logo-frame,
@@ -858,21 +848,4 @@ main {
 
 .brand-logo-bubble {
   fill: var(--teal-dark);
-}
-
-.brand:hover .brand-logo {
-  transform: translateY(-1px);
-}
-
-@media (max-width: 760px) {
-  .brand {
-    gap: 10px;
-    font-size: clamp(1.3rem, 6vw, 1.75rem);
-  }
-
-  .brand-logo {
-    width: 58px;
-    height: 58px;
-    flex-basis: 58px;
-  }
 }
