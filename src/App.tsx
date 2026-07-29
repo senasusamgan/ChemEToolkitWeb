@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import './App.css'
 import './styles/calculator-polish.css'
 import './styles/mobile-v1.css'
@@ -6,7 +13,16 @@ import './styles/personal-toolkit.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
-import { EngineeringWorkspace } from './components/EngineeringWorkspace'
+const EngineeringWorkspace =
+  lazy(() =>
+    import(
+      './components/EngineeringWorkspace'
+    ).then((module) => ({
+      default:
+        module.EngineeringWorkspace,
+    })),
+  )
+
 import { calculators } from './data/calculators'
 import { categories } from './data/categories'
 
@@ -63,6 +79,17 @@ function App() {
     defaultCalculator.id,
   )
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const [
+    shouldLoadWorkspace,
+    setShouldLoadWorkspace,
+  ] = useState(false)
+
+  const workspaceSectionRef =
+    useRef<HTMLElement | null>(
+      null,
+    )
+
 
   const [favoriteCalculatorIds, setFavoriteCalculatorIds] =
     useState<string[]>(() =>
@@ -163,6 +190,72 @@ function App() {
         PERSONAL_DATA_CHANGE_EVENT,
         refreshPersonalToolkit,
       )
+    }
+  }, [])
+
+  useEffect(() => {
+    const element =
+      workspaceSectionRef.current
+
+    const fallbackTimer =
+      window.setTimeout(
+        () =>
+          setShouldLoadWorkspace(
+            true,
+          ),
+        2500,
+      )
+
+    if (
+      element === null ||
+      !(
+        'IntersectionObserver'
+        in window
+      )
+    ) {
+      return () =>
+        window.clearTimeout(
+          fallbackTimer,
+        )
+    }
+
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+          const shouldLoad =
+            entries.some(
+              (entry) =>
+                entry.isIntersecting,
+            )
+
+          if (!shouldLoad) {
+            return
+          }
+
+          window.clearTimeout(
+            fallbackTimer,
+          )
+
+          setShouldLoadWorkspace(
+            true,
+          )
+
+          observer.disconnect()
+        },
+        {
+          rootMargin:
+            '160px 0px',
+        },
+      )
+
+    observer.observe(element)
+
+    return () => {
+      window.clearTimeout(
+        fallbackTimer,
+      )
+
+      observer.disconnect()
     }
   }, [])
 
@@ -401,14 +494,41 @@ function App() {
 
 
       <section
+        ref={workspaceSectionRef}
         id="engineering-workspace"
         className="workspace-page-section notebook-grid"
       >
         <div className="workspace-page-inner">
-          <EngineeringWorkspace
-            calculator={activeCalculator}
-            onOpenCalculator={openCalculator}
-          />
+          {shouldLoadWorkspace ? (
+            <Suspense
+              fallback={
+                <div
+                  className="workspace-lazy-placeholder"
+                  role="status"
+                  aria-live="polite"
+                >
+                  Loading engineering workspace…
+                </div>
+              }
+            >
+              <EngineeringWorkspace
+                calculator={
+                  activeCalculator
+                }
+                onOpenCalculator={
+                  openCalculator
+                }
+              />
+            </Suspense>
+          ) : (
+            <div
+              className="workspace-lazy-placeholder"
+              role="status"
+              aria-live="polite"
+            >
+              Preparing engineering workspace…
+            </div>
+          )}
         </div>
       </section>
 

@@ -710,3 +710,23 @@ main {
     display: none;
   }
 }
+
+/* Engineering Workspace lazy loading v1 */
+
+.workspace-lazy-placeholder {
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  border:
+    1px dashed
+    rgba(7, 156, 153, 0.42);
+  border-radius: 12px;
+  color:
+    var(--muted, #647a8e);
+  background:
+    rgba(249, 246, 238, 0.56);
+  font-size: 0.72rem;
+  font-weight: 750;
+  text-align: center;
+}
