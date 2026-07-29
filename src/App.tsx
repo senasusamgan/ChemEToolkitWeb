@@ -330,6 +330,12 @@ function App() {
 
   return (
     <main id="top">
+      <a
+        className="skip-link"
+        href="#calculators"
+      >
+        Skip to calculator directory
+      </a>
       <header
         className="site-header"
         data-menu-open={isMobileMenuOpen}
@@ -713,11 +719,18 @@ function App() {
         </div>
       </section>
 
-      <section className="section calculators-section" id="calculators">
+      <section
+        className="section calculators-section"
+        id="calculators"
+        tabIndex={-1}
+        aria-labelledby="calculator-directory-title"
+      >
         <div className="catalog-top">
           <div className="section-heading">
             <p className="eyebrow">Start with a calculation</p>
-            <h2>Find the right tool, quickly.</h2>
+            <h2 id="calculator-directory-title">
+              Find the right tool, quickly.
+            </h2>
           </div>
 
           <div className="catalog-controls">
@@ -725,6 +738,7 @@ function App() {
               <span>⌕</span>
               <input
                 type="search"
+                aria-label="Search calculators"
                 placeholder="Search all 380 calculators"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
@@ -744,7 +758,12 @@ function App() {
           </div>
         </div>
 
-        <p className="result-count">
+        <p
+          className="result-count"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           {filteredCalculators.length} matching calculators
         </p>
 
