@@ -225,27 +225,44 @@ export function EngineeringWorkspace({
       React.KeyboardEvent<HTMLButtonElement>,
     currentIndex: number,
   ) {
-    if (
-      event.key !== 'ArrowLeft' &&
-      event.key !== 'ArrowRight'
+    const key =
+      event.key
+
+    let nextIndex =
+      currentIndex
+
+    if (key === 'ArrowRight') {
+      nextIndex =
+        (
+          currentIndex +
+          1
+        ) %
+        WORKSPACE_TABS.length
+    } else if (
+      key === 'ArrowLeft'
     ) {
+      nextIndex =
+        (
+          currentIndex -
+          1 +
+          WORKSPACE_TABS.length
+        ) %
+        WORKSPACE_TABS.length
+    } else if (
+      key === 'Home'
+    ) {
+      nextIndex = 0
+    } else if (
+      key === 'End'
+    ) {
+      nextIndex =
+        WORKSPACE_TABS.length -
+        1
+    } else {
       return
     }
 
     event.preventDefault()
-
-    const direction =
-      event.key === 'ArrowRight'
-        ? 1
-        : -1
-
-    const nextIndex =
-      (
-        currentIndex +
-        direction +
-        WORKSPACE_TABS.length
-      ) %
-      WORKSPACE_TABS.length
 
     const nextTab =
       WORKSPACE_TABS[nextIndex]
@@ -302,6 +319,7 @@ export function EngineeringWorkspace({
         className="engineering-workspace-tabs"
         role="tablist"
         aria-label="Engineering workspace tools"
+        aria-orientation="horizontal"
       >
         {WORKSPACE_TABS.map(
           (tab, index) => {
@@ -349,7 +367,11 @@ export function EngineeringWorkspace({
         )}
       </div>
 
-      <div className="engineering-workspace-active-heading">
+      <div
+        className="engineering-workspace-active-heading"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         <div>
           <span>
             {activeDefinition.number}
@@ -371,6 +393,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-command"
         className="engineering-workspace-panel engineering-workspace-panel-command"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-command"
         hidden={activeTab !== 'command'}
       >
@@ -391,6 +414,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-launcher"
         className="engineering-workspace-panel engineering-workspace-panel-launcher"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-launcher"
         hidden={activeTab !== 'launcher'}
       >
@@ -411,6 +435,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-activity"
         className="engineering-workspace-panel engineering-workspace-panel-activity"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-activity"
         hidden={activeTab !== 'activity'}
       >
@@ -428,6 +453,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-quality"
         className="engineering-workspace-panel engineering-workspace-panel-quality"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-quality"
         hidden={activeTab !== 'quality'}
       >
@@ -442,6 +468,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-insights"
         className="engineering-workspace-panel engineering-workspace-panel-insights"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-insights"
         hidden={activeTab !== 'insights'}
       >
@@ -454,6 +481,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-records"
         className="engineering-workspace-panel engineering-workspace-panel-records"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-records"
         hidden={activeTab !== 'records'}
       >
@@ -477,6 +505,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-compare"
         className="engineering-workspace-panel engineering-workspace-panel-compare"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-compare"
         hidden={activeTab !== 'compare'}
       >
@@ -495,6 +524,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-projects"
         className="engineering-workspace-panel engineering-workspace-panel-projects"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-projects"
         hidden={activeTab !== 'projects'}
       >
@@ -512,6 +542,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-data"
         className="engineering-workspace-panel engineering-workspace-panel-data"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-data"
         hidden={activeTab !== 'data'}
       >
@@ -524,6 +555,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-search"
         className="engineering-workspace-panel engineering-workspace-panel-search"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-search"
         hidden={activeTab !== 'search'}
       >
@@ -541,6 +573,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-metadata"
         className="engineering-workspace-panel engineering-workspace-panel-metadata"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-metadata"
         hidden={activeTab !== 'metadata'}
       >
@@ -553,6 +586,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-management"
         className="engineering-workspace-panel engineering-workspace-panel-management"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-management"
         hidden={activeTab !== 'management'}
       >
@@ -565,6 +599,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-dashboard"
         className="engineering-workspace-panel engineering-workspace-panel-dashboard"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-dashboard"
         hidden={activeTab !== 'dashboard'}
       >
@@ -582,6 +617,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-templates"
         className="engineering-workspace-panel engineering-workspace-panel-templates"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-templates"
         hidden={activeTab !== 'templates'}
       >
@@ -599,6 +635,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-collections"
         className="engineering-workspace-panel engineering-workspace-panel-collections"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-collections"
         hidden={activeTab !== 'collections'}
       >
@@ -616,6 +653,7 @@ export function EngineeringWorkspace({
         id="workspace-panel-reports"
         className="engineering-workspace-panel engineering-workspace-panel-reports"
         role="tabpanel"
+        tabIndex={0}
         aria-labelledby="workspace-tab-reports"
         hidden={activeTab !== 'reports'}
       >
