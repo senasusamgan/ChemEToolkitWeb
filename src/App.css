@@ -788,3 +788,91 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Modern process logo v1 */
+
+.brand {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brand-logo {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+  overflow: visible;
+}
+
+.brand-wordmark {
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.brand-logo-frame,
+.brand-logo-vessel,
+.brand-logo-process,
+.brand-logo-valve,
+.brand-logo-gauge {
+  vector-effect: non-scaling-stroke;
+}
+
+.brand-logo-frame {
+  fill: none;
+  stroke: var(--teal-dark);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.brand-logo-vessel {
+  fill: rgba(7, 156, 153, 0.07);
+  stroke: var(--teal-dark);
+  stroke-width: 3.2;
+}
+
+.brand-logo-liquid {
+  fill: var(--teal);
+  opacity: 0.28;
+}
+
+.brand-logo-process {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.brand-logo-valve {
+  fill: var(--paper);
+  stroke: var(--teal-dark);
+  stroke-width: 2.8;
+  stroke-linejoin: round;
+}
+
+.brand-logo-gauge {
+  fill: var(--paper);
+  stroke: var(--teal-dark);
+  stroke-width: 3.2;
+}
+
+.brand-logo-bubble {
+  fill: var(--teal-dark);
+}
+
+.brand:hover .brand-logo {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 760px) {
+  .brand {
+    gap: 10px;
+    font-size: clamp(1.3rem, 6vw, 1.75rem);
+  }
+
+  .brand-logo {
+    width: 58px;
+    height: 58px;
+    flex-basis: 58px;
+  }
+}
