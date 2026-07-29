@@ -589,8 +589,10 @@ export function WorkspaceSmartLauncherPanel({
 
   const calculatorCandidates =
     useMemo(
-      () =>
-        readPersonalCalculators(
+      () => {
+        void revision
+
+        return readPersonalCalculators(
           currentCalculator,
         ).map(
           (
@@ -618,7 +620,8 @@ export function WorkspaceSmartLauncherPanel({
               12 -
               calculator.priority,
           }),
-        ),
+        )
+      },
       [
         currentCalculator,
         revision,
