@@ -26,6 +26,73 @@ export function LegacyWorkbench({
     const document = frame?.contentDocument
     if (!frame || !document) return
 
+    const calculatorSelector =
+      Array.from(
+        document.querySelectorAll<HTMLSelectElement>(
+          'select',
+        ),
+      ).find((selector) =>
+        Array.from(
+          selector.options,
+        ).some(
+          (option) =>
+            option.value === calculatorId,
+        ),
+      )
+
+    if (
+      calculatorSelector &&
+      calculatorSelector.value !== calculatorId
+    ) {
+      const valueSetter =
+        Object.getOwnPropertyDescriptor(
+          Object.getPrototypeOf(
+            calculatorSelector,
+          ),
+          'value',
+        )?.set
+
+      if (valueSetter) {
+        valueSetter.call(
+          calculatorSelector,
+          calculatorId,
+        )
+      } else {
+        calculatorSelector.value =
+          calculatorId
+      }
+
+      const inputEvent =
+        document.createEvent(
+          'Event',
+        )
+
+      inputEvent.initEvent(
+        'input',
+        true,
+        false,
+      )
+
+      calculatorSelector.dispatchEvent(
+        inputEvent,
+      )
+
+      const changeEvent =
+        document.createEvent(
+          'Event',
+        )
+
+      changeEvent.initEvent(
+        'change',
+        true,
+        false,
+      )
+
+      calculatorSelector.dispatchEvent(
+        changeEvent,
+      )
+    }
+
     document.documentElement.classList.toggle(
       'cheme-parent-desktop',
       window.innerWidth >= 1024,
@@ -504,7 +571,7 @@ export function LegacyWorkbench({
     setFrameHeight((currentHeight) =>
       Math.abs(currentHeight - nextHeight) > 2 ? nextHeight : currentHeight,
     )
-  }, [])
+  }, [calculatorId])
 
   const connectObservers = useCallback(() => {
     resizeObserverRef.current?.disconnect()
