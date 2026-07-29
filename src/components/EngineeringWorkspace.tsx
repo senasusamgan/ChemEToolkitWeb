@@ -19,6 +19,7 @@ import { WorkspaceCollectionsPanel } from './WorkspaceCollectionsPanel'
 import { WorkspaceReportBuilderPanel } from './WorkspaceReportBuilderPanel'
 import { WorkspaceInsightsPanel } from './WorkspaceInsightsPanel'
 import { WorkspaceCommandCenterPanel } from './WorkspaceCommandCenterPanel'
+import { WorkspaceSmartLauncherPanel } from './WorkspaceSmartLauncherPanel'
 import '../styles/engineering-workspace.css'
 
 const ACTIVE_TAB_KEY =
@@ -34,8 +35,16 @@ const WORKSPACE_TABS = [
       'Continue recent work, launch core workspace tools and review important data-health actions.',
   },
   {
-    id: 'dashboard',
+    id: 'launcher',
     number: '02',
+    label: 'Smart Launcher',
+    title: 'Intent-based smart launcher',
+    description:
+      'Describe your goal and open the best matching Workspace tool or personal calculator.',
+  },
+  {
+    id: 'dashboard',
+    number: '03',
     label: 'Overview',
     title: 'Workspace dashboard',
     description:
@@ -43,7 +52,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'insights',
-    number: '03',
+    number: '04',
     label: 'Insights',
     title: 'Workspace insights and analytics',
     description:
@@ -51,7 +60,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'records',
-    number: '04',
+    number: '05',
     label: 'Save & History',
     title: 'Calculation records',
     description:
@@ -59,7 +68,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'compare',
-    number: '05',
+    number: '06',
     label: 'Compare',
     title: 'Engineering comparison',
     description:
@@ -67,7 +76,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'projects',
-    number: '06',
+    number: '07',
     label: 'Projects',
     title: 'Project workspace',
     description:
@@ -75,7 +84,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'reports',
-    number: '07',
+    number: '08',
     label: 'Reports',
     title: 'Engineering report builder',
     description:
@@ -83,7 +92,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'search',
-    number: '08',
+    number: '09',
     label: 'Search',
     title: 'Workspace search',
     description:
@@ -91,7 +100,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'metadata',
-    number: '09',
+    number: '10',
     label: 'Tags & Notes',
     title: 'Workspace metadata',
     description:
@@ -99,7 +108,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'management',
-    number: '10',
+    number: '11',
     label: 'Manage',
     title: 'Record management',
     description:
@@ -107,7 +116,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'templates',
-    number: '11',
+    number: '12',
     label: 'Templates',
     title: 'Reusable engineering cases',
     description:
@@ -115,7 +124,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'collections',
-    number: '12',
+    number: '13',
     label: 'Collections',
     title: 'Smart workspace collections',
     description:
@@ -123,7 +132,7 @@ const WORKSPACE_TABS = [
   },
   {
     id: 'data',
-    number: '13',
+    number: '14',
     label: 'Data & Backup',
     title: 'Personal data management',
     description:
@@ -349,6 +358,26 @@ export function EngineeringWorkspace({
       >
         <div className="engineering-workspace-module">
           <WorkspaceCommandCenterPanel
+            currentCalculator={
+              calculator
+            }
+            onOpenCalculator={
+              onOpenCalculator
+            }
+            onOpenTab={selectTab}
+          />
+        </div>
+      </div>
+
+      <div
+        id="workspace-panel-launcher"
+        className="engineering-workspace-panel engineering-workspace-panel-launcher"
+        role="tabpanel"
+        aria-labelledby="workspace-tab-launcher"
+        hidden={activeTab !== 'launcher'}
+      >
+        <div className="engineering-workspace-module">
+          <WorkspaceSmartLauncherPanel
             currentCalculator={
               calculator
             }
