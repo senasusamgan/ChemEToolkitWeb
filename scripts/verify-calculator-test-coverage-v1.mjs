@@ -3,6 +3,7 @@ import {
   readFileSync,
   readdirSync,
   statSync,
+  writeFileSync,
 } from 'node:fs'
 
 import {
@@ -21,6 +22,14 @@ const PACKAGE_PATH =
   'package.json'
 
 const EXPECTED_CALCULATOR_COUNT = 380
+
+const COVERAGE_BASELINE_PATH =
+  'scripts/calculator-test-coverage-baseline-v1.json'
+
+const WRITE_BASELINE =
+  process.argv.includes(
+    '--write-baseline',
+  )
 
 const TEST_FILE_PATTERN =
   /\.(?:test|spec)\.(?:ts|tsx|js|jsx|mjs|cjs)$/
@@ -656,6 +665,154 @@ const categories =
     ),
   )
 
+const currentGapIds =
+  withoutDirectTest
+    .map(
+      (row) =>
+        row.id,
+    )
+    .sort()
+
+let baselineGapIds = []
+let newGapIds = []
+let resolvedGapIds = []
+
+if (!WRITE_BASELINE) {
+  if (
+    !existsSync(
+      COVERAGE_BASELINE_PATH,
+    )
+  ) {
+    addError(
+      `Coverage baseline file is missing: ${COVERAGE_BASELINE_PATH}`,
+    )
+  } else {
+    try {
+      const baseline =
+        JSON.parse(
+          readFileSync(
+            COVERAGE_BASELINE_PATH,
+            'utf8',
+          ),
+        )
+
+      if (
+        baseline.schemaVersion !== 1
+      ) {
+        addError(
+          'Coverage baseline schemaVersion must be 1.',
+        )
+      }
+
+      if (
+        baseline.catalogCalculatorCount !==
+        calculators.length
+      ) {
+        addError(
+          `Coverage baseline catalog count is ${baseline.catalogCalculatorCount}; current catalog count is ${calculators.length}.`,
+        )
+      }
+
+      if (
+        !Array.isArray(
+          baseline.calculatorIdsWithoutDirectTestSignal,
+        )
+      ) {
+        addError(
+          'Coverage baseline calculator ID list is invalid.',
+        )
+      } else {
+        baselineGapIds =
+          unique(
+            baseline
+              .calculatorIdsWithoutDirectTestSignal
+              .filter(
+                (value) =>
+                  typeof value ===
+                  'string',
+              ),
+          ).sort()
+
+        if (
+          baselineGapIds.length !==
+          baseline
+            .calculatorIdsWithoutDirectTestSignal
+            .length
+        ) {
+          addError(
+            'Coverage baseline contains duplicate or invalid calculator IDs.',
+          )
+        }
+
+        if (
+          baseline.withoutDirectTestSignal !==
+          baselineGapIds.length
+        ) {
+          addError(
+            `Coverage baseline declares ${baseline.withoutDirectTestSignal} gaps but contains ${baselineGapIds.length} IDs.`,
+          )
+        }
+
+        const unknownBaselineIds =
+          baselineGapIds.filter(
+            (calculatorId) =>
+              !calculatorIdSet.has(
+                calculatorId,
+              ),
+          )
+
+        for (
+          const calculatorId
+          of unknownBaselineIds
+        ) {
+          addError(
+            `Coverage baseline contains unknown calculator ID "${calculatorId}".`,
+          )
+        }
+
+        const baselineGapIdSet =
+          new Set(
+            baselineGapIds,
+          )
+
+        const currentGapIdSet =
+          new Set(
+            currentGapIds,
+          )
+
+        newGapIds =
+          currentGapIds.filter(
+            (calculatorId) =>
+              !baselineGapIdSet.has(
+                calculatorId,
+              ),
+          )
+
+        resolvedGapIds =
+          baselineGapIds.filter(
+            (calculatorId) =>
+              !currentGapIdSet.has(
+                calculatorId,
+              ),
+          )
+
+        for (
+          const calculatorId
+          of newGapIds
+        ) {
+          addError(
+            `New calculator test coverage gap detected: "${calculatorId}".`,
+          )
+        }
+      }
+    } catch (error) {
+      addError(
+        `Coverage baseline could not be read: ${error instanceof Error ? error.message : String(error)}`,
+      )
+    }
+  }
+}
+
 if (errors.length > 0) {
   console.error(
     'CALCULATOR TEST COVERAGE AUDIT FAILED',
@@ -673,6 +830,51 @@ if (errors.length > 0) {
   }
 
   process.exit(1)
+}
+
+if (WRITE_BASELINE) {
+  const baseline = {
+    schemaVersion: 1,
+    catalogCalculatorCount:
+      calculators.length,
+    directTestSignals:
+      directlyTested.length,
+    withoutDirectTestSignal:
+      currentGapIds.length,
+    calculatorIdsWithoutDirectTestSignal:
+      currentGapIds,
+  }
+
+  writeFileSync(
+    COVERAGE_BASELINE_PATH,
+    `${JSON.stringify(
+      baseline,
+      null,
+      2,
+    )}\n`,
+  )
+
+  console.log(
+    'CALCULATOR TEST COVERAGE BASELINE WRITTEN',
+  )
+
+  console.log(
+    `Catalog calculators: ${calculators.length}`,
+  )
+
+  console.log(
+    `Direct test signals: ${directlyTested.length}`,
+  )
+
+  console.log(
+    `Baseline coverage gaps: ${currentGapIds.length}`,
+  )
+
+  console.log(
+    `Baseline file: ${COVERAGE_BASELINE_PATH}`,
+  )
+
+  process.exit(0)
 }
 
 console.log(
@@ -717,6 +919,18 @@ console.log(
 
 console.log(
   `Unmatched test files: ${unmatchedTestFiles.length}`,
+)
+
+console.log(
+  `Coverage baseline gaps: ${baselineGapIds.length}`,
+)
+
+console.log(
+  `New gaps since baseline: ${newGapIds.length}`,
+)
+
+console.log(
+  `Resolved gaps since baseline: ${resolvedGapIds.length}`,
 )
 
 console.log(
