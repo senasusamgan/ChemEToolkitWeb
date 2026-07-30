@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "catalogCalculatorCount": 380,
-  "directTestSignals": 205,
-  "withoutDirectTestSignal": 175,
+  "directTestSignals": 207,
+  "withoutDirectTestSignal": 173,
   "calculatorIdsWithoutDirectTestSignal": [
     "absorptionMinimumSolventRate",
     "activationEnergyTwoPoint",
@@ -96,7 +96,6 @@
     "isothermalIdealGasProcess",
     "kremserMethod",
     "limitingReactantExcess",
-    "linearInterpolationCalculator",
     "linearSystems",
     "liquidLiquidExtractionBalance",
     "liquidPhaseDiffusivity",
@@ -177,7 +176,6 @@
     "vaporQualityFromEnthalpy",
     "venturiMeter",
     "volumetricMassFlowConversion",
-    "weightedAverageProperty",
     "zieglerNicholsReactionCurveTuning"
   ]
 }

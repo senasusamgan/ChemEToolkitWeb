@@ -111,6 +111,8 @@ import { ReactionEngineeringBatch06Calculator } from '../features/reaction-engin
 import { ReactionEngineeringBatch07Calculator } from '../features/reaction-engineering/batch07/ReactionEngineeringBatch07Calculator'
 import { ReactionEngineeringBatch08Calculator } from '../features/reaction-engineering/batch08/ReactionEngineeringBatch08Calculator'
 import { ReactionEngineeringBatch09Calculator } from '../features/reaction-engineering/batch09/ReactionEngineeringBatch09Calculator'
+import { LinearInterpolationCalculator } from '../features/engineering-fundamentals/linear-interpolation/LinearInterpolationCalculator'
+import { WeightedAveragePropertyCalculator } from '../features/engineering-fundamentals/weighted-average-property/WeightedAveragePropertyCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -122,6 +124,14 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === 'linearInterpolationCalculator') {
+    return <LinearInterpolationCalculator />
+  }
+
+  if (calculatorId === 'weightedAverageProperty') {
+    return <WeightedAveragePropertyCalculator />
+  }
+
   if (calculatorId === 'binaryFlashCalculation') {
     return <BinaryFlashCalculator />
   }
