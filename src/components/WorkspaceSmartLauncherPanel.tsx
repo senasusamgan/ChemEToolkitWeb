@@ -65,6 +65,7 @@ interface Candidate {
   priority: number
   solverScore?: number
   matchReason?: string
+  quickSolutionLabel?: string
 }
 
 interface PersonalCalculator {
@@ -235,7 +236,7 @@ const WORKSPACE_TOOLS:
   ]
 
 const EXAMPLES = [
-  'Estimate pressure drop in a pipe',
+  'Find Reynolds number for density 998 kg/m3, velocity 2 m/s, diameter 0.05 m and viscosity 0.001 Pa s',
   'Find Reynolds number and flow regime',
   'Size a heat exchanger using LMTD',
   'Tune a PID controller',
@@ -658,6 +659,21 @@ export function WorkspaceSmartLauncherPanel({
               match.category,
             description:
               [
+                match.quickSolution
+                  ? 'Quick result: ' +
+                    match.quickSolution
+                      .resultLabel +
+                    ' = ' +
+                    match.quickSolution
+                      .resultValue
+                  : '',
+                match.quickSolution
+                  ? 'Steps: ' +
+                    match.quickSolution
+                      .steps
+                      .slice(0, 2)
+                      .join(' → ')
+                  : '',
                 match.guidance,
                 'Readiness: ' +
                   match.readinessPercent +
@@ -692,6 +708,20 @@ export function WorkspaceSmartLauncherPanel({
                 ...match.detectedInputs,
                 ...match.missingInputs,
                 match.equationHint,
+                match.quickSolution
+                  ?.resultLabel ??
+                  '',
+                match.quickSolution
+                  ?.resultValue ??
+                  '',
+                match.quickSolution
+                  ?.equation ??
+                  '',
+                ...(
+                  match.quickSolution
+                    ?.steps ??
+                  []
+                ),
               ].join(' '),
             calculatorId:
               match.calculatorId,
@@ -699,8 +729,14 @@ export function WorkspaceSmartLauncherPanel({
             solverScore:
               match.score,
             matchReason:
-              match.confidence +
-              ' confidence',
+              match.quickSolution
+                ? 'quick solve ready'
+                : match.confidence +
+                  ' confidence',
+            quickSolutionLabel:
+              match.quickSolution
+                ? 'Solved locally'
+                : undefined,
           }),
         ),
       [problemMatches],
@@ -967,11 +1003,13 @@ export function WorkspaceSmartLauncherPanel({
                 <div>
                   <small>
                     {candidate.kind ===
-                     'calculator'
-                       ? candidate.matchReason
-                         ? 'Problem Solver match'
-                         : 'Calculator'
-                       : 'Workspace tool'}
+                      'calculator'
+                        ? candidate.quickSolutionLabel
+                          ? candidate.quickSolutionLabel
+                          : candidate.matchReason
+                            ? 'Problem Solver match'
+                            : 'Calculator'
+                        : 'Workspace tool'}
                   </small>
 
                   <strong>
@@ -988,8 +1026,10 @@ export function WorkspaceSmartLauncherPanel({
                 </div>
 
                 <em>
-                  Open →
-                </em>
+                   {candidate.quickSolutionLabel
+                     ? 'Review result · Open →'
+                     : 'Open →'}
+                 </em>
               </button>
             ),
           )}

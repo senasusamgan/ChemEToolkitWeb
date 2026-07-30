@@ -1,3 +1,6 @@
+import { solveProblemQuickly } from './problemQuickSolveEngine.ts'
+import type { ProblemQuickSolution } from './problemQuickSolveEngine.ts'
+
 export interface ProblemSolverCalculator {
   id: string
   title: string
@@ -23,6 +26,7 @@ export interface ProblemSolverMatch {
   detectedInputs: string[]
   missingInputs: string[]
   readinessPercent: number
+  quickSolution?: ProblemQuickSolution
 }
 
 interface ProblemSolverGuidance {
@@ -1563,6 +1567,12 @@ export function rankProblemSolvers(
           guidance.requiredInputs,
         )
 
+      const quickSolution =
+        solveProblemQuickly(
+          calculator.id,
+          query,
+        )
+
       return {
         calculatorId:
           calculator.id,
@@ -1594,6 +1604,7 @@ export function rankProblemSolvers(
           readiness.missingInputs,
         readinessPercent:
           readiness.readinessPercent,
+        quickSolution,
       }
     })
     .filter(
