@@ -235,3 +235,113 @@ test(
     )
   },
 )
+
+test(
+  'quick-solves heat-exchanger LMTD',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'heatExchangerLMTD',
+          [
+            'Calculate LMTD.',
+            'Terminal temperature difference 1 60 K',
+            'and terminal temperature difference 2 30 K.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        43.2808512266689,
+      ) < 1e-10,
+    )
+
+    assert.equal(
+      solution.unit,
+      'K',
+    )
+  },
+)
+
+test(
+  'quick-solves required heat-exchanger area',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'heatExchangerAreaSizing',
+          [
+            'Size the heat exchanger.',
+            'Heat duty 500 kW,',
+            'overall heat transfer coefficient 800 W/m2K,',
+            'LMTD 40 K',
+            'and correction factor 0.9.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        17.36111111111111,
+      ) < 1e-10,
+    )
+
+    assert.equal(
+      solution.unit,
+      'm2',
+    )
+  },
+)
+
+test(
+  'quick-solves required CSTR volume',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'reactorDesign',
+          [
+            'Calculate the required CSTR volume.',
+            'Feed molar flow 2 mol/s,',
+            'conversion 75%',
+            'and exit reaction rate 0.5 mol/m3 s.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        3,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.unit,
+      'm3',
+    )
+  },
+)
+
+test(
+  'does not size an exchanger without a correction factor',
+  () => {
+    const solution =
+      solveProblemQuickly(
+        'heatExchangerAreaSizing',
+        [
+          'Heat duty 500 kW,',
+          'overall heat transfer coefficient 800 W/m2K',
+          'and LMTD 40 K.',
+        ].join(' '),
+      )
+
+    assert.equal(
+      solution,
+      undefined,
+    )
+  },
+)

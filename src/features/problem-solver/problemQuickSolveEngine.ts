@@ -629,6 +629,249 @@ function readThermalConductivity(
   )
 }
 
+function readFraction(
+  query: string,
+  aliases: string[],
+): number | null {
+  const cleanQuery =
+    normalizeText(query)
+
+  const aliasPattern =
+    createAlternatives(
+      aliases,
+    )
+
+  const pattern =
+    new RegExp(
+      '(?:^|\\b)(?:' +
+        aliasPattern +
+        ')(?=\\b|\\s|:|=)\\s*(?:=|:|is)?\\s*(' +
+        NUMBER_SOURCE +
+        ')\\s*(%|percent)?',
+    )
+
+  const match =
+    pattern.exec(
+      cleanQuery,
+    )
+
+  if (!match) {
+    return null
+  }
+
+  let value =
+    Number(
+      match[1],
+    )
+
+  if (
+    !Number.isFinite(
+      value,
+    )
+  ) {
+    return null
+  }
+
+  if (
+    match[2] ||
+    value > 1
+  ) {
+    value /= 100
+  }
+
+  if (
+    value < 0 ||
+    value > 1
+  ) {
+    return null
+  }
+
+  return value
+}
+
+function readTemperatureDifference(
+  query: string,
+  aliases: string[],
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      aliases,
+      [
+        'deg c',
+        'celsius',
+        'k',
+        'c',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  return Math.abs(
+    measurement.value,
+  )
+}
+
+function readHeatDuty(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'heat duty',
+        'heat load',
+        'thermal duty',
+        'isi yuku',
+      ],
+      [
+        'mw',
+        'kw',
+        'w',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'mw'
+  ) {
+    return (
+      measurement.value *
+      1_000_000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'kw'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function readOverallHeatTransferCoefficient(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'overall heat transfer coefficient',
+        'overall u value',
+        'u value',
+      ],
+      [
+        'kw/m2 k',
+        'kw/m2k',
+        'w/m2 k',
+        'w/m2k',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+      'kw/m2 k' ||
+    measurement.unit ===
+      'kw/m2k'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function readMolarFlow(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'feed molar flow',
+        'molar feed rate',
+        'feed rate',
+        'besleme molar debisi',
+      ],
+      [
+        'kmol/s',
+        'mol/s',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'kmol/s'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function readVolumetricReactionRate(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'exit reaction rate',
+        'reaction rate',
+        'exit rate',
+        'reaksiyon hizi',
+      ],
+      [
+        'kmol/m3 s',
+        'kmol/m3s',
+        'mol/m3 s',
+        'mol/m3s',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+      'kmol/m3 s' ||
+    measurement.unit ===
+      'kmol/m3s'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
 function formatNumber(
   value: number,
 ): string {
@@ -1330,6 +1573,271 @@ function solveIdealGas(
   }
 }
 
+function solveHeatExchangerLmtd(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const deltaT1 =
+    readTemperatureDifference(
+      query,
+      [
+        'terminal temperature difference 1',
+        'temperature difference 1',
+        'delta t1',
+        'dt1',
+        'sicaklik farki 1',
+      ],
+    )
+
+  const deltaT2 =
+    readTemperatureDifference(
+      query,
+      [
+        'terminal temperature difference 2',
+        'temperature difference 2',
+        'delta t2',
+        'dt2',
+        'sicaklik farki 2',
+      ],
+    )
+
+  if (
+    deltaT1 === null ||
+    deltaT2 === null ||
+    deltaT1 <= 0 ||
+    deltaT2 <= 0
+  ) {
+    return undefined
+  }
+
+  const lmtd =
+    Math.abs(
+      deltaT1 -
+      deltaT2,
+    ) < 1e-12
+      ? deltaT1
+      : (
+          deltaT1 -
+          deltaT2
+        ) /
+        Math.log(
+          deltaT1 /
+          deltaT2,
+        )
+
+  if (
+    !Number.isFinite(
+      lmtd,
+    ) ||
+    lmtd <= 0
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Log mean temperature difference',
+    resultValue:
+      `${formatNumber(
+        lmtd,
+      )} K`,
+    numericValue:
+      lmtd,
+    unit: 'K',
+    equation:
+      'ΔTlm = (ΔT₁ − ΔT₂)/ln(ΔT₁/ΔT₂)',
+    steps: [
+      `ΔT₁ = ${formatNumber(
+        deltaT1,
+      )} K`,
+      `ΔT₂ = ${formatNumber(
+        deltaT2,
+      )} K`,
+      `LMTD = ${formatNumber(
+        lmtd,
+      )} K`,
+    ],
+    assumptions: [
+      'Both terminal temperature differences are positive',
+      'A consistent flow arrangement is used',
+    ],
+  }
+}
+
+function solveHeatExchangerArea(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const heatDuty =
+    readHeatDuty(
+      query,
+    )
+
+  const overallCoefficient =
+    readOverallHeatTransferCoefficient(
+      query,
+    )
+
+  const lmtd =
+    readTemperatureDifference(
+      query,
+      [
+        'log mean temperature difference',
+        'lmtd',
+      ],
+    )
+
+  const correctionFactor =
+    readFraction(
+      query,
+      [
+        'correction factor',
+        'lmtd correction factor',
+        'duzeltme faktoru',
+      ],
+    )
+
+  if (
+    heatDuty === null ||
+    overallCoefficient === null ||
+    lmtd === null ||
+    correctionFactor === null ||
+    heatDuty < 0 ||
+    overallCoefficient <= 0 ||
+    lmtd <= 0 ||
+    correctionFactor <= 0
+  ) {
+    return undefined
+  }
+
+  const area =
+    heatDuty /
+    (
+      overallCoefficient *
+      correctionFactor *
+      lmtd
+    )
+
+  if (
+    !Number.isFinite(
+      area,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Required heat-exchanger area',
+    resultValue:
+      `${formatNumber(
+        area,
+      )} m2`,
+    numericValue:
+      area,
+    unit: 'm2',
+    equation:
+      'A = Q/(UFΔTlm)',
+    steps: [
+      `Heat duty = ${formatNumber(
+        heatDuty,
+      )} W`,
+      `Effective driving force = ${formatNumber(
+        correctionFactor *
+        lmtd,
+      )} K`,
+      `Required area = ${formatNumber(
+        area,
+      )} m2`,
+    ],
+    assumptions: [
+      'Overall heat-transfer coefficient is constant',
+      'The supplied LMTD correction factor is applicable',
+      'Heat losses are neglected',
+    ],
+  }
+}
+
+function solveCstrVolume(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const feedMolarFlow =
+    readMolarFlow(
+      query,
+    )
+
+  const conversion =
+    readFraction(
+      query,
+      [
+        'target conversion',
+        'conversion',
+        'donusum',
+      ],
+    )
+
+  const exitReactionRate =
+    readVolumetricReactionRate(
+      query,
+    )
+
+  if (
+    feedMolarFlow === null ||
+    conversion === null ||
+    exitReactionRate === null ||
+    feedMolarFlow < 0 ||
+    conversion < 0 ||
+    conversion > 1 ||
+    exitReactionRate <= 0
+  ) {
+    return undefined
+  }
+
+  const volume =
+    (
+      feedMolarFlow *
+      conversion
+    ) /
+    exitReactionRate
+
+  if (
+    !Number.isFinite(
+      volume,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Required CSTR volume',
+    resultValue:
+      `${formatNumber(
+        volume,
+      )} m3`,
+    numericValue:
+      volume,
+    unit: 'm3',
+    equation:
+      'V = Fₐ₀X/(−rₐ)exit',
+    steps: [
+      `Reacted molar flow = ${formatNumber(
+        feedMolarFlow *
+        conversion,
+      )} mol/s`,
+      `Exit reaction rate = ${formatNumber(
+        exitReactionRate,
+      )} mol/(m3 s)`,
+      `CSTR volume = ${formatNumber(
+        volume,
+      )} m3`,
+    ],
+    assumptions: [
+      'Steady-state operation',
+      'Perfect mixing',
+      'The reaction rate is evaluated at exit conditions',
+    ],
+  }
+}
+
 export function solveProblemQuickly(
   calculatorId: string,
   query: string,
@@ -1357,6 +1865,21 @@ export function solveProblemQuickly(
 
     case 'idealGas':
       return solveIdealGas(
+        query,
+      )
+
+    case 'heatExchangerLMTD':
+      return solveHeatExchangerLmtd(
+        query,
+      )
+
+    case 'heatExchangerAreaSizing':
+      return solveHeatExchangerArea(
+        query,
+      )
+
+    case 'reactorDesign':
+      return solveCstrVolume(
         query,
       )
 
