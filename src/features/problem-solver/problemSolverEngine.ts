@@ -20,6 +20,9 @@ export interface ProblemSolverMatch {
   guidance: string
   requiredInputs: string[]
   equationHint: string
+  detectedInputs: string[]
+  missingInputs: string[]
+  readinessPercent: number
 }
 
 interface ProblemSolverGuidance {
@@ -920,6 +923,230 @@ const DEFAULT_GUIDANCE:
       'Use the equation documented by the selected calculator.',
   }
 
+const INPUT_ALIASES:
+  Record<string, string[]> = {
+    'pipe length': [
+      'pipe length',
+      'length',
+      'boru uzunlugu',
+    ],
+    'inside diameter': [
+      'inside diameter',
+      'internal diameter',
+      'pipe diameter',
+      'diameter',
+      'boru capi',
+      'cap',
+    ],
+    'characteristic diameter': [
+      'characteristic diameter',
+      'hydraulic diameter',
+      'diameter',
+      'boru capi',
+      'cap',
+    ],
+    'characteristic length': [
+      'characteristic length',
+      'length',
+      'karakteristik uzunluk',
+    ],
+    'flow rate': [
+      'flow rate',
+      'volumetric flow',
+      'mass flow',
+      'debi',
+    ],
+    'flow rate or velocity': [
+      'flow rate',
+      'velocity',
+      'volumetric flow',
+      'mass flow',
+      'debi',
+      'hiz',
+    ],
+    velocity: [
+      'velocity',
+      'fluid velocity',
+      'hiz',
+    ],
+    'fluid density': [
+      'fluid density',
+      'density',
+      'yogunluk',
+      'rho',
+    ],
+    density: [
+      'density',
+      'fluid density',
+      'yogunluk',
+      'rho',
+    ],
+    'fluid viscosity': [
+      'fluid viscosity',
+      'dynamic viscosity',
+      'viscosity',
+      'viskozite',
+      'mu',
+    ],
+    'dynamic viscosity': [
+      'dynamic viscosity',
+      'fluid viscosity',
+      'viscosity',
+      'viskozite',
+      'mu',
+    ],
+    viscosity: [
+      'viscosity',
+      'dynamic viscosity',
+      'viskozite',
+      'mu',
+    ],
+    roughness: [
+      'roughness',
+      'surface roughness',
+      'puruzluluk',
+      'epsilon',
+    ],
+    pressure: [
+      'pressure',
+      'basinc',
+    ],
+    volume: [
+      'volume',
+      'hacim',
+    ],
+    'amount of gas': [
+      'amount of gas',
+      'number of moles',
+      'moles',
+      'mol sayisi',
+    ],
+    'absolute temperature': [
+      'absolute temperature',
+      'temperature',
+      'sicaklik',
+    ],
+    temperature: [
+      'temperature',
+      'sicaklik',
+    ],
+    'heat duty': [
+      'heat duty',
+      'heat load',
+      'thermal duty',
+      'isi yuku',
+    ],
+    'overall U value': [
+      'overall u value',
+      'overall heat transfer coefficient',
+      'u value',
+    ],
+    'correction factor': [
+      'correction factor',
+      'duzeltme faktoru',
+    ],
+    'convection coefficient': [
+      'convection coefficient',
+      'heat transfer coefficient',
+      'tasinim katsayisi',
+    ],
+    'solid thermal conductivity': [
+      'solid thermal conductivity',
+      'thermal conductivity',
+      'isi iletim katsayisi',
+    ],
+    'feed molar flow': [
+      'feed molar flow',
+      'molar feed rate',
+      'besleme molar debisi',
+    ],
+    conversion: [
+      'conversion',
+      'donusum',
+    ],
+    'target conversion': [
+      'target conversion',
+      'conversion',
+      'hedef donusum',
+    ],
+    'exit reaction rate': [
+      'exit reaction rate',
+      'reaction rate',
+      'reaksiyon hizi',
+    ],
+    'initial concentration': [
+      'initial concentration',
+      'initial molarity',
+      'baslangic derisimi',
+    ],
+    'rate constant': [
+      'rate constant',
+      'kinetic constant',
+      'hiz sabiti',
+    ],
+    'process gain': [
+      'process gain',
+      'gain',
+      'proses kazanci',
+    ],
+    'time constant': [
+      'time constant',
+      'zaman sabiti',
+    ],
+    'dead time': [
+      'dead time',
+      'delay time',
+      'olu zaman',
+      'gecikme',
+    ],
+    diffusivity: [
+      'diffusivity',
+      'diffusion coefficient',
+      'difuzyon katsayisi',
+    ],
+    'concentration difference': [
+      'concentration difference',
+      'concentration gradient',
+      'derisim farki',
+    ],
+    'diffusion distance': [
+      'diffusion distance',
+      'film thickness',
+      'difuzyon mesafesi',
+    ],
+    'discount rate': [
+      'discount rate',
+      'iskonto orani',
+    ],
+    'initial investment': [
+      'initial investment',
+      'capital investment',
+      'ilk yatirim',
+    ],
+    'project life': [
+      'project life',
+      'project duration',
+      'proje omru',
+    ],
+  }
+
+const QUALITATIVE_INPUTS =
+  new Set([
+    'flow arrangement',
+    'gas constant basis',
+    'rate law',
+    'stoichiometry',
+    'temperature basis',
+    'controller form',
+    'tuning objective',
+    'phase',
+    'property-model assumptions',
+    'process connections',
+    'steady or unsteady state',
+    'reaction information',
+    'boundary conditions',
+  ])
+
 function normalize(
   value: string,
 ): string {
@@ -1015,6 +1242,138 @@ function buildProblemGuidance(
     ] ??
     DEFAULT_GUIDANCE
   )
+}
+
+function escapeRegExp(
+  value: string,
+): string {
+  return value.replace(
+    /[.*+?^$\{\}()|[\]\\]/g,
+    '\\$&',
+  )
+}
+
+function hasInputEvidence(
+  query: string,
+  input: string,
+): boolean {
+  const aliases = [
+    ...(
+      INPUT_ALIASES[input] ??
+      []
+    ),
+    ...input.split(
+      /\s+or\s+/,
+    ),
+    input,
+  ]
+
+  const qualitative =
+    QUALITATIVE_INPUTS.has(
+      input,
+    )
+
+  return aliases.some(
+    (alias) => {
+      const cleanAlias =
+        normalize(alias)
+
+      if (
+        cleanAlias.length < 2 ||
+        !query.includes(
+          cleanAlias,
+        )
+      ) {
+        return false
+      }
+
+      if (qualitative) {
+        return true
+      }
+
+      const aliasPattern =
+        escapeRegExp(
+          cleanAlias,
+        ).replace(
+          /\s+/g,
+          '\\s+',
+        )
+
+      const valueAfter =
+        new RegExp(
+          `${aliasPattern}(?:\\s+[a-z]+){0,3}\\s+[-+]?\\d`,
+        )
+
+      const valueBefore =
+        new RegExp(
+          `[-+]?\\d(?:\\s+[a-z0-9]+){0,3}\\s+${aliasPattern}`,
+        )
+
+      return (
+        valueAfter.test(
+          query,
+        ) ||
+        valueBefore.test(
+          query,
+        )
+      )
+    },
+  )
+}
+
+function detectInputReadiness(
+  query: string,
+  requiredInputs: string[],
+): {
+  detectedInputs: string[]
+  missingInputs: string[]
+  readinessPercent: number
+} {
+  if (requiredInputs.length === 0) {
+    return {
+      detectedInputs: [],
+      missingInputs: [],
+      readinessPercent: 100,
+    }
+  }
+
+  const cleanQuery =
+    normalize(query)
+
+  const detectedInputs =
+    requiredInputs.filter(
+      (input) =>
+        hasInputEvidence(
+          cleanQuery,
+          input,
+        ),
+    )
+
+  const detectedSet =
+    new Set(
+      detectedInputs,
+    )
+
+  const missingInputs =
+    requiredInputs.filter(
+      (input) =>
+        !detectedSet.has(
+          input,
+        ),
+    )
+
+  return {
+    detectedInputs,
+    missingInputs,
+    readinessPercent:
+      Math.round(
+        (
+          detectedInputs.length /
+          requiredInputs.length
+        ) *
+        100,
+      ),
+  }
 }
 
 function confidenceForScore(
@@ -1198,6 +1557,12 @@ export function rankProblemSolvers(
           cleanQuery,
         )
 
+      const readiness =
+        detectInputReadiness(
+          cleanQuery,
+          guidance.requiredInputs,
+        )
+
       return {
         calculatorId:
           calculator.id,
@@ -1223,6 +1588,12 @@ export function rankProblemSolvers(
           guidance.requiredInputs,
         equationHint:
           guidance.equationHint,
+        detectedInputs:
+          readiness.detectedInputs,
+        missingInputs:
+          readiness.missingInputs,
+        readinessPercent:
+          readiness.readinessPercent,
       }
     })
     .filter(

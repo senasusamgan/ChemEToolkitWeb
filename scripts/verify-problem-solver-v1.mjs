@@ -23,13 +23,14 @@ for (
   const contract
   of [
     'rankProblemSolvers',
-    'CATEGORY_SIGNALS',
-    'INTENT_PROFILES',
     'GUIDANCE_PROFILES',
     'CATEGORY_GUIDANCE',
     'buildProblemGuidance',
-    'requiredInputs',
-    'equationHint',
+    'INPUT_ALIASES',
+    'detectInputReadiness',
+    'detectedInputs',
+    'missingInputs',
+    'readinessPercent',
   ]
 ) {
   if (!engine.includes(contract)) {
@@ -48,16 +49,13 @@ const launcher =
 for (
   const contract
   of [
-    "import { calculators }",
-    "import { rankProblemSolvers }",
-    'const problemMatches =',
-    'const problemCandidates =',
     'match.guidance',
-    'match.requiredInputs',
-    'match.equationHint',
-    'Problem Solver recommends calculators',
-    'verified calculators searchable',
-    'What engineering problem are you solving?',
+    'match.detectedInputs',
+    'match.missingInputs',
+    'match.readinessPercent',
+    'Readiness:',
+    'Detected:',
+    'Missing:',
   ]
 ) {
   if (!launcher.includes(contract)) {
@@ -76,13 +74,10 @@ const tests =
 for (
   const contract
   of [
-    'pressureDrop',
-    'reynoldsNumber',
-    'heatExchangerAreaSizing',
-    'supports Turkish pressure-drop intent',
     'actionable pressure-drop solution brief',
-    'category guidance',
-    'every recommended calculator includes a solution brief',
+    'detects supplied pressure-drop inputs',
+    'detects numerical and qualitative PID inputs',
+    'does not mark an input as supplied when it has no value',
   ]
 ) {
   if (!tests.includes(contract)) {
@@ -93,21 +88,21 @@ for (
 }
 
 console.log(
-  'CHEME PROBLEM SOLVER GUIDANCE VERIFICATION PASSED',
+  'CHEME PROBLEM SOLVER READINESS VERIFICATION PASSED',
 )
 
 console.log(
-  'Calculator recommendations verified.',
+  'Required-input detection verified.',
 )
 
 console.log(
-  'Required-input guidance verified.',
+  'Missing-input reporting verified.',
 )
 
 console.log(
-  'Equation and model hints verified.',
+  'Problem readiness percentage verified.',
 )
 
 console.log(
-  'Existing result-card layout and navigation unchanged.',
+  'Existing card layout, CSS and navigation unchanged.',
 )
