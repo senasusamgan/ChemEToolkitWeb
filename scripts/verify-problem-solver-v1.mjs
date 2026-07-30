@@ -57,6 +57,9 @@ for (
     'solveHeatExchangerLmtd',
     'solveHeatExchangerArea',
     'solveCstrVolume',
+    'solveHydrostaticPressure',
+    'solvePlaneWallConduction',
+    'solveFicksFirstLaw',
     'solveProblemQuickly',
     'Swamee–Jain',
   ]
@@ -131,6 +134,10 @@ for (
     'quick-solves heat-exchanger LMTD',
     'quick-solves required heat-exchanger area',
     'quick-solves required CSTR volume',
+    'quick-solves hydrostatic pressure',
+    'quick-solves plane-wall conduction',
+    'quick-solves Ficks first-law flux',
+    'does not solve Ficks first law without diffusion distance',
     'does not size an exchanger without a correction factor',
     'does not invent a result when inputs are incomplete',
   ]

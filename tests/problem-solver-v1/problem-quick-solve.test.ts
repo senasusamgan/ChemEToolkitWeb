@@ -345,3 +345,127 @@ test(
     )
   },
 )
+
+test(
+  'quick-solves hydrostatic pressure',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'hydrostaticPressure',
+          [
+            'Calculate hydrostatic pressure.',
+            'Fluid density 1000 kg/m3',
+            'and liquid depth 5 m.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        49_033.25,
+      ) < 1e-8,
+    )
+
+    assert.equal(
+      solution.unit,
+      'Pa',
+    )
+
+    assert.equal(
+      solution.equation,
+      'ΔP = ρgh',
+    )
+  },
+)
+
+test(
+  'quick-solves plane-wall conduction',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'planeWallConduction',
+          [
+            'Calculate plane wall heat transfer.',
+            'Thermal conductivity 0.8 W/mK,',
+            'wall area 10 m2,',
+            'temperature difference 25 K',
+            'and wall thickness 0.2 m.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        1000,
+      ) < 1e-10,
+    )
+
+    assert.equal(
+      solution.unit,
+      'W',
+    )
+
+    assert.equal(
+      solution.equation,
+      'Q = kAΔT/L',
+    )
+  },
+)
+
+test(
+  'quick-solves Ficks first-law flux',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'ficksFirstLaw',
+          [
+            'Calculate diffusive flux.',
+            'Diffusivity 2e-9 m2/s,',
+            'concentration difference 500 mol/m3',
+            'and diffusion distance 0.001 m.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.001,
+      ) < 1e-14,
+    )
+
+    assert.equal(
+      solution.unit,
+      'mol/(m2 s)',
+    )
+
+    assert.match(
+      solution.equation,
+      /Jₐ/,
+    )
+  },
+)
+
+test(
+  'does not solve Ficks first law without diffusion distance',
+  () => {
+    const solution =
+      solveProblemQuickly(
+        'ficksFirstLaw',
+        [
+          'Diffusivity 2e-9 m2/s',
+          'and concentration difference 500 mol/m3.',
+        ].join(' '),
+      )
+
+    assert.equal(
+      solution,
+      undefined,
+    )
+  },
+)

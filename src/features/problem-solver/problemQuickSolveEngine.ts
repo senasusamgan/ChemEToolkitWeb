@@ -872,6 +872,126 @@ function readVolumetricReactionRate(
   return measurement.value
 }
 
+function readArea(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'heat transfer area',
+        'wall area',
+        'surface area',
+        'area',
+        'alan',
+      ],
+      [
+        'mm2',
+        'cm2',
+        'm2',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'mm2'
+  ) {
+    return (
+      measurement.value /
+      1_000_000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'cm2'
+  ) {
+    return (
+      measurement.value /
+      10_000
+    )
+  }
+
+  return measurement.value
+}
+
+function readDiffusivity(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'diffusion coefficient',
+        'mass diffusivity',
+        'diffusivity',
+        'difuzyon katsayisi',
+      ],
+      [
+        'cm2/s',
+        'm2/s',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'cm2/s'
+  ) {
+    return (
+      measurement.value *
+      0.0001
+    )
+  }
+
+  return measurement.value
+}
+
+function readConcentrationDifference(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'concentration difference',
+        'delta concentration',
+        'concentration gradient numerator',
+        'derisim farki',
+      ],
+      [
+        'kmol/m3',
+        'mol/m3',
+        'mol/l',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+      'kmol/m3' ||
+    measurement.unit ===
+      'mol/l'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
 function formatNumber(
   value: number,
 ): string {
@@ -1838,6 +1958,280 @@ function solveCstrVolume(
   }
 }
 
+function solveHydrostaticPressure(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const density =
+    readDensity(
+      query,
+    )
+
+  const depth =
+    readLength(
+      query,
+      [
+        'liquid depth',
+        'fluid depth',
+        'liquid height',
+        'fluid height',
+        'depth',
+        'derinlik',
+        'sivi yuksekligi',
+      ],
+    )
+
+  if (
+    density === null ||
+    depth === null ||
+    density <= 0 ||
+    depth < 0
+  ) {
+    return undefined
+  }
+
+  const pressure =
+    density *
+    STANDARD_GRAVITY *
+    depth
+
+  if (
+    !Number.isFinite(
+      pressure,
+    )
+  ) {
+    return undefined
+  }
+
+  const displayedResult =
+    pressure >= 1000
+      ? `${formatNumber(
+          pressure /
+          1000,
+        )} kPa`
+      : `${formatNumber(
+          pressure,
+        )} Pa`
+
+  return {
+    resultLabel:
+      'Hydrostatic gauge pressure',
+    resultValue:
+      displayedResult,
+    numericValue:
+      pressure,
+    unit: 'Pa',
+    equation:
+      'ΔP = ρgh',
+    steps: [
+      `Density = ${formatNumber(
+        density,
+      )} kg/m3`,
+      `Liquid depth = ${formatNumber(
+        depth,
+      )} m`,
+      `Gauge pressure = ${displayedResult}`,
+    ],
+    assumptions: [
+      'Constant fluid density',
+      'Standard gravitational acceleration',
+      'Pressure is reported relative to the free surface',
+    ],
+  }
+}
+
+function solvePlaneWallConduction(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const conductivity =
+    readThermalConductivity(
+      query,
+    )
+
+  const area =
+    readArea(
+      query,
+    )
+
+  const temperatureDifference =
+    readTemperatureDifference(
+      query,
+      [
+        'wall temperature difference',
+        'temperature difference',
+        'delta temperature',
+        'delta t',
+        'sicaklik farki',
+      ],
+    )
+
+  const thickness =
+    readLength(
+      query,
+      [
+        'plane wall thickness',
+        'wall thickness',
+        'thickness',
+        'duvar kalinligi',
+        'kalinlik',
+      ],
+    )
+
+  if (
+    conductivity === null ||
+    area === null ||
+    temperatureDifference === null ||
+    thickness === null ||
+    conductivity <= 0 ||
+    area < 0 ||
+    temperatureDifference < 0 ||
+    thickness <= 0
+  ) {
+    return undefined
+  }
+
+  const heatTransferRate =
+    (
+      conductivity *
+      area *
+      temperatureDifference
+    ) /
+    thickness
+
+  if (
+    !Number.isFinite(
+      heatTransferRate,
+    )
+  ) {
+    return undefined
+  }
+
+  const displayedResult =
+    heatTransferRate >= 1000
+      ? `${formatNumber(
+          heatTransferRate /
+          1000,
+        )} kW`
+      : `${formatNumber(
+          heatTransferRate,
+        )} W`
+
+  return {
+    resultLabel:
+      'Plane-wall heat-transfer rate',
+    resultValue:
+      displayedResult,
+    numericValue:
+      heatTransferRate,
+    unit: 'W',
+    equation:
+      'Q = kAΔT/L',
+    steps: [
+      `Conductive factor kA/L = ${formatNumber(
+        (
+          conductivity *
+          area
+        ) /
+        thickness,
+      )} W/K`,
+      `Temperature difference = ${formatNumber(
+        temperatureDifference,
+      )} K`,
+      `Heat-transfer rate = ${displayedResult}`,
+    ],
+    assumptions: [
+      'Steady one-dimensional conduction',
+      'Constant thermal conductivity',
+      'No internal heat generation',
+    ],
+  }
+}
+
+function solveFicksFirstLaw(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const diffusivity =
+    readDiffusivity(
+      query,
+    )
+
+  const concentrationDifference =
+    readConcentrationDifference(
+      query,
+    )
+
+  const diffusionDistance =
+    readLength(
+      query,
+      [
+        'diffusion distance',
+        'film thickness',
+        'membrane thickness',
+        'diffusion length',
+        'difuzyon mesafesi',
+      ],
+    )
+
+  if (
+    diffusivity === null ||
+    concentrationDifference === null ||
+    diffusionDistance === null ||
+    diffusivity <= 0 ||
+    diffusionDistance <= 0
+  ) {
+    return undefined
+  }
+
+  const flux =
+    (
+      diffusivity *
+      Math.abs(
+        concentrationDifference,
+      )
+    ) /
+    diffusionDistance
+
+  if (
+    !Number.isFinite(
+      flux,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Diffusive molar flux magnitude',
+    resultValue:
+      `${formatNumber(
+        flux,
+      )} mol/(m2 s)`,
+    numericValue:
+      flux,
+    unit: 'mol/(m2 s)',
+    equation:
+      '|Jₐ| = Dₐᵦ|ΔCₐ|/L',
+    steps: [
+      `Concentration gradient magnitude = ${formatNumber(
+        Math.abs(
+          concentrationDifference,
+        ) /
+        diffusionDistance,
+      )} mol/m4`,
+      `Diffusivity = ${formatNumber(
+        diffusivity,
+      )} m2/s`,
+      `Flux magnitude = ${formatNumber(
+        flux,
+      )} mol/(m2 s)`,
+    ],
+    assumptions: [
+      'Steady one-dimensional diffusion',
+      'Constant diffusivity',
+      'A linear concentration profile',
+    ],
+  }
+}
+
 export function solveProblemQuickly(
   calculatorId: string,
   query: string,
@@ -1880,6 +2274,21 @@ export function solveProblemQuickly(
 
     case 'reactorDesign':
       return solveCstrVolume(
+        query,
+      )
+
+    case 'hydrostaticPressure':
+      return solveHydrostaticPressure(
+        query,
+      )
+
+    case 'planeWallConduction':
+      return solvePlaneWallConduction(
+        query,
+      )
+
+    case 'ficksFirstLaw':
+      return solveFicksFirstLaw(
         query,
       )
 
