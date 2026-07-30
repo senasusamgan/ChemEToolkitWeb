@@ -54,6 +54,9 @@ for (
     'solvePumpPower',
     'solveBiotNumber',
     'solveIdealGas',
+    'solveHeatExchangerLmtd',
+    'solveHeatExchangerArea',
+    'solveCstrVolume',
     'solveProblemQuickly',
     'Swamee–Jain',
   ]
@@ -125,6 +128,10 @@ for (
     'quick-solves required pump power',
     'quick-solves Biot number',
     'quick-solves missing ideal-gas pressure',
+    'quick-solves heat-exchanger LMTD',
+    'quick-solves required heat-exchanger area',
+    'quick-solves required CSTR volume',
+    'does not size an exchanger without a correction factor',
     'does not invent a result when inputs are incomplete',
   ]
 ) {
