@@ -208,3 +208,107 @@ test(
     )
   },
 )
+
+test(
+  'returns an actionable pressure-drop solution brief',
+  () => {
+    const matches =
+      rankProblemSolvers(
+        'Estimate the pressure drop through a pipe',
+        calculators,
+      )
+
+    const match =
+      matches.find(
+        (item) =>
+          item.calculatorId ===
+          'pressureDrop',
+      )
+
+    assert.ok(match)
+
+    assert.match(
+      match.guidance,
+      /pressure-loss model/i,
+    )
+
+    assert.ok(
+      match.requiredInputs.includes(
+        'pipe length',
+      ),
+    )
+
+    assert.match(
+      match.equationHint,
+      /Darcy/,
+    )
+  },
+)
+
+test(
+  'returns category guidance when no dedicated calculator profile exists',
+  () => {
+    const matches =
+      rankProblemSolvers(
+        'Calculate a mass transfer coefficient',
+        [
+          {
+            id:
+              'genericMassTransferTool',
+            title:
+              'Generic Mass Transfer Tool',
+            category:
+              'Mass Transfer',
+            available: true,
+          },
+        ],
+      )
+
+    assert.equal(
+      matches.length,
+      1,
+    )
+
+    assert.match(
+      matches[0].guidance,
+      /transferring species/i,
+    )
+
+    assert.ok(
+      matches[0]
+        .requiredInputs
+        .includes(
+          'compositions or concentrations',
+        ),
+    )
+  },
+)
+
+test(
+  'every recommended calculator includes a solution brief',
+  () => {
+    const matches =
+      rankProblemSolvers(
+        'Tune a PID controller and size a heat exchanger',
+        calculators,
+      )
+
+    assert.ok(
+      matches.length > 0,
+    )
+
+    for (const match of matches) {
+      assert.ok(
+        match.guidance.length > 0,
+      )
+
+      assert.ok(
+        match.requiredInputs.length > 0,
+      )
+
+      assert.ok(
+        match.equationHint.length > 0,
+      )
+    }
+  },
+)

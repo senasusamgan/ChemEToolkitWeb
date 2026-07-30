@@ -17,6 +17,22 @@ export interface ProblemSolverMatch {
   score: number
   confidence: ProblemSolverConfidence
   reasons: string[]
+  guidance: string
+  requiredInputs: string[]
+  equationHint: string
+}
+
+interface ProblemSolverGuidance {
+  guidance: string
+  requiredInputs: string[]
+  equationHint: string
+}
+
+interface GuidanceProfile
+  extends ProblemSolverGuidance {
+  calculatorIds: string[]
+  titleTerms: string[]
+  querySignals?: string[]
 }
 
 interface IntentProfile {
@@ -486,6 +502,424 @@ const INTENT_PROFILES:
     },
   ]
 
+const GUIDANCE_PROFILES:
+  GuidanceProfile[] = [
+    {
+      calculatorIds: [
+        'pressureDrop',
+      ],
+      titleTerms: [
+        'pressure',
+        'drop',
+      ],
+      querySignals: [
+        'pressure drop',
+        'basinc dusum',
+        'pipe pressure loss',
+      ],
+      guidance:
+        'Use a pipe-flow pressure-loss model after checking the flow regime and friction factor.',
+      requiredInputs: [
+        'pipe length',
+        'inside diameter',
+        'flow rate or velocity',
+        'fluid density',
+        'fluid viscosity',
+        'roughness',
+      ],
+      equationHint:
+        'Darcy–Weisbach: ΔP = f(L/D)(ρv²/2)',
+    },
+    {
+      calculatorIds: [
+        'reynoldsNumber',
+      ],
+      titleTerms: [
+        'reynolds',
+      ],
+      guidance:
+        'Calculate the Reynolds number first to identify laminar, transitional or turbulent flow.',
+      requiredInputs: [
+        'fluid density',
+        'velocity',
+        'characteristic diameter',
+        'dynamic viscosity',
+      ],
+      equationHint:
+        'Re = ρvD/μ',
+    },
+    {
+      calculatorIds: [
+        'pumpPower',
+      ],
+      titleTerms: [
+        'pump',
+        'power',
+      ],
+      guidance:
+        'Determine hydraulic power and then correct it using the pump efficiency.',
+      requiredInputs: [
+        'flow rate',
+        'total head',
+        'fluid density',
+        'pump efficiency',
+      ],
+      equationHint:
+        'P = ρgQH/η',
+    },
+    {
+      calculatorIds: [
+        'heatExchangerAreaSizing',
+      ],
+      titleTerms: [
+        'heat',
+        'exchanger',
+        'area',
+      ],
+      guidance:
+        'Calculate heat duty and the effective temperature driving force before sizing the exchanger area.',
+      requiredInputs: [
+        'heat duty',
+        'overall U value',
+        'hot inlet and outlet temperatures',
+        'cold inlet and outlet temperatures',
+        'correction factor',
+      ],
+      equationHint:
+        'A = Q/(UFΔTlm)',
+    },
+    {
+      calculatorIds: [
+        'heatExchangerLMTD',
+      ],
+      titleTerms: [
+        'lmtd',
+      ],
+      guidance:
+        'Build both terminal temperature differences using a consistent parallel- or counter-current basis.',
+      requiredInputs: [
+        'hot inlet temperature',
+        'hot outlet temperature',
+        'cold inlet temperature',
+        'cold outlet temperature',
+        'flow arrangement',
+      ],
+      equationHint:
+        'ΔTlm = (ΔT₁ − ΔT₂)/ln(ΔT₁/ΔT₂)',
+    },
+    {
+      calculatorIds: [
+        'biotNumber',
+      ],
+      titleTerms: [
+        'biot',
+      ],
+      guidance:
+        'Use the Biot number to test whether the lumped-capacitance approximation is appropriate.',
+      requiredInputs: [
+        'convection coefficient',
+        'characteristic length',
+        'solid thermal conductivity',
+      ],
+      equationHint:
+        'Bi = hLc/k',
+    },
+    {
+      calculatorIds: [
+        'idealGas',
+      ],
+      titleTerms: [
+        'ideal',
+        'gas',
+      ],
+      guidance:
+        'Use a consistent absolute-temperature and pressure basis before applying the ideal-gas equation.',
+      requiredInputs: [
+        'pressure',
+        'volume',
+        'amount of gas',
+        'absolute temperature',
+        'gas constant basis',
+      ],
+      equationHint:
+        'PV = nRT',
+    },
+    {
+      calculatorIds: [
+        'reactorDesign',
+      ],
+      titleTerms: [
+        'cstr',
+      ],
+      guidance:
+        'Evaluate the reaction rate at the reactor-exit composition before applying the CSTR design equation.',
+      requiredInputs: [
+        'feed molar flow',
+        'conversion',
+        'exit reaction rate',
+        'stoichiometry',
+      ],
+      equationHint:
+        'V = Fₐ₀X/(−rₐ)exit',
+    },
+    {
+      calculatorIds: [
+        'pfrSections',
+      ],
+      titleTerms: [
+        'pfr',
+      ],
+      guidance:
+        'Integrate the reciprocal reaction rate over the requested conversion range.',
+      requiredInputs: [
+        'feed molar flow',
+        'rate law',
+        'initial composition',
+        'target conversion',
+        'temperature basis',
+      ],
+      equationHint:
+        'V = Fₐ₀∫dX/(−rₐ)',
+    },
+    {
+      calculatorIds: [
+        'batchReactor',
+      ],
+      titleTerms: [
+        'batch',
+        'reactor',
+      ],
+      guidance:
+        'Integrate the batch material balance from the initial state to the target conversion.',
+      requiredInputs: [
+        'initial concentration',
+        'rate law',
+        'rate constant',
+        'target conversion',
+      ],
+      equationHint:
+        't = Cₐ₀∫dX/(−rₐ)',
+    },
+    {
+      calculatorIds: [
+        'pidController',
+      ],
+      titleTerms: [
+        'pid',
+      ],
+      guidance:
+        'Identify the process gain and dynamic parameters before selecting a tuning correlation.',
+      requiredInputs: [
+        'process gain',
+        'time constant',
+        'dead time',
+        'controller form',
+        'tuning objective',
+      ],
+      equationHint:
+        'Gc(s) = Kc[1 + 1/(τI s) + τD s]',
+    },
+    {
+      calculatorIds: [
+        'ficksFirstLaw',
+      ],
+      titleTerms: [
+        'fick',
+        'first',
+      ],
+      guidance:
+        'Define the diffusion direction and concentration gradient sign before calculating flux.',
+      requiredInputs: [
+        'diffusivity',
+        'concentration difference',
+        'diffusion distance',
+        'area when total rate is required',
+      ],
+      equationHint:
+        'Jₐ = −Dₐᵦ dCₐ/dz',
+    },
+    {
+      calculatorIds: [
+        'netPresentValueAnalysis',
+      ],
+      titleTerms: [
+        'net',
+        'present',
+        'value',
+      ],
+      guidance:
+        'Discount each cash flow to the selected reference year and include the initial investment.',
+      requiredInputs: [
+        'initial investment',
+        'annual cash flows',
+        'discount rate',
+        'project life',
+        'terminal value',
+      ],
+      equationHint:
+        'NPV = Σ CFₜ/(1+i)ᵗ',
+    },
+  ]
+
+const CATEGORY_GUIDANCE:
+  Record<string, ProblemSolverGuidance> = {
+    'Engineering Fundamentals': {
+      guidance:
+        'Confirm the unit basis and identify the requested converted or averaged property.',
+      requiredInputs: [
+        'known values',
+        'current units',
+        'target units or property',
+      ],
+      equationHint:
+        'Apply the calculator-specific definition with a consistent unit basis.',
+    },
+    'Material & Energy Balances': {
+      guidance:
+        'Draw the process boundary, list all streams and state the accumulation and reaction assumptions.',
+      requiredInputs: [
+        'stream flow rates',
+        'stream compositions',
+        'process connections',
+        'steady or unsteady state',
+        'reaction information',
+      ],
+      equationHint:
+        'Input + generation − output − consumption = accumulation',
+    },
+    Thermodynamics: {
+      guidance:
+        'Define the thermodynamic state, phase and property model before evaluating the unknown.',
+      requiredInputs: [
+        'temperature',
+        'pressure',
+        'composition',
+        'phase',
+        'property-model assumptions',
+      ],
+      equationHint:
+        'Use the selected equation of state or property relation.',
+    },
+    'Fluid Mechanics': {
+      guidance:
+        'Define the geometry, fluid properties and flow conditions before applying the momentum or energy balance.',
+      requiredInputs: [
+        'geometry',
+        'flow rate or velocity',
+        'density',
+        'viscosity',
+        'boundary conditions',
+      ],
+      equationHint:
+        'Use continuity with the appropriate momentum or mechanical-energy equation.',
+    },
+    'Heat Transfer': {
+      guidance:
+        'Identify the heat-transfer mode, geometry and temperature driving force.',
+      requiredInputs: [
+        'temperatures',
+        'geometry',
+        'thermal properties',
+        'heat-transfer coefficients',
+        'boundary conditions',
+      ],
+      equationHint:
+        'Q = driving force / total thermal resistance',
+    },
+    'Mass Transfer': {
+      guidance:
+        'Define the transferring species, phases and concentration driving-force basis.',
+      requiredInputs: [
+        'compositions or concentrations',
+        'diffusivity',
+        'geometry',
+        'phase conditions',
+        'mass-transfer coefficients',
+      ],
+      equationHint:
+        'Transfer rate = coefficient × area × driving force',
+    },
+    'Reaction Engineering': {
+      guidance:
+        'Specify the rate law, stoichiometry and reactor model before calculating conversion, time or volume.',
+      requiredInputs: [
+        'rate law',
+        'kinetic parameters',
+        'feed conditions',
+        'stoichiometry',
+        'target conversion',
+      ],
+      equationHint:
+        'Apply the mole balance for the selected reactor type.',
+    },
+    'Separation Processes': {
+      guidance:
+        'Define feed condition, product specifications and the equilibrium or transport model.',
+      requiredInputs: [
+        'feed flow and composition',
+        'operating pressure',
+        'temperature or thermal condition',
+        'product specification',
+        'equilibrium data',
+      ],
+      equationHint:
+        'Combine component balances with equilibrium-stage or rate-based relations.',
+    },
+    'Process Control': {
+      guidance:
+        'Identify the process model, manipulated variable, controlled variable and control objective.',
+      requiredInputs: [
+        'process gain',
+        'dynamic parameters',
+        'set point',
+        'controller structure',
+        'disturbance assumptions',
+      ],
+      equationHint:
+        'Evaluate the closed-loop transfer function or selected tuning relation.',
+    },
+    'Numerical Methods': {
+      guidance:
+        'State the mathematical problem, initial information, tolerance and valid solution interval.',
+      requiredInputs: [
+        'equation or data',
+        'initial guess or interval',
+        'tolerance',
+        'iteration limit',
+        'step size when required',
+      ],
+      equationHint:
+        'Apply the selected numerical algorithm and verify convergence.',
+    },
+    'Process Safety & Economics': {
+      guidance:
+        'Define the scenario, reference basis and financial or safety assumptions before evaluating the result.',
+      requiredInputs: [
+        'scenario data',
+        'equipment or project basis',
+        'time horizon',
+        'rates or probabilities',
+        'reference-year assumptions',
+      ],
+      equationHint:
+        'Apply the selected risk, cost or discounted-cash-flow model.',
+    },
+  }
+
+const DEFAULT_GUIDANCE:
+  ProblemSolverGuidance = {
+    guidance:
+      'Confirm the known variables, requested unknown and calculation assumptions before opening the calculator.',
+    requiredInputs: [
+      'known variables',
+      'target quantity',
+      'units',
+      'model assumptions',
+    ],
+    equationHint:
+      'Use the equation documented by the selected calculator.',
+  }
+
 function normalize(
   value: string,
 ): string {
@@ -522,6 +956,64 @@ function phraseMatches(
     query.includes(
       cleanPhrase,
     )
+  )
+}
+
+function buildProblemGuidance(
+  calculator: ProblemSolverCalculator,
+  query: string,
+): ProblemSolverGuidance {
+  const cleanTitle =
+    normalize(
+      calculator.title,
+    )
+
+  const exactProfile =
+    GUIDANCE_PROFILES.find(
+      (profile) =>
+        profile.calculatorIds.includes(
+          calculator.id,
+        ),
+    )
+
+  if (exactProfile) {
+    return exactProfile
+  }
+
+  const titleProfile =
+    GUIDANCE_PROFILES.find(
+      (profile) => {
+        const titleMatches =
+          profile.titleTerms.every(
+            (term) =>
+              cleanTitle.includes(
+                normalize(term),
+              ),
+          )
+
+        const queryMatches =
+          !profile.querySignals ||
+          profile.querySignals.some(
+            (signal) =>
+              phraseMatches(
+                query,
+                signal,
+              ),
+          )
+
+        return (
+          titleMatches &&
+          queryMatches
+        )
+      },
+    )
+
+  return (
+    titleProfile ??
+    CATEGORY_GUIDANCE[
+      calculator.category
+    ] ??
+    DEFAULT_GUIDANCE
   )
 }
 
@@ -700,6 +1192,12 @@ export function rankProblemSolvers(
         )
       }
 
+      const guidance =
+        buildProblemGuidance(
+          calculator,
+          cleanQuery,
+        )
+
       return {
         calculatorId:
           calculator.id,
@@ -719,6 +1217,12 @@ export function rankProblemSolvers(
             0,
             3,
           ),
+        guidance:
+          guidance.guidance,
+        requiredInputs:
+          guidance.requiredInputs,
+        equationHint:
+          guidance.equationHint,
       }
     })
     .filter(
