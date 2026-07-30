@@ -89,13 +89,14 @@
     "test:reaction-engineering-batch09": "node --experimental-strip-types --test tests/reaction-engineering-batch09/*.test.ts",
     "verify:reaction-engineering-batch09": "node scripts/verify-reaction-engineering-batch09.mjs",
     "verify:workspace-release": "node scripts/verify-workspace-release-v1.mjs",
-    "verify:release": "npm run verify:calculator-catalog && npm run verify:calculator-routing && npm run verify:workspace-release && npm run build && node scripts/verify-performance-v1.mjs && npm run verify:production-readiness && npm run verify:accessibility && npm run verify:smoke && npm run lint",
+    "verify:release": "npm run verify:calculator-catalog && npm run verify:calculator-routing && npm run verify:calculator-test-coverage && npm run verify:workspace-release && npm run build && node scripts/verify-performance-v1.mjs && npm run verify:production-readiness && npm run verify:accessibility && npm run verify:smoke && npm run lint",
     "verify:performance": "npm run build && node scripts/verify-performance-v1.mjs",
     "verify:production-readiness": "node scripts/verify-production-readiness-v1.mjs",
     "verify:smoke": "node scripts/verify-production-smoke-v1.mjs",
     "verify:accessibility": "node scripts/verify-accessibility-v1.mjs",
     "verify:calculator-catalog": "node scripts/verify-calculator-catalog-v1.mjs",
-    "verify:calculator-routing": "node scripts/verify-calculator-routing-v1.mjs"
+    "verify:calculator-routing": "node scripts/verify-calculator-routing-v1.mjs",
+    "verify:calculator-test-coverage": "node scripts/verify-calculator-test-coverage-v1.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
