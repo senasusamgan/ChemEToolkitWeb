@@ -802,9 +802,9 @@ export function WorkspaceSmartLauncherPanel({
           </h3>
 
           <p>
-            Describe what you need. Smart Launcher
-            matches your request with Workspace
-            tools and your personal calculators.
+            Describe an engineering problem or Workspace
+            goal. Problem Solver recommends calculators
+            and Smart Launcher opens the right tool.
           </p>
         </div>
 

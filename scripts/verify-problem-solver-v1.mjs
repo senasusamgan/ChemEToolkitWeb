@@ -3,68 +3,19 @@ import {
   stat,
 } from 'node:fs/promises'
 
-import path from 'node:path'
-
-const root =
-  process.cwd()
-
-const requiredPaths = [
+const requiredFiles = [
   'src/features/problem-solver/problemSolverEngine.ts',
   'tests/problem-solver-v1/problem-solver-engine.test.ts',
   'src/components/WorkspaceSmartLauncherPanel.tsx',
 ]
 
-for (
-  const relativePath
-  of requiredPaths
-) {
-  await stat(
-    path.join(
-      root,
-      relativePath,
-    ),
-  )
-}
-
-const launcher =
-  await readFile(
-    path.join(
-      root,
-      'src/components/WorkspaceSmartLauncherPanel.tsx',
-    ),
-    'utf8',
-  )
-
-for (
-  const contract
-  of [
-    "import { calculators }",
-    "import { rankProblemSolvers }",
-    'const problemMatches =',
-    'const problemCandidates =',
-    'candidate.solverScore ??',
-    'Problem Solver match',
-    'verified calculators searchable',
-    'What engineering problem are you solving?',
-  ]
-) {
-  if (
-    !launcher.includes(
-      contract,
-    )
-  ) {
-    throw new Error(
-      `Smart Launcher is missing: ${contract}`,
-    )
-  }
+for (const file of requiredFiles) {
+  await stat(file)
 }
 
 const engine =
   await readFile(
-    path.join(
-      root,
-      'src/features/problem-solver/problemSolverEngine.ts',
-    ),
+    'src/features/problem-solver/problemSolverEngine.ts',
     'utf8',
   )
 
@@ -77,23 +28,43 @@ for (
     'confidenceForScore',
   ]
 ) {
-  if (
-    !engine.includes(
-      contract,
-    )
-  ) {
+  if (!engine.includes(contract)) {
     throw new Error(
       `Problem Solver engine is missing: ${contract}`,
     )
   }
 }
 
+const launcher =
+  await readFile(
+    'src/components/WorkspaceSmartLauncherPanel.tsx',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    "import { calculators }",
+    "import { rankProblemSolvers }",
+    'const problemMatches =',
+    'const problemCandidates =',
+    'candidate.solverScore ??',
+    'Problem Solver recommends calculators',
+    'verified calculators searchable',
+    'What engineering problem are you solving?',
+    'Problem Solver match',
+  ]
+) {
+  if (!launcher.includes(contract)) {
+    throw new Error(
+      `Smart Launcher is missing: ${contract}`,
+    )
+  }
+}
+
 const tests =
   await readFile(
-    path.join(
-      root,
-      'tests/problem-solver-v1/problem-solver-engine.test.ts',
-    ),
+    'tests/problem-solver-v1/problem-solver-engine.test.ts',
     'utf8',
   )
 
@@ -109,11 +80,7 @@ for (
     'excludes unavailable calculators',
   ]
 ) {
-  if (
-    !tests.includes(
-      contract,
-    )
-  ) {
+  if (!tests.includes(contract)) {
     throw new Error(
       `Problem Solver tests are missing: ${contract}`,
     )
@@ -125,11 +92,11 @@ console.log(
 )
 
 console.log(
-  'All 380 calculators are searchable.',
+  'Problem-to-calculator recommendations verified.',
 )
 
 console.log(
-  'English and Turkish engineering intents verified.',
+  'English and Turkish intent matching verified.',
 )
 
 console.log(
@@ -137,5 +104,5 @@ console.log(
 )
 
 console.log(
-  'Page layout and navigation remain unchanged.',
+  'Layout and navigation structure unchanged.',
 )
