@@ -659,12 +659,21 @@ export function WorkspaceSmartLauncherPanel({
             description:
               [
                 match.guidance,
-                match.requiredInputs.length > 0
-                  ? 'Inputs: ' +
-                    match.requiredInputs
+                'Readiness: ' +
+                  match.readinessPercent +
+                  '%',
+                match.detectedInputs.length > 0
+                  ? 'Detected: ' +
+                    match.detectedInputs
                       .slice(0, 3)
                       .join(', ')
-                  : '',
+                  : 'Detected: none',
+                match.missingInputs.length > 0
+                  ? 'Missing: ' +
+                    match.missingInputs
+                      .slice(0, 3)
+                      .join(', ')
+                  : 'Required inputs complete',
                 match.equationHint
                   ? 'Model: ' +
                     match.equationHint
@@ -680,6 +689,8 @@ export function WorkspaceSmartLauncherPanel({
                 ...match.reasons,
                 match.guidance,
                 ...match.requiredInputs,
+                ...match.detectedInputs,
+                ...match.missingInputs,
                 match.equationHint,
               ].join(' '),
             calculatorId:

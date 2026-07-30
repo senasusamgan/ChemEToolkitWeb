@@ -312,3 +312,139 @@ test(
     }
   },
 )
+
+test(
+  'detects supplied pressure-drop inputs and reports missing values',
+  () => {
+    const matches =
+      rankProblemSolvers(
+        [
+          'Estimate pressure drop through a pipe.',
+          'Pipe length 30 m, inside diameter 0.08 m,',
+          'fluid density 998 kg/m3 and fluid viscosity 0.001 Pa s.',
+        ].join(' '),
+        calculators,
+      )
+
+    const match =
+      matches.find(
+        (item) =>
+          item.calculatorId ===
+          'pressureDrop',
+      )
+
+    assert.ok(match)
+
+    assert.ok(
+      match.detectedInputs.includes(
+        'pipe length',
+      ),
+    )
+
+    assert.ok(
+      match.detectedInputs.includes(
+        'inside diameter',
+      ),
+    )
+
+    assert.ok(
+      match.detectedInputs.includes(
+        'fluid density',
+      ),
+    )
+
+    assert.ok(
+      match.detectedInputs.includes(
+        'fluid viscosity',
+      ),
+    )
+
+    assert.ok(
+      match.missingInputs.includes(
+        'roughness',
+      ),
+    )
+
+    assert.equal(
+      match.readinessPercent,
+      67,
+    )
+  },
+)
+
+test(
+  'detects numerical and qualitative PID inputs',
+  () => {
+    const matches =
+      rankProblemSolvers(
+        [
+          'Tune a PID controller.',
+          'Process gain 2, time constant 5 s, dead time 1 s,',
+          'controller form PID.',
+        ].join(' '),
+        calculators,
+      )
+
+    const match =
+      matches.find(
+        (item) =>
+          item.calculatorId ===
+          'pidController',
+      )
+
+    assert.ok(match)
+
+    assert.ok(
+      match.detectedInputs.includes(
+        'process gain',
+      ),
+    )
+
+    assert.ok(
+      match.detectedInputs.includes(
+        'controller form',
+      ),
+    )
+
+    assert.ok(
+      match.missingInputs.includes(
+        'tuning objective',
+      ),
+    )
+
+    assert.equal(
+      match.readinessPercent,
+      80,
+    )
+  },
+)
+
+test(
+  'does not mark an input as supplied when it has no value',
+  () => {
+    const matches =
+      rankProblemSolvers(
+        'Estimate pressure drop using pipe length and diameter',
+        calculators,
+      )
+
+    const match =
+      matches.find(
+        (item) =>
+          item.calculatorId ===
+          'pressureDrop',
+      )
+
+    assert.ok(match)
+
+    assert.equal(
+      match.detectedInputs.length,
+      0,
+    )
+
+    assert.equal(
+      match.readinessPercent,
+      0,
+    )
+  },
+)
