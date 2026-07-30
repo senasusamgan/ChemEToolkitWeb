@@ -25,7 +25,11 @@ for (
     'rankProblemSolvers',
     'CATEGORY_SIGNALS',
     'INTENT_PROFILES',
-    'confidenceForScore',
+    'GUIDANCE_PROFILES',
+    'CATEGORY_GUIDANCE',
+    'buildProblemGuidance',
+    'requiredInputs',
+    'equationHint',
   ]
 ) {
   if (!engine.includes(contract)) {
@@ -48,11 +52,12 @@ for (
     "import { rankProblemSolvers }",
     'const problemMatches =',
     'const problemCandidates =',
-    'candidate.solverScore ??',
+    'match.guidance',
+    'match.requiredInputs',
+    'match.equationHint',
     'Problem Solver recommends calculators',
     'verified calculators searchable',
     'What engineering problem are you solving?',
-    'Problem Solver match',
   ]
 ) {
   if (!launcher.includes(contract)) {
@@ -74,10 +79,10 @@ for (
     'pressureDrop',
     'reynoldsNumber',
     'heatExchangerAreaSizing',
-    'pidController',
-    'reactorDesign',
     'supports Turkish pressure-drop intent',
-    'excludes unavailable calculators',
+    'actionable pressure-drop solution brief',
+    'category guidance',
+    'every recommended calculator includes a solution brief',
   ]
 ) {
   if (!tests.includes(contract)) {
@@ -88,21 +93,21 @@ for (
 }
 
 console.log(
-  'CHEME PROBLEM SOLVER V1 VERIFICATION PASSED',
+  'CHEME PROBLEM SOLVER GUIDANCE VERIFICATION PASSED',
 )
 
 console.log(
-  'Problem-to-calculator recommendations verified.',
+  'Calculator recommendations verified.',
 )
 
 console.log(
-  'English and Turkish intent matching verified.',
+  'Required-input guidance verified.',
 )
 
 console.log(
-  'Smart Launcher integration verified.',
+  'Equation and model hints verified.',
 )
 
 console.log(
-  'Layout and navigation structure unchanged.',
+  'Existing result-card layout and navigation unchanged.',
 )

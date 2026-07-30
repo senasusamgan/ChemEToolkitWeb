@@ -657,15 +657,30 @@ export function WorkspaceSmartLauncherPanel({
             subtitle:
               match.category,
             description:
-              match.reasons.length > 0
-                ? match.reasons.join(' · ')
-                : 'Recommended from the engineering problem statement.',
+              [
+                match.guidance,
+                match.requiredInputs.length > 0
+                  ? 'Inputs: ' +
+                    match.requiredInputs
+                      .slice(0, 3)
+                      .join(', ')
+                  : '',
+                match.equationHint
+                  ? 'Model: ' +
+                    match.equationHint
+                  : '',
+              ]
+                .filter(Boolean)
+                .join(' · '),
             keywords:
               [
                 match.calculatorId,
                 match.title,
                 match.category,
                 ...match.reasons,
+                match.guidance,
+                ...match.requiredInputs,
+                match.equationHint,
               ].join(' '),
             calculatorId:
               match.calculatorId,
