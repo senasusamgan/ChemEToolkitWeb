@@ -96,7 +96,8 @@
     "verify:accessibility": "node scripts/verify-accessibility-v1.mjs",
     "verify:calculator-catalog": "node scripts/verify-calculator-catalog-v1.mjs",
     "verify:calculator-routing": "node scripts/verify-calculator-routing-v1.mjs",
-    "verify:calculator-test-coverage": "node scripts/verify-calculator-test-coverage-v1.mjs"
+    "verify:calculator-test-coverage": "node scripts/verify-calculator-test-coverage-v1.mjs",
+    "update:calculator-test-coverage-baseline": "node scripts/verify-calculator-test-coverage-v1.mjs --write-baseline"
   },
   "dependencies": {
     "react": "^19.2.7",
