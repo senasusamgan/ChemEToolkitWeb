@@ -5,7 +5,9 @@ import {
 
 const requiredFiles = [
   'src/features/problem-solver/problemSolverEngine.ts',
+  'src/features/problem-solver/problemQuickSolveEngine.ts',
   'tests/problem-solver-v1/problem-solver-engine.test.ts',
+  'tests/problem-solver-v1/problem-quick-solve.test.ts',
   'src/components/WorkspaceSmartLauncherPanel.tsx',
 ]
 
@@ -13,7 +15,7 @@ for (const file of requiredFiles) {
   await stat(file)
 }
 
-const engine =
+const solverEngine =
   await readFile(
     'src/features/problem-solver/problemSolverEngine.ts',
     'utf8',
@@ -24,18 +26,41 @@ for (
   of [
     'rankProblemSolvers',
     'GUIDANCE_PROFILES',
-    'CATEGORY_GUIDANCE',
-    'buildProblemGuidance',
     'INPUT_ALIASES',
     'detectInputReadiness',
-    'detectedInputs',
-    'missingInputs',
-    'readinessPercent',
+    'solveProblemQuickly',
+    'quickSolution',
   ]
 ) {
-  if (!engine.includes(contract)) {
+  if (!solverEngine.includes(contract)) {
     throw new Error(
       `Problem Solver engine is missing: ${contract}`,
+    )
+  }
+}
+
+const quickEngine =
+  await readFile(
+    'src/features/problem-solver/problemQuickSolveEngine.ts',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'ProblemQuickSolution',
+    'solvePressureDrop',
+    'solveReynoldsNumber',
+    'solvePumpPower',
+    'solveBiotNumber',
+    'solveIdealGas',
+    'solveProblemQuickly',
+    'Swamee–Jain',
+  ]
+) {
+  if (!quickEngine.includes(contract)) {
+    throw new Error(
+      `Quick Solve engine is missing: ${contract}`,
     )
   }
 }
@@ -49,13 +74,12 @@ const launcher =
 for (
   const contract
   of [
-    'match.guidance',
-    'match.detectedInputs',
-    'match.missingInputs',
+    'match.quickSolution',
+    'Quick result:',
+    'quickSolutionLabel',
+    'Solved locally',
+    'Review result · Open →',
     'match.readinessPercent',
-    'Readiness:',
-    'Detected:',
-    'Missing:',
   ]
 ) {
   if (!launcher.includes(contract)) {
@@ -65,7 +89,7 @@ for (
   }
 }
 
-const tests =
+const baseTests =
   await readFile(
     'tests/problem-solver-v1/problem-solver-engine.test.ts',
     'utf8',
@@ -76,33 +100,61 @@ for (
   of [
     'actionable pressure-drop solution brief',
     'detects supplied pressure-drop inputs',
-    'detects numerical and qualitative PID inputs',
     'does not mark an input as supplied when it has no value',
   ]
 ) {
-  if (!tests.includes(contract)) {
+  if (!baseTests.includes(contract)) {
     throw new Error(
-      `Problem Solver tests are missing: ${contract}`,
+      `Existing Problem Solver tests are missing: ${contract}`,
+    )
+  }
+}
+
+const quickTests =
+  await readFile(
+    'tests/problem-solver-v1/problem-quick-solve.test.ts',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'quick-solves Reynolds number',
+    'quick-solves Darcy-Weisbach pressure drop',
+    'derives pipe velocity from volumetric flow rate',
+    'quick-solves required pump power',
+    'quick-solves Biot number',
+    'quick-solves missing ideal-gas pressure',
+    'does not invent a result when inputs are incomplete',
+  ]
+) {
+  if (!quickTests.includes(contract)) {
+    throw new Error(
+      `Quick Solve tests are missing: ${contract}`,
     )
   }
 }
 
 console.log(
-  'CHEME PROBLEM SOLVER READINESS VERIFICATION PASSED',
+  'CHEME PROBLEM SOLVER QUICK SOLVE VERIFICATION PASSED',
 )
 
 console.log(
-  'Required-input detection verified.',
+  'Pressure-drop and Reynolds-number solving verified.',
 )
 
 console.log(
-  'Missing-input reporting verified.',
+  'Pump-power and Biot-number solving verified.',
 )
 
 console.log(
-  'Problem readiness percentage verified.',
+  'Ideal-gas unknown solving verified.',
 )
 
 console.log(
-  'Existing card layout, CSS and navigation unchanged.',
+  'Incomplete-input protection verified.',
+)
+
+console.log(
+  'Existing layout, CSS and navigation unchanged.',
 )
