@@ -3,6 +3,8 @@ import {
   useMemo,
   useState,
 } from 'react'
+import { calculators } from '../data/calculators'
+import { rankProblemSolvers } from '../features/problem-solver/problemSolverEngine'
 import type { CalculatorDefinition } from '../types/calculator'
 import '../styles/workspace-smart-launcher.css'
 
@@ -61,6 +63,8 @@ interface Candidate {
   calculatorId?: string
   target?: WorkspaceTarget
   priority: number
+  solverScore?: number
+  matchReason?: string
 }
 
 interface PersonalCalculator {
@@ -231,10 +235,10 @@ const WORKSPACE_TOOLS:
   ]
 
 const EXAMPLES = [
-  'Continue my latest work',
-  'Compare two cases',
-  'Create an engineering report',
-  'Back up my workspace',
+  'Estimate pressure drop in a pipe',
+  'Find Reynolds number and flow regime',
+  'Size a heat exchanger using LMTD',
+  'Tune a PID controller',
 ]
 
 function isRecord(
@@ -628,13 +632,71 @@ export function WorkspaceSmartLauncherPanel({
       ],
     )
 
+  const problemMatches =
+    useMemo(
+      () =>
+        rankProblemSolvers(
+          query,
+          calculators,
+          10,
+        ),
+      [query],
+    )
+
+  const problemCandidates =
+    useMemo(
+      () =>
+        problemMatches.map(
+          (match): Candidate => ({
+            id:
+              'solver-' +
+              match.calculatorId,
+            kind: 'calculator',
+            title:
+              match.title,
+            subtitle:
+              match.category,
+            description:
+              match.reasons.length > 0
+                ? match.reasons.join(' · ')
+                : 'Recommended from the engineering problem statement.',
+            keywords:
+              [
+                match.calculatorId,
+                match.title,
+                match.category,
+                ...match.reasons,
+              ].join(' '),
+            calculatorId:
+              match.calculatorId,
+            priority: 20,
+            solverScore:
+              match.score,
+            matchReason:
+              match.confidence +
+              ' confidence',
+          }),
+        ),
+      [problemMatches],
+    )
+
   const allCandidates =
     useMemo(
-      () => [
-        ...calculatorCandidates,
-        ...WORKSPACE_TOOLS,
+      () =>
+        query.trim().length > 0
+          ? [
+              ...problemCandidates,
+              ...WORKSPACE_TOOLS,
+            ]
+          : [
+              ...calculatorCandidates,
+              ...WORKSPACE_TOOLS,
+            ],
+      [
+        calculatorCandidates,
+        problemCandidates,
+        query,
       ],
-      [calculatorCandidates],
     )
 
   const results =
@@ -671,6 +733,10 @@ export function WorkspaceSmartLauncherPanel({
               score(
                 candidate,
                 cleanQuery,
+              ) +
+              (
+                candidate.solverScore ??
+                0
               ),
           }))
           .filter(
@@ -744,18 +810,18 @@ export function WorkspaceSmartLauncherPanel({
 
         <div className="workspace-smart-launcher-count">
           <strong>
-            {calculatorCandidates.length}
+            {calculators.length}
           </strong>
 
           <span>
-            personal calculators available
+            verified calculators searchable
           </span>
         </div>
       </header>
 
       <div className="workspace-smart-launcher-search">
         <label htmlFor="workspace-smart-launcher-query">
-          What are you trying to do?
+          What engineering problem are you solving?
         </label>
 
         <div>
@@ -767,7 +833,7 @@ export function WorkspaceSmartLauncherPanel({
             id="workspace-smart-launcher-query"
             type="search"
             value={query}
-            placeholder="Example: compare two cases or create a report"
+            placeholder="Example: estimate pressure drop through a pipe"
             autoComplete="off"
             onChange={(event) =>
               setQuery(
@@ -875,9 +941,11 @@ export function WorkspaceSmartLauncherPanel({
                 <div>
                   <small>
                     {candidate.kind ===
-                    'calculator'
-                      ? 'Calculator'
-                      : 'Workspace tool'}
+                     'calculator'
+                       ? candidate.matchReason
+                         ? 'Problem Solver match'
+                         : 'Calculator'
+                       : 'Workspace tool'}
                   </small>
 
                   <strong>
