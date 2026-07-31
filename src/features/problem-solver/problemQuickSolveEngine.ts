@@ -1458,6 +1458,148 @@ function readMolarFlux(
   return measurement.value
 }
 
+function readMassKilograms(
+  query: string,
+  aliases: string[],
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      aliases,
+      [
+        'kg',
+        'mg',
+        'g',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'g'
+  ) {
+    return (
+      measurement.value /
+      1000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'mg'
+  ) {
+    return (
+      measurement.value /
+      1_000_000
+    )
+  }
+
+  return measurement.value
+}
+
+function readMolecularWeightValue(
+  query: string,
+  aliases: string[],
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      aliases,
+      [
+        'kg/kmol',
+        'kg/mol',
+        'g/mol',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'kg/mol'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function readMassFlowKilogramsPerSecond(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'mass flow rate',
+        'mass flow',
+        'mass feed rate',
+        'kutlesel debi',
+      ],
+      [
+        'kg/min',
+        'kg/h',
+        'kg/s',
+        'g/min',
+        'g/s',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'kg/h'
+  ) {
+    return (
+      measurement.value /
+      3600
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'kg/min'
+  ) {
+    return (
+      measurement.value /
+      60
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'g/s'
+  ) {
+    return (
+      measurement.value /
+      1000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'g/min'
+  ) {
+    return (
+      measurement.value /
+      60_000
+    )
+  }
+
+  return measurement.value
+}
+
 function formatNumber(
   value: number,
 ): string {
@@ -4081,6 +4223,454 @@ function solveMassTransferCoefficient(
   }
 }
 
+function solveMassMoleConversion(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const mass =
+    readMassKilograms(
+      query,
+      [
+        'sample mass',
+        'material mass',
+        'mass',
+        'kutle',
+      ],
+    )
+
+  const molecularWeight =
+    readMolecularWeightValue(
+      query,
+      [
+        'molecular weight',
+        'molar mass',
+        'molekuler agirlik',
+        'mol kutlesi',
+      ],
+    )
+
+  if (
+    mass === null ||
+    molecularWeight === null ||
+    mass < 0 ||
+    molecularWeight <= 0
+  ) {
+    return undefined
+  }
+
+  const moles =
+    (
+      mass /
+      molecularWeight
+    ) *
+    1000
+
+  if (
+    !Number.isFinite(
+      moles,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Amount of substance',
+    resultValue:
+      `${formatNumber(
+        moles,
+      )} mol`,
+    numericValue:
+      moles,
+    unit: 'mol',
+    equation:
+      'n = m/MW',
+    steps: [
+      `Mass = ${formatNumber(
+        mass,
+      )} kg`,
+      `Molecular weight = ${formatNumber(
+        molecularWeight,
+      )} kg/kmol`,
+      `Amount = ${formatNumber(
+        moles,
+      )} mol`,
+    ],
+    assumptions: [
+      'The material is pure',
+      'Mass and molecular weight use a consistent chemical species',
+    ],
+  }
+}
+
+function solveSpecificGravity(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const density =
+    readDensity(
+      query,
+    )
+
+  if (
+    density === null ||
+    density < 0
+  ) {
+    return undefined
+  }
+
+  const specificGravity =
+    density /
+    1000
+
+  if (
+    !Number.isFinite(
+      specificGravity,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Specific gravity',
+    resultValue:
+      formatNumber(
+        specificGravity,
+      ),
+    numericValue:
+      specificGravity,
+    unit: 'dimensionless',
+    equation:
+      'SG = ρ/ρwater',
+    steps: [
+      `Material density = ${formatNumber(
+        density,
+      )} kg/m3`,
+      'Reference water density = 1000 kg/m3',
+      `Specific gravity = ${formatNumber(
+        specificGravity,
+      )}`,
+    ],
+    assumptions: [
+      'Reference water density is 1000 kg/m3',
+      'Both densities correspond to the intended reference temperature',
+    ],
+  }
+}
+
+function solveSolutionMolarity(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const moles =
+    readMoles(
+      query,
+    )
+
+  const solutionVolume =
+    readVolume(
+      query,
+    )
+
+  if (
+    moles === null ||
+    solutionVolume === null ||
+    moles < 0 ||
+    solutionVolume <= 0
+  ) {
+    return undefined
+  }
+
+  const molarity =
+    moles /
+    (
+      solutionVolume *
+      1000
+    )
+
+  if (
+    !Number.isFinite(
+      molarity,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Solution molarity',
+    resultValue:
+      `${formatNumber(
+        molarity,
+      )} mol/L`,
+    numericValue:
+      molarity,
+    unit: 'mol/L',
+    equation:
+      'C = n/V',
+    steps: [
+      `Solute amount = ${formatNumber(
+        moles,
+      )} mol`,
+      `Solution volume = ${formatNumber(
+        solutionVolume *
+        1000,
+      )} L`,
+      `Molarity = ${formatNumber(
+        molarity,
+      )} mol/L`,
+    ],
+    assumptions: [
+      'The supplied volume is the final solution volume',
+      'The solute amount is expressed in moles',
+    ],
+  }
+}
+
+function solveMixtureDensity(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const totalMass =
+    readMassKilograms(
+      query,
+      [
+        'total mixture mass',
+        'mixture mass',
+        'total mass',
+        'karisim kutlesi',
+      ],
+    )
+
+  const totalVolume =
+    readVolume(
+      query,
+    )
+
+  if (
+    totalMass === null ||
+    totalVolume === null ||
+    totalMass < 0 ||
+    totalVolume <= 0
+  ) {
+    return undefined
+  }
+
+  const density =
+    totalMass /
+    totalVolume
+
+  if (
+    !Number.isFinite(
+      density,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Mixture density',
+    resultValue:
+      `${formatNumber(
+        density,
+      )} kg/m3`,
+    numericValue:
+      density,
+    unit: 'kg/m3',
+    equation:
+      'ρmix = mtotal/Vtotal',
+    steps: [
+      `Total mass = ${formatNumber(
+        totalMass,
+      )} kg`,
+      `Total volume = ${formatNumber(
+        totalVolume,
+      )} m3`,
+      `Mixture density = ${formatNumber(
+        density,
+      )} kg/m3`,
+    ],
+    assumptions: [
+      'The stated mass and volume refer to the same mixture',
+      'The total mixture volume is supplied directly',
+    ],
+  }
+}
+
+function solveAverageMolecularWeight(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const firstMoleFraction =
+    readFraction(
+      query,
+      [
+        'component 1 mole fraction',
+        'first component mole fraction',
+        'mole fraction 1',
+        'x1',
+      ],
+    )
+
+  const firstMolecularWeight =
+    readMolecularWeightValue(
+      query,
+      [
+        'component 1 molecular weight',
+        'first component molecular weight',
+        'molecular weight 1',
+        'mw1',
+      ],
+    )
+
+  const secondMolecularWeight =
+    readMolecularWeightValue(
+      query,
+      [
+        'component 2 molecular weight',
+        'second component molecular weight',
+        'molecular weight 2',
+        'mw2',
+      ],
+    )
+
+  if (
+    firstMoleFraction === null ||
+    firstMolecularWeight === null ||
+    secondMolecularWeight === null ||
+    firstMoleFraction < 0 ||
+    firstMoleFraction > 1 ||
+    firstMolecularWeight <= 0 ||
+    secondMolecularWeight <= 0
+  ) {
+    return undefined
+  }
+
+  const secondMoleFraction =
+    1 -
+    firstMoleFraction
+
+  const averageMolecularWeight =
+    (
+      firstMoleFraction *
+      firstMolecularWeight
+    ) +
+    (
+      secondMoleFraction *
+      secondMolecularWeight
+    )
+
+  if (
+    !Number.isFinite(
+      averageMolecularWeight,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Average molecular weight',
+    resultValue:
+      `${formatNumber(
+        averageMolecularWeight,
+      )} g/mol`,
+    numericValue:
+      averageMolecularWeight,
+    unit: 'g/mol',
+    equation:
+      'MWavg = x₁MW₁ + x₂MW₂',
+    steps: [
+      `Second mole fraction = ${formatNumber(
+        secondMoleFraction,
+      )}`,
+      `First contribution = ${formatNumber(
+        firstMoleFraction *
+        firstMolecularWeight,
+      )} g/mol`,
+      `Second contribution = ${formatNumber(
+        secondMoleFraction *
+        secondMolecularWeight,
+      )} g/mol`,
+    ],
+    assumptions: [
+      'Binary mixture',
+      'Mole fractions sum to one',
+      'Molecular weights use the same unit basis',
+    ],
+  }
+}
+
+function solveMassFlowMolarFlowConversion(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const massFlow =
+    readMassFlowKilogramsPerSecond(
+      query,
+    )
+
+  const molecularWeight =
+    readMolecularWeightValue(
+      query,
+      [
+        'molecular weight',
+        'molar mass',
+        'molekuler agirlik',
+        'mol kutlesi',
+      ],
+    )
+
+  if (
+    massFlow === null ||
+    molecularWeight === null ||
+    massFlow < 0 ||
+    molecularWeight <= 0
+  ) {
+    return undefined
+  }
+
+  const molarFlow =
+    (
+      massFlow /
+      molecularWeight
+    ) *
+    1000
+
+  if (
+    !Number.isFinite(
+      molarFlow,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Molar flow rate',
+    resultValue:
+      `${formatNumber(
+        molarFlow,
+      )} mol/s`,
+    numericValue:
+      molarFlow,
+    unit: 'mol/s',
+    equation:
+      'ṅ = ṁ/MW',
+    steps: [
+      `Mass flow = ${formatNumber(
+        massFlow,
+      )} kg/s`,
+      `Molecular weight = ${formatNumber(
+        molecularWeight,
+      )} kg/kmol`,
+      `Molar flow = ${formatNumber(
+        molarFlow,
+      )} mol/s`,
+    ],
+    assumptions: [
+      'Single chemical species or known average molecular weight',
+      'Mass flow and molecular weight use consistent species definitions',
+    ],
+  }
+}
+
 export function solveProblemQuickly(
   calculatorId: string,
   query: string,
@@ -4213,6 +4803,36 @@ export function solveProblemQuickly(
 
     case 'massTransferCoefficient':
       return solveMassTransferCoefficient(
+        query,
+      )
+
+    case 'massMoleConversion':
+      return solveMassMoleConversion(
+        query,
+      )
+
+    case 'densitySpecificGravity':
+      return solveSpecificGravity(
+        query,
+      )
+
+    case 'solutionConcentration':
+      return solveSolutionMolarity(
+        query,
+      )
+
+    case 'mixtureDensityCalculator':
+      return solveMixtureDensity(
+        query,
+      )
+
+    case 'averageMolecularWeight':
+      return solveAverageMolecularWeight(
+        query,
+      )
+
+    case 'massFlowMolarFlowConversion':
+      return solveMassFlowMolarFlowConversion(
         query,
       )
 
