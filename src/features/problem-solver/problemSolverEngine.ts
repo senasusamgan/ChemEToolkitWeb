@@ -8,6 +8,8 @@ import {
   buildProblemAssumptions,
   buildProblemVerificationChecklist,
 } from './problemAssumptionEngine.ts'
+import { buildProblemEngineeringReport } from './problemEngineeringReportEngine.ts'
+import type { ProblemEngineeringReport } from './problemEngineeringReportEngine.ts'
 
 export interface ProblemSolverCalculator {
   id: string
@@ -38,6 +40,7 @@ export interface ProblemSolverMatch {
   solutionPlan: string[]
   assumptions: string[]
   verificationChecklist: string[]
+  engineeringReport: ProblemEngineeringReport
   quickSolution?: ProblemQuickSolution
 }
 
@@ -1668,6 +1671,29 @@ export function rankProblemSolvers(
           assumptionContext,
         )
 
+      const engineeringReport =
+        buildProblemEngineeringReport({
+          title:
+            calculator.title,
+          category:
+            calculator.category,
+          readinessPercent:
+            readiness.readinessPercent,
+          detectedInputs:
+            readiness.detectedInputs,
+          missingInputs:
+            readiness.missingInputs,
+          diagnostics:
+            diagnostics.diagnostics,
+          solutionPlan,
+          assumptions,
+          verificationChecklist,
+          hasQuickSolution:
+            Boolean(
+              quickSolution,
+            ),
+        })
+
       const plannedGuidance =
         solutionPlan.length > 0
           ? `${diagnosticGuidance} Solution plan: ${solutionPlan
@@ -1680,6 +1706,7 @@ export function rankProblemSolvers(
       const enrichedGuidance =
         [
           plannedGuidance,
+          `Engineering report: ${engineeringReport.headline}. ${engineeringReport.summary}`,
           assumptions.length > 0
             ? `Assumptions: ${assumptions
                 .map(
@@ -1745,6 +1772,7 @@ export function rankProblemSolvers(
         solutionPlan,
         assumptions,
         verificationChecklist,
+        engineeringReport,
         quickSolution,
       }
     })

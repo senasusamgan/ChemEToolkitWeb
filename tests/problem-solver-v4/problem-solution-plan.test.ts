@@ -11,6 +11,10 @@ import {
 } from '../../src/features/problem-solver/problemAssumptionEngine.ts'
 
 import {
+  buildProblemEngineeringReport,
+} from '../../src/features/problem-solver/problemEngineeringReportEngine.ts'
+
+import {
   rankProblemSolvers,
 } from '../../src/features/problem-solver/problemSolverEngine.ts'
 
@@ -482,6 +486,262 @@ test(
     assert.match(
       matches[0].guidance,
       /Verification checklist:/,
+    )
+  },
+)
+
+
+test(
+  'builds a blocked engineering report',
+  () => {
+    const report =
+      buildProblemEngineeringReport({
+        title:
+          'Pump Power',
+        category:
+          'Fluid Mechanics',
+        readinessPercent:
+          100,
+        detectedInputs: [
+          'flow rate',
+          'total head',
+          'pump efficiency',
+        ],
+        missingInputs: [],
+        diagnostics: [
+          {
+            severity:
+              'error',
+            message:
+              'Efficiency cannot exceed 100%.',
+          },
+        ],
+        solutionPlan: [
+          'Resolve the blocking diagnostic.',
+        ],
+        assumptions: [
+          'Efficiency is between zero and one.',
+        ],
+        verificationChecklist: [
+          'Check the pump operating point.',
+        ],
+        hasQuickSolution:
+          false,
+      })
+
+    assert.equal(
+      report.status,
+      'blocked',
+    )
+
+    assert.match(
+      report.headline,
+      /blocked/,
+    )
+
+    assert.ok(
+      report.sections.some(
+        (section) =>
+          section.title ===
+            'Engineering diagnostics' &&
+          section.items.some(
+            (item) =>
+              item.includes(
+                'Blocking error',
+              ),
+          ),
+      ),
+    )
+  },
+)
+
+test(
+  'builds a missing-input engineering report',
+  () => {
+    const report =
+      buildProblemEngineeringReport({
+        title:
+          'Pressure Drop',
+        category:
+          'Fluid Mechanics',
+        readinessPercent:
+          60,
+        detectedInputs: [
+          'pipe length',
+        ],
+        missingInputs: [
+          'inside diameter',
+          'fluid density',
+        ],
+        diagnostics: [],
+        solutionPlan: [],
+        assumptions: [],
+        verificationChecklist: [],
+        hasQuickSolution:
+          false,
+      })
+
+    assert.equal(
+      report.status,
+      'needs-inputs',
+    )
+
+    assert.match(
+      report.summary,
+      /2 missing/,
+    )
+
+    assert.ok(
+      report.sections.some(
+        (section) =>
+          section.title ===
+            'Input readiness' &&
+          section.items.some(
+            (item) =>
+              item.includes(
+                'inside diameter',
+              ),
+          ),
+      ),
+    )
+  },
+)
+
+test(
+  'builds a ready engineering report',
+  () => {
+    const report =
+      buildProblemEngineeringReport({
+        title:
+          'Ideal Gas Calculator',
+        category:
+          'Thermodynamics',
+        readinessPercent:
+          100,
+        detectedInputs: [
+          'pressure',
+          'volume',
+          'amount of gas',
+          'absolute temperature',
+        ],
+        missingInputs: [],
+        diagnostics: [],
+        solutionPlan: [
+          'Apply PV = nRT.',
+        ],
+        assumptions: [
+          'Pressure is absolute.',
+        ],
+        verificationChecklist: [
+          'Substitute the result back into PV = nRT.',
+        ],
+        hasQuickSolution:
+          true,
+      })
+
+    assert.equal(
+      report.status,
+      'ready',
+    )
+
+    assert.match(
+      report.summary,
+      /Quick Solve result is available/,
+    )
+
+    assert.equal(
+      report.sections.length,
+      5,
+    )
+  },
+)
+
+test(
+  'marks warning-only reports for review',
+  () => {
+    const report =
+      buildProblemEngineeringReport({
+        title:
+          'Ideal Gas Calculator',
+        category:
+          'Thermodynamics',
+        readinessPercent:
+          100,
+        detectedInputs: [],
+        missingInputs: [],
+        diagnostics: [
+          {
+            severity:
+              'warning',
+            message:
+              'Confirm that pressure is absolute.',
+          },
+        ],
+        solutionPlan: [],
+        assumptions: [],
+        verificationChecklist: [],
+        hasQuickSolution:
+          true,
+      })
+
+    assert.equal(
+      report.status,
+      'review',
+    )
+
+    assert.match(
+      report.headline,
+      /review assumptions and warnings/,
+    )
+  },
+)
+
+test(
+  'integrates the engineering report into ranked matches',
+  () => {
+    const matches =
+      rankProblemSolvers(
+        [
+          'Calculate pump power.',
+          'Flow rate 0.02 m3/s,',
+          'total head 18 m,',
+          'fluid density 1000 kg/m3',
+          'and pump efficiency 80%.',
+        ].join(
+          ' ',
+        ),
+        [
+          {
+            id:
+              'pumpPower',
+            title:
+              'Pump Power',
+            category:
+              'Fluid Mechanics',
+            available:
+              true,
+          },
+        ],
+        1,
+      )
+
+    assert.equal(
+      matches.length,
+      1,
+    )
+
+    assert.ok(
+      matches[0].engineeringReport,
+    )
+
+    assert.ok(
+      matches[0].engineeringReport.sections.length >=
+      5,
+    )
+
+    assert.match(
+      matches[0].guidance,
+      /Engineering report:/,
     )
   },
 )
