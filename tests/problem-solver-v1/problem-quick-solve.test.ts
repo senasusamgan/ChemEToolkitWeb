@@ -994,3 +994,190 @@ test(
     )
   },
 )
+
+test(
+  'quick-solves mass-to-mole conversion',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'massMoleConversion',
+          [
+            'Convert mass to moles.',
+            'Sample mass 36 g',
+            'and molecular weight 18 g/mol.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        2,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.unit,
+      'mol',
+    )
+  },
+)
+
+test(
+  'quick-solves specific gravity',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'densitySpecificGravity',
+          'Calculate specific gravity for density 850 kg/m3.',
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.85,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.unit,
+      'dimensionless',
+    )
+  },
+)
+
+test(
+  'quick-solves solution molarity',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'solutionConcentration',
+          [
+            'Calculate solution molarity.',
+            'Moles 0.5 mol',
+            'and solution volume 2 L.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.25,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.unit,
+      'mol/L',
+    )
+  },
+)
+
+test(
+  'quick-solves mixture density',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'mixtureDensityCalculator',
+          [
+            'Calculate mixture density.',
+            'Total mixture mass 5 kg',
+            'and total volume 0.004 m3.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        1250,
+      ) < 1e-10,
+    )
+
+    assert.equal(
+      solution.unit,
+      'kg/m3',
+    )
+  },
+)
+
+test(
+  'quick-solves binary average molecular weight',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'averageMolecularWeight',
+          [
+            'Calculate average molecular weight.',
+            'Component 1 mole fraction 0.25,',
+            'component 1 molecular weight 18 g/mol',
+            'and component 2 molecular weight 44 g/mol.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        37.5,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.unit,
+      'g/mol',
+    )
+  },
+)
+
+test(
+  'quick-solves mass-flow to molar-flow conversion',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'massFlowMolarFlowConversion',
+          [
+            'Convert mass flow to molar flow.',
+            'Mass flow rate 3.6 kg/h',
+            'and molecular weight 18 g/mol.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.05555555555555556,
+      ) < 1e-14,
+    )
+
+    assert.equal(
+      solution.unit,
+      'mol/s',
+    )
+  },
+)
+
+test(
+  'does not calculate molarity without solution volume',
+  () => {
+    const solution =
+      solveProblemQuickly(
+        'solutionConcentration',
+        'Calculate molarity for moles 0.5 mol.',
+      )
+
+    assert.equal(
+      solution,
+      undefined,
+    )
+  },
+)
