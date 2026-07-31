@@ -592,3 +592,204 @@ test(
     )
   },
 )
+
+test(
+  'quick-solves volumetric flow rate',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'flowRate',
+          [
+            'Calculate volumetric flow rate.',
+            'Flow area 0.02 m2',
+            'and velocity 3 m/s.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.06,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.equation,
+      'Q = Av',
+    )
+  },
+)
+
+test(
+  'quick-solves drag force',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'dragForce',
+          [
+            'Calculate drag force.',
+            'Drag coefficient 1.2,',
+            'fluid density 1.225 kg/m3,',
+            'velocity 10 m/s',
+            'and projected area 0.5 m2.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        36.75,
+      ) < 1e-10,
+    )
+
+    assert.equal(
+      solution.unit,
+      'N',
+    )
+  },
+)
+
+test(
+  'quick-solves minor-loss pressure drop',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'minorLosses',
+          [
+            'Calculate minor losses.',
+            'Total loss coefficient 4.5,',
+            'fluid density 1000 kg/m3',
+            'and velocity 2 m/s.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        9000,
+      ) < 1e-10,
+    )
+
+    assert.equal(
+      solution.unit,
+      'Pa',
+    )
+  },
+)
+
+test(
+  'quick-solves net thermal radiation',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'thermalRadiation',
+          [
+            'Calculate net thermal radiation.',
+            'Emissivity 0.8,',
+            'surface area 2 m2,',
+            'surface temperature 500 K',
+            'and surroundings temperature 300 K.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        4935.4938942976005,
+      ) < 1e-6,
+    )
+
+    assert.equal(
+      solution.unit,
+      'W',
+    )
+  },
+)
+
+test(
+  'quick-solves Fourier number',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'fourierNumber',
+          [
+            'Calculate Fourier number.',
+            'Thermal diffusivity 1e-5 m2/s,',
+            'time 120 s',
+            'and characteristic length 0.02 m.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        3,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.equation,
+      'Fo = αt/Lc²',
+    )
+  },
+)
+
+test(
+  'quick-solves Prandtl number',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'prandtlNumber',
+          [
+            'Calculate Prandtl number.',
+            'Specific heat capacity 4180 J/kgK,',
+            'dynamic viscosity 0.001 Pa s',
+            'and thermal conductivity 0.6 W/mK.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        6.966666666666667,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.equation,
+      'Pr = cpμ/k',
+    )
+  },
+)
+
+test(
+  'does not calculate radiation without emissivity',
+  () => {
+    const solution =
+      solveProblemQuickly(
+        'thermalRadiation',
+        [
+          'Surface area 2 m2,',
+          'surface temperature 500 K',
+          'and surroundings temperature 300 K.',
+        ].join(' '),
+      )
+
+    assert.equal(
+      solution,
+      undefined,
+    )
+  },
+)
