@@ -166,6 +166,7 @@ interface EngineeringWorkspaceProps {
   onOpenCalculator: (
     calculatorId: string,
   ) => void
+  openProblemSolverRequest: number
 }
 
 function readActiveTab():
@@ -193,6 +194,7 @@ function readActiveTab():
 export function EngineeringWorkspace({
   calculator,
   onOpenCalculator,
+  openProblemSolverRequest,
 }: EngineeringWorkspaceProps) {
   const [
     activeTab,
@@ -213,6 +215,30 @@ export function EngineeringWorkspace({
       activeTab,
     )
   }, [activeTab])
+
+  useEffect(() => {
+    if (
+      openProblemSolverRequest <=
+      0
+    ) {
+      return
+    }
+
+    setActiveTab(
+      'launcher',
+    )
+
+    window.setTimeout(
+      () => {
+        document
+          .getElementById(
+            'workspace-tab-launcher',
+          )
+          ?.focus()
+      },
+      0,
+    )
+  }, [openProblemSolverRequest])
 
   function selectTab(
     tabId: WorkspaceTabId,
