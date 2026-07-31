@@ -448,3 +448,188 @@ test(
     )
   },
 )
+
+test(
+  'rejects a strongly inconsistent ideal-gas state',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'idealGas',
+        [
+          'Calculate the ideal gas state.',
+          'Absolute pressure 101325 Pa,',
+          'gas volume 0.1 m3,',
+          'amount of gas 1 mol',
+          'and absolute temperature 300 K.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.equal(
+      result.hasBlockingErrors,
+      true,
+    )
+
+    assert.ok(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code ===
+          'ideal-gas-state-inconsistent',
+      ),
+    )
+  },
+)
+
+test(
+  'accepts a consistent ideal-gas state',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'idealGas',
+        [
+          'Check the ideal gas state.',
+          'Absolute pressure 101325 Pa,',
+          'gas volume 0.02461721 m3,',
+          'amount of gas 1 mol',
+          'and absolute temperature 300 K.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.equal(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code.startsWith(
+            'ideal-gas-state',
+          ),
+      ),
+      false,
+    )
+  },
+)
+
+test(
+  'warns when mass volume and density are inconsistent',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'mixtureDensityCalculator',
+        [
+          'Total mixture mass 5 kg,',
+          'total mixture volume 0.004 m3',
+          'and mixture density 1000 kg/m3.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.equal(
+      result.hasBlockingErrors,
+      false,
+    )
+
+    assert.ok(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code ===
+          'density-mass-volume-inconsistent',
+      ),
+    )
+  },
+)
+
+test(
+  'warns when flow rate area and velocity violate continuity',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'flowRate',
+        [
+          'Volumetric flow rate 0.03 m3/s,',
+          'flow area 0.02 m2',
+          'and average velocity 3 m/s.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.ok(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code ===
+          'flow-area-velocity-inconsistent',
+      ),
+    )
+  },
+)
+
+test(
+  'accepts flow inputs that satisfy Q equals Av',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'flowRate',
+        [
+          'Volumetric flow rate 0.06 m3/s,',
+          'flow area 0.02 m2',
+          'and average velocity 3 m/s.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.equal(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code ===
+          'flow-area-velocity-inconsistent',
+      ),
+      false,
+    )
+  },
+)
+
+test(
+  'warns about a zero concentration driving force',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'ficksFirstLaw',
+        [
+          'Calculate diffusion flux.',
+          'Concentration difference 0 mol/m3.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.ok(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code ===
+          'zero-concentration-driving-force',
+      ),
+    )
+  },
+)
+
+test(
+  'warns about a zero pressure driving force',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'orificeMeter',
+        'Pressure difference 0 Pa.',
+      )
+
+    assert.ok(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code ===
+          'zero-pressure-driving-force',
+      ),
+    )
+  },
+)
