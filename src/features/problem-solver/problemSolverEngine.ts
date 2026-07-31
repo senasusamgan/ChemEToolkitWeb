@@ -14,6 +14,8 @@ import { parseEquationAwareInput } from './problemEquationInputParser.ts'
 import type { ProblemEquationAssignment } from './problemEquationInputParser.ts'
 import { inferProblemEquationIntent } from './problemEquationIntentEngine.ts'
 import type { ProblemEquationIntent } from './problemEquationIntentEngine.ts'
+import { resolveProblemEquationContext } from './problemEquationContextEngine.ts'
+import type { ProblemEquationContext } from './problemEquationContextEngine.ts'
 
 export interface ProblemSolverCalculator {
   id: string
@@ -47,6 +49,7 @@ export interface ProblemSolverMatch {
   engineeringReport: ProblemEngineeringReport
   equationAssignments: ProblemEquationAssignment[]
   equationIntent: ProblemEquationIntent
+  equationContext: ProblemEquationContext
   quickSolution?: ProblemQuickSolution
 }
 
@@ -1432,10 +1435,17 @@ export function rankProblemSolvers(
       equationParse.assignments,
     )
 
+  const equationContext =
+    resolveProblemEquationContext(
+      equationIntent,
+      equationParse.assignments,
+    )
+
   const solverQuery =
     [
       equationParse.enrichedQuery,
       equationIntent.enrichedText,
+      equationContext.enrichedText,
     ]
       .filter(
         (section) =>
@@ -1550,6 +1560,34 @@ export function rankProblemSolvers(
 
         reasons.add(
           `Requested unknown: ${equationIntent.targetName}`,
+        )
+      }
+
+      if (
+        equationContext.status ===
+          'ready' &&
+        (
+          equationCalculatorMatches ||
+          equationCategoryMatches
+        )
+      ) {
+        score += 18
+
+        reasons.add(
+          `Equation inputs ready: ${equationContext.readinessPercent}%`,
+        )
+      } else if (
+        equationContext.status ===
+          'needs-inputs' &&
+        (
+          equationCalculatorMatches ||
+          equationCategoryMatches
+        )
+      ) {
+        score += 6
+
+        reasons.add(
+          `Equation inputs missing: ${equationContext.missingVariableNames.join(', ')}`,
         )
       }
 
@@ -1875,6 +1913,7 @@ export function rankProblemSolvers(
         equationAssignments:
           equationParse.assignments,
         equationIntent,
+        equationContext,
         quickSolution,
       }
     })
