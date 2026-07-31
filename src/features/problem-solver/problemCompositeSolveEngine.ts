@@ -116,6 +116,174 @@ function formatNumber(
   ).toString()
 }
 
+function escapeCompositeRegExp(
+  value: string,
+): string {
+  return value.replace(
+    /[.*+?^${}()|[\]\\]/g,
+    '\\function extractStepValue(',
+  )
+}
+
+function createCompositeAlternatives(
+  values: string[],
+): string {
+  return values
+    .map(
+      normalizeText,
+    )
+    .filter(
+      (value) =>
+        value.length > 0,
+    )
+    .sort(
+      (first, second) =>
+        second.length -
+        first.length,
+    )
+    .map(
+      escapeCompositeRegExp,
+    )
+    .join(
+      '|',
+    )
+}
+
+function readCompositeFraction(
+  query: string,
+  aliases: string[],
+): number | null {
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const aliasPattern =
+    createCompositeAlternatives(
+      aliases,
+    )
+
+  if (!aliasPattern) {
+    return null
+  }
+
+  const pattern =
+    new RegExp(
+      `(?:^|\\b)(?:${aliasPattern})(?=\\b|\\s|:|=)\\s*(?:=|:|is)?\\s*(${NUMBER_SOURCE})\\s*(%|percent)?`,
+      'i',
+    )
+
+  const match =
+    pattern.exec(
+      cleanQuery,
+    )
+
+  if (!match) {
+    return null
+  }
+
+  let value =
+    Number(
+      match[1],
+    )
+
+  if (
+    !Number.isFinite(
+      value,
+    )
+  ) {
+    return null
+  }
+
+  if (
+    match[2] ||
+    value > 1
+  ) {
+    value /= 100
+  }
+
+  if (
+    value < 0 ||
+    value > 1
+  ) {
+    return null
+  }
+
+  return value
+}
+
+function readCompositeReactionRate(
+  query: string,
+): number | null {
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const aliasPattern =
+    createCompositeAlternatives([
+      'exit reaction rate',
+      'reaction rate at exit',
+      'volumetric reaction rate',
+      'reaction rate',
+      'cikis reaksiyon hizi',
+      'reaksiyon hizi',
+    ])
+
+  const unitPattern =
+    createCompositeAlternatives([
+      'kmol/m3 s',
+      'kmol/m3s',
+      'mol/m3 s',
+      'mol/m3s',
+    ])
+
+  const pattern =
+    new RegExp(
+      `(?:^|\\b)(?:${aliasPattern})(?=\\b|\\s|:|=)\\s*(?:=|:|is)?\\s*(${NUMBER_SOURCE})\\s*(${unitPattern})(?=\\s|$|[.;,)])`,
+      'i',
+    )
+
+  const match =
+    pattern.exec(
+      cleanQuery,
+    )
+
+  if (!match) {
+    return null
+  }
+
+  let value =
+    Number(
+      match[1],
+    )
+
+  if (
+    !Number.isFinite(
+      value,
+    ) ||
+    value <= 0
+  ) {
+    return null
+  }
+
+  const unit =
+    normalizeText(
+      match[2],
+    )
+
+  if (
+    unit ===
+      'kmol/m3 s' ||
+    unit ===
+      'kmol/m3s'
+  ) {
+    value *= 1000
+  }
+
+  return value
+}
+
 function extractStepValue(
   solution:
     ProblemQuickSolution,
@@ -564,11 +732,547 @@ function solveNaturalConvectionChain(
   }
 }
 
+function solveTotalPumpPowerChain(
+  calculatorId: string,
+  query: string,
+): ProblemCompositeSolution | undefined {
+  if (
+    calculatorId !==
+    'pumpPower'
+  ) {
+    return undefined
+  }
+
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const requestsPumpPower =
+    includesAny(
+      cleanQuery,
+      [
+        'pump power',
+        'required pump power',
+        'pump sizing',
+        'pompa gucu',
+      ],
+    )
+
+  const includesMajorLoss =
+    includesAny(
+      cleanQuery,
+      [
+        'pressure drop',
+        'pipe pressure loss',
+        'darcy weisbach',
+        'basinc dusumu',
+        'boru basinc kaybi',
+      ],
+    )
+
+  const includesMinorLoss =
+    includesAny(
+      cleanQuery,
+      [
+        'minor loss',
+        'minor losses',
+        'loss coefficient',
+        'total loss coefficient',
+        'fittings',
+        'valves',
+        'minor kayip',
+        'yerel kayip',
+      ],
+    )
+
+  if (
+    !requestsPumpPower ||
+    !includesMajorLoss ||
+    !includesMinorLoss
+  ) {
+    return undefined
+  }
+
+  const majorLoss =
+    solveProblemQuickly(
+      'pressureDrop',
+      query,
+    )
+
+  const minorLoss =
+    solveProblemQuickly(
+      'minorLosses',
+      query,
+    )
+
+  if (
+    !majorLoss ||
+    !minorLoss
+  ) {
+    return undefined
+  }
+
+  const majorHead =
+    extractStepValue(
+      majorLoss,
+      'Head loss',
+    )
+
+  const minorHead =
+    extractStepValue(
+      minorLoss,
+      'Head loss',
+    )
+
+  if (
+    majorHead === null ||
+    minorHead === null ||
+    majorHead < 0 ||
+    minorHead < 0
+  ) {
+    return undefined
+  }
+
+  const totalHead =
+    majorHead +
+    minorHead
+
+  const pumpPower =
+    solveProblemQuickly(
+      'pumpPower',
+      [
+        `pump head ${totalHead} m`,
+        query,
+      ].join(
+        ' ',
+      ),
+    )
+
+  if (!pumpPower) {
+    return undefined
+  }
+
+  return {
+    solutionMode:
+      'composite',
+    chain: [
+      'pressureDrop',
+      'minorLosses',
+      'pumpPower',
+    ],
+    resultLabel:
+      'Total-loss pump requirement',
+    resultValue:
+      pumpPower.resultValue,
+    numericValue:
+      pumpPower.numericValue,
+    unit:
+      pumpPower.unit,
+    equation:
+      'Htotal = Hmajor + Hminor → P = ρgQHtotal/η',
+    steps: [
+      `1. Major pipe loss = ${majorLoss.resultValue}`,
+      `2. Minor-loss pressure drop = ${minorLoss.resultValue}`,
+      `3. Total required pump head = ${formatNumber(
+        totalHead,
+      )} m`,
+      `4. Required pump power = ${pumpPower.resultValue}`,
+    ],
+    assumptions:
+      uniqueValues([
+        ...majorLoss.assumptions,
+        ...minorLoss.assumptions,
+        ...pumpPower.assumptions,
+        'Static elevation and equipment pressure requirements are not included.',
+      ]),
+  }
+}
+
+function solveMassFlowCstrChain(
+  calculatorId: string,
+  query: string,
+): ProblemCompositeSolution | undefined {
+  if (
+    calculatorId !==
+    'cstrVolume'
+  ) {
+    return undefined
+  }
+
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const requestsReactorVolume =
+    includesAny(
+      cleanQuery,
+      [
+        'cstr volume',
+        'reactor volume',
+        'required cstr volume',
+        'reaktor hacmi',
+      ],
+    )
+
+  const includesMassFlow =
+    includesAny(
+      cleanQuery,
+      [
+        'mass flow',
+        'mass flow rate',
+        'mass feed rate',
+        'kutlesel debi',
+      ],
+    )
+
+  const includesMolecularWeight =
+    includesAny(
+      cleanQuery,
+      [
+        'molecular weight',
+        'molar mass',
+        'molekuler agirlik',
+        'mol kutlesi',
+      ],
+    )
+
+  if (
+    !requestsReactorVolume ||
+    !includesMassFlow ||
+    !includesMolecularWeight
+  ) {
+    return undefined
+  }
+
+  const molarFlow =
+    solveProblemQuickly(
+      'massFlowMolarFlowConversion',
+      query,
+    )
+
+  if (!molarFlow) {
+    return undefined
+  }
+
+  const conversion =
+    readCompositeFraction(
+      query,
+      [
+        'target conversion',
+        'conversion',
+        'hedef donusum',
+        'donusum',
+      ],
+    )
+
+  const exitReactionRate =
+    readCompositeReactionRate(
+      query,
+    )
+
+  if (
+    conversion === null ||
+    exitReactionRate === null
+  ) {
+    return undefined
+  }
+
+  const reactedMolarFlow =
+    molarFlow.numericValue *
+    conversion
+
+  const reactorVolume =
+    reactedMolarFlow /
+    exitReactionRate
+
+  if (
+    !Number.isFinite(
+      reactorVolume,
+    ) ||
+    reactorVolume < 0
+  ) {
+    return undefined
+  }
+
+  return {
+    solutionMode:
+      'composite',
+    chain: [
+      'massFlowMolarFlowConversion',
+      'cstrVolume',
+    ],
+    resultLabel:
+      'Mass-feed CSTR sizing',
+    resultValue:
+      `${formatNumber(
+        reactorVolume,
+      )} m3`,
+    numericValue:
+      reactorVolume,
+    unit:
+      'm3',
+    equation:
+      'Fₐ₀ = ṁ/MW → V = Fₐ₀X/(−rₐ)exit',
+    steps: [
+      `1. Feed molar flow = ${molarFlow.resultValue}`,
+      `2. Reacted molar flow = ${formatNumber(
+        reactedMolarFlow,
+      )} mol/s`,
+      `3. Exit reaction rate = ${formatNumber(
+        exitReactionRate,
+      )} mol/(m3 s)`,
+      `4. Required CSTR volume = ${formatNumber(
+        reactorVolume,
+      )} m3`,
+    ],
+    assumptions:
+      uniqueValues([
+        ...molarFlow.assumptions,
+        'Steady-state operation',
+        'Perfect mixing',
+        'The reaction rate is evaluated at the CSTR exit condition.',
+      ]),
+  }
+}
+
+function solveSolutionPreparationChain(
+  calculatorId: string,
+  query: string,
+): ProblemCompositeSolution | undefined {
+  if (
+    calculatorId !==
+    'solutionConcentration'
+  ) {
+    return undefined
+  }
+
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const requestsConcentration =
+    includesAny(
+      cleanQuery,
+      [
+        'solution molarity',
+        'calculate molarity',
+        'solution concentration',
+        'cozelti molaritesi',
+        'molarite',
+      ],
+    )
+
+  const includesSoluteMass =
+    includesAny(
+      cleanQuery,
+      [
+        'solute mass',
+        'sample mass',
+        'material mass',
+        'cozunen kutlesi',
+      ],
+    )
+
+  const includesMolecularWeight =
+    includesAny(
+      cleanQuery,
+      [
+        'molecular weight',
+        'molar mass',
+        'molekuler agirlik',
+        'mol kutlesi',
+      ],
+    )
+
+  if (
+    !requestsConcentration ||
+    !includesSoluteMass ||
+    !includesMolecularWeight
+  ) {
+    return undefined
+  }
+
+  const amount =
+    solveProblemQuickly(
+      'massMoleConversion',
+      query,
+    )
+
+  if (!amount) {
+    return undefined
+  }
+
+  const concentration =
+    solveProblemQuickly(
+      'solutionConcentration',
+      [
+        `moles ${amount.numericValue} mol`,
+        query,
+      ].join(
+        ' ',
+      ),
+    )
+
+  if (!concentration) {
+    return undefined
+  }
+
+  return {
+    solutionMode:
+      'composite',
+    chain: [
+      'massMoleConversion',
+      'solutionConcentration',
+    ],
+    resultLabel:
+      'Mass-based solution molarity',
+    resultValue:
+      concentration.resultValue,
+    numericValue:
+      concentration.numericValue,
+    unit:
+      concentration.unit,
+    equation:
+      'n = m/MW → C = n/Vsolution',
+    steps: [
+      `1. Solute amount = ${amount.resultValue}`,
+      `2. Final solution volume is read from the problem.`,
+      `3. Solution molarity = ${concentration.resultValue}`,
+    ],
+    assumptions:
+      uniqueValues([
+        ...amount.assumptions,
+        ...concentration.assumptions,
+      ]),
+  }
+}
+
+function solveMixtureMolarFlowChain(
+  calculatorId: string,
+  query: string,
+): ProblemCompositeSolution | undefined {
+  if (
+    calculatorId !==
+    'massFlowMolarFlowConversion'
+  ) {
+    return undefined
+  }
+
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const requestsMolarFlow =
+    includesAny(
+      cleanQuery,
+      [
+        'molar flow',
+        'molar flow rate',
+        'convert mass flow',
+        'molar debi',
+      ],
+    )
+
+  const includesMixture =
+    includesAny(
+      cleanQuery,
+      [
+        'binary mixture',
+        'mixture molecular weight',
+        'component 1 mole fraction',
+        'mole fraction 1',
+        'ikili karisim',
+        'karisim',
+      ],
+    )
+
+  if (
+    !requestsMolarFlow ||
+    !includesMixture
+  ) {
+    return undefined
+  }
+
+  const averageMolecularWeight =
+    solveProblemQuickly(
+      'averageMolecularWeight',
+      query,
+    )
+
+  if (!averageMolecularWeight) {
+    return undefined
+  }
+
+  const molarFlow =
+    solveProblemQuickly(
+      'massFlowMolarFlowConversion',
+      [
+        `molecular weight ${averageMolecularWeight.numericValue} g/mol`,
+        query,
+      ].join(
+        ' ',
+      ),
+    )
+
+  if (!molarFlow) {
+    return undefined
+  }
+
+  return {
+    solutionMode:
+      'composite',
+    chain: [
+      'averageMolecularWeight',
+      'massFlowMolarFlowConversion',
+    ],
+    resultLabel:
+      'Mixture molar flow rate',
+    resultValue:
+      molarFlow.resultValue,
+    numericValue:
+      molarFlow.numericValue,
+    unit:
+      molarFlow.unit,
+    equation:
+      'MWavg = ΣxiMWi → ṅ = ṁ/MWavg',
+    steps: [
+      `1. Average molecular weight = ${averageMolecularWeight.resultValue}`,
+      `2. Mixture mass flow is converted using MWavg.`,
+      `3. Mixture molar flow = ${molarFlow.resultValue}`,
+    ],
+    assumptions:
+      uniqueValues([
+        ...averageMolecularWeight.assumptions,
+        ...molarFlow.assumptions,
+      ]),
+  }
+}
+
 export function solveCompositeProblem(
   calculatorId: string,
   query: string,
 ): ProblemCompositeSolution | undefined {
   return (
+    solveTotalPumpPowerChain(
+      calculatorId,
+      query,
+    ) ??
+    solveMassFlowCstrChain(
+      calculatorId,
+      query,
+    ) ??
+    solveSolutionPreparationChain(
+      calculatorId,
+      query,
+    ) ??
+    solveMixtureMolarFlowChain(
+      calculatorId,
+      query,
+    ) ??
     solvePipePumpChain(
       calculatorId,
       query,
