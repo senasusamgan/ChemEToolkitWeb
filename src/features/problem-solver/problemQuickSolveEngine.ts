@@ -1216,6 +1216,248 @@ function readSpecificHeatCapacity(
   return measurement.value
 }
 
+function readDensityByAliases(
+  query: string,
+  aliases: string[],
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      aliases,
+      [
+        'kg/m3',
+        'g/cm3',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'g/cm3'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function readAreaByAliases(
+  query: string,
+  aliases: string[],
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      aliases,
+      [
+        'mm2',
+        'cm2',
+        'm2',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'mm2'
+  ) {
+    return (
+      measurement.value /
+      1_000_000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'cm2'
+  ) {
+    return (
+      measurement.value /
+      10_000
+    )
+  }
+
+  return measurement.value
+}
+
+function readPressureDifference(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'differential pressure',
+        'pressure difference',
+        'pressure drop',
+        'basinc farki',
+      ],
+      [
+        'mpa',
+        'kpa',
+        'bar',
+        'pa',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'mpa'
+  ) {
+    return (
+      measurement.value *
+      1_000_000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'kpa'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'bar'
+  ) {
+    return (
+      measurement.value *
+      100_000
+    )
+  }
+
+  return measurement.value
+}
+
+function readKinematicViscosity(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'kinematic viscosity',
+        'kinematik viskozite',
+        'nu',
+      ],
+      [
+        'mm2/s',
+        'cm2/s',
+        'm2/s',
+        'cst',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+      'mm2/s' ||
+    measurement.unit ===
+      'cst'
+  ) {
+    return (
+      measurement.value *
+      0.000001
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'cm2/s'
+  ) {
+    return (
+      measurement.value *
+      0.0001
+    )
+  }
+
+  return measurement.value
+}
+
+function readThermalExpansionCoefficient(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'volumetric thermal expansion coefficient',
+        'thermal expansion coefficient',
+        'expansion coefficient',
+        'genlesme katsayisi',
+        'beta',
+      ],
+      [
+        '1/k',
+        'k-1',
+      ],
+    )
+
+  return (
+    measurement?.value ??
+    null
+  )
+}
+
+function readMolarFlux(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'molar flux',
+        'diffusive flux',
+        'mass transfer flux',
+        'molar akis',
+      ],
+      [
+        'kmol/m2 s',
+        'kmol/m2s',
+        'mol/m2 s',
+        'mol/m2s',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+      'kmol/m2 s' ||
+    measurement.unit ===
+      'kmol/m2s'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
 function formatNumber(
   value: number,
 ): string {
@@ -3251,6 +3493,594 @@ function solvePrandtlNumber(
   }
 }
 
+function solveUTubeManometer(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const manometerDensity =
+    readDensityByAliases(
+      query,
+      [
+        'manometer fluid density',
+        'manometer liquid density',
+        'manometre sivisi yogunlugu',
+      ],
+    )
+
+  const processDensity =
+    readDensityByAliases(
+      query,
+      [
+        'process fluid density',
+        'pipe fluid density',
+        'system fluid density',
+        'proses sivisi yogunlugu',
+      ],
+    )
+
+  const levelDifference =
+    readLength(
+      query,
+      [
+        'manometer level difference',
+        'column height difference',
+        'level difference',
+        'seviye farki',
+      ],
+    )
+
+  if (
+    manometerDensity === null ||
+    processDensity === null ||
+    levelDifference === null ||
+    manometerDensity <= 0 ||
+    processDensity <= 0 ||
+    levelDifference < 0
+  ) {
+    return undefined
+  }
+
+  const pressureDifference =
+    Math.abs(
+      manometerDensity -
+      processDensity,
+    ) *
+    STANDARD_GRAVITY *
+    levelDifference
+
+  if (
+    !Number.isFinite(
+      pressureDifference,
+    )
+  ) {
+    return undefined
+  }
+
+  const displayedResult =
+    pressureDifference >= 1000
+      ? `${formatNumber(
+          pressureDifference /
+          1000,
+        )} kPa`
+      : `${formatNumber(
+          pressureDifference,
+        )} Pa`
+
+  return {
+    resultLabel:
+      'Manometer pressure difference',
+    resultValue:
+      displayedResult,
+    numericValue:
+      pressureDifference,
+    unit: 'Pa',
+    equation:
+      'ΔP = |ρm − ρf|gh',
+    steps: [
+      `Density difference = ${formatNumber(
+        Math.abs(
+          manometerDensity -
+          processDensity,
+        ),
+      )} kg/m3`,
+      `Column difference = ${formatNumber(
+        levelDifference,
+      )} m`,
+      `Pressure difference = ${displayedResult}`,
+    ],
+    assumptions: [
+      'Both pressure taps are at the same elevation',
+      'Fluids are incompressible',
+      'Capillary effects are neglected',
+    ],
+  }
+}
+
+function solveOrificeMeter(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const dischargeCoefficient =
+    readDimensionlessValue(
+      query,
+      [
+        'discharge coefficient',
+        'orifice coefficient',
+        'flow coefficient',
+        'desarj katsayisi',
+      ],
+    )
+
+  const orificeArea =
+    readAreaByAliases(
+      query,
+      [
+        'orifice opening area',
+        'orifice area',
+        'opening area',
+        'orifis alani',
+      ],
+    )
+
+  const pressureDifference =
+    readPressureDifference(
+      query,
+    )
+
+  const density =
+    readDensity(
+      query,
+    )
+
+  if (
+    dischargeCoefficient === null ||
+    orificeArea === null ||
+    pressureDifference === null ||
+    density === null ||
+    dischargeCoefficient <= 0 ||
+    orificeArea <= 0 ||
+    pressureDifference < 0 ||
+    density <= 0
+  ) {
+    return undefined
+  }
+
+  const flowRate =
+    dischargeCoefficient *
+    orificeArea *
+    Math.sqrt(
+      (
+        2 *
+        pressureDifference
+      ) /
+      density,
+    )
+
+  if (
+    !Number.isFinite(
+      flowRate,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Orifice volumetric flow rate',
+    resultValue:
+      `${formatNumber(
+        flowRate,
+      )} m3/s`,
+    numericValue:
+      flowRate,
+    unit: 'm3/s',
+    equation:
+      'Q = CdA√(2ΔP/ρ)',
+    steps: [
+      `Ideal velocity = ${formatNumber(
+        Math.sqrt(
+          (
+            2 *
+            pressureDifference
+          ) /
+          density,
+        ),
+      )} m/s`,
+      `Effective area = ${formatNumber(
+        dischargeCoefficient *
+        orificeArea,
+      )} m2`,
+      `Flow rate = ${formatNumber(
+        flowRate,
+      )} m3/s`,
+    ],
+    assumptions: [
+      'Steady incompressible flow',
+      'The supplied discharge coefficient includes contraction effects',
+      'Pipe-diameter beta correction is not separately applied',
+    ],
+  }
+}
+
+function solveTankDrainTime(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const tankArea =
+    readAreaByAliases(
+      query,
+      [
+        'tank cross-sectional area',
+        'tank area',
+        'vessel area',
+        'tank alani',
+      ],
+    )
+
+  const orificeArea =
+    readAreaByAliases(
+      query,
+      [
+        'drain orifice area',
+        'outlet area',
+        'orifice area',
+        'cikis alani',
+      ],
+    )
+
+  const dischargeCoefficient =
+    readDimensionlessValue(
+      query,
+      [
+        'discharge coefficient',
+        'drain coefficient',
+        'desarj katsayisi',
+      ],
+    )
+
+  const initialHeight =
+    readLength(
+      query,
+      [
+        'initial liquid height',
+        'initial head',
+        'starting liquid height',
+        'baslangic sivi yuksekligi',
+      ],
+    )
+
+  if (
+    tankArea === null ||
+    orificeArea === null ||
+    dischargeCoefficient === null ||
+    initialHeight === null ||
+    tankArea <= 0 ||
+    orificeArea <= 0 ||
+    dischargeCoefficient <= 0 ||
+    initialHeight < 0
+  ) {
+    return undefined
+  }
+
+  const drainTime =
+    (
+      tankArea /
+      (
+        dischargeCoefficient *
+        orificeArea
+      )
+    ) *
+    Math.sqrt(
+      (
+        2 *
+        initialHeight
+      ) /
+      STANDARD_GRAVITY,
+    )
+
+  if (
+    !Number.isFinite(
+      drainTime,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Tank drain time',
+    resultValue:
+      `${formatNumber(
+        drainTime,
+      )} s`,
+    numericValue:
+      drainTime,
+    unit: 's',
+    equation:
+      't = At/(CdAo)√(2h₀/g)',
+    steps: [
+      `Area ratio At/(CdAo) = ${formatNumber(
+        tankArea /
+        (
+          dischargeCoefficient *
+          orificeArea
+        ),
+      )}`,
+      `Gravity term = ${formatNumber(
+        Math.sqrt(
+          (
+            2 *
+            initialHeight
+          ) /
+          STANDARD_GRAVITY,
+        ),
+      )} s`,
+      `Drain time = ${formatNumber(
+        drainTime,
+      )} s`,
+    ],
+    assumptions: [
+      'Constant tank cross-sectional area',
+      'Small outlet relative to the tank area',
+      'The tank drains to zero liquid head',
+    ],
+  }
+}
+
+function solveGrashofNumber(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const expansionCoefficient =
+    readThermalExpansionCoefficient(
+      query,
+    )
+
+  const temperatureDifference =
+    readTemperatureDifference(
+      query,
+      [
+        'surface fluid temperature difference',
+        'temperature difference',
+        'delta temperature',
+        'delta t',
+        'sicaklik farki',
+      ],
+    )
+
+  const characteristicLength =
+    readLength(
+      query,
+      [
+        'characteristic length',
+        'vertical length',
+        'karakteristik uzunluk',
+      ],
+    )
+
+  const kinematicViscosity =
+    readKinematicViscosity(
+      query,
+    )
+
+  if (
+    expansionCoefficient === null ||
+    temperatureDifference === null ||
+    characteristicLength === null ||
+    kinematicViscosity === null ||
+    expansionCoefficient <= 0 ||
+    temperatureDifference < 0 ||
+    characteristicLength <= 0 ||
+    kinematicViscosity <= 0
+  ) {
+    return undefined
+  }
+
+  const grashofNumber =
+    (
+      STANDARD_GRAVITY *
+      expansionCoefficient *
+      temperatureDifference *
+      Math.pow(
+        characteristicLength,
+        3,
+      )
+    ) /
+    Math.pow(
+      kinematicViscosity,
+      2,
+    )
+
+  if (
+    !Number.isFinite(
+      grashofNumber,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Grashof number',
+    resultValue:
+      formatNumber(
+        grashofNumber,
+      ),
+    numericValue:
+      grashofNumber,
+    unit: 'dimensionless',
+    equation:
+      'Gr = gβΔTL³/ν²',
+    steps: [
+      `Buoyancy numerator = ${formatNumber(
+        STANDARD_GRAVITY *
+        expansionCoefficient *
+        temperatureDifference *
+        Math.pow(
+          characteristicLength,
+          3,
+        ),
+      )}`,
+      `ν² = ${formatNumber(
+        Math.pow(
+          kinematicViscosity,
+          2,
+        ),
+      )} m4/s2`,
+      `Grashof number = ${formatNumber(
+        grashofNumber,
+      )}`,
+    ],
+    assumptions: [
+      'Boussinesq approximation',
+      'Fluid properties are evaluated at film temperature',
+      'The supplied length matches the natural-convection geometry',
+    ],
+  }
+}
+
+function solveRayleighNumber(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const grashofNumber =
+    readDimensionlessValue(
+      query,
+      [
+        'grashof number',
+        'grashof',
+        'gr',
+      ],
+    )
+
+  const prandtlNumber =
+    readDimensionlessValue(
+      query,
+      [
+        'prandtl number',
+        'prandtl',
+        'pr',
+      ],
+    )
+
+  if (
+    grashofNumber === null ||
+    prandtlNumber === null ||
+    grashofNumber < 0 ||
+    prandtlNumber < 0
+  ) {
+    return undefined
+  }
+
+  const rayleighNumber =
+    grashofNumber *
+    prandtlNumber
+
+  if (
+    !Number.isFinite(
+      rayleighNumber,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Rayleigh number',
+    resultValue:
+      formatNumber(
+        rayleighNumber,
+      ),
+    numericValue:
+      rayleighNumber,
+    unit: 'dimensionless',
+    equation:
+      'Ra = GrPr',
+    steps: [
+      `Gr = ${formatNumber(
+        grashofNumber,
+      )}`,
+      `Pr = ${formatNumber(
+        prandtlNumber,
+      )}`,
+      `Rayleigh number = ${formatNumber(
+        rayleighNumber,
+      )}`,
+    ],
+    assumptions: [
+      'Grashof and Prandtl numbers use consistent properties and length scales',
+      'Natural-convection interpretation',
+    ],
+  }
+}
+
+function solveMassTransferCoefficient(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const molarFlux =
+    readMolarFlux(
+      query,
+    )
+
+  const concentrationDifference =
+    readConcentrationDifference(
+      query,
+    )
+
+  if (
+    molarFlux === null ||
+    concentrationDifference === null ||
+    concentrationDifference === 0
+  ) {
+    return undefined
+  }
+
+  const coefficient =
+    Math.abs(
+      molarFlux,
+    ) /
+    Math.abs(
+      concentrationDifference,
+    )
+
+  if (
+    !Number.isFinite(
+      coefficient,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Mass-transfer coefficient',
+    resultValue:
+      `${formatNumber(
+        coefficient,
+      )} m/s`,
+    numericValue:
+      coefficient,
+    unit: 'm/s',
+    equation:
+      'kc = |NA|/|ΔCA|',
+    steps: [
+      `Molar flux magnitude = ${formatNumber(
+        Math.abs(
+          molarFlux,
+        ),
+      )} mol/(m2 s)`,
+      `Concentration difference = ${formatNumber(
+        Math.abs(
+          concentrationDifference,
+        ),
+      )} mol/m3`,
+      `Mass-transfer coefficient = ${formatNumber(
+        coefficient,
+      )} m/s`,
+    ],
+    assumptions: [
+      'Linear concentration driving-force model',
+      'The coefficient and concentrations use the same phase basis',
+      'Steady mass transfer',
+    ],
+  }
+}
+
 export function solveProblemQuickly(
   calculatorId: string,
   query: string,
@@ -3353,6 +4183,36 @@ export function solveProblemQuickly(
 
     case 'prandtlNumber':
       return solvePrandtlNumber(
+        query,
+      )
+
+    case 'uTubeManometer':
+      return solveUTubeManometer(
+        query,
+      )
+
+    case 'orificeMeter':
+      return solveOrificeMeter(
+        query,
+      )
+
+    case 'tankDrainTime':
+      return solveTankDrainTime(
+        query,
+      )
+
+    case 'grashofNumber':
+      return solveGrashofNumber(
+        query,
+      )
+
+    case 'rayleighNumber':
+      return solveRayleighNumber(
+        query,
+      )
+
+    case 'massTransferCoefficient':
+      return solveMassTransferCoefficient(
         query,
       )
 

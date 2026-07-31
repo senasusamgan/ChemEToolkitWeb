@@ -793,3 +793,204 @@ test(
     )
   },
 )
+
+test(
+  'quick-solves U-tube manometer pressure difference',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'uTubeManometer',
+          [
+            'Calculate U-tube pressure difference.',
+            'Manometer fluid density 13600 kg/m3,',
+            'process fluid density 1000 kg/m3',
+            'and level difference 0.2 m.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        24712.758,
+      ) < 1e-6,
+    )
+
+    assert.equal(
+      solution.unit,
+      'Pa',
+    )
+  },
+)
+
+test(
+  'quick-solves orifice volumetric flow rate',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'orificeMeter',
+          [
+            'Calculate orifice flow.',
+            'Discharge coefficient 0.62,',
+            'orifice area 0.001 m2,',
+            'pressure difference 10000 Pa',
+            'and fluid density 1000 kg/m3.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.002772724292099739,
+      ) < 1e-14,
+    )
+
+    assert.equal(
+      solution.unit,
+      'm3/s',
+    )
+  },
+)
+
+test(
+  'quick-solves tank drain time',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'tankDrainTime',
+          [
+            'Calculate tank drain time.',
+            'Tank cross-sectional area 1 m2,',
+            'drain orifice area 0.01 m2,',
+            'discharge coefficient 0.6',
+            'and initial liquid height 2 m.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        106.44331892701958,
+      ) < 1e-10,
+    )
+
+    assert.equal(
+      solution.unit,
+      's',
+    )
+  },
+)
+
+test(
+  'quick-solves Grashof number',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'grashofNumber',
+          [
+            'Calculate Grashof number.',
+            'Thermal expansion coefficient 0.0034 1/K,',
+            'temperature difference 30 K,',
+            'characteristic length 0.1 m',
+            'and kinematic viscosity 1.5e-5 m2/s.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        4445681.333333333,
+      ) < 1e-6,
+    )
+
+    assert.equal(
+      solution.unit,
+      'dimensionless',
+    )
+  },
+)
+
+test(
+  'quick-solves Rayleigh number',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'rayleighNumber',
+          [
+            'Calculate Rayleigh number.',
+            'Grashof number 1.2e8',
+            'and Prandtl number 0.71.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        85200000,
+      ) < 1e-6,
+    )
+
+    assert.equal(
+      solution.equation,
+      'Ra = GrPr',
+    )
+  },
+)
+
+test(
+  'quick-solves mass-transfer coefficient',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'massTransferCoefficient',
+          [
+            'Calculate the mass transfer coefficient.',
+            'Molar flux 0.002 mol/m2 s',
+            'and concentration difference 500 mol/m3.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        4e-6,
+      ) < 1e-16,
+    )
+
+    assert.equal(
+      solution.unit,
+      'm/s',
+    )
+  },
+)
+
+test(
+  'does not calculate an orifice flow without pressure difference',
+  () => {
+    const solution =
+      solveProblemQuickly(
+        'orificeMeter',
+        [
+          'Discharge coefficient 0.62,',
+          'orifice area 0.001 m2',
+          'and fluid density 1000 kg/m3.',
+        ].join(' '),
+      )
+
+    assert.equal(
+      solution,
+      undefined,
+    )
+  },
+)
