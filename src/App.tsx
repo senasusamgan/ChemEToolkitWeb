@@ -13,6 +13,7 @@ import './styles/personal-toolkit.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
+import { HomepageProblemSolverPanel } from './components/HomepageProblemSolverPanel'
 const EngineeringWorkspace =
   lazy(() =>
     import(
@@ -295,7 +296,7 @@ function App() {
       () => {
         document
           .querySelector(
-            '#engineering-workspace',
+            '#problem-solver',
           )
           ?.scrollIntoView({
             behavior:
@@ -379,7 +380,7 @@ function App() {
         >
           <a href="#calculators">Calculators</a>
           <a
-            href="#engineering-workspace"
+            href="#problem-solver"
             onClick={(event) => {
               event.preventDefault()
               openProblemSolver()
@@ -423,7 +424,7 @@ function App() {
               Calculators
             </a>
             <a
-              href="#engineering-workspace"
+              href="#problem-solver"
               onClick={(event) => {
                 event.preventDefault()
                 setIsMobileMenuOpen(false)
@@ -510,7 +511,7 @@ function App() {
 
             <a
               className="button button-secondary"
-              href="#engineering-workspace"
+              href="#problem-solver"
               onClick={(event) => {
                 event.preventDefault()
                 openProblemSolver()
@@ -559,6 +560,12 @@ function App() {
           />
         </div>
       </section>
+
+      <HomepageProblemSolverPanel
+        onOpenCalculator={
+          openCalculator
+        }
+      />
 
 
       <section
