@@ -264,3 +264,187 @@ test(
     )
   },
 )
+
+test(
+  'rejects nonpositive absolute pressure',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'idealGas',
+        [
+          'Calculate ideal gas volume.',
+          'Absolute pressure 0 Pa',
+          'and absolute temperature 300 K.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.equal(
+      result.hasBlockingErrors,
+      true,
+    )
+
+    assert.ok(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code ===
+          'nonpositive-absolute-pressure',
+      ),
+    )
+  },
+)
+
+test(
+  'rejects nonpositive flow rate',
+  () => {
+    assert.ok(
+      diagnosticCodes(
+        'pumpPower',
+        'Volumetric flow rate -0.1 m3/s.',
+      ).includes(
+        'nonpositive-flow-rate',
+      ),
+    )
+  },
+)
+
+test(
+  'rejects heat-exchanger temperature crossing',
+  () => {
+    const codes =
+      diagnosticCodes(
+        'heatExchangerLMTD',
+        [
+          'Counter-current heat exchanger.',
+          'Hot inlet temperature 120 C,',
+          'hot outlet temperature 80 C,',
+          'cold inlet temperature 90 C',
+          'and cold outlet temperature 110 C.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.ok(
+      codes.includes(
+        'heat-exchanger-temperature-cross',
+      ),
+    )
+  },
+)
+
+test(
+  'accepts physically ordered heat-exchanger temperatures',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'heatExchangerLMTD',
+        [
+          'Counter-current heat exchanger.',
+          'Hot inlet temperature 150 C,',
+          'hot outlet temperature 100 C,',
+          'cold inlet temperature 20 C',
+          'and cold outlet temperature 70 C.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.equal(
+      result.hasBlockingErrors,
+      false,
+    )
+
+    assert.equal(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code.includes(
+            'heat-exchanger',
+          ),
+      ),
+      false,
+    )
+  },
+)
+
+test(
+  'rejects mole fractions whose sum exceeds one',
+  () => {
+    assert.ok(
+      diagnosticCodes(
+        'averageMolecularWeight',
+        [
+          'Component 1 mole fraction 0.7',
+          'and component 2 mole fraction 0.5.',
+        ].join(
+          ' ',
+        ),
+      ).includes(
+        'mole-fraction-sum-above-one',
+      ),
+    )
+  },
+)
+
+test(
+  'warns when supplied component fractions do not close',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'averageMolecularWeight',
+        [
+          'Component 1 mole fraction 0.3',
+          'and component 2 mole fraction 0.4.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.equal(
+      result.hasBlockingErrors,
+      false,
+    )
+
+    assert.ok(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code ===
+            'mole-fraction-closure' &&
+          diagnostic.severity ===
+            'warning',
+      ),
+    )
+  },
+)
+
+test(
+  'warns when gauge pressure lacks atmospheric pressure',
+  () => {
+    const result =
+      diagnoseProblemInput(
+        'idealGas',
+        [
+          'Calculate ideal gas volume.',
+          'Gauge pressure 2 bar,',
+          'temperature 300 K',
+          'and amount of gas 1 mol.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.equal(
+      result.hasBlockingErrors,
+      false,
+    )
+
+    assert.ok(
+      result.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.code ===
+          'gauge-pressure-conversion-missing',
+      ),
+    )
+  },
+)

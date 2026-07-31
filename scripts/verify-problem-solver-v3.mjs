@@ -136,6 +136,52 @@ if (
   )
 }
 
+for (
+  const contract
+  of [
+    'diagnoseAbsolutePressure',
+    'diagnoseFlowRate',
+    'diagnoseHeatExchangerTemperatures',
+    'diagnoseFractionClosure',
+    'diagnoseGaugePressureBasis',
+    'heat-exchanger-temperature-cross',
+    'gauge-pressure-conversion-missing',
+  ]
+) {
+  if (
+    !diagnosticsEngine.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Package 02 diagnostics contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'rejects nonpositive absolute pressure',
+    'rejects nonpositive flow rate',
+    'rejects heat-exchanger temperature crossing',
+    'accepts physically ordered heat-exchanger temperatures',
+    'rejects mole fractions whose sum exceeds one',
+    'warns when supplied component fractions do not close',
+    'warns when gauge pressure lacks atmospheric pressure',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Package 02 test contract missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Problem Solver v3 diagnostics package verified.',
 )
