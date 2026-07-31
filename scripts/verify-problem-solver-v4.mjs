@@ -5,6 +5,7 @@ import {
 const [
   planEngine,
   assumptionEngine,
+  reportEngine,
   solverEngine,
   tests,
   packageSource,
@@ -16,6 +17,10 @@ const [
     ),
     readFile(
       'src/features/problem-solver/problemAssumptionEngine.ts',
+      'utf8',
+    ),
+    readFile(
+      'src/features/problem-solver/problemEngineeringReportEngine.ts',
       'utf8',
     ),
     readFile(
@@ -37,11 +42,6 @@ for (
   of [
     'ProblemSolutionPlanContext',
     'PLAN_PROFILES',
-    'profileMatches',
-    'formatInputStep',
-    'formatDiagnosticStep',
-    'formatEquationStep',
-    'deduplicateSteps',
     'buildProblemSolutionPlan',
     'pressureDrop',
     'pumpPower',
@@ -56,7 +56,7 @@ for (
     )
   ) {
     throw new Error(
-      `Solution-plan engine contract missing: ${contract}`,
+      `Solution-plan contract missing: ${contract}`,
     )
   }
 }
@@ -66,14 +66,10 @@ for (
   of [
     'ProblemAssumptionContext',
     'ENGINEERING_PROFILES',
-    'profileMatches',
-    'deduplicate',
-    'findProfile',
     'buildProblemAssumptions',
     'buildProblemVerificationChecklist',
     'fully developed',
     'ideal-gas behavior',
-    'VerificationChecklist',
   ]
 ) {
   if (
@@ -90,19 +86,48 @@ for (
 for (
   const contract
   of [
-    "import { buildProblemSolutionPlan }",
+    'EngineeringReportStatus',
+    'EngineeringReportSection',
+    'ProblemEngineeringReport',
+    'ProblemEngineeringReportContext',
+    'determineStatus',
+    'buildHeadline',
+    'buildSummary',
+    'buildInputSection',
+    'buildDiagnosticSection',
+    'createSection',
+    'buildProblemEngineeringReport',
+    'Input readiness',
+    'Engineering diagnostics',
+    'Solution blueprint',
+    'Engineering assumptions',
+    'Verification checklist',
+  ]
+) {
+  if (
+    !reportEngine.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Engineering-report contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
     'solutionPlan: string[]',
-    'const solutionPlan =',
-    'const plannedGuidance =',
-    "buildProblemAssumptions",
-    "buildProblemVerificationChecklist",
     'assumptions: string[]',
     'verificationChecklist: string[]',
+    'engineeringReport: ProblemEngineeringReport',
+    'const solutionPlan =',
     'const assumptions =',
     'const verificationChecklist =',
-    'const enrichedGuidance =',
-    'Assumptions:',
-    'Verification checklist:',
+    'const engineeringReport =',
+    'Engineering report:',
+    'engineeringReport,',
   ]
 ) {
   if (
@@ -122,13 +147,14 @@ for (
     'builds a pressure-drop engineering plan',
     'places blocking diagnostics before calculation',
     'builds an ideal-gas-specific plan',
-    'adds Quick Solve verification when a result exists',
-    'integrates the solution plan into ranked matches',
     'builds pressure-drop assumptions',
     'builds ideal-gas assumptions',
-    'adds missing-input and diagnostic verification checks',
-    'adds an independent Quick Solve check',
     'integrates assumptions and verification into ranked matches',
+    'builds a blocked engineering report',
+    'builds a missing-input engineering report',
+    'builds a ready engineering report',
+    'marks warning-only reports for review',
+    'integrates the engineering report into ranked matches',
   ]
 ) {
   if (
@@ -182,5 +208,5 @@ if (
 }
 
 console.log(
-  'PASS: Problem Solver v4 solution intelligence verified.',
+  'PASS: Problem Solver v4 structured engineering intelligence verified.',
 )
