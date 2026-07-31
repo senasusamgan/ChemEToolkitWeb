@@ -182,6 +182,53 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'diagnoseIdealGasStateConsistency',
+    'diagnoseMassVolumeDensityConsistency',
+    'diagnoseFlowContinuityConsistency',
+    'diagnoseDrivingForces',
+    'ideal-gas-state-inconsistent',
+    'density-mass-volume-inconsistent',
+    'flow-area-velocity-inconsistent',
+    'zero-concentration-driving-force',
+  ]
+) {
+  if (
+    !diagnosticsEngine.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Package 03 diagnostics contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'rejects a strongly inconsistent ideal-gas state',
+    'accepts a consistent ideal-gas state',
+    'warns when mass volume and density are inconsistent',
+    'warns when flow rate area and velocity violate continuity',
+    'accepts flow inputs that satisfy Q equals Av',
+    'warns about a zero concentration driving force',
+    'warns about a zero pressure driving force',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Package 03 test contract missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Problem Solver v3 diagnostics package verified.',
 )

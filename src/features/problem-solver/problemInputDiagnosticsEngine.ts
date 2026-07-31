@@ -1315,6 +1315,756 @@ function diagnoseGaugePressureBasis(
   }
 }
 
+const DIAGNOSTIC_GAS_CONSTANT =
+  8.314462618
+
+function readPressurePascals(
+  query: string,
+  aliases: string[],
+): number | null {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      aliases,
+      [
+        'mpa',
+        'kpa',
+        'bar',
+        'atm',
+        'pa',
+      ],
+    )
+
+  if (
+    !measurement ||
+    !measurement.unit
+  ) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'mpa'
+  ) {
+    return (
+      measurement.value *
+      1_000_000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'kpa'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'bar'
+  ) {
+    return (
+      measurement.value *
+      100_000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'atm'
+  ) {
+    return (
+      measurement.value *
+      101_325
+    )
+  }
+
+  return measurement.value
+}
+
+function readVolumeCubicMeters(
+  query: string,
+  aliases: string[],
+): number | null {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      aliases,
+      [
+        'cm3',
+        'ml',
+        'm3',
+        'l',
+      ],
+    )
+
+  if (
+    !measurement ||
+    !measurement.unit
+  ) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+      'cm3' ||
+    measurement.unit ===
+      'ml'
+  ) {
+    return (
+      measurement.value /
+      1_000_000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'l'
+  ) {
+    return (
+      measurement.value /
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function readAmountMoles(
+  query: string,
+): number | null {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      [
+        'amount of gas',
+        'number of moles',
+        'moles',
+        'mol sayisi',
+      ],
+      [
+        'kmol',
+        'mol',
+      ],
+    )
+
+  if (
+    !measurement ||
+    !measurement.unit
+  ) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'kmol'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function readMassKilograms(
+  query: string,
+): number | null {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      [
+        'total mixture mass',
+        'mixture mass',
+        'total mass',
+        'mass',
+        'kutle',
+      ],
+      [
+        'mg',
+        'kg',
+        'g',
+      ],
+    )
+
+  if (
+    !measurement ||
+    !measurement.unit
+  ) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'mg'
+  ) {
+    return (
+      measurement.value /
+      1_000_000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'g'
+  ) {
+    return (
+      measurement.value /
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function readDensityKilogramsPerCubicMeter(
+  query: string,
+): number | null {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      [
+        'mixture density',
+        'fluid density',
+        'liquid density',
+        'density',
+        'yogunluk',
+      ],
+      [
+        'g/cm3',
+        'kg/m3',
+      ],
+    )
+
+  if (
+    !measurement ||
+    !measurement.unit
+  ) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'g/cm3'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function readAreaSquareMeters(
+  query: string,
+): number | null {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      [
+        'flow area',
+        'cross sectional area',
+        'cross-sectional area',
+        'pipe area',
+        'area',
+        'akis alani',
+      ],
+      [
+        'mm2',
+        'cm2',
+        'm2',
+      ],
+    )
+
+  if (
+    !measurement ||
+    !measurement.unit
+  ) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'mm2'
+  ) {
+    return (
+      measurement.value /
+      1_000_000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'cm2'
+  ) {
+    return (
+      measurement.value /
+      10_000
+    )
+  }
+
+  return measurement.value
+}
+
+function readVelocityMetersPerSecond(
+  query: string,
+): number | null {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      [
+        'average velocity',
+        'fluid velocity',
+        'velocity',
+        'hiz',
+      ],
+      [
+        'km/h',
+        'cm/s',
+        'm/s',
+      ],
+    )
+
+  if (
+    !measurement ||
+    !measurement.unit
+  ) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'km/h'
+  ) {
+    return (
+      measurement.value /
+      3.6
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'cm/s'
+  ) {
+    return (
+      measurement.value /
+      100
+    )
+  }
+
+  return measurement.value
+}
+
+function readVolumetricFlowCubicMetersPerSecond(
+  query: string,
+): number | null {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      [
+        'volumetric flow rate',
+        'volumetric flow',
+        'flow rate',
+        'debi',
+      ],
+      [
+        'm3/h',
+        'l/min',
+        'm3/s',
+        'l/s',
+      ],
+    )
+
+  if (
+    !measurement ||
+    !measurement.unit
+  ) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'm3/h'
+  ) {
+    return (
+      measurement.value /
+      3600
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'l/min'
+  ) {
+    return (
+      measurement.value /
+      60_000
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'l/s'
+  ) {
+    return (
+      measurement.value /
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function relativeMismatch(
+  first: number,
+  second: number,
+): number {
+  return (
+    Math.abs(
+      first -
+      second,
+    ) /
+    Math.max(
+      Math.abs(
+        first,
+      ),
+      Math.abs(
+        second,
+      ),
+      Number.EPSILON,
+    )
+  )
+}
+
+function diagnoseIdealGasStateConsistency(
+  calculatorId: string,
+  query: string,
+  diagnostics:
+    ProblemInputDiagnostic[],
+): void {
+  if (
+    calculatorId !==
+      'idealGas' &&
+    calculatorId !==
+      'idealGasCalculator'
+  ) {
+    return
+  }
+
+  const pressure =
+    readPressurePascals(
+      query,
+      [
+        'absolute pressure',
+        'pressure',
+        'mutlak basinc',
+      ],
+    )
+
+  const volume =
+    readVolumeCubicMeters(
+      query,
+      [
+        'gas volume',
+        'volume',
+        'gaz hacmi',
+      ],
+    )
+
+  const amount =
+    readAmountMoles(
+      query,
+    )
+
+  const temperature =
+    readTemperatureKelvin(
+      query,
+      [
+        'absolute temperature',
+        'temperature',
+        'mutlak sicaklik',
+        'sicaklik',
+      ],
+    )
+
+  if (
+    pressure === null ||
+    volume === null ||
+    amount === null ||
+    temperature === null ||
+    pressure <= 0 ||
+    volume <= 0 ||
+    amount <= 0 ||
+    temperature <= 0
+  ) {
+    return
+  }
+
+  const pressureVolume =
+    pressure *
+    volume
+
+  const moleTemperature =
+    amount *
+    DIAGNOSTIC_GAS_CONSTANT *
+    temperature
+
+  const mismatch =
+    relativeMismatch(
+      pressureVolume,
+      moleTemperature,
+    )
+
+  if (
+    mismatch >
+    0.25
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'ideal-gas-state-inconsistent',
+        severity:
+          'error',
+        message:
+          'The supplied pressure, volume, amount and temperature do not satisfy PV = nRT.',
+      },
+    )
+
+    return
+  }
+
+  if (
+    mismatch >
+    0.05
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'ideal-gas-state-check',
+        severity:
+          'warning',
+        message:
+          'The supplied ideal-gas state differs from PV = nRT by more than 5%; verify units or non-ideal behavior.',
+      },
+    )
+  }
+}
+
+function diagnoseMassVolumeDensityConsistency(
+  query: string,
+  diagnostics:
+    ProblemInputDiagnostic[],
+): void {
+  const mass =
+    readMassKilograms(
+      query,
+    )
+
+  const volume =
+    readVolumeCubicMeters(
+      query,
+      [
+        'total mixture volume',
+        'mixture volume',
+        'total volume',
+        'volume',
+        'hacim',
+      ],
+    )
+
+  const density =
+    readDensityKilogramsPerCubicMeter(
+      query,
+    )
+
+  if (
+    mass === null ||
+    volume === null ||
+    density === null ||
+    mass <= 0 ||
+    volume <= 0 ||
+    density <= 0
+  ) {
+    return
+  }
+
+  const calculatedDensity =
+    mass /
+    volume
+
+  if (
+    relativeMismatch(
+      calculatedDensity,
+      density,
+    ) >
+    0.1
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'density-mass-volume-inconsistent',
+        severity:
+          'warning',
+        message:
+          'The supplied mass, volume and density differ from ρ = m/V by more than 10%.',
+      },
+    )
+  }
+}
+
+function diagnoseFlowContinuityConsistency(
+  query: string,
+  diagnostics:
+    ProblemInputDiagnostic[],
+): void {
+  const area =
+    readAreaSquareMeters(
+      query,
+    )
+
+  const velocity =
+    readVelocityMetersPerSecond(
+      query,
+    )
+
+  const flowRate =
+    readVolumetricFlowCubicMetersPerSecond(
+      query,
+    )
+
+  if (
+    area === null ||
+    velocity === null ||
+    flowRate === null ||
+    area <= 0 ||
+    velocity <= 0 ||
+    flowRate <= 0
+  ) {
+    return
+  }
+
+  const calculatedFlowRate =
+    area *
+    velocity
+
+  if (
+    relativeMismatch(
+      calculatedFlowRate,
+      flowRate,
+    ) >
+    0.1
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'flow-area-velocity-inconsistent',
+        severity:
+          'warning',
+        message:
+          'The supplied flow rate, area and velocity differ from Q = Av by more than 10%.',
+      },
+    )
+  }
+}
+
+function diagnoseDrivingForces(
+  query: string,
+  diagnostics:
+    ProblemInputDiagnostic[],
+): void {
+  const temperatureDifference =
+    readNamedValue(
+      query,
+      [
+        'temperature difference',
+        'delta temperature',
+        'delta t',
+        'sicaklik farki',
+      ],
+    )
+
+  if (
+    temperatureDifference !== null &&
+    temperatureDifference === 0
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'zero-temperature-driving-force',
+        severity:
+          'warning',
+        message:
+          'A zero temperature difference produces no sensible heat-transfer driving force.',
+      },
+    )
+  }
+
+  const concentrationDifference =
+    readNamedValue(
+      query,
+      [
+        'concentration difference',
+        'concentration gradient',
+        'derisim farki',
+      ],
+    )
+
+  if (
+    concentrationDifference !== null &&
+    concentrationDifference === 0
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'zero-concentration-driving-force',
+        severity:
+          'warning',
+        message:
+          'A zero concentration difference produces no diffusive mass-transfer driving force.',
+      },
+    )
+  }
+
+  const pressureDifference =
+    readNamedValue(
+      query,
+      [
+        'pressure difference',
+        'differential pressure',
+        'pressure drop',
+        'basinc farki',
+      ],
+    )
+
+  if (
+    pressureDifference !== null &&
+    pressureDifference === 0
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'zero-pressure-driving-force',
+        severity:
+          'warning',
+        message:
+          'A zero pressure difference produces no pressure-driven flow.',
+      },
+    )
+  }
+}
+
 export function diagnoseProblemInput(
   calculatorId: string,
   query: string,
@@ -1376,6 +2126,27 @@ export function diagnoseProblemInput(
 
   diagnoseGaugePressureBasis(
     calculatorId,
+    query,
+    diagnostics,
+  )
+
+  diagnoseIdealGasStateConsistency(
+    calculatorId,
+    query,
+    diagnostics,
+  )
+
+  diagnoseMassVolumeDensityConsistency(
+    query,
+    diagnostics,
+  )
+
+  diagnoseFlowContinuityConsistency(
+    query,
+    diagnostics,
+  )
+
+  diagnoseDrivingForces(
     query,
     diagnostics,
   )
