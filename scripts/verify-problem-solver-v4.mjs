@@ -4,6 +4,7 @@ import {
 
 const [
   planEngine,
+  assumptionEngine,
   solverEngine,
   tests,
   packageSource,
@@ -11,6 +12,10 @@ const [
   await Promise.all([
     readFile(
       'src/features/problem-solver/problemSolutionPlanEngine.ts',
+      'utf8',
+    ),
+    readFile(
+      'src/features/problem-solver/problemAssumptionEngine.ts',
       'utf8',
     ),
     readFile(
@@ -59,12 +64,45 @@ for (
 for (
   const contract
   of [
+    'ProblemAssumptionContext',
+    'ENGINEERING_PROFILES',
+    'profileMatches',
+    'deduplicate',
+    'findProfile',
+    'buildProblemAssumptions',
+    'buildProblemVerificationChecklist',
+    'fully developed',
+    'ideal-gas behavior',
+    'VerificationChecklist',
+  ]
+) {
+  if (
+    !assumptionEngine.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Assumption-engine contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
     "import { buildProblemSolutionPlan }",
     'solutionPlan: string[]',
     'const solutionPlan =',
     'const plannedGuidance =',
-    'Solution plan:',
-    'solutionPlan,',
+    "buildProblemAssumptions",
+    "buildProblemVerificationChecklist",
+    'assumptions: string[]',
+    'verificationChecklist: string[]',
+    'const assumptions =',
+    'const verificationChecklist =',
+    'const enrichedGuidance =',
+    'Assumptions:',
+    'Verification checklist:',
   ]
 ) {
   if (
@@ -86,6 +124,11 @@ for (
     'builds an ideal-gas-specific plan',
     'adds Quick Solve verification when a result exists',
     'integrates the solution plan into ranked matches',
+    'builds pressure-drop assumptions',
+    'builds ideal-gas assumptions',
+    'adds missing-input and diagnostic verification checks',
+    'adds an independent Quick Solve check',
+    'integrates assumptions and verification into ranked matches',
   ]
 ) {
   if (
@@ -139,5 +182,5 @@ if (
 }
 
 console.log(
-  'PASS: Problem Solver v4 solution blueprint verified.',
+  'PASS: Problem Solver v4 solution intelligence verified.',
 )

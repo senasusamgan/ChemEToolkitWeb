@@ -4,6 +4,10 @@ import { solveCompositeProblem } from './problemCompositeSolveEngine.ts'
 import { diagnoseProblemInput } from './problemInputDiagnosticsEngine.ts'
 import type { ProblemInputDiagnostic } from './problemInputDiagnosticsEngine.ts'
 import { buildProblemSolutionPlan } from './problemSolutionPlanEngine.ts'
+import {
+  buildProblemAssumptions,
+  buildProblemVerificationChecklist,
+} from './problemAssumptionEngine.ts'
 
 export interface ProblemSolverCalculator {
   id: string
@@ -32,6 +36,8 @@ export interface ProblemSolverMatch {
   readinessPercent: number
   diagnostics: ProblemInputDiagnostic[]
   solutionPlan: string[]
+  assumptions: string[]
+  verificationChecklist: string[]
   quickSolution?: ProblemQuickSolution
 }
 
@@ -1631,6 +1637,37 @@ export function rankProblemSolvers(
             ),
         })
 
+      const assumptionContext = {
+        calculatorId:
+          calculator.id,
+        title:
+          calculator.title,
+        category:
+          calculator.category,
+        equationHint:
+          guidance.equationHint,
+        detectedInputs:
+          readiness.detectedInputs,
+        missingInputs:
+          readiness.missingInputs,
+        diagnostics:
+          diagnostics.diagnostics,
+        hasQuickSolution:
+          Boolean(
+            quickSolution,
+          ),
+      }
+
+      const assumptions =
+        buildProblemAssumptions(
+          assumptionContext,
+        )
+
+      const verificationChecklist =
+        buildProblemVerificationChecklist(
+          assumptionContext,
+        )
+
       const plannedGuidance =
         solutionPlan.length > 0
           ? `${diagnosticGuidance} Solution plan: ${solutionPlan
@@ -1640,6 +1677,34 @@ export function rankProblemSolvers(
               )
               .join(' ')}`
           : diagnosticGuidance
+      const enrichedGuidance =
+        [
+          plannedGuidance,
+          assumptions.length > 0
+            ? `Assumptions: ${assumptions
+                .map(
+                  (assumption, index) =>
+                    `${index + 1}. ${assumption}`,
+                )
+                .join(' ')}`
+            : '',
+          verificationChecklist.length > 0
+            ? `Verification checklist: ${verificationChecklist
+                .map(
+                  (check, index) =>
+                    `${index + 1}. ${check}`,
+                )
+                .join(' ')}`
+            : '',
+        ]
+          .filter(
+            (section) =>
+              section.length > 0,
+          )
+          .join(
+            ' ',
+          )
+
 
       return {
         calculatorId:
@@ -1664,7 +1729,7 @@ export function rankProblemSolvers(
             3,
           ),
         guidance:
-          plannedGuidance,
+          enrichedGuidance,
         requiredInputs:
           guidance.requiredInputs,
         equationHint:
@@ -1678,6 +1743,8 @@ export function rankProblemSolvers(
         diagnostics:
           diagnostics.diagnostics,
         solutionPlan,
+        assumptions,
+        verificationChecklist,
         quickSolution,
       }
     })
