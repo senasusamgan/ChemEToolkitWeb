@@ -85,6 +85,11 @@ function App() {
     setShouldLoadWorkspace,
   ] = useState(false)
 
+  const [
+    problemSolverOpenRequest,
+    setProblemSolverOpenRequest,
+  ] = useState(0)
+
   const workspaceSectionRef =
     useRef<HTMLElement | null>(
       null,
@@ -276,6 +281,32 @@ function App() {
     })
   }, [search, selectedCategory])
 
+  function openProblemSolver() {
+    setShouldLoadWorkspace(
+      true,
+    )
+
+    setProblemSolverOpenRequest(
+      (currentRequest) =>
+        currentRequest + 1,
+    )
+
+    window.requestAnimationFrame(
+      () => {
+        document
+          .querySelector(
+            '#engineering-workspace',
+          )
+          ?.scrollIntoView({
+            behavior:
+              'smooth',
+            block:
+              'start',
+          })
+      },
+    )
+  }
+
   function openCategory(category: string) {
     setSelectedCategory(category)
     window.requestAnimationFrame(() => {
@@ -347,6 +378,15 @@ function App() {
           aria-label="Primary navigation"
         >
           <a href="#calculators">Calculators</a>
+          <a
+            href="#engineering-workspace"
+            onClick={(event) => {
+              event.preventDefault()
+              openProblemSolver()
+            }}
+          >
+            Problem Solver
+          </a>
           <a href="#categories">Categories</a>
           <a href="#method">Method</a>
           <a href="#references">References</a>
@@ -382,6 +422,17 @@ function App() {
             >
               Calculators
             </a>
+            <a
+              href="#engineering-workspace"
+              onClick={(event) => {
+                event.preventDefault()
+                setIsMobileMenuOpen(false)
+                openProblemSolver()
+              }}
+            >
+              Problem Solver
+            </a>
+
             <a
               href="#categories"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -456,6 +507,17 @@ function App() {
             <a className="button button-secondary" href="#categories">
               □ Browse categories
             </a>
+
+            <a
+              className="button button-secondary"
+              href="#engineering-workspace"
+              onClick={(event) => {
+                event.preventDefault()
+                openProblemSolver()
+              }}
+            >
+              ◇ Solve a problem
+            </a>
           </div>
 
           <div className="status-strip">
@@ -523,6 +585,9 @@ function App() {
                 }
                 onOpenCalculator={
                   openCalculator
+                }
+                openProblemSolverRequest={
+                  problemSolverOpenRequest
                 }
               />
             </Suspense>
