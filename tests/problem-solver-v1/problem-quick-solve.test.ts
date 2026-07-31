@@ -469,3 +469,126 @@ test(
     )
   },
 )
+
+test(
+  'quick-solves convection heat transfer',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'convectionHeatTransfer',
+          [
+            'Calculate convection heat transfer.',
+            'Convection coefficient 25 W/m2K,',
+            'surface area 4 m2',
+            'and temperature difference 30 K.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        3000,
+      ) < 1e-10,
+    )
+
+    assert.equal(
+      solution.unit,
+      'W',
+    )
+
+    assert.equal(
+      solution.equation,
+      'Q = hAΔT',
+    )
+  },
+)
+
+test(
+  'quick-solves Nusselt number',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'nusseltNumber',
+          [
+            'Calculate the Nusselt number.',
+            'Heat transfer coefficient 100 W/m2K,',
+            'characteristic length 0.05 m',
+            'and thermal conductivity 0.5 W/mK.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        10,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.unit,
+      'dimensionless',
+    )
+
+    assert.equal(
+      solution.equation,
+      'Nu = hL/k',
+    )
+  },
+)
+
+test(
+  'quick-solves Froude number and regime',
+  () => {
+    const solution =
+      requireSolution(
+        solveProblemQuickly(
+          'froudeNumber',
+          [
+            'Calculate Froude number.',
+            'Velocity 3 m/s',
+            'and hydraulic depth 2 m.',
+          ].join(' '),
+        ),
+      )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.6774011336276814,
+      ) < 1e-12,
+    )
+
+    assert.match(
+      solution.resultValue,
+      /Subcritical/,
+    )
+
+    assert.equal(
+      solution.equation,
+      'Fr = v/√(gL)',
+    )
+  },
+)
+
+test(
+  'does not solve convection heat transfer without area',
+  () => {
+    const solution =
+      solveProblemQuickly(
+        'convectionHeatTransfer',
+        [
+          'Convection coefficient 25 W/m2K',
+          'and temperature difference 30 K.',
+        ].join(' '),
+      )
+
+    assert.equal(
+      solution,
+      undefined,
+    )
+  },
+)
