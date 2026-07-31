@@ -500,3 +500,198 @@ test(
     )
   },
 )
+
+test(
+  'chains sample mass into ideal-gas volume',
+  () => {
+    const query = [
+      'Calculate ideal gas volume from sample mass.',
+      'Sample mass 44 g,',
+      'molecular weight 44 g/mol,',
+      'absolute pressure 101325 Pa',
+      'and absolute temperature 300 K.',
+    ].join(
+      ' ',
+    )
+
+    const solution =
+      requireSolution(
+        solveCompositeProblem(
+          'idealGas',
+          query,
+        ),
+      )
+
+    assert.deepEqual(
+      solution.chain,
+      [
+        'massMoleConversion',
+        'idealGas',
+      ],
+    )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.0246172098238342,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.unit,
+      'm3',
+    )
+  },
+)
+
+test(
+  'chains mixture density into hydrostatic pressure',
+  () => {
+    const query = [
+      'Calculate hydrostatic pressure from mixture mass and volume.',
+      'Total mixture mass 6 kg,',
+      'total volume 0.004 m3',
+      'and liquid depth 3 m.',
+    ].join(
+      ' ',
+    )
+
+    const solution =
+      requireSolution(
+        solveCompositeProblem(
+          'hydrostaticPressure',
+          query,
+        ),
+      )
+
+    assert.deepEqual(
+      solution.chain,
+      [
+        'mixtureDensityCalculator',
+        'hydrostaticPressure',
+      ],
+    )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        44129.925,
+      ) < 1e-6,
+    )
+
+    assert.equal(
+      solution.unit,
+      'Pa',
+    )
+  },
+)
+
+test(
+  'chains hydrostatic pressure into tank-orifice flow',
+  () => {
+    const query = [
+      'Calculate tank outlet orifice flow from hydrostatic head.',
+      'Fluid density 1000 kg/m3,',
+      'liquid depth 2 m,',
+      'discharge coefficient 0.62',
+      'and orifice area 0.001 m2.',
+    ].join(
+      ' ',
+    )
+
+    const solution =
+      requireSolution(
+        solveCompositeProblem(
+          'orificeMeter',
+          query,
+        ),
+      )
+
+    assert.deepEqual(
+      solution.chain,
+      [
+        'hydrostaticPressure',
+        'orificeMeter',
+      ],
+    )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.003883130829627042,
+      ) < 1e-14,
+    )
+
+    assert.equal(
+      solution.unit,
+      'm3/s',
+    )
+  },
+)
+
+test(
+  'chains orifice flow into required pump power',
+  () => {
+    const query = [
+      'Calculate the pump power required for an orifice flow.',
+      'Discharge coefficient 0.62,',
+      'orifice area 0.001 m2,',
+      'pressure difference 20000 Pa,',
+      'fluid density 1000 kg/m3',
+      'and pump efficiency 75%.',
+    ].join(
+      ' ',
+    )
+
+    const solution =
+      requireSolution(
+        solveCompositeProblem(
+          'pumpPower',
+          query,
+        ),
+      )
+
+    assert.deepEqual(
+      solution.chain,
+      [
+        'orificeMeter',
+        'pumpPower',
+      ],
+    )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        104.56598129623443,
+      ) < 1e-9,
+    )
+
+    assert.equal(
+      solution.unit,
+      'W',
+    )
+  },
+)
+
+test(
+  'does not calculate ideal-gas volume without pressure',
+  () => {
+    const solution =
+      solveCompositeProblem(
+        'idealGas',
+        [
+          'Calculate ideal gas volume from sample mass.',
+          'Sample mass 44 g,',
+          'molecular weight 44 g/mol',
+          'and absolute temperature 300 K.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.equal(
+      solution,
+      undefined,
+    )
+  },
+)

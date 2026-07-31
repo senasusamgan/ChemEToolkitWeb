@@ -15,6 +15,9 @@ export interface ProblemCompositeSolution
 const NUMBER_SOURCE =
   '[-+]?(?:\\d+(?:\\.\\d+)?|\\.\\d+)(?:e[-+]?\\d+)?'
 
+const COMPOSITE_STANDARD_GRAVITY =
+  9.80665
+
 function normalizeText(
   value: string,
 ): string {
@@ -121,7 +124,7 @@ function escapeCompositeRegExp(
 ): string {
   return value.replace(
     /[.*+?^${}()|[\]\\]/g,
-    '\\function extractStepValue(',
+    '\\$&',
   )
 }
 
@@ -279,6 +282,149 @@ function readCompositeReactionRate(
       'kmol/m3s'
   ) {
     value *= 1000
+  }
+
+  return value
+}
+
+function readCompositePressure(
+  query: string,
+): number | null {
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const aliasPattern =
+    createCompositeAlternatives([
+      'differential pressure',
+      'pressure difference',
+      'pressure drop',
+      'basinc farki',
+    ])
+
+  const unitPattern =
+    createCompositeAlternatives([
+      'mpa',
+      'kpa',
+      'bar',
+      'pa',
+    ])
+
+  const pattern =
+    new RegExp(
+      `(?:^|\\b)(?:${aliasPattern})(?=\\b|\\s|:|=)\\s*(?:=|:|is)?\\s*(${NUMBER_SOURCE})\\s*(${unitPattern})(?=\\s|$|[.;,)])`,
+      'i',
+    )
+
+  const match =
+    pattern.exec(
+      cleanQuery,
+    )
+
+  if (!match) {
+    return null
+  }
+
+  let value =
+    Number(
+      match[1],
+    )
+
+  if (
+    !Number.isFinite(
+      value,
+    )
+  ) {
+    return null
+  }
+
+  const unit =
+    normalizeText(
+      match[2],
+    )
+
+  if (
+    unit ===
+    'mpa'
+  ) {
+    value *=
+      1_000_000
+  } else if (
+    unit ===
+    'kpa'
+  ) {
+    value *=
+      1000
+  } else if (
+    unit ===
+    'bar'
+  ) {
+    value *=
+      100_000
+  }
+
+  return value
+}
+
+function readCompositeDensity(
+  query: string,
+): number | null {
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const aliasPattern =
+    createCompositeAlternatives([
+      'fluid density',
+      'liquid density',
+      'density',
+      'yogunluk',
+    ])
+
+  const unitPattern =
+    createCompositeAlternatives([
+      'kg/m3',
+      'g/cm3',
+    ])
+
+  const pattern =
+    new RegExp(
+      `(?:^|\\b)(?:${aliasPattern})(?=\\b|\\s|:|=)\\s*(?:=|:|is)?\\s*(${NUMBER_SOURCE})\\s*(${unitPattern})(?=\\s|$|[.;,)])`,
+      'i',
+    )
+
+  const match =
+    pattern.exec(
+      cleanQuery,
+    )
+
+  if (!match) {
+    return null
+  }
+
+  let value =
+    Number(
+      match[1],
+    )
+
+  if (
+    !Number.isFinite(
+      value,
+    )
+  ) {
+    return null
+  }
+
+  if (
+    normalizeText(
+      match[2],
+    ) ===
+    'g/cm3'
+  ) {
+    value *=
+      1000
   }
 
   return value
@@ -1252,11 +1398,483 @@ function solveMixtureMolarFlowChain(
   }
 }
 
+function solveMassBasedIdealGasChain(
+  calculatorId: string,
+  query: string,
+): ProblemCompositeSolution | undefined {
+  if (
+    calculatorId !==
+      'idealGas' &&
+    calculatorId !==
+      'idealGasCalculator'
+  ) {
+    return undefined
+  }
+
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const requestsGasVolume =
+    includesAny(
+      cleanQuery,
+      [
+        'ideal gas volume',
+        'gas volume',
+        'calculate gas volume',
+        'ideal gaz hacmi',
+        'gaz hacmi',
+      ],
+    )
+
+  const includesMass =
+    includesAny(
+      cleanQuery,
+      [
+        'sample mass',
+        'gas mass',
+        'material mass',
+        'kutle',
+      ],
+    )
+
+  const includesMolecularWeight =
+    includesAny(
+      cleanQuery,
+      [
+        'molecular weight',
+        'molar mass',
+        'molekuler agirlik',
+        'mol kutlesi',
+      ],
+    )
+
+  if (
+    !requestsGasVolume ||
+    !includesMass ||
+    !includesMolecularWeight
+  ) {
+    return undefined
+  }
+
+  const amount =
+    solveProblemQuickly(
+      'massMoleConversion',
+      query,
+    )
+
+  if (!amount) {
+    return undefined
+  }
+
+  const augmentedQuery = [
+    `amount of gas ${amount.numericValue} mol`,
+    query,
+  ].join(
+    ' ',
+  )
+
+  const gasVolume =
+    solveProblemQuickly(
+      calculatorId,
+      augmentedQuery,
+    ) ??
+    solveProblemQuickly(
+      'idealGas',
+      augmentedQuery,
+    ) ??
+    solveProblemQuickly(
+      'idealGasCalculator',
+      augmentedQuery,
+    )
+
+  if (!gasVolume) {
+    return undefined
+  }
+
+  return {
+    solutionMode:
+      'composite',
+    chain: [
+      'massMoleConversion',
+      calculatorId,
+    ],
+    resultLabel:
+      'Mass-based ideal-gas volume',
+    resultValue:
+      gasVolume.resultValue,
+    numericValue:
+      gasVolume.numericValue,
+    unit:
+      gasVolume.unit,
+    equation:
+      'n = m/MW → V = nRT/P',
+    steps: [
+      `1. Amount of gas = ${amount.resultValue}`,
+      '2. The supplied pressure and temperature are converted to absolute SI units.',
+      `3. Ideal-gas volume = ${gasVolume.resultValue}`,
+    ],
+    assumptions:
+      uniqueValues([
+        ...amount.assumptions,
+        ...gasVolume.assumptions,
+      ]),
+  }
+}
+
+function solveMixtureHydrostaticChain(
+  calculatorId: string,
+  query: string,
+): ProblemCompositeSolution | undefined {
+  if (
+    calculatorId !==
+    'hydrostaticPressure'
+  ) {
+    return undefined
+  }
+
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const requestsPressure =
+    includesAny(
+      cleanQuery,
+      [
+        'hydrostatic pressure',
+        'liquid pressure',
+        'static liquid pressure',
+        'hidrostatik basinc',
+      ],
+    )
+
+  const includesMixtureData =
+    includesAny(
+      cleanQuery,
+      [
+        'mixture mass',
+        'total mixture mass',
+        'mixture density',
+        'karisim kutlesi',
+      ],
+    )
+
+  if (
+    !requestsPressure ||
+    !includesMixtureData
+  ) {
+    return undefined
+  }
+
+  const mixtureDensity =
+    solveProblemQuickly(
+      'mixtureDensityCalculator',
+      query,
+    )
+
+  if (!mixtureDensity) {
+    return undefined
+  }
+
+  const pressure =
+    solveProblemQuickly(
+      'hydrostaticPressure',
+      [
+        `fluid density ${mixtureDensity.numericValue} kg/m3`,
+        query,
+      ].join(
+        ' ',
+      ),
+    )
+
+  if (!pressure) {
+    return undefined
+  }
+
+  return {
+    solutionMode:
+      'composite',
+    chain: [
+      'mixtureDensityCalculator',
+      'hydrostaticPressure',
+    ],
+    resultLabel:
+      'Mixture hydrostatic pressure',
+    resultValue:
+      pressure.resultValue,
+    numericValue:
+      pressure.numericValue,
+    unit:
+      pressure.unit,
+    equation:
+      'ρmix = mtotal/Vtotal → ΔP = ρmixgh',
+    steps: [
+      `1. Mixture density = ${mixtureDensity.resultValue}`,
+      '2. The mixture density is applied over the stated liquid depth.',
+      `3. Hydrostatic pressure = ${pressure.resultValue}`,
+    ],
+    assumptions:
+      uniqueValues([
+        ...mixtureDensity.assumptions,
+        ...pressure.assumptions,
+      ]),
+  }
+}
+
+function solveTankOrificeChain(
+  calculatorId: string,
+  query: string,
+): ProblemCompositeSolution | undefined {
+  if (
+    calculatorId !==
+    'orificeMeter'
+  ) {
+    return undefined
+  }
+
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const requestsOutletFlow =
+    includesAny(
+      cleanQuery,
+      [
+        'tank outlet flow',
+        'tank orifice flow',
+        'orifice discharge',
+        'outlet orifice flow',
+        'tank cikis debisi',
+        'orifis debisi',
+      ],
+    )
+
+  const includesHydrostaticHead =
+    includesAny(
+      cleanQuery,
+      [
+        'liquid depth',
+        'liquid height',
+        'hydrostatic head',
+        'sivi derinligi',
+        'sivi yuksekligi',
+      ],
+    )
+
+  if (
+    !requestsOutletFlow ||
+    !includesHydrostaticHead
+  ) {
+    return undefined
+  }
+
+  const pressure =
+    solveProblemQuickly(
+      'hydrostaticPressure',
+      query,
+    )
+
+  if (!pressure) {
+    return undefined
+  }
+
+  const flowRate =
+    solveProblemQuickly(
+      'orificeMeter',
+      [
+        `pressure difference ${pressure.numericValue} Pa`,
+        query,
+      ].join(
+        ' ',
+      ),
+    )
+
+  if (!flowRate) {
+    return undefined
+  }
+
+  return {
+    solutionMode:
+      'composite',
+    chain: [
+      'hydrostaticPressure',
+      'orificeMeter',
+    ],
+    resultLabel:
+      'Hydrostatic tank-outlet flow',
+    resultValue:
+      flowRate.resultValue,
+    numericValue:
+      flowRate.numericValue,
+    unit:
+      flowRate.unit,
+    equation:
+      'ΔP = ρgh → Q = CdA√(2ΔP/ρ)',
+    steps: [
+      `1. Hydrostatic pressure difference = ${pressure.resultValue}`,
+      '2. The hydrostatic pressure is applied across the outlet orifice.',
+      `3. Tank outlet flow rate = ${flowRate.resultValue}`,
+    ],
+    assumptions:
+      uniqueValues([
+        ...pressure.assumptions,
+        ...flowRate.assumptions,
+        'The receiving side is at the reference pressure.',
+      ]),
+  }
+}
+
+function solveOrificePumpChain(
+  calculatorId: string,
+  query: string,
+): ProblemCompositeSolution | undefined {
+  if (
+    calculatorId !==
+    'pumpPower'
+  ) {
+    return undefined
+  }
+
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const requestsPumpPower =
+    includesAny(
+      cleanQuery,
+      [
+        'pump power',
+        'required pump power',
+        'orifice pump power',
+        'pompa gucu',
+      ],
+    )
+
+  const includesOrifice =
+    includesAny(
+      cleanQuery,
+      [
+        'orifice',
+        'orifice flow',
+        'discharge coefficient',
+        'orifis',
+      ],
+    )
+
+  if (
+    !requestsPumpPower ||
+    !includesOrifice
+  ) {
+    return undefined
+  }
+
+  const orificeFlow =
+    solveProblemQuickly(
+      'orificeMeter',
+      query,
+    )
+
+  const pressureDifference =
+    readCompositePressure(
+      query,
+    )
+
+  const density =
+    readCompositeDensity(
+      query,
+    )
+
+  if (
+    !orificeFlow ||
+    pressureDifference === null ||
+    density === null ||
+    pressureDifference < 0 ||
+    density <= 0
+  ) {
+    return undefined
+  }
+
+  const equivalentHead =
+    pressureDifference /
+    (
+      density *
+      COMPOSITE_STANDARD_GRAVITY
+    )
+
+  const pumpPower =
+    solveProblemQuickly(
+      'pumpPower',
+      [
+        `volumetric flow rate ${orificeFlow.numericValue} m3/s`,
+        `pump head ${equivalentHead} m`,
+        query,
+      ].join(
+        ' ',
+      ),
+    )
+
+  if (!pumpPower) {
+    return undefined
+  }
+
+  return {
+    solutionMode:
+      'composite',
+    chain: [
+      'orificeMeter',
+      'pumpPower',
+    ],
+    resultLabel:
+      'Orifice-flow pump requirement',
+    resultValue:
+      pumpPower.resultValue,
+    numericValue:
+      pumpPower.numericValue,
+    unit:
+      pumpPower.unit,
+    equation:
+      'Q = CdA√(2ΔP/ρ) → H = ΔP/(ρg) → P = ρgQH/η',
+    steps: [
+      `1. Orifice flow rate = ${orificeFlow.resultValue}`,
+      `2. Equivalent pressure head = ${formatNumber(
+        equivalentHead,
+      )} m`,
+      `3. Required pump power = ${pumpPower.resultValue}`,
+    ],
+    assumptions:
+      uniqueValues([
+        ...orificeFlow.assumptions,
+        ...pumpPower.assumptions,
+        'The pump supplies the stated differential pressure.',
+      ]),
+  }
+}
+
 export function solveCompositeProblem(
   calculatorId: string,
   query: string,
 ): ProblemCompositeSolution | undefined {
   return (
+    solveMassBasedIdealGasChain(
+      calculatorId,
+      query,
+    ) ??
+    solveMixtureHydrostaticChain(
+      calculatorId,
+      query,
+    ) ??
+    solveTankOrificeChain(
+      calculatorId,
+      query,
+    ) ??
+    solveOrificePumpChain(
+      calculatorId,
+      query,
+    ) ??
     solveTotalPumpPowerChain(
       calculatorId,
       query,
