@@ -857,6 +857,464 @@ function diagnosePressureBasis(
   }
 }
 
+function readTemperatureKelvin(
+  query: string,
+  aliases: string[],
+): number | null {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      aliases,
+      [
+        'celsius',
+        'deg c',
+        'k',
+        'c',
+      ],
+    )
+
+  if (
+    !measurement ||
+    !measurement.unit
+  ) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'k'
+  ) {
+    return measurement.value
+  }
+
+  return (
+    measurement.value +
+    273.15
+  )
+}
+
+function readFractionValue(
+  query: string,
+  aliases: string[],
+): number | null {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      aliases,
+      [
+        'percent',
+        '%',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (measurement.unit) {
+    return (
+      measurement.value /
+      100
+    )
+  }
+
+  return measurement.value > 1
+    ? measurement.value / 100
+    : measurement.value
+}
+
+function diagnoseAbsolutePressure(
+  query: string,
+  diagnostics:
+    ProblemInputDiagnostic[],
+): void {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      [
+        'absolute pressure',
+        'mutlak basinc',
+      ],
+      [
+        'mpa',
+        'kpa',
+        'bar',
+        'atm',
+        'pa',
+      ],
+    )
+
+  if (
+    measurement &&
+    measurement.value <= 0
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'nonpositive-absolute-pressure',
+        severity:
+          'error',
+        message:
+          'Absolute pressure must be greater than zero.',
+      },
+    )
+  }
+}
+
+function diagnoseFlowRate(
+  query: string,
+  diagnostics:
+    ProblemInputDiagnostic[],
+): void {
+  const measurement =
+    readNamedMeasurement(
+      query,
+      [
+        'volumetric flow rate',
+        'mass flow rate',
+        'molar flow rate',
+        'flow rate',
+        'debi',
+      ],
+      [
+        'kmol/h',
+        'mol/s',
+        'kg/h',
+        'kg/s',
+        'm3/h',
+        'm3/s',
+        'l/min',
+        'l/s',
+      ],
+    )
+
+  if (
+    measurement &&
+    measurement.value <= 0
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'nonpositive-flow-rate',
+        severity:
+          'error',
+        message:
+          'Flow rate must be greater than zero.',
+      },
+    )
+  }
+}
+
+function diagnoseHeatExchangerTemperatures(
+  calculatorId: string,
+  query: string,
+  diagnostics:
+    ProblemInputDiagnostic[],
+): void {
+  if (
+    calculatorId !==
+      'heatExchangerLMTD' &&
+    calculatorId !==
+      'heatExchangerAreaSizing'
+  ) {
+    return
+  }
+
+  const hotInlet =
+    readTemperatureKelvin(
+      query,
+      [
+        'hot inlet temperature',
+        'hot fluid inlet temperature',
+        'sicak akis giris sicakligi',
+      ],
+    )
+
+  const hotOutlet =
+    readTemperatureKelvin(
+      query,
+      [
+        'hot outlet temperature',
+        'hot fluid outlet temperature',
+        'sicak akis cikis sicakligi',
+      ],
+    )
+
+  const coldInlet =
+    readTemperatureKelvin(
+      query,
+      [
+        'cold inlet temperature',
+        'cold fluid inlet temperature',
+        'soguk akis giris sicakligi',
+      ],
+    )
+
+  const coldOutlet =
+    readTemperatureKelvin(
+      query,
+      [
+        'cold outlet temperature',
+        'cold fluid outlet temperature',
+        'soguk akis cikis sicakligi',
+      ],
+    )
+
+  if (
+    hotInlet === null ||
+    hotOutlet === null ||
+    coldInlet === null ||
+    coldOutlet === null
+  ) {
+    return
+  }
+
+  if (
+    hotInlet <= hotOutlet
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'invalid-hot-stream-order',
+        severity:
+          'error',
+        message:
+          'Hot-stream inlet temperature must exceed its outlet temperature.',
+      },
+    )
+  }
+
+  if (
+    coldOutlet <= coldInlet
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'invalid-cold-stream-order',
+        severity:
+          'error',
+        message:
+          'Cold-stream outlet temperature must exceed its inlet temperature.',
+      },
+    )
+  }
+
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const parallelFlow =
+    cleanQuery.includes(
+      'parallel flow',
+    ) ||
+    cleanQuery.includes(
+      'co current',
+    ) ||
+    cleanQuery.includes(
+      'es yonlu',
+    )
+
+  const firstTerminalDifference =
+    parallelFlow
+      ? hotInlet -
+        coldInlet
+      : hotInlet -
+        coldOutlet
+
+  const secondTerminalDifference =
+    parallelFlow
+      ? hotOutlet -
+        coldOutlet
+      : hotOutlet -
+        coldInlet
+
+  if (
+    firstTerminalDifference <= 0 ||
+    secondTerminalDifference <= 0
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'heat-exchanger-temperature-cross',
+        severity:
+          'error',
+        message:
+          'Heat-exchanger terminal temperature differences must both remain positive.',
+      },
+    )
+  }
+}
+
+function diagnoseFractionClosure(
+  query: string,
+  diagnostics:
+    ProblemInputDiagnostic[],
+): void {
+  const rules = [
+    {
+      basis:
+        'mole',
+      firstAliases: [
+        'component 1 mole fraction',
+        'mole fraction 1',
+        'x1',
+      ],
+      secondAliases: [
+        'component 2 mole fraction',
+        'mole fraction 2',
+        'x2',
+      ],
+    },
+    {
+      basis:
+        'mass',
+      firstAliases: [
+        'component 1 mass fraction',
+        'mass fraction 1',
+        'w1',
+      ],
+      secondAliases: [
+        'component 2 mass fraction',
+        'mass fraction 2',
+        'w2',
+      ],
+    },
+  ] as const
+
+  for (
+    const rule
+    of rules
+  ) {
+    const firstFraction =
+      readFractionValue(
+        query,
+        [...rule.firstAliases],
+      )
+
+    const secondFraction =
+      readFractionValue(
+        query,
+        [...rule.secondAliases],
+      )
+
+    if (
+      firstFraction === null ||
+      secondFraction === null
+    ) {
+      continue
+    }
+
+    const total =
+      firstFraction +
+      secondFraction
+
+    if (
+      total >
+      1.000001
+    ) {
+      addDiagnostic(
+        diagnostics,
+        {
+          code:
+            `${rule.basis}-fraction-sum-above-one`,
+          severity:
+            'error',
+          message:
+            `Specified component ${rule.basis} fractions exceed a total of 1.`,
+        },
+      )
+
+      continue
+    }
+
+    if (
+      Math.abs(
+        total -
+        1,
+      ) >
+      0.01
+    ) {
+      addDiagnostic(
+        diagnostics,
+        {
+          code:
+            `${rule.basis}-fraction-closure`,
+          severity:
+            'warning',
+          message:
+            `Specified component ${rule.basis} fractions do not sum to 1; additional components may be missing.`,
+        },
+      )
+    }
+  }
+}
+
+function diagnoseGaugePressureBasis(
+  calculatorId: string,
+  query: string,
+  diagnostics:
+    ProblemInputDiagnostic[],
+): void {
+  if (
+    calculatorId !==
+      'idealGas' &&
+    calculatorId !==
+      'idealGasCalculator'
+  ) {
+    return
+  }
+
+  const cleanQuery =
+    normalizeText(
+      query,
+    )
+
+  const usesGaugePressure =
+    cleanQuery.includes(
+      'gauge pressure',
+    ) ||
+    cleanQuery.includes(
+      'gage pressure',
+    ) ||
+    cleanQuery.includes(
+      'gosterge basinci',
+    )
+
+  const suppliesAtmosphericPressure =
+    cleanQuery.includes(
+      'atmospheric pressure',
+    ) ||
+    cleanQuery.includes(
+      'barometric pressure',
+    ) ||
+    cleanQuery.includes(
+      'atmosfer basinci',
+    )
+
+  if (
+    usesGaugePressure &&
+    !suppliesAtmosphericPressure
+  ) {
+    addDiagnostic(
+      diagnostics,
+      {
+        code:
+          'gauge-pressure-conversion-missing',
+        severity:
+          'warning',
+        message:
+          'Convert gauge pressure to absolute pressure by adding atmospheric pressure.',
+      },
+    )
+  }
+}
+
 export function diagnoseProblemInput(
   calculatorId: string,
   query: string,
@@ -890,6 +1348,33 @@ export function diagnoseProblemInput(
   )
 
   diagnosePressureBasis(
+    calculatorId,
+    query,
+    diagnostics,
+  )
+
+  diagnoseAbsolutePressure(
+    query,
+    diagnostics,
+  )
+
+  diagnoseFlowRate(
+    query,
+    diagnostics,
+  )
+
+  diagnoseHeatExchangerTemperatures(
+    calculatorId,
+    query,
+    diagnostics,
+  )
+
+  diagnoseFractionClosure(
+    query,
+    diagnostics,
+  )
+
+  diagnoseGaugePressureBasis(
     calculatorId,
     query,
     diagnostics,
