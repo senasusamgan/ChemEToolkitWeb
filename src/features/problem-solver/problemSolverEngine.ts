@@ -10,6 +10,8 @@ import {
 } from './problemAssumptionEngine.ts'
 import { buildProblemEngineeringReport } from './problemEngineeringReportEngine.ts'
 import type { ProblemEngineeringReport } from './problemEngineeringReportEngine.ts'
+import { parseEquationAwareInput } from './problemEquationInputParser.ts'
+import type { ProblemEquationAssignment } from './problemEquationInputParser.ts'
 
 export interface ProblemSolverCalculator {
   id: string
@@ -41,6 +43,7 @@ export interface ProblemSolverMatch {
   assumptions: string[]
   verificationChecklist: string[]
   engineeringReport: ProblemEngineeringReport
+  equationAssignments: ProblemEquationAssignment[]
   quickSolution?: ProblemQuickSolution
 }
 
@@ -1415,8 +1418,18 @@ export function rankProblemSolvers(
     ProblemSolverCalculator[],
   limit = 8,
 ): ProblemSolverMatch[] {
+  const equationParse =
+    parseEquationAwareInput(
+      query,
+    )
+
+  const solverQuery =
+    equationParse.enrichedQuery
+
   const cleanQuery =
-    normalize(query)
+    normalize(
+      solverQuery,
+    )
 
   if (
     cleanQuery.length < 3 ||
@@ -1453,6 +1466,27 @@ export function rankProblemSolvers(
         new Set<string>()
 
       let score = 0
+
+      if (
+        equationParse.assignments.length >
+        0
+      ) {
+        score +=
+          Math.min(
+            30,
+            equationParse.assignments.length *
+              5,
+          )
+
+        reasons.add(
+          `Parsed symbolic inputs: ${equationParse.assignments
+              .map(
+                (assignment) =>
+                  assignment.symbol,
+              )
+              .join(', ')}`,
+        )
+      }
 
       if (cleanTitle === cleanQuery) {
         score += 180
@@ -1585,7 +1619,7 @@ export function rankProblemSolvers(
       const diagnostics =
         diagnoseProblemInput(
           calculator.id,
-          query,
+          solverQuery,
         )
 
       const diagnosticReasons =
@@ -1609,11 +1643,11 @@ export function rankProblemSolvers(
           ? undefined
           : solveCompositeProblem(
               calculator.id,
-              query,
+              solverQuery,
             ) ??
             solveProblemQuickly(
               calculator.id,
-              query,
+              solverQuery,
             )
 
       const solutionPlan =
@@ -1773,6 +1807,8 @@ export function rankProblemSolvers(
         assumptions,
         verificationChecklist,
         engineeringReport,
+        equationAssignments:
+          equationParse.assignments,
         quickSolution,
       }
     })

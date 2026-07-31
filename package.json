@@ -89,7 +89,7 @@
     "test:reaction-engineering-batch09": "node --experimental-strip-types --test tests/reaction-engineering-batch09/*.test.ts",
     "verify:reaction-engineering-batch09": "node scripts/verify-reaction-engineering-batch09.mjs",
     "verify:workspace-release": "node scripts/verify-workspace-release-v1.mjs",
-    "verify:release": "npm run verify:calculator-catalog && npm run verify:calculator-routing && npm run verify:problem-solver-v1 && npm run verify:problem-solver-v2 && npm run verify:problem-solver-v3 && npm run verify:problem-solver-v4 && npm run verify:engineering-fundamentals-batch01 && npm run verify:calculator-test-coverage && npm run verify:workspace-release && npm run build && node scripts/verify-performance-v1.mjs && npm run verify:production-readiness && npm run verify:accessibility && npm run verify:smoke && npm run lint",
+    "verify:release": "npm run verify:calculator-catalog && npm run verify:calculator-routing && npm run verify:problem-solver-v1 && npm run verify:problem-solver-v2 && npm run verify:problem-solver-v3 && npm run verify:problem-solver-v4 && npm run verify:problem-solver-v5 && npm run verify:engineering-fundamentals-batch01 && npm run verify:calculator-test-coverage && npm run verify:workspace-release && npm run build && node scripts/verify-performance-v1.mjs && npm run verify:production-readiness && npm run verify:accessibility && npm run verify:smoke && npm run lint",
     "verify:performance": "npm run build && node scripts/verify-performance-v1.mjs",
     "verify:production-readiness": "node scripts/verify-production-readiness-v1.mjs",
     "verify:smoke": "node scripts/verify-production-smoke-v1.mjs",
@@ -107,7 +107,9 @@
     "test:problem-solver-v3": "node --experimental-strip-types --test tests/problem-solver-v3/*.test.ts",
     "verify:problem-solver-v3": "npm run test:problem-solver-v3 && node scripts/verify-problem-solver-v3.mjs",
     "test:problem-solver-v4": "node --experimental-strip-types --test tests/problem-solver-v4/*.test.ts",
-    "verify:problem-solver-v4": "npm run test:problem-solver-v4 && node scripts/verify-problem-solver-v4.mjs"
+    "verify:problem-solver-v4": "npm run test:problem-solver-v4 && node scripts/verify-problem-solver-v4.mjs",
+    "test:problem-solver-v5": "node --experimental-strip-types --test tests/problem-solver-v5/*.test.ts",
+    "verify:problem-solver-v5": "npm run test:problem-solver-v5 && node scripts/verify-problem-solver-v5.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
