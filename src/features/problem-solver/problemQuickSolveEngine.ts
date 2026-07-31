@@ -2232,6 +2232,264 @@ function solveFicksFirstLaw(
   }
 }
 
+function solveConvectionHeatTransfer(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const coefficient =
+    readHeatTransferCoefficient(
+      query,
+    )
+
+  const area =
+    readArea(
+      query,
+    )
+
+  const temperatureDifference =
+    readTemperatureDifference(
+      query,
+      [
+        'surface fluid temperature difference',
+        'convection temperature difference',
+        'temperature difference',
+        'delta temperature',
+        'delta t',
+        'sicaklik farki',
+      ],
+    )
+
+  if (
+    coefficient === null ||
+    area === null ||
+    temperatureDifference === null ||
+    coefficient < 0 ||
+    area < 0 ||
+    temperatureDifference < 0
+  ) {
+    return undefined
+  }
+
+  const heatTransferRate =
+    coefficient *
+    area *
+    temperatureDifference
+
+  if (
+    !Number.isFinite(
+      heatTransferRate,
+    )
+  ) {
+    return undefined
+  }
+
+  const displayedResult =
+    heatTransferRate >= 1000
+      ? `${formatNumber(
+          heatTransferRate /
+          1000,
+        )} kW`
+      : `${formatNumber(
+          heatTransferRate,
+        )} W`
+
+  return {
+    resultLabel:
+      'Convective heat-transfer rate',
+    resultValue:
+      displayedResult,
+    numericValue:
+      heatTransferRate,
+    unit: 'W',
+    equation:
+      'Q = hAΔT',
+    steps: [
+      `Convection coefficient = ${formatNumber(
+        coefficient,
+      )} W/(m2 K)`,
+      `Area × temperature difference = ${formatNumber(
+        area *
+        temperatureDifference,
+      )} m2 K`,
+      `Heat-transfer rate = ${displayedResult}`,
+    ],
+    assumptions: [
+      'Uniform convection coefficient',
+      'Uniform surface and bulk-fluid temperatures',
+      'Steady heat transfer',
+    ],
+  }
+}
+
+function solveNusseltNumber(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const coefficient =
+    readHeatTransferCoefficient(
+      query,
+    )
+
+  const characteristicLength =
+    readLength(
+      query,
+      [
+        'characteristic length',
+        'hydraulic diameter',
+        'characteristic diameter',
+        'length',
+        'karakteristik uzunluk',
+      ],
+    )
+
+  const conductivity =
+    readThermalConductivity(
+      query,
+    )
+
+  if (
+    coefficient === null ||
+    characteristicLength === null ||
+    conductivity === null ||
+    coefficient < 0 ||
+    characteristicLength <= 0 ||
+    conductivity <= 0
+  ) {
+    return undefined
+  }
+
+  const nusseltNumber =
+    (
+      coefficient *
+      characteristicLength
+    ) /
+    conductivity
+
+  if (
+    !Number.isFinite(
+      nusseltNumber,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Nusselt number',
+    resultValue:
+      formatNumber(
+        nusseltNumber,
+      ),
+    numericValue:
+      nusseltNumber,
+    unit: 'dimensionless',
+    equation:
+      'Nu = hL/k',
+    steps: [
+      `hL = ${formatNumber(
+        coefficient *
+        characteristicLength,
+      )} W/(m K)`,
+      `Fluid thermal conductivity = ${formatNumber(
+        conductivity,
+      )} W/(m K)`,
+      `Nusselt number = ${formatNumber(
+        nusseltNumber,
+      )}`,
+    ],
+    assumptions: [
+      'The stated length is the applicable characteristic length',
+      'The thermal conductivity belongs to the fluid',
+      'Properties are evaluated at the stated operating condition',
+    ],
+  }
+}
+
+function solveFroudeNumber(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const velocity =
+    readVelocity(
+      query,
+    )
+
+  const characteristicLength =
+    readLength(
+      query,
+      [
+        'hydraulic depth',
+        'flow depth',
+        'characteristic length',
+        'liquid depth',
+        'depth',
+        'derinlik',
+      ],
+    )
+
+  if (
+    velocity === null ||
+    characteristicLength === null ||
+    velocity < 0 ||
+    characteristicLength <= 0
+  ) {
+    return undefined
+  }
+
+  const froudeNumber =
+    velocity /
+    Math.sqrt(
+      STANDARD_GRAVITY *
+      characteristicLength,
+    )
+
+  if (
+    !Number.isFinite(
+      froudeNumber,
+    )
+  ) {
+    return undefined
+  }
+
+  const regime =
+    Math.abs(
+      froudeNumber -
+      1,
+    ) <= 0.05
+      ? 'Near-critical'
+      : froudeNumber < 1
+        ? 'Subcritical'
+        : 'Supercritical'
+
+  return {
+    resultLabel:
+      'Froude number',
+    resultValue:
+      `${formatNumber(
+        froudeNumber,
+      )} (${regime})`,
+    numericValue:
+      froudeNumber,
+    unit: 'dimensionless',
+    equation:
+      'Fr = v/√(gL)',
+    steps: [
+      `Gravity-wave velocity scale = ${formatNumber(
+        Math.sqrt(
+          STANDARD_GRAVITY *
+          characteristicLength,
+        ),
+      )} m/s`,
+      `Flow velocity = ${formatNumber(
+        velocity,
+      )} m/s`,
+      `Flow regime = ${regime}`,
+    ],
+    assumptions: [
+      'Gravity is the dominant restoring force',
+      'The supplied length is the applicable hydraulic depth or characteristic length',
+      'Standard gravitational acceleration',
+    ],
+  }
+}
+
 export function solveProblemQuickly(
   calculatorId: string,
   query: string,
@@ -2289,6 +2547,21 @@ export function solveProblemQuickly(
 
     case 'ficksFirstLaw':
       return solveFicksFirstLaw(
+        query,
+      )
+
+    case 'convectionHeatTransfer':
+      return solveConvectionHeatTransfer(
+        query,
+      )
+
+    case 'nusseltNumber':
+      return solveNusseltNumber(
+        query,
+      )
+
+    case 'froudeNumber':
+      return solveFroudeNumber(
         query,
       )
 
