@@ -22,6 +22,9 @@ const STANDARD_GRAVITY =
 const GAS_CONSTANT =
   8.314462618
 
+const STEFAN_BOLTZMANN =
+  5.670374419e-8
+
 function normalizeText(
   value: string,
 ): string {
@@ -982,6 +985,227 @@ function readConcentrationDifference(
       'kmol/m3' ||
     measurement.unit ===
       'mol/l'
+  ) {
+    return (
+      measurement.value *
+      1000
+    )
+  }
+
+  return measurement.value
+}
+
+function readDimensionlessValue(
+  query: string,
+  aliases: string[],
+): number | null {
+  const cleanQuery =
+    normalizeText(query)
+
+  const aliasPattern =
+    createAlternatives(
+      aliases,
+    )
+
+  if (!aliasPattern) {
+    return null
+  }
+
+  const pattern =
+    new RegExp(
+      '(?:^|\\b)(?:' +
+        aliasPattern +
+        ')(?=\\b|\\s|:|=)\\s*(?:=|:|is)?\\s*(' +
+        NUMBER_SOURCE +
+        ')(?=\\s|$|[.;,)])',
+    )
+
+  const match =
+    pattern.exec(
+      cleanQuery,
+    )
+
+  if (!match) {
+    return null
+  }
+
+  const value =
+    Number(
+      match[1],
+    )
+
+  return Number.isFinite(
+    value,
+  )
+    ? value
+    : null
+}
+
+function readTemperatureByAliases(
+  query: string,
+  aliases: string[],
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      aliases,
+      [
+        'celsius',
+        'deg c',
+        'k',
+        'c',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+      'c' ||
+    measurement.unit ===
+      'deg c' ||
+    measurement.unit ===
+      'celsius'
+  ) {
+    return (
+      measurement.value +
+      273.15
+    )
+  }
+
+  return measurement.value
+}
+
+function readTimeSeconds(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'elapsed time',
+        'process time',
+        'time',
+        'sure',
+      ],
+      [
+        'hour',
+        'hr',
+        'min',
+        'h',
+        's',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+      'hour' ||
+    measurement.unit ===
+      'hr' ||
+    measurement.unit ===
+      'h'
+  ) {
+    return (
+      measurement.value *
+      3600
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'min'
+  ) {
+    return (
+      measurement.value *
+      60
+    )
+  }
+
+  return measurement.value
+}
+
+function readThermalDiffusivity(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'thermal diffusivity',
+        'heat diffusivity',
+        'termal difuzivite',
+        'alpha',
+      ],
+      [
+        'cm2/s',
+        'mm2/s',
+        'm2/s',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+    'cm2/s'
+  ) {
+    return (
+      measurement.value *
+      0.0001
+    )
+  }
+
+  if (
+    measurement.unit ===
+    'mm2/s'
+  ) {
+    return (
+      measurement.value *
+      0.000001
+    )
+  }
+
+  return measurement.value
+}
+
+function readSpecificHeatCapacity(
+  query: string,
+): number | null {
+  const measurement =
+    extractMeasurement(
+      query,
+      [
+        'specific heat capacity',
+        'specific heat',
+        'heat capacity',
+        'ozgul isi',
+        'cp',
+      ],
+      [
+        'kj/kg k',
+        'kj/kgk',
+        'j/kg k',
+        'j/kgk',
+      ],
+    )
+
+  if (!measurement) {
+    return null
+  }
+
+  if (
+    measurement.unit ===
+      'kj/kg k' ||
+    measurement.unit ===
+      'kj/kgk'
   ) {
     return (
       measurement.value *
@@ -2490,6 +2714,543 @@ function solveFroudeNumber(
   }
 }
 
+function solveVolumetricFlowRate(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const area =
+    readArea(
+      query,
+    )
+
+  const velocity =
+    readVelocity(
+      query,
+    )
+
+  if (
+    area === null ||
+    velocity === null ||
+    area < 0 ||
+    velocity < 0
+  ) {
+    return undefined
+  }
+
+  const flowRate =
+    area *
+    velocity
+
+  if (
+    !Number.isFinite(
+      flowRate,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Volumetric flow rate',
+    resultValue:
+      `${formatNumber(
+        flowRate,
+      )} m3/s`,
+    numericValue:
+      flowRate,
+    unit: 'm3/s',
+    equation:
+      'Q = Av',
+    steps: [
+      `Flow area = ${formatNumber(
+        area,
+      )} m2`,
+      `Average velocity = ${formatNumber(
+        velocity,
+      )} m/s`,
+      `Volumetric flow rate = ${formatNumber(
+        flowRate,
+      )} m3/s`,
+    ],
+    assumptions: [
+      'Uniform average velocity',
+      'The area is normal to the flow direction',
+      'Steady flow',
+    ],
+  }
+}
+
+function solveDragForce(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const dragCoefficient =
+    readDimensionlessValue(
+      query,
+      [
+        'drag coefficient',
+        'coefficient of drag',
+        'suruklenme katsayisi',
+      ],
+    )
+
+  const density =
+    readDensity(
+      query,
+    )
+
+  const velocity =
+    readVelocity(
+      query,
+    )
+
+  const area =
+    readArea(
+      query,
+    )
+
+  if (
+    dragCoefficient === null ||
+    density === null ||
+    velocity === null ||
+    area === null ||
+    dragCoefficient < 0 ||
+    density <= 0 ||
+    velocity < 0 ||
+    area < 0
+  ) {
+    return undefined
+  }
+
+  const dragForce =
+    0.5 *
+    dragCoefficient *
+    density *
+    velocity *
+    velocity *
+    area
+
+  if (
+    !Number.isFinite(
+      dragForce,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Drag force',
+    resultValue:
+      `${formatNumber(
+        dragForce,
+      )} N`,
+    numericValue:
+      dragForce,
+    unit: 'N',
+    equation:
+      'Fᴅ = ½Cᴅρv²A',
+    steps: [
+      `Dynamic pressure = ${formatNumber(
+        0.5 *
+        density *
+        velocity *
+        velocity,
+      )} Pa`,
+      `CᴅA = ${formatNumber(
+        dragCoefficient *
+        area,
+      )} m2`,
+      `Drag force = ${formatNumber(
+        dragForce,
+      )} N`,
+    ],
+    assumptions: [
+      'Constant drag coefficient',
+      'Uniform approach velocity',
+      'The area is the applicable projected reference area',
+    ],
+  }
+}
+
+function solveMinorLosses(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const lossCoefficient =
+    readDimensionlessValue(
+      query,
+      [
+        'total loss coefficient',
+        'minor loss coefficient',
+        'loss coefficient',
+        'toplam kayip katsayisi',
+      ],
+    )
+
+  const density =
+    readDensity(
+      query,
+    )
+
+  const velocity =
+    readVelocity(
+      query,
+    )
+
+  if (
+    lossCoefficient === null ||
+    density === null ||
+    velocity === null ||
+    lossCoefficient < 0 ||
+    density <= 0 ||
+    velocity < 0
+  ) {
+    return undefined
+  }
+
+  const headLoss =
+    (
+      lossCoefficient *
+      velocity *
+      velocity
+    ) /
+    (
+      2 *
+      STANDARD_GRAVITY
+    )
+
+  const pressureDrop =
+    lossCoefficient *
+    density *
+    velocity *
+    velocity /
+    2
+
+  if (
+    !Number.isFinite(
+      pressureDrop,
+    )
+  ) {
+    return undefined
+  }
+
+  const displayedResult =
+    pressureDrop >= 1000
+      ? `${formatNumber(
+          pressureDrop /
+          1000,
+        )} kPa`
+      : `${formatNumber(
+          pressureDrop,
+        )} Pa`
+
+  return {
+    resultLabel:
+      'Minor-loss pressure drop',
+    resultValue:
+      displayedResult,
+    numericValue:
+      pressureDrop,
+    unit: 'Pa',
+    equation:
+      'ΔP = Kρv²/2',
+    steps: [
+      `Velocity head = ${formatNumber(
+        velocity *
+        velocity /
+        (
+          2 *
+          STANDARD_GRAVITY
+        ),
+      )} m`,
+      `Head loss = ${formatNumber(
+        headLoss,
+      )} m`,
+      `Pressure drop = ${displayedResult}`,
+    ],
+    assumptions: [
+      'Steady incompressible flow',
+      'The supplied K value is the total minor-loss coefficient',
+      'Velocity corresponds to the applicable pipe section',
+    ],
+  }
+}
+
+function solveThermalRadiation(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const emissivity =
+    readFraction(
+      query,
+      [
+        'surface emissivity',
+        'emissivity',
+        'yayinim katsayisi',
+      ],
+    )
+
+  const area =
+    readArea(
+      query,
+    )
+
+  const surfaceTemperature =
+    readTemperatureByAliases(
+      query,
+      [
+        'surface temperature',
+        'wall temperature',
+        'yuzey sicakligi',
+      ],
+    )
+
+  const surroundingsTemperature =
+    readTemperatureByAliases(
+      query,
+      [
+        'surroundings temperature',
+        'ambient radiation temperature',
+        'environment temperature',
+        'cevre sicakligi',
+      ],
+    )
+
+  if (
+    emissivity === null ||
+    area === null ||
+    surfaceTemperature === null ||
+    surroundingsTemperature === null ||
+    emissivity < 0 ||
+    emissivity > 1 ||
+    area < 0 ||
+    surfaceTemperature <= 0 ||
+    surroundingsTemperature <= 0
+  ) {
+    return undefined
+  }
+
+  const netHeatTransfer =
+    emissivity *
+    STEFAN_BOLTZMANN *
+    area *
+    (
+      Math.pow(
+        surfaceTemperature,
+        4,
+      ) -
+      Math.pow(
+        surroundingsTemperature,
+        4,
+      )
+    )
+
+  if (
+    !Number.isFinite(
+      netHeatTransfer,
+    )
+  ) {
+    return undefined
+  }
+
+  const displayedResult =
+    Math.abs(
+      netHeatTransfer,
+    ) >= 1000
+      ? `${formatNumber(
+          netHeatTransfer /
+          1000,
+        )} kW`
+      : `${formatNumber(
+          netHeatTransfer,
+        )} W`
+
+  return {
+    resultLabel:
+      'Net radiative heat-transfer rate',
+    resultValue:
+      displayedResult,
+    numericValue:
+      netHeatTransfer,
+    unit: 'W',
+    equation:
+      'Q = εσA(Tₛ⁴ − Tsur⁴)',
+    steps: [
+      `Surface temperature = ${formatNumber(
+        surfaceTemperature,
+      )} K`,
+      `Surroundings temperature = ${formatNumber(
+        surroundingsTemperature,
+      )} K`,
+      `Net radiation = ${displayedResult}`,
+    ],
+    assumptions: [
+      'Diffuse gray surface',
+      'Large isothermal surroundings',
+      'View factor to the surroundings equals one',
+    ],
+  }
+}
+
+function solveFourierNumber(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const thermalDiffusivity =
+    readThermalDiffusivity(
+      query,
+    )
+
+  const time =
+    readTimeSeconds(
+      query,
+    )
+
+  const characteristicLength =
+    readLength(
+      query,
+      [
+        'characteristic length',
+        'half thickness',
+        'characteristic distance',
+        'karakteristik uzunluk',
+      ],
+    )
+
+  if (
+    thermalDiffusivity === null ||
+    time === null ||
+    characteristicLength === null ||
+    thermalDiffusivity <= 0 ||
+    time < 0 ||
+    characteristicLength <= 0
+  ) {
+    return undefined
+  }
+
+  const fourierNumber =
+    (
+      thermalDiffusivity *
+      time
+    ) /
+    (
+      characteristicLength *
+      characteristicLength
+    )
+
+  if (
+    !Number.isFinite(
+      fourierNumber,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Fourier number',
+    resultValue:
+      formatNumber(
+        fourierNumber,
+      ),
+    numericValue:
+      fourierNumber,
+    unit: 'dimensionless',
+    equation:
+      'Fo = αt/Lc²',
+    steps: [
+      `αt = ${formatNumber(
+        thermalDiffusivity *
+        time,
+      )} m2`,
+      `Lc² = ${formatNumber(
+        characteristicLength *
+        characteristicLength,
+      )} m2`,
+      `Fourier number = ${formatNumber(
+        fourierNumber,
+      )}`,
+    ],
+    assumptions: [
+      'Constant thermal diffusivity',
+      'The stated length is the applicable characteristic length',
+      'Transient conduction model',
+    ],
+  }
+}
+
+function solvePrandtlNumber(
+  query: string,
+): ProblemQuickSolution | undefined {
+  const specificHeat =
+    readSpecificHeatCapacity(
+      query,
+    )
+
+  const viscosity =
+    readViscosity(
+      query,
+    )
+
+  const conductivity =
+    readThermalConductivity(
+      query,
+    )
+
+  if (
+    specificHeat === null ||
+    viscosity === null ||
+    conductivity === null ||
+    specificHeat <= 0 ||
+    viscosity <= 0 ||
+    conductivity <= 0
+  ) {
+    return undefined
+  }
+
+  const prandtlNumber =
+    (
+      specificHeat *
+      viscosity
+    ) /
+    conductivity
+
+  if (
+    !Number.isFinite(
+      prandtlNumber,
+    )
+  ) {
+    return undefined
+  }
+
+  return {
+    resultLabel:
+      'Prandtl number',
+    resultValue:
+      formatNumber(
+        prandtlNumber,
+      ),
+    numericValue:
+      prandtlNumber,
+    unit: 'dimensionless',
+    equation:
+      'Pr = cpμ/k',
+    steps: [
+      `cpμ = ${formatNumber(
+        specificHeat *
+        viscosity,
+      )} W/(m K)`,
+      `Thermal conductivity = ${formatNumber(
+        conductivity,
+      )} W/(m K)`,
+      `Prandtl number = ${formatNumber(
+        prandtlNumber,
+      )}`,
+    ],
+    assumptions: [
+      'Fluid properties are evaluated at one consistent temperature',
+      'Dynamic viscosity is supplied',
+      'The thermal conductivity belongs to the fluid',
+    ],
+  }
+}
+
 export function solveProblemQuickly(
   calculatorId: string,
   query: string,
@@ -2562,6 +3323,36 @@ export function solveProblemQuickly(
 
     case 'froudeNumber':
       return solveFroudeNumber(
+        query,
+      )
+
+    case 'flowRate':
+      return solveVolumetricFlowRate(
+        query,
+      )
+
+    case 'dragForce':
+      return solveDragForce(
+        query,
+      )
+
+    case 'minorLosses':
+      return solveMinorLosses(
+        query,
+      )
+
+    case 'thermalRadiation':
+      return solveThermalRadiation(
+        query,
+      )
+
+    case 'fourierNumber':
+      return solveFourierNumber(
+        query,
+      )
+
+    case 'prandtlNumber':
+      return solvePrandtlNumber(
         query,
       )
 
