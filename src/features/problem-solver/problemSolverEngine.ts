@@ -1,6 +1,8 @@
 import { solveProblemQuickly } from './problemQuickSolveEngine.ts'
 import type { ProblemQuickSolution } from './problemQuickSolveEngine.ts'
 import { solveCompositeProblem } from './problemCompositeSolveEngine.ts'
+import { diagnoseProblemInput } from './problemInputDiagnosticsEngine.ts'
+import type { ProblemInputDiagnostic } from './problemInputDiagnosticsEngine.ts'
 
 export interface ProblemSolverCalculator {
   id: string
@@ -27,6 +29,7 @@ export interface ProblemSolverMatch {
   detectedInputs: string[]
   missingInputs: string[]
   readinessPercent: number
+  diagnostics: ProblemInputDiagnostic[]
   quickSolution?: ProblemQuickSolution
 }
 
@@ -1568,15 +1571,39 @@ export function rankProblemSolvers(
           guidance.requiredInputs,
         )
 
-      const quickSolution =
-        solveCompositeProblem(
-          calculator.id,
-          query,
-        ) ??
-        solveProblemQuickly(
+      const diagnostics =
+        diagnoseProblemInput(
           calculator.id,
           query,
         )
+
+      const diagnosticReasons =
+        diagnostics.diagnostics.map(
+          (diagnostic) =>
+            `Input ${diagnostic.severity}: ${diagnostic.message}`,
+        )
+
+      const diagnosticGuidance =
+        diagnostics.diagnostics.length > 0
+          ? `${guidance.guidance} Input check: ${diagnostics.diagnostics
+              .map(
+                (diagnostic) =>
+                  diagnostic.message,
+              )
+              .join(' ')}`
+          : guidance.guidance
+
+      const quickSolution =
+        diagnostics.hasBlockingErrors
+          ? undefined
+          : solveCompositeProblem(
+              calculator.id,
+              query,
+            ) ??
+            solveProblemQuickly(
+              calculator.id,
+              query,
+            )
 
       return {
         calculatorId:
@@ -1591,14 +1618,17 @@ export function rankProblemSolvers(
             score,
           ),
         reasons:
-          Array.from(
-            reasons,
-          ).slice(
+          [
+            ...Array.from(
+              reasons,
+            ),
+            ...diagnosticReasons,
+          ].slice(
             0,
             3,
           ),
         guidance:
-          guidance.guidance,
+          diagnosticGuidance,
         requiredInputs:
           guidance.requiredInputs,
         equationHint:
@@ -1609,6 +1639,8 @@ export function rankProblemSolvers(
           readiness.missingInputs,
         readinessPercent:
           readiness.readinessPercent,
+        diagnostics:
+          diagnostics.diagnostics,
         quickSolution,
       }
     })
