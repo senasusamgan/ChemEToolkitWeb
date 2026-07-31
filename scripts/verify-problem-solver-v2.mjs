@@ -137,6 +137,51 @@ if (
   )
 }
 
+for (
+  const contract
+  of [
+    'solveTotalPumpPowerChain',
+    'solveMassFlowCstrChain',
+    'solveSolutionPreparationChain',
+    'solveMixtureMolarFlowChain',
+    "'minorLosses'",
+    "'massFlowMolarFlowConversion'",
+    "'massMoleConversion'",
+    "'averageMolecularWeight'",
+  ]
+) {
+  if (
+    !compositeEngine.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Package 02 engine contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'chains major and minor losses into total pump power',
+    'chains mass feed flow into CSTR volume',
+    'chains solute mass into solution molarity',
+    'chains binary average molecular weight into mixture molar flow',
+    'does not calculate total pump power without a loss coefficient',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Package 02 test contract missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Problem Solver v2 composite package verified.',
 )

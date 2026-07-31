@@ -295,3 +295,208 @@ test(
     )
   },
 )
+
+test(
+  'chains major and minor losses into total pump power',
+  () => {
+    const query = [
+      'Calculate pump power for pipe pressure drop and minor losses.',
+      'Pipe length 100 m,',
+      'inside diameter 0.1 m,',
+      'fluid density 1000 kg/m3,',
+      'dynamic viscosity 0.001 Pa s,',
+      'surface roughness 0.0001 m,',
+      'velocity 1.273239544735 m/s,',
+      'volumetric flow rate 0.01 m3/s,',
+      'total loss coefficient 4.5',
+      'and pump efficiency 80%.',
+    ].join(
+      ' ',
+    )
+
+    const solution =
+      requireSolution(
+        solveCompositeProblem(
+          'pumpPower',
+          query,
+        ),
+      )
+
+    assert.deepEqual(
+      solution.chain,
+      [
+        'pressureDrop',
+        'minorLosses',
+        'pumpPower',
+      ],
+    )
+
+    assert.ok(
+      solution.numericValue >
+        250 &&
+      solution.numericValue <
+        300,
+    )
+
+    assert.equal(
+      solution.unit,
+      'W',
+    )
+
+    assert.match(
+      solution.resultLabel,
+      /Total-loss/,
+    )
+  },
+)
+
+test(
+  'chains mass feed flow into CSTR volume',
+  () => {
+    const query = [
+      'Calculate the required CSTR volume.',
+      'Mass flow rate 36 kg/h,',
+      'molecular weight 18 g/mol,',
+      'target conversion 75%',
+      'and exit reaction rate 0.5 mol/m3 s.',
+    ].join(
+      ' ',
+    )
+
+    const solution =
+      requireSolution(
+        solveCompositeProblem(
+          'cstrVolume',
+          query,
+        ),
+      )
+
+    assert.deepEqual(
+      solution.chain,
+      [
+        'massFlowMolarFlowConversion',
+        'cstrVolume',
+      ],
+    )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.8333333333333334,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.unit,
+      'm3',
+    )
+  },
+)
+
+test(
+  'chains solute mass into solution molarity',
+  () => {
+    const query = [
+      'Calculate solution molarity.',
+      'Solute mass 58.44 g,',
+      'molecular weight 58.44 g/mol',
+      'and solution volume 2 L.',
+    ].join(
+      ' ',
+    )
+
+    const solution =
+      requireSolution(
+        solveCompositeProblem(
+          'solutionConcentration',
+          query,
+        ),
+      )
+
+    assert.deepEqual(
+      solution.chain,
+      [
+        'massMoleConversion',
+        'solutionConcentration',
+      ],
+    )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        0.5,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.unit,
+      'mol/L',
+    )
+  },
+)
+
+test(
+  'chains binary average molecular weight into mixture molar flow',
+  () => {
+    const query = [
+      'Calculate the molar flow rate of a binary mixture.',
+      'Component 1 mole fraction 0.25,',
+      'component 1 molecular weight 18 g/mol,',
+      'component 2 molecular weight 44 g/mol',
+      'and mass flow rate 135 kg/h.',
+    ].join(
+      ' ',
+    )
+
+    const solution =
+      requireSolution(
+        solveCompositeProblem(
+          'massFlowMolarFlowConversion',
+          query,
+        ),
+      )
+
+    assert.deepEqual(
+      solution.chain,
+      [
+        'averageMolecularWeight',
+        'massFlowMolarFlowConversion',
+      ],
+    )
+
+    assert.ok(
+      Math.abs(
+        solution.numericValue -
+        1,
+      ) < 1e-12,
+    )
+
+    assert.equal(
+      solution.unit,
+      'mol/s',
+    )
+  },
+)
+
+test(
+  'does not calculate total pump power without a loss coefficient',
+  () => {
+    const solution =
+      solveCompositeProblem(
+        'pumpPower',
+        [
+          'Calculate pump power from pipe pressure drop.',
+          'Pipe length 100 m,',
+          'inside diameter 0.1 m',
+          'and pump efficiency 80%.',
+        ].join(
+          ' ',
+        ),
+      )
+
+    assert.equal(
+      solution,
+      undefined,
+    )
+  },
+)
