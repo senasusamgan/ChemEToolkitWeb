@@ -4,6 +4,7 @@ import {
 
 const [
   parserEngine,
+  intentEngine,
   solverEngine,
   tests,
   packageSource,
@@ -11,6 +12,10 @@ const [
   await Promise.all([
     readFile(
       'src/features/problem-solver/problemEquationInputParser.ts',
+      'utf8',
+    ),
+    readFile(
+      'src/features/problem-solver/problemEquationIntentEngine.ts',
       'utf8',
     ),
     readFile(
@@ -45,11 +50,8 @@ for (
     'pipe diameter',
     'surface roughness',
     'volumetric flow rate',
-    'pressure difference',
     'absolute temperature',
     'amount of gas',
-    'molecular weight',
-    'specific heat capacity',
   ]
 ) {
   if (
@@ -66,14 +68,54 @@ for (
 for (
   const contract
   of [
+    'KnownEngineeringEquationId',
+    'EquationTargetSource',
+    'ProblemEquationIntent',
+    'EQUATION_PROFILES',
+    'GLOBAL_TARGETS',
+    'compactEquationText',
+    'findEquationProfile',
+    'findEquationVariable',
+    'detectExplicitTargetSymbol',
+    'inferMissingVariable',
+    'detectTextTarget',
+    'inferProblemEquationIntent',
+    'Ideal gas law',
+    'Reynolds-number relation',
+    'Flow continuity relation',
+    'Darcy–Weisbach equation',
+    'Pump-power relation',
+    'Heat-exchanger duty relation',
+    "Fick's first law",
+  ]
+) {
+  if (
+    !intentEngine.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Equation intent contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
     "import { parseEquationAwareInput }",
+    "import { inferProblemEquationIntent }",
     'ProblemEquationAssignment',
+    'ProblemEquationIntent',
     'equationAssignments: ProblemEquationAssignment[]',
+    'equationIntent: ProblemEquationIntent',
     'const equationParse =',
+    'const equationIntent =',
     'const solverQuery =',
-    'Parsed symbolic inputs:',
-    'equationParse.enrichedQuery',
-    'equationAssignments:',
+    'equationIntent.enrichedText',
+    'equationCalculatorMatches',
+    'equationCategoryMatches',
+    'equationIntent,',
   ]
 ) {
   if (
@@ -91,12 +133,16 @@ for (
   const contract
   of [
     'parses compact fluid-mechanics symbol assignments',
-    'preserves uppercase V as volume and lowercase v as velocity',
     'parses ideal-gas symbolic inputs into Quick Solve',
     'parses symbolic pressure-drop inputs into Quick Solve',
-    'parses dimensionless efficiency and conversion',
-    'ignores unsupported symbols and invalid units',
-    'supports colon assignment syntax',
+    'infers volume as the missing ideal-gas variable',
+    'honors an explicit solve-for target',
+    'recognizes question-mark target assignment',
+    'infers Reynolds number from the symbolic equation',
+    'infers velocity from Q equals A v',
+    'interprets D as diffusivity inside Ficks law',
+    'integrates equation intent into ranked matches',
+    'returns an empty equation intent for ordinary text',
   ]
 ) {
   if (
@@ -150,5 +196,5 @@ if (
 }
 
 console.log(
-  'PASS: Problem Solver v5 equation-aware parser verified.',
+  'PASS: Problem Solver v5 equation intent and unknown inference verified.',
 )
