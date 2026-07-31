@@ -236,10 +236,10 @@ const WORKSPACE_TOOLS:
   ]
 
 const EXAMPLES = [
-  'Find Reynolds number for density 998 kg/m3, velocity 2 m/s, diameter 0.05 m and viscosity 0.001 Pa s',
-  'Find Reynolds number and flow regime',
-  'Size a heat exchanger using LMTD',
-  'Tune a PID controller',
+  'PV=nRT; P=101325 Pa; n=1 mol; T=300 K; V=?',
+  'Re=ρvD/μ; ρ=998 kg/m3; v=2 m/s; D=0.05 m; μ=0.001 Pa s',
+  'Q=Av; Q=0.02 m3/s; A=0.01 m2; solve for v',
+  'J=-DΔC/L, solve for D',
 ]
 
 function isRecord(
@@ -528,6 +528,24 @@ function score(
   return result
 }
 
+function formatEquationStatus(
+  status: string,
+): string {
+  if (status === 'ready') {
+    return 'Ready to solve'
+  }
+
+  if (status === 'needs-inputs') {
+    return 'Inputs required'
+  }
+
+  if (status === 'ambiguous') {
+    return 'Needs review'
+  }
+
+  return 'Equation not recognized'
+}
+
 export function WorkspaceSmartLauncherPanel({
   currentCalculator,
   onOpenCalculator,
@@ -642,6 +660,18 @@ export function WorkspaceSmartLauncherPanel({
           10,
         ),
       [query],
+    )
+
+  const problemSnapshot =
+    useMemo(
+      () =>
+        query.trim().length > 0
+          ? problemMatches[0]
+          : undefined,
+      [
+        problemMatches,
+        query,
+      ],
     )
 
   const problemCandidates =
@@ -936,6 +966,290 @@ export function WorkspaceSmartLauncherPanel({
           ),
         )}
       </div>
+
+      {problemSnapshot ? (
+        <section
+          className="workspace-equation-inspector"
+          data-status={
+            problemSnapshot
+              .equationContext
+              .status
+          }
+          aria-label="Live equation intelligence"
+          aria-live="polite"
+        >
+          <header className="workspace-equation-inspector-header">
+            <div>
+              <span>
+                Live Equation Intelligence
+              </span>
+
+              <h4>
+                {
+                  problemSnapshot
+                    .equationIntent
+                    .equationLabel ??
+                  'Engineering problem analysis'
+                }
+              </h4>
+
+              <p>
+                {
+                  problemSnapshot
+                    .equationIntent
+                    .equation ??
+                  problemSnapshot
+                    .equationHint ??
+                  'Describe the equation and known variables.'
+                }
+              </p>
+            </div>
+
+            <div className="workspace-equation-inspector-status">
+              <strong>
+                {
+                  problemSnapshot
+                    .equationContext
+                    .readinessPercent
+                }%
+              </strong>
+
+              <span>
+                {
+                  formatEquationStatus(
+                    problemSnapshot
+                      .equationContext
+                      .status,
+                  )
+                }
+              </span>
+            </div>
+          </header>
+
+          <div className="workspace-equation-inspector-grid">
+            <article>
+              <span>
+                Requested unknown
+              </span>
+
+              <strong>
+                {
+                  problemSnapshot
+                    .equationIntent
+                    .targetName ??
+                  'Not identified'
+                }
+              </strong>
+
+              <small>
+                {
+                  problemSnapshot
+                    .equationIntent
+                    .targetSource
+                    ? 'Detected from ' +
+                      problemSnapshot
+                        .equationIntent
+                        .targetSource
+                    : 'Add “solve for” or use ?'
+                }
+              </small>
+            </article>
+
+            <article>
+              <span>
+                Quick Solve
+              </span>
+
+              {problemSnapshot.quickSolution ? (
+                <>
+                  <strong>
+                    {
+                      problemSnapshot
+                        .quickSolution
+                        .resultLabel
+                    }
+                    {' = '}
+                    {
+                      problemSnapshot
+                        .quickSolution
+                        .resultValue
+                    }
+                  </strong>
+
+                  <small>
+                    {
+                      problemSnapshot
+                        .quickSolution
+                        .equation
+                    }
+                  </small>
+                </>
+              ) : (
+                <>
+                  <strong>
+                    Waiting for inputs
+                  </strong>
+
+                  <small>
+                    Complete the required
+                    equation variables.
+                  </small>
+                </>
+              )}
+            </article>
+
+            <article className="workspace-equation-inspector-inputs">
+              <span>
+                Parsed symbolic inputs
+              </span>
+
+              {
+                problemSnapshot
+                  .equationAssignments
+                  .length > 0 ? (
+                  <div>
+                    {
+                      problemSnapshot
+                        .equationAssignments
+                        .slice(
+                          0,
+                          8,
+                        )
+                        .map(
+                          (
+                            assignment,
+                            index,
+                          ) => (
+                            <span
+                              key={
+                                assignment.symbol +
+                                '-' +
+                                index
+                              }
+                              title={
+                                assignment
+                                  .canonicalName
+                              }
+                            >
+                              {assignment.symbol}
+                              {' = '}
+                              {assignment.value}
+                              {
+                                assignment.unit
+                                  ? ' ' +
+                                    assignment.unit
+                                  : ''
+                              }
+                            </span>
+                          ),
+                        )
+                    }
+                  </div>
+                ) : (
+                  <strong>
+                    No symbolic assignments detected
+                  </strong>
+                )
+              }
+            </article>
+
+            <article>
+              <span>
+                Input check
+              </span>
+
+              <strong>
+                {
+                  problemSnapshot
+                    .equationContext
+                    .missingVariableNames
+                    .length > 0
+                    ? 'Missing: ' +
+                      problemSnapshot
+                        .equationContext
+                        .missingVariableNames
+                        .join(', ')
+                    : 'Equation inputs complete'
+                }
+              </strong>
+
+              <small>
+                {
+                  problemSnapshot
+                    .equationContext
+                    .diagnostics[0] ??
+                  'No equation-context conflicts detected.'
+                }
+              </small>
+            </article>
+          </div>
+
+          {
+            problemSnapshot
+              .solutionPlan
+              .length > 0 ? (
+              <div className="workspace-equation-inspector-plan">
+                <span>
+                  Solution blueprint
+                </span>
+
+                <ol>
+                  {
+                    problemSnapshot
+                      .solutionPlan
+                      .slice(
+                        0,
+                        3,
+                      )
+                      .map(
+                        (
+                          step,
+                          index,
+                        ) => (
+                          <li
+                            key={
+                              step +
+                              index
+                            }
+                          >
+                            {step}
+                          </li>
+                        ),
+                      )
+                  }
+                </ol>
+              </div>
+            ) : null
+          }
+
+          <footer className="workspace-equation-inspector-footer">
+            <div>
+              <strong>
+                {problemSnapshot.title}
+              </strong>
+
+              <span>
+                {problemSnapshot.category}
+                {' · '}
+                {problemSnapshot.confidence}
+                {' confidence'}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={() =>
+                onOpenCalculator(
+                  problemSnapshot
+                    .calculatorId,
+                )
+              }
+            >
+              Open calculator →
+            </button>
+          </footer>
+        </section>
+      ) : null}
 
       <div className="workspace-smart-launcher-heading">
         <div>

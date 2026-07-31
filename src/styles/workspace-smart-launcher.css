@@ -425,3 +425,223 @@ span {
     width: 100%;
   }
 }
+
+/* Live Equation Intelligence Inspector */
+
+.workspace-equation-inspector {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid rgba(7, 156, 153, 0.48);
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(7, 156, 153, 0.08),
+      rgba(255, 255, 255, 0.95)
+    );
+  box-shadow:
+    0 12px 30px rgba(11, 53, 86, 0.07);
+}
+
+.workspace-equation-inspector[data-status="needs-inputs"] {
+  border-color: rgba(194, 132, 32, 0.55);
+}
+
+.workspace-equation-inspector[data-status="ambiguous"] {
+  border-color: rgba(187, 82, 65, 0.55);
+}
+
+.workspace-equation-inspector-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 16px;
+}
+
+.workspace-equation-inspector-header > div:first-child > span,
+.workspace-equation-inspector-grid article > span,
+.workspace-equation-inspector-plan > span {
+  color: var(--teal-dark, #007b78);
+  font-size: 0.54rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.workspace-equation-inspector-header h4 {
+  margin: 5px 0 0;
+  color: var(--ink, #0b3556);
+  font-family: Georgia, serif;
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+}
+
+.workspace-equation-inspector-header p {
+  margin: 7px 0 0;
+  color: var(--muted, #647a8e);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.67rem;
+  line-height: 1.5;
+}
+
+.workspace-equation-inspector-status {
+  min-width: 118px;
+  padding: 11px 13px;
+  display: grid;
+  justify-items: end;
+  gap: 3px;
+  border: 1px solid rgba(7, 156, 153, 0.3);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.workspace-equation-inspector-status strong {
+  color: var(--ink, #0b3556);
+  font-family: Georgia, serif;
+  font-size: 1.25rem;
+}
+
+.workspace-equation-inspector-status span {
+  color: var(--teal-dark, #007b78);
+  font-size: 0.54rem;
+  font-weight: 850;
+}
+
+.workspace-equation-inspector-grid {
+  margin-top: 13px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.workspace-equation-inspector-grid article {
+  min-width: 0;
+  padding: 11px;
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  border: 1px solid rgba(217, 208, 189, 0.75);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.workspace-equation-inspector-grid article strong {
+  color: var(--ink, #0b3556);
+  font-size: 0.65rem;
+  line-height: 1.45;
+}
+
+.workspace-equation-inspector-grid article small {
+  color: var(--muted, #647a8e);
+  font-size: 0.54rem;
+  line-height: 1.45;
+}
+
+.workspace-equation-inspector-inputs > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.workspace-equation-inspector-inputs > div > span {
+  padding: 5px 7px;
+  border: 1px solid rgba(7, 156, 153, 0.3);
+  border-radius: 999px;
+  color: var(--ink, #0b3556);
+  background: rgba(7, 156, 153, 0.07);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.53rem;
+  font-weight: 750;
+}
+
+.workspace-equation-inspector-plan {
+  margin-top: 8px;
+  padding: 11px;
+  border: 1px solid rgba(217, 208, 189, 0.75);
+  border-radius: 9px;
+  background: rgba(249, 246, 238, 0.58);
+}
+
+.workspace-equation-inspector-plan ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 5px;
+  color: var(--ink, #0b3556);
+  font-size: 0.57rem;
+  line-height: 1.5;
+}
+
+.workspace-equation-inspector-footer {
+  margin-top: 10px;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid rgba(217, 208, 189, 0.8);
+}
+
+.workspace-equation-inspector-footer > div {
+  display: grid;
+  gap: 3px;
+}
+
+.workspace-equation-inspector-footer strong {
+  color: var(--ink, #0b3556);
+  font-size: 0.63rem;
+}
+
+.workspace-equation-inspector-footer span {
+  color: var(--muted, #647a8e);
+  font-size: 0.53rem;
+}
+
+.workspace-equation-inspector-footer button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--teal-dark, #007b78);
+  border-radius: 8px;
+  color: #ffffff;
+  background: var(--teal-dark, #007b78);
+  font: inherit;
+  font-size: 0.58rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.workspace-equation-inspector-footer button:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 7px 16px rgba(7, 123, 120, 0.18);
+}
+
+@media (max-width: 700px) {
+  .workspace-equation-inspector-header,
+  .workspace-equation-inspector-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace-equation-inspector-status {
+    justify-items: start;
+  }
+
+  .workspace-equation-inspector-footer {
+    display: grid;
+  }
+
+  .workspace-equation-inspector-footer button {
+    width: 100%;
+  }
+}
