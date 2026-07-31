@@ -6,6 +6,11 @@ import {
 } from '../../src/features/problem-solver/problemSolutionPlanEngine.ts'
 
 import {
+  buildProblemAssumptions,
+  buildProblemVerificationChecklist,
+} from '../../src/features/problem-solver/problemAssumptionEngine.ts'
+
+import {
   rankProblemSolvers,
 } from '../../src/features/problem-solver/problemSolverEngine.ts'
 
@@ -257,6 +262,226 @@ test(
             'hydraulic power',
           ),
       ),
+    )
+  },
+)
+
+
+test(
+  'builds pressure-drop assumptions',
+  () => {
+    const assumptions =
+      buildProblemAssumptions({
+        calculatorId:
+          'pressureDrop',
+        title:
+          'Pressure Drop',
+        category:
+          'Fluid Mechanics',
+        equationHint:
+          'Darcy–Weisbach',
+        detectedInputs: [],
+        missingInputs: [],
+        diagnostics: [],
+        hasQuickSolution:
+          false,
+      })
+
+    assert.ok(
+      assumptions.some(
+        (assumption) =>
+          assumption.includes(
+            'fully developed',
+          ),
+      ),
+    )
+
+    assert.ok(
+      assumptions.some(
+        (assumption) =>
+          assumption.includes(
+            'incompressible',
+          ),
+      ),
+    )
+  },
+)
+
+test(
+  'builds ideal-gas assumptions',
+  () => {
+    const assumptions =
+      buildProblemAssumptions({
+        calculatorId:
+          'idealGas',
+        title:
+          'Ideal Gas Calculator',
+        category:
+          'Thermodynamics',
+        equationHint:
+          'PV = nRT',
+        detectedInputs: [],
+        missingInputs: [],
+        diagnostics: [],
+        hasQuickSolution:
+          false,
+      })
+
+    assert.ok(
+      assumptions.some(
+        (assumption) =>
+          assumption.includes(
+            'absolute',
+          ) &&
+          assumption.includes(
+            'Kelvin',
+          ),
+      ),
+    )
+
+    assert.ok(
+      assumptions.some(
+        (assumption) =>
+          assumption.includes(
+            'ideal-gas behavior',
+          ),
+      ),
+    )
+  },
+)
+
+test(
+  'adds missing-input and diagnostic verification checks',
+  () => {
+    const checklist =
+      buildProblemVerificationChecklist({
+        calculatorId:
+          'pumpPower',
+        title:
+          'Pump Power',
+        category:
+          'Fluid Mechanics',
+        equationHint:
+          'P = ρgQH/η',
+        detectedInputs: [],
+        missingInputs: [
+          'total head',
+        ],
+        diagnostics: [
+          {
+            severity:
+              'error',
+            message:
+              'Efficiency cannot exceed 100%.',
+          },
+        ],
+        hasQuickSolution:
+          false,
+      })
+
+    assert.ok(
+      checklist.some(
+        (check) =>
+          check.includes(
+            'missing inputs',
+          ),
+      ),
+    )
+
+    assert.ok(
+      checklist.some(
+        (check) =>
+          check.includes(
+            'blocking diagnostic',
+          ),
+      ),
+    )
+  },
+)
+
+test(
+  'adds an independent Quick Solve check',
+  () => {
+    const checklist =
+      buildProblemVerificationChecklist({
+        calculatorId:
+          'idealGas',
+        title:
+          'Ideal Gas Calculator',
+        category:
+          'Thermodynamics',
+        equationHint:
+          'PV = nRT',
+        detectedInputs: [],
+        missingInputs: [],
+        diagnostics: [],
+        hasQuickSolution:
+          true,
+      })
+
+    assert.ok(
+      checklist.some(
+        (check) =>
+          check.includes(
+            'independently',
+          ),
+      ),
+    )
+  },
+)
+
+test(
+  'integrates assumptions and verification into ranked matches',
+  () => {
+    const matches =
+      rankProblemSolvers(
+        [
+          'Calculate pump power.',
+          'Flow rate 0.02 m3/s,',
+          'total head 18 m,',
+          'fluid density 1000 kg/m3',
+          'and pump efficiency 80%.',
+        ].join(
+          ' ',
+        ),
+        [
+          {
+            id:
+              'pumpPower',
+            title:
+              'Pump Power',
+            category:
+              'Fluid Mechanics',
+            available:
+              true,
+          },
+        ],
+        1,
+      )
+
+    assert.equal(
+      matches.length,
+      1,
+    )
+
+    assert.ok(
+      matches[0].assumptions.length >=
+      3,
+    )
+
+    assert.ok(
+      matches[0].verificationChecklist.length >=
+      4,
+    )
+
+    assert.match(
+      matches[0].guidance,
+      /Assumptions:/,
+    )
+
+    assert.match(
+      matches[0].guidance,
+      /Verification checklist:/,
     )
   },
 )
