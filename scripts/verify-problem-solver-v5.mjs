@@ -5,6 +5,7 @@ import {
 const [
   parserEngine,
   intentEngine,
+  contextEngine,
   solverEngine,
   tests,
   packageSource,
@@ -16,6 +17,10 @@ const [
     ),
     readFile(
       'src/features/problem-solver/problemEquationIntentEngine.ts',
+      'utf8',
+    ),
+    readFile(
+      'src/features/problem-solver/problemEquationContextEngine.ts',
       'utf8',
     ),
     readFile(
@@ -38,12 +43,6 @@ for (
     'ProblemEquationAssignment',
     'ProblemEquationParseResult',
     'SYMBOL_PROFILES',
-    'normalizeSymbol',
-    'normalizeUnit',
-    'findProfile',
-    'unitIsAccepted',
-    'createCanonicalText',
-    'deduplicateAssignments',
     'parseEquationAwareInput',
     'fluid density',
     'dynamic viscosity',
@@ -73,12 +72,6 @@ for (
     'ProblemEquationIntent',
     'EQUATION_PROFILES',
     'GLOBAL_TARGETS',
-    'compactEquationText',
-    'findEquationProfile',
-    'findEquationVariable',
-    'detectExplicitTargetSymbol',
-    'inferMissingVariable',
-    'detectTextTarget',
     'inferProblemEquationIntent',
     'Ideal gas law',
     'Reynolds-number relation',
@@ -103,19 +96,53 @@ for (
 for (
   const contract
   of [
+    'EquationReadinessStatus',
+    'ContextualEquationAssignment',
+    'ProblemEquationContext',
+    'EQUATION_CONTEXT_PROFILES',
+    'findProfile',
+    'findVariableBySymbol',
+    'findTargetVariable',
+    'contextualizeAssignments',
+    'conflictingVariableKeys',
+    'resolveProblemEquationContext',
+    'not-recognized',
+    'needs-inputs',
+    'ambiguous',
+    'Equation readiness:',
+    'Contextual equation inputs:',
+  ]
+) {
+  if (
+    !contextEngine.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Equation context contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
     "import { parseEquationAwareInput }",
     "import { inferProblemEquationIntent }",
+    "import { resolveProblemEquationContext }",
     'ProblemEquationAssignment',
     'ProblemEquationIntent',
+    'ProblemEquationContext',
     'equationAssignments: ProblemEquationAssignment[]',
     'equationIntent: ProblemEquationIntent',
+    'equationContext: ProblemEquationContext',
     'const equationParse =',
     'const equationIntent =',
-    'const solverQuery =',
-    'equationIntent.enrichedText',
-    'equationCalculatorMatches',
-    'equationCategoryMatches',
-    'equationIntent,',
+    'const equationContext =',
+    'equationContext.enrichedText',
+    'Equation inputs ready:',
+    'Equation inputs missing:',
+    'equationContext,',
   ]
 ) {
   if (
@@ -134,15 +161,16 @@ for (
   of [
     'parses compact fluid-mechanics symbol assignments',
     'parses ideal-gas symbolic inputs into Quick Solve',
-    'parses symbolic pressure-drop inputs into Quick Solve',
     'infers volume as the missing ideal-gas variable',
     'honors an explicit solve-for target',
-    'recognizes question-mark target assignment',
     'infers Reynolds number from the symbolic equation',
-    'infers velocity from Q equals A v',
     'interprets D as diffusivity inside Ficks law',
-    'integrates equation intent into ranked matches',
-    'returns an empty equation intent for ordinary text',
+    'marks a complete ideal-gas equation as ready',
+    'reports missing ideal-gas equation inputs',
+    'detects conflicting equation assignments',
+    'resolves D as diffusivity in Ficks law context',
+    'marks an unknown equation as not recognized',
+    'integrates equation context into ranked matches',
   ]
 ) {
   if (
@@ -196,5 +224,5 @@ if (
 }
 
 console.log(
-  'PASS: Problem Solver v5 equation intent and unknown inference verified.',
+  'PASS: Problem Solver v5 equation parsing, intent and readiness verified.',
 )

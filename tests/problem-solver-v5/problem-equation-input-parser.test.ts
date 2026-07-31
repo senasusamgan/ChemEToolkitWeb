@@ -10,6 +10,10 @@ import {
 } from '../../src/features/problem-solver/problemEquationIntentEngine.ts'
 
 import {
+  resolveProblemEquationContext,
+} from '../../src/features/problem-solver/problemEquationContextEngine.ts'
+
+import {
   rankProblemSolvers,
 } from '../../src/features/problem-solver/problemSolverEngine.ts'
 
@@ -559,6 +563,315 @@ test(
     assert.equal(
       intent.enrichedText,
       '',
+    )
+  },
+)
+
+
+test(
+  'marks a complete ideal-gas equation as ready',
+  () => {
+    const query = [
+      'Use PV=nRT.',
+      'P=101325 Pa,',
+      'n=1 mol,',
+      'T=300 K.',
+    ].join(
+      ' ',
+    )
+
+    const parsed =
+      parseEquationAwareInput(
+        query,
+      )
+
+    const intent =
+      inferProblemEquationIntent(
+        query,
+        parsed.assignments,
+      )
+
+    const context =
+      resolveProblemEquationContext(
+        intent,
+        parsed.assignments,
+      )
+
+    assert.equal(
+      context.status,
+      'ready',
+    )
+
+    assert.equal(
+      context.readinessPercent,
+      100,
+    )
+
+    assert.equal(
+      context.targetName,
+      'gas volume',
+    )
+
+    assert.deepEqual(
+      context.missingVariableNames,
+      [],
+    )
+  },
+)
+
+test(
+  'reports missing ideal-gas equation inputs',
+  () => {
+    const query =
+      'PV=nRT, solve for V. P=101325 Pa.'
+
+    const parsed =
+      parseEquationAwareInput(
+        query,
+      )
+
+    const intent =
+      inferProblemEquationIntent(
+        query,
+        parsed.assignments,
+      )
+
+    const context =
+      resolveProblemEquationContext(
+        intent,
+        parsed.assignments,
+      )
+
+    assert.equal(
+      context.status,
+      'needs-inputs',
+    )
+
+    assert.ok(
+      context.missingVariableNames.includes(
+        'amount of gas',
+      ),
+    )
+
+    assert.ok(
+      context.missingVariableNames.includes(
+        'absolute temperature',
+      ),
+    )
+  },
+)
+
+test(
+  'detects conflicting equation assignments',
+  () => {
+    const intent =
+      inferProblemEquationIntent(
+        'PV=nRT, solve for V.',
+        [],
+      )
+
+    const context =
+      resolveProblemEquationContext(
+        intent,
+        [
+          {
+            symbol:
+              'P',
+            canonicalName:
+              'pressure',
+            value:
+              101325,
+            unit:
+              'pa',
+            canonicalText:
+              'pressure 101325 pa',
+          },
+          {
+            symbol:
+              'P',
+            canonicalName:
+              'pressure',
+            value:
+              200000,
+            unit:
+              'pa',
+            canonicalText:
+              'pressure 200000 pa',
+          },
+          {
+            symbol:
+              'n',
+            canonicalName:
+              'amount of gas',
+            value:
+              1,
+            unit:
+              'mol',
+            canonicalText:
+              'amount of gas 1 mol',
+          },
+          {
+            symbol:
+              'T',
+            canonicalName:
+              'absolute temperature',
+            value:
+              300,
+            unit:
+              'k',
+            canonicalText:
+              'absolute temperature 300 k',
+          },
+        ],
+      )
+
+    assert.equal(
+      context.status,
+      'ambiguous',
+    )
+
+    assert.ok(
+      context.diagnostics.some(
+        (diagnostic) =>
+          diagnostic.includes(
+            'Conflicting assignments',
+          ),
+      ),
+    )
+  },
+)
+
+test(
+  'resolves D as diffusivity in Ficks law context',
+  () => {
+    const intent =
+      inferProblemEquationIntent(
+        'J=-DΔC/L, solve for D.',
+        [],
+      )
+
+    const context =
+      resolveProblemEquationContext(
+        intent,
+        [
+          {
+            symbol:
+              'L',
+            canonicalName:
+              'pipe length',
+            value:
+              0.01,
+            unit:
+              'm',
+            canonicalText:
+              'pipe length 0.01 m',
+          },
+        ],
+      )
+
+    assert.equal(
+      context.targetKey,
+      'diffusivity',
+    )
+
+    assert.equal(
+      context.targetName,
+      'diffusivity',
+    )
+
+    assert.ok(
+      context.providedVariableNames.includes(
+        'diffusion length',
+      ),
+    )
+  },
+)
+
+test(
+  'marks an unknown equation as not recognized',
+  () => {
+    const intent =
+      inferProblemEquationIntent(
+        'x = y + z.',
+        [],
+      )
+
+    const context =
+      resolveProblemEquationContext(
+        intent,
+        [],
+      )
+
+    assert.equal(
+      context.status,
+      'not-recognized',
+    )
+
+    assert.equal(
+      context.enrichedText,
+      '',
+    )
+  },
+)
+
+test(
+  'integrates equation context into ranked matches',
+  () => {
+    const query = [
+      'Use PV=nRT.',
+      'P=101325 Pa,',
+      'n=1 mol,',
+      'T=300 K.',
+    ].join(
+      ' ',
+    )
+
+    const matches =
+      rankProblemSolvers(
+        query,
+        [
+          {
+            id:
+              'idealGas',
+            title:
+              'Ideal Gas Calculator',
+            category:
+              'Thermodynamics',
+            available:
+              true,
+          },
+        ],
+        1,
+      )
+
+    assert.equal(
+      matches.length,
+      1,
+    )
+
+    assert.equal(
+      matches[0].equationContext
+        .status,
+      'ready',
+    )
+
+    assert.equal(
+      matches[0].equationContext
+        .readinessPercent,
+      100,
+    )
+
+    assert.ok(
+      matches[0].quickSolution,
+    )
+
+    assert.ok(
+      matches[0].reasons.some(
+        (reason) =>
+          reason.includes(
+            'Equation inputs ready',
+          ),
+      ),
     )
   },
 )
