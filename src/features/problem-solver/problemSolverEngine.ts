@@ -12,6 +12,8 @@ import { buildProblemEngineeringReport } from './problemEngineeringReportEngine.
 import type { ProblemEngineeringReport } from './problemEngineeringReportEngine.ts'
 import { parseEquationAwareInput } from './problemEquationInputParser.ts'
 import type { ProblemEquationAssignment } from './problemEquationInputParser.ts'
+import { inferProblemEquationIntent } from './problemEquationIntentEngine.ts'
+import type { ProblemEquationIntent } from './problemEquationIntentEngine.ts'
 
 export interface ProblemSolverCalculator {
   id: string
@@ -44,6 +46,7 @@ export interface ProblemSolverMatch {
   verificationChecklist: string[]
   engineeringReport: ProblemEngineeringReport
   equationAssignments: ProblemEquationAssignment[]
+  equationIntent: ProblemEquationIntent
   quickSolution?: ProblemQuickSolution
 }
 
@@ -1423,8 +1426,24 @@ export function rankProblemSolvers(
       query,
     )
 
+  const equationIntent =
+    inferProblemEquationIntent(
+      query,
+      equationParse.assignments,
+    )
+
   const solverQuery =
-    equationParse.enrichedQuery
+    [
+      equationParse.enrichedQuery,
+      equationIntent.enrichedText,
+    ]
+      .filter(
+        (section) =>
+          section.length > 0,
+      )
+      .join(
+        '\n',
+      )
 
   const cleanQuery =
     normalize(
@@ -1485,6 +1504,52 @@ export function rankProblemSolvers(
                   assignment.symbol,
               )
               .join(', ')}`,
+        )
+      }
+
+      const equationCalculatorMatches =
+        equationIntent
+          .suggestedCalculatorIds
+          .includes(
+            calculator.id,
+          )
+
+      const equationCategoryMatches =
+        equationIntent
+          .suggestedCategories
+          .includes(
+            calculator.category,
+          )
+
+      if (
+        equationIntent.equationId &&
+        (
+          equationCalculatorMatches ||
+          equationCategoryMatches
+        )
+      ) {
+        score +=
+          equationCalculatorMatches
+            ? 42
+            : 24
+
+        reasons.add(
+          `Recognized equation: ${equationIntent.equationLabel}`,
+        )
+      }
+
+      if (
+        equationIntent.targetName &&
+        cleanTitle.includes(
+          normalize(
+            equationIntent.targetName,
+          ),
+        )
+      ) {
+        score += 20
+
+        reasons.add(
+          `Requested unknown: ${equationIntent.targetName}`,
         )
       }
 
@@ -1809,6 +1874,7 @@ export function rankProblemSolvers(
         engineeringReport,
         equationAssignments:
           equationParse.assignments,
+        equationIntent,
         quickSolution,
       }
     })

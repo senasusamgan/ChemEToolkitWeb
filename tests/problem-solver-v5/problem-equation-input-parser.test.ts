@@ -6,6 +6,10 @@ import {
 } from '../../src/features/problem-solver/problemEquationInputParser.ts'
 
 import {
+  inferProblemEquationIntent,
+} from '../../src/features/problem-solver/problemEquationIntentEngine.ts'
+
+import {
   rankProblemSolvers,
 } from '../../src/features/problem-solver/problemSolverEngine.ts'
 
@@ -257,6 +261,304 @@ test(
     assert.equal(
       result.assignments[1].canonicalName,
       'volumetric flow rate',
+    )
+  },
+)
+
+
+test(
+  'infers volume as the missing ideal-gas variable',
+  () => {
+    const query = [
+      'Use PV=nRT.',
+      'P=101325 Pa,',
+      'n=1 mol,',
+      'T=300 K.',
+    ].join(
+      ' ',
+    )
+
+    const parsed =
+      parseEquationAwareInput(
+        query,
+      )
+
+    const intent =
+      inferProblemEquationIntent(
+        query,
+        parsed.assignments,
+      )
+
+    assert.equal(
+      intent.equationId,
+      'ideal-gas-law',
+    )
+
+    assert.equal(
+      intent.targetSymbol,
+      'V',
+    )
+
+    assert.equal(
+      intent.targetName,
+      'volume',
+    )
+
+    assert.equal(
+      intent.targetSource,
+      'missing-variable',
+    )
+  },
+)
+
+test(
+  'honors an explicit solve-for target',
+  () => {
+    const query = [
+      'PV=nRT, solve for T.',
+      'P=101325 Pa,',
+      'V=0.025 m3,',
+      'n=1 mol.',
+    ].join(
+      ' ',
+    )
+
+    const parsed =
+      parseEquationAwareInput(
+        query,
+      )
+
+    const intent =
+      inferProblemEquationIntent(
+        query,
+        parsed.assignments,
+      )
+
+    assert.equal(
+      intent.targetSymbol,
+      'T',
+    )
+
+    assert.equal(
+      intent.targetName,
+      'absolute temperature',
+    )
+
+    assert.equal(
+      intent.targetSource,
+      'explicit',
+    )
+  },
+)
+
+test(
+  'recognizes question-mark target assignment',
+  () => {
+    const query =
+      'PV=nRT; P=101325 Pa; n=1 mol; T=300 K; V=?'
+
+    const parsed =
+      parseEquationAwareInput(
+        query,
+      )
+
+    const intent =
+      inferProblemEquationIntent(
+        query,
+        parsed.assignments,
+      )
+
+    assert.equal(
+      intent.targetSymbol,
+      'V',
+    )
+
+    assert.equal(
+      intent.targetSource,
+      'explicit',
+    )
+  },
+)
+
+test(
+  'infers Reynolds number from the symbolic equation',
+  () => {
+    const query = [
+      'Re=ρvD/μ.',
+      'ρ=998 kg/m3,',
+      'v=2 m/s,',
+      'D=0.05 m,',
+      'μ=0.001 Pa s.',
+    ].join(
+      ' ',
+    )
+
+    const parsed =
+      parseEquationAwareInput(
+        query,
+      )
+
+    const intent =
+      inferProblemEquationIntent(
+        query,
+        parsed.assignments,
+      )
+
+    assert.equal(
+      intent.equationId,
+      'reynolds-number',
+    )
+
+    assert.equal(
+      intent.targetName,
+      'Reynolds number',
+    )
+
+    assert.equal(
+      intent.targetSource,
+      'missing-variable',
+    )
+  },
+)
+
+test(
+  'infers velocity from Q equals A v',
+  () => {
+    const query =
+      'Q=Av; Q=0.02 m3/s; A=0.01 m2.'
+
+    const parsed =
+      parseEquationAwareInput(
+        query,
+      )
+
+    const intent =
+      inferProblemEquationIntent(
+        query,
+        parsed.assignments,
+      )
+
+    assert.equal(
+      intent.equationId,
+      'flow-continuity',
+    )
+
+    assert.equal(
+      intent.targetSymbol,
+      'v',
+    )
+
+    assert.equal(
+      intent.targetName,
+      'velocity',
+    )
+  },
+)
+
+test(
+  'interprets D as diffusivity inside Ficks law',
+  () => {
+    const query =
+      'J=-DΔC/L, solve for D.'
+
+    const intent =
+      inferProblemEquationIntent(
+        query,
+        [],
+      )
+
+    assert.equal(
+      intent.equationId,
+      'ficks-first-law',
+    )
+
+    assert.equal(
+      intent.targetSymbol,
+      'D',
+    )
+
+    assert.equal(
+      intent.targetName,
+      'diffusivity',
+    )
+  },
+)
+
+test(
+  'integrates equation intent into ranked matches',
+  () => {
+    const query = [
+      'Use PV=nRT.',
+      'P=101325 Pa,',
+      'n=1 mol,',
+      'T=300 K.',
+    ].join(
+      ' ',
+    )
+
+    const matches =
+      rankProblemSolvers(
+        query,
+        [
+          {
+            id:
+              'idealGas',
+            title:
+              'Ideal Gas Calculator',
+            category:
+              'Thermodynamics',
+            available:
+              true,
+          },
+        ],
+        1,
+      )
+
+    assert.equal(
+      matches.length,
+      1,
+    )
+
+    assert.equal(
+      matches[0].equationIntent
+        .equationId,
+      'ideal-gas-law',
+    )
+
+    assert.equal(
+      matches[0].equationIntent
+        .targetName,
+      'volume',
+    )
+
+    assert.ok(
+      matches[0].quickSolution,
+    )
+  },
+)
+
+test(
+  'returns an empty equation intent for ordinary text',
+  () => {
+    const intent =
+      inferProblemEquationIntent(
+        'Explain this engineering problem.',
+        [],
+      )
+
+    assert.equal(
+      intent.equationId,
+      null,
+    )
+
+    assert.equal(
+      intent.targetName,
+      null,
+    )
+
+    assert.equal(
+      intent.enrichedText,
+      '',
     )
   },
 )
