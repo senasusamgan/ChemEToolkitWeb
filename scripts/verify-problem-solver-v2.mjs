@@ -182,6 +182,66 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'solveMassBasedIdealGasChain',
+    'solveMixtureHydrostaticChain',
+    'solveTankOrificeChain',
+    'solveOrificePumpChain',
+    'readCompositePressure',
+    'readCompositeDensity',
+  ]
+) {
+  if (
+    !compositeEngine.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Package 03 engine contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'chains sample mass into ideal-gas volume',
+    'chains mixture density into hydrostatic pressure',
+    'chains hydrostatic pressure into tank-orifice flow',
+    'chains orifice flow into required pump power',
+    'does not calculate ideal-gas volume without pressure',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Package 03 test contract missing: ${contract}`,
+    )
+  }
+}
+
+const compositeChainCount =
+  (
+    compositeEngine.match(
+      /^function solve[A-Za-z0-9]+Chain\(/gm,
+    ) ??
+    []
+  ).length
+
+if (
+  compositeChainCount !==
+  12
+) {
+  throw new Error(
+    `Expected 12 composite chains, found ${compositeChainCount}.`,
+  )
+}
+
 console.log(
   'PASS: Problem Solver v2 composite package verified.',
 )
