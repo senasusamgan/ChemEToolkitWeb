@@ -1,5 +1,6 @@
 import { solveProblemQuickly } from './problemQuickSolveEngine.ts'
 import type { ProblemQuickSolution } from './problemQuickSolveEngine.ts'
+import { solveCompositeProblem } from './problemCompositeSolveEngine.ts'
 
 export interface ProblemSolverCalculator {
   id: string
@@ -1568,6 +1569,10 @@ export function rankProblemSolvers(
         )
 
       const quickSolution =
+        solveCompositeProblem(
+          calculator.id,
+          query,
+        ) ??
         solveProblemQuickly(
           calculator.id,
           query,
