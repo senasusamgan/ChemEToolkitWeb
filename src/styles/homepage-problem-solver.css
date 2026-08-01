@@ -1087,3 +1087,394 @@ button:first-child::before {
     padding: 9px;
   }
 }
+
+/* Homepage Problem Solver scenario comparison */
+
+.homepage-problem-editor-actions
+> div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.homepage-problem-editor-actions
+button.is-compare {
+  color:
+    var(--teal-dark, #007b78);
+  border-color:
+    rgba(7, 123, 120, 0.42);
+  background:
+    rgba(7, 156, 153, 0.065);
+}
+
+.homepage-problem-editor-actions
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.homepage-problem-comparison {
+  margin-top: 16px;
+  padding: 16px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.42);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(236, 248, 247, 0.74)
+    );
+  box-shadow:
+    0 14px 36px
+    rgba(11, 53, 86, 0.065);
+}
+
+.homepage-problem-comparison-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.homepage-problem-comparison-header
+> div {
+  display: grid;
+  gap: 5px;
+}
+
+.homepage-problem-comparison-header
+span,
+.homepage-problem-scenario-card
+header span,
+.homepage-problem-scenario-summary
+span,
+.homepage-problem-comparison-result
+> div > span,
+.homepage-problem-comparison-metrics
+span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.5rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.homepage-problem-comparison-header
+h3 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size:
+    clamp(
+      1.1rem,
+      2.2vw,
+      1.6rem
+    );
+}
+
+.homepage-problem-comparison-header
+p {
+  max-width: 700px;
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.57rem;
+  line-height: 1.5;
+}
+
+.homepage-problem-comparison-header
+> button {
+  min-height: 35px;
+  padding: 0 11px;
+  border:
+    1px solid
+    rgba(187, 82, 65, 0.34);
+  border-radius: 8px;
+  color:
+    #914535;
+  background:
+    rgba(187, 82, 65, 0.05);
+  font: inherit;
+  font-size: 0.52rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.homepage-problem-comparison-grid {
+  margin-top: 13px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  gap: 9px;
+}
+
+.homepage-problem-scenario-card {
+  min-width: 0;
+  padding: 12px;
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.82);
+  border-radius: 11px;
+  background:
+    rgba(255, 255, 255, 0.82);
+}
+
+.homepage-problem-scenario-card.is-editable {
+  border-color:
+    rgba(7, 156, 153, 0.38);
+}
+
+.homepage-problem-scenario-card
+header {
+  display: grid;
+  gap: 4px;
+}
+
+.homepage-problem-scenario-card
+header strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.85rem;
+}
+
+.homepage-problem-scenario-query {
+  min-height: 132px;
+  padding: 11px;
+  overflow-wrap: anywhere;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.75);
+  border-radius: 9px;
+  color:
+    var(--ink, #0b3556);
+  background:
+    rgba(249, 246, 238, 0.55);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.58rem;
+  line-height: 1.55;
+}
+
+.homepage-problem-scenario-card
+label {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.55rem;
+  font-weight: 850;
+}
+
+.homepage-problem-scenario-card
+textarea {
+  width: 100%;
+  min-height: 132px;
+  resize: vertical;
+  padding: 11px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.4);
+  border-radius: 9px;
+  outline: 0;
+  color:
+    var(--ink, #0b3556);
+  background: #ffffff;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.58rem;
+  line-height: 1.55;
+}
+
+.homepage-problem-scenario-card
+textarea:focus {
+  border-color:
+    var(--teal-dark, #007b78);
+  box-shadow:
+    0 0 0 3px
+    rgba(7, 156, 153, 0.1);
+}
+
+.homepage-problem-scenario-summary {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+  gap: 6px;
+}
+
+.homepage-problem-scenario-summary
+> div {
+  min-width: 0;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.7);
+  border-radius: 8px;
+}
+
+.homepage-problem-scenario-summary
+strong {
+  overflow-wrap: anywhere;
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.54rem;
+  line-height: 1.4;
+}
+
+.homepage-problem-scenario-empty {
+  margin: 0;
+  padding: 10px;
+  color:
+    var(--muted, #647a8e);
+  border:
+    1px dashed
+    rgba(217, 208, 189, 0.85);
+  border-radius: 8px;
+  font-size: 0.54rem;
+}
+
+.homepage-problem-use-scenario {
+  min-height: 35px;
+  padding: 0 11px;
+  border:
+    1px solid
+    var(--teal-dark, #007b78);
+  border-radius: 8px;
+  color: #ffffff;
+  background:
+    var(--teal-dark, #007b78);
+  font: inherit;
+  font-size: 0.54rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.homepage-problem-use-scenario:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.homepage-problem-comparison-result {
+  margin-top: 9px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.28);
+  border-radius: 10px;
+  background:
+    rgba(7, 156, 153, 0.05);
+}
+
+.homepage-problem-comparison-result
+> div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.homepage-problem-comparison-result
+h4 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.82rem;
+}
+
+.homepage-problem-comparison-result
+> p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.54rem;
+  line-height: 1.5;
+}
+
+.homepage-problem-comparison-metrics {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+  gap: 7px;
+}
+
+.homepage-problem-comparison-metrics
+article {
+  min-width: 0;
+  padding: 9px;
+  display: grid;
+  gap: 4px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.24);
+  border-radius: 8px;
+  background:
+    rgba(255, 255, 255, 0.75);
+}
+
+.homepage-problem-comparison-metrics
+strong {
+  overflow-wrap: anywhere;
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.61rem;
+}
+
+@media (max-width: 850px) {
+  .homepage-problem-comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .homepage-problem-comparison-header {
+    display: grid;
+  }
+
+  .homepage-problem-comparison-header
+  > button {
+    width: 100%;
+  }
+
+  .homepage-problem-scenario-summary,
+  .homepage-problem-comparison-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .homepage-problem-editor-actions
+  > div {
+    display: grid;
+  }
+}

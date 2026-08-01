@@ -274,6 +274,24 @@ function buildProblemShareUrl(
   return url.toString()
 }
 
+function formatComparisonValue(
+  value: number,
+): string {
+  if (
+    !Number.isFinite(
+      value,
+    )
+  ) {
+    return '—'
+  }
+
+  return Number(
+    value.toPrecision(
+      6,
+    ),
+  ).toLocaleString()
+}
+
 function statusLabel(
   status: string,
 ): string {
@@ -313,6 +331,16 @@ export function HomepageProblemSolverPanel({
     actionMessage,
     setActionMessage,
   ] = useState('')
+
+  const [
+    isComparisonOpen,
+    setIsComparisonOpen,
+  ] = useState(false)
+
+  const [
+    comparisonQuery,
+    setComparisonQuery,
+  ] = useState<string>('')
 
   const [
     savedCases,
@@ -382,6 +410,165 @@ export function HomepageProblemSolverPanel({
 
   const bestMatch =
     matches[0]
+
+  const comparisonMatches =
+    useMemo(
+      () =>
+        comparisonQuery
+          .trim()
+          .length >=
+        3
+          ? rankProblemSolvers(
+              comparisonQuery,
+              calculators,
+              1,
+            )
+          : [],
+      [
+        comparisonQuery,
+      ],
+    )
+
+  const comparisonBestMatch =
+    comparisonMatches[0]
+
+  const scenarioDifference =
+    useMemo(
+      () => {
+        const firstValue =
+          bestMatch
+            ?.quickSolution
+            ?.numericValue
+
+        const secondValue =
+          comparisonBestMatch
+            ?.quickSolution
+            ?.numericValue
+
+        const firstUnit =
+          bestMatch
+            ?.quickSolution
+            ?.unit
+
+        const secondUnit =
+          comparisonBestMatch
+            ?.quickSolution
+            ?.unit
+
+        if (
+          typeof firstValue !==
+            'number' ||
+          typeof secondValue !==
+            'number' ||
+          !Number.isFinite(
+            firstValue,
+          ) ||
+          !Number.isFinite(
+            secondValue,
+          ) ||
+          !firstUnit ||
+          firstUnit !==
+            secondUnit
+        ) {
+          return null
+        }
+
+        const absoluteDifference =
+          secondValue -
+          firstValue
+
+        const percentageDifference =
+          firstValue ===
+          0
+            ? null
+            : (
+                absoluteDifference /
+                Math.abs(
+                  firstValue,
+                )
+              ) *
+              100
+
+        return {
+          absoluteDifference,
+          percentageDifference,
+          unit:
+            firstUnit,
+        }
+      },
+      [
+        bestMatch,
+        comparisonBestMatch,
+      ],
+    )
+
+  function openScenarioComparison() {
+    const startingQuery =
+      query.trim().length >
+      0
+        ? query
+        : EXAMPLES[0].query
+
+    setComparisonQuery(
+      startingQuery,
+    )
+
+    setIsComparisonOpen(
+      true,
+    )
+
+    setActionMessage(
+      'Scenario comparison opened.',
+    )
+
+    window.setTimeout(
+      () => {
+        document
+          .getElementById(
+            'homepage-comparison-query',
+          )
+          ?.focus()
+      },
+      0,
+    )
+  }
+
+  function closeScenarioComparison() {
+    setIsComparisonOpen(
+      false,
+    )
+
+    setActionMessage(
+      'Scenario comparison closed.',
+    )
+  }
+
+  function useComparisonAsMain() {
+    if (
+      comparisonQuery
+        .trim()
+        .length ===
+      0
+    ) {
+      return
+    }
+
+    setQuery(
+      comparisonQuery,
+    )
+
+    setIsComparisonOpen(
+      false,
+    )
+
+    setSharedProblemLoaded(
+      false,
+    )
+
+    setActionMessage(
+      'Scenario B loaded as the main problem.',
+    )
+  }
 
   function buildSolverReport(): string {
     if (!bestMatch) {
@@ -1088,17 +1275,34 @@ export function HomepageProblemSolverPanel({
             </div>
 
             <div className="homepage-problem-editor-actions">
-              <button
-                type="button"
-                onClick={
-                  clearProblem
-                }
-              >
-                Clear problem
-              </button>
+              <div>
+                <button
+                  type="button"
+                  className="is-compare"
+                  disabled={
+                    query.trim().length ===
+                    0
+                  }
+                  onClick={
+                    openScenarioComparison
+                  }
+                >
+                  Compare scenarios
+                </button>
+
+                <button
+                  type="button"
+                  onClick={
+                    clearProblem
+                  }
+                >
+                  Clear problem
+                </button>
+              </div>
 
               <span>
-                Reset the editor and enter a new case.
+                Compare operating conditions or start a
+                new engineering case.
               </span>
             </div>
           </div>
@@ -1514,6 +1718,309 @@ export function HomepageProblemSolverPanel({
             )}
           </div>
         </div>
+
+        {isComparisonOpen ? (
+          <section
+            className="homepage-problem-comparison"
+            aria-labelledby="homepage-problem-comparison-title"
+          >
+            <header className="homepage-problem-comparison-header">
+              <div>
+                <span>
+                  Engineering sensitivity study
+                </span>
+
+                <h3 id="homepage-problem-comparison-title">
+                  Compare scenarios
+                </h3>
+
+                <p>
+                  Change the variables in Scenario B and
+                  compare the calculated result with the
+                  current problem.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={
+                  closeScenarioComparison
+                }
+              >
+                Close comparison
+              </button>
+            </header>
+
+            <div className="homepage-problem-comparison-grid">
+              <article className="homepage-problem-scenario-card">
+                <header>
+                  <span>
+                    Scenario A
+                  </span>
+
+                  <strong>
+                    Current problem
+                  </strong>
+                </header>
+
+                <div className="homepage-problem-scenario-query">
+                  {query}
+                </div>
+
+                {bestMatch ? (
+                  <div className="homepage-problem-scenario-summary">
+                    <div>
+                      <span>
+                        Calculator
+                      </span>
+
+                      <strong>
+                        {bestMatch.title}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>
+                        Readiness
+                      </span>
+
+                      <strong>
+                        {
+                          bestMatch
+                            .equationContext
+                            .readinessPercent
+                        }%
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>
+                        Result
+                      </span>
+
+                      <strong>
+                        {
+                          bestMatch
+                            .quickSolution
+                            ? bestMatch
+                                .quickSolution
+                                .resultLabel +
+                              ' = ' +
+                              bestMatch
+                                .quickSolution
+                                .resultValue
+                            : 'Waiting for inputs'
+                        }
+                      </strong>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="homepage-problem-scenario-empty">
+                    No Scenario A match available.
+                  </p>
+                )}
+              </article>
+
+              <article className="homepage-problem-scenario-card is-editable">
+                <header>
+                  <span>
+                    Scenario B
+                  </span>
+
+                  <strong>
+                    Alternative conditions
+                  </strong>
+                </header>
+
+                <label htmlFor="homepage-comparison-query">
+                  Edit variables or operating conditions
+                </label>
+
+                <textarea
+                  id="homepage-comparison-query"
+                  value={
+                    comparisonQuery
+                  }
+                  rows={6}
+                  spellCheck={false}
+                  onChange={(event) =>
+                    setComparisonQuery(
+                      event.target.value,
+                    )
+                  }
+                />
+
+                {comparisonBestMatch ? (
+                  <div className="homepage-problem-scenario-summary">
+                    <div>
+                      <span>
+                        Calculator
+                      </span>
+
+                      <strong>
+                        {
+                          comparisonBestMatch
+                            .title
+                        }
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>
+                        Readiness
+                      </span>
+
+                      <strong>
+                        {
+                          comparisonBestMatch
+                            .equationContext
+                            .readinessPercent
+                        }%
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>
+                        Result
+                      </span>
+
+                      <strong>
+                        {
+                          comparisonBestMatch
+                            .quickSolution
+                            ? comparisonBestMatch
+                                .quickSolution
+                                .resultLabel +
+                              ' = ' +
+                              comparisonBestMatch
+                                .quickSolution
+                                .resultValue
+                            : 'Waiting for inputs'
+                        }
+                      </strong>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="homepage-problem-scenario-empty">
+                    Enter a complete Scenario B problem.
+                  </p>
+                )}
+
+                <button
+                  type="button"
+                  className="homepage-problem-use-scenario"
+                  disabled={
+                    comparisonQuery
+                      .trim()
+                      .length ===
+                    0
+                  }
+                  onClick={
+                    useComparisonAsMain
+                  }
+                >
+                  Use Scenario B as main
+                </button>
+              </article>
+            </div>
+
+            <div className="homepage-problem-comparison-result">
+              <div>
+                <span>
+                  Result comparison
+                </span>
+
+                <h4>
+                  Scenario B versus Scenario A
+                </h4>
+              </div>
+
+              {scenarioDifference ? (
+                <div className="homepage-problem-comparison-metrics">
+                  <article>
+                    <span>
+                      Absolute change
+                    </span>
+
+                    <strong>
+                      {
+                        scenarioDifference
+                          .absoluteDifference >
+                        0
+                          ? '+'
+                          : ''
+                      }
+                      {
+                        formatComparisonValue(
+                          scenarioDifference
+                            .absoluteDifference,
+                        )
+                      }
+                      {' '}
+                      {
+                        scenarioDifference
+                          .unit
+                      }
+                    </strong>
+                  </article>
+
+                  <article>
+                    <span>
+                      Percentage change
+                    </span>
+
+                    <strong>
+                      {
+                        scenarioDifference
+                          .percentageDifference ===
+                        null
+                          ? 'Not available'
+                          : (
+                              scenarioDifference
+                                .percentageDifference >
+                              0
+                                ? '+'
+                                : ''
+                            ) +
+                            formatComparisonValue(
+                              scenarioDifference
+                                .percentageDifference,
+                            ) +
+                            '%'
+                      }
+                    </strong>
+                  </article>
+
+                  <article>
+                    <span>
+                      Direction
+                    </span>
+
+                    <strong>
+                      {
+                        scenarioDifference
+                          .absoluteDifference >
+                        0
+                          ? 'Scenario B is higher'
+                          : scenarioDifference
+                                .absoluteDifference <
+                              0
+                            ? 'Scenario B is lower'
+                            : 'No calculated change'
+                      }
+                    </strong>
+                  </article>
+                </div>
+              ) : (
+                <p>
+                  Complete both scenarios with Quick Solve
+                  results using the same output unit to
+                  calculate the difference.
+                </p>
+              )}
+            </div>
+          </section>
+        ) : null}
 
         <section
           className="homepage-problem-history"

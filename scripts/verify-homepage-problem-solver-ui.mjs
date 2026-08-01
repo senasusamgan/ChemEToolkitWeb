@@ -346,6 +346,74 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'formatComparisonValue',
+    'isComparisonOpen',
+    'comparisonQuery',
+    'comparisonMatches',
+    'comparisonBestMatch',
+    'scenarioDifference',
+    'function openScenarioComparison()',
+    'function closeScenarioComparison()',
+    'function useComparisonAsMain()',
+    'Compare scenarios',
+    'Scenario A',
+    'Scenario B',
+    'Absolute change',
+    'Percentage change',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Scenario Comparison contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.homepage-problem-comparison',
+    '.homepage-problem-comparison-grid',
+    '.homepage-problem-scenario-card',
+    '.homepage-problem-comparison-metrics',
+  ]
+) {
+  if (
+    !styles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Scenario Comparison style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'compares two engineering scenarios',
+    'styles responsive scenario comparison',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Scenario Comparison test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
