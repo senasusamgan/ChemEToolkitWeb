@@ -1301,6 +1301,106 @@ for (
   }
 }
 
+const calculationTrace =
+  await readFile(
+    'src/components/CalculationTracePanel.tsx',
+    'utf8',
+  )
+
+const calculationTraceStyles =
+  await readFile(
+    'src/styles/calculation-trace-panel.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Step-by-step calculation trace',
+    'FORMULA_PROFILES',
+    'findFormulaTarget',
+    'createCalculationTrace',
+    'Governing equation',
+    'Rearrange for the requested unknown',
+    'Numerical substitution',
+    'Computed result',
+    'Copy calculation trace',
+  ]
+) {
+  if (
+    !calculationTrace.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Calculation Trace contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'CalculationTracePanel',
+    'equationLabel={',
+    'readinessPercent={',
+    'assignments={',
+    'quickSolution={',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Calculation Trace integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.calculation-trace-panel',
+    '.calculation-trace-launcher',
+    '.calculation-trace-steps',
+    '.calculation-trace-input-table',
+    '.calculation-trace-unit-audit',
+    '.calculation-trace-footer',
+  ]
+) {
+  if (
+    !calculationTraceStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Calculation Trace style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides a step-by-step calculation trace',
+    'supports specialized equation rearrangements',
+    'integrates Calculation Trace with Quick Solve',
+    'styles Calculation Trace responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Calculation Trace test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
