@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useMemo,
   useState,
 } from 'react'
@@ -43,6 +44,120 @@ const EXAMPLES = [
   },
 ] as const
 
+interface SavedSolverCase {
+  id: string
+  query: string
+  calculatorId: string
+  title: string
+  category: string
+  result: string
+  readinessPercent: number
+  savedAt: string
+}
+
+const SAVED_SOLVER_CASES_KEY =
+  'cheme-toolkit.homepage-problem-solver.saved-cases.v1'
+
+function isSavedSolverCase(
+  value: unknown,
+): value is SavedSolverCase {
+  if (
+    !value ||
+    typeof value !==
+      'object'
+  ) {
+    return false
+  }
+
+  const candidate =
+    value as
+      Partial<SavedSolverCase>
+
+  return (
+    typeof candidate.id ===
+      'string' &&
+    typeof candidate.query ===
+      'string' &&
+    typeof candidate.calculatorId ===
+      'string' &&
+    typeof candidate.title ===
+      'string' &&
+    typeof candidate.category ===
+      'string' &&
+    typeof candidate.result ===
+      'string' &&
+    typeof candidate.readinessPercent ===
+      'number' &&
+    typeof candidate.savedAt ===
+      'string'
+  )
+}
+
+function readSavedSolverCases():
+  SavedSolverCase[] {
+  if (
+    typeof window ===
+    'undefined'
+  ) {
+    return []
+  }
+
+  try {
+    const stored =
+      window.localStorage.getItem(
+        SAVED_SOLVER_CASES_KEY,
+      )
+
+    if (!stored) {
+      return []
+    }
+
+    const parsed:
+      unknown =
+        JSON.parse(
+          stored,
+        )
+
+    if (
+      !Array.isArray(
+        parsed,
+      )
+    ) {
+      return []
+    }
+
+    return parsed
+      .filter(
+        isSavedSolverCase,
+      )
+      .slice(
+        0,
+        6,
+      )
+  } catch {
+    return []
+  }
+}
+
+function formatSavedDate(
+  savedAt: string,
+): string {
+  const date =
+    new Date(
+      savedAt,
+    )
+
+  if (
+    Number.isNaN(
+      date.getTime(),
+    )
+  ) {
+    return 'Saved previously'
+  }
+
+  return date.toLocaleString()
+}
+
 function statusLabel(
   status: string,
 ): string {
@@ -75,6 +190,33 @@ export function HomepageProblemSolverPanel({
     actionMessage,
     setActionMessage,
   ] = useState('')
+
+  const [
+    savedCases,
+    setSavedCases,
+  ] = useState<
+    SavedSolverCase[]
+  >(
+    readSavedSolverCases,
+  )
+
+  useEffect(
+    () => {
+      try {
+        window.localStorage.setItem(
+          SAVED_SOLVER_CASES_KEY,
+          JSON.stringify(
+            savedCases,
+          ),
+        )
+      } catch {
+        // Storage can be unavailable in private browsing.
+      }
+    },
+    [
+      savedCases,
+    ],
+  )
 
   const matches =
     useMemo(
@@ -388,6 +530,125 @@ export function HomepageProblemSolverPanel({
     setQuery('')
     setActionMessage(
       'Problem cleared.',
+    )
+  }
+
+  function saveCurrentSolution() {
+    if (
+      !bestMatch ||
+      query.trim().length ===
+        0
+    ) {
+      setActionMessage(
+        'Enter a problem before saving.',
+      )
+      return
+    }
+
+    const quickResult =
+      bestMatch.quickSolution
+        ? bestMatch
+            .quickSolution
+            .resultLabel +
+          ' = ' +
+          bestMatch
+            .quickSolution
+            .resultValue
+        : 'Awaiting complete inputs'
+
+    const savedCase:
+      SavedSolverCase = {
+        id:
+          String(
+            Date.now(),
+          ) +
+          '-' +
+          bestMatch.calculatorId,
+        query:
+          query.trim(),
+        calculatorId:
+          bestMatch.calculatorId,
+        title:
+          bestMatch.title,
+        category:
+          bestMatch.category,
+        result:
+          quickResult,
+        readinessPercent:
+          bestMatch
+            .equationContext
+            .readinessPercent,
+        savedAt:
+          new Date()
+            .toISOString(),
+      }
+
+    setSavedCases(
+      (currentCases) => [
+        savedCase,
+        ...currentCases.filter(
+          (currentCase) =>
+            currentCase.query !==
+            savedCase.query,
+        ),
+      ].slice(
+        0,
+        6,
+      ),
+    )
+
+    setActionMessage(
+      'Solution saved to Recent solutions.',
+    )
+  }
+
+  function loadSavedCase(
+    savedCase:
+      SavedSolverCase,
+  ) {
+    setQuery(
+      savedCase.query,
+    )
+
+    setActionMessage(
+      'Saved problem loaded.',
+    )
+
+    window.requestAnimationFrame(
+      () => {
+        document
+          .getElementById(
+            'homepage-problem-query',
+          )
+          ?.focus()
+      },
+    )
+  }
+
+  function removeSavedCase(
+    savedCaseId: string,
+  ) {
+    setSavedCases(
+      (currentCases) =>
+        currentCases.filter(
+          (savedCase) =>
+            savedCase.id !==
+            savedCaseId,
+        ),
+    )
+
+    setActionMessage(
+      'Saved problem removed.',
+    )
+  }
+
+  function clearSavedCases() {
+    setSavedCases(
+      [],
+    )
+
+    setActionMessage(
+      'Saved solutions cleared.',
     )
   }
 
@@ -794,6 +1055,16 @@ export function HomepageProblemSolverPanel({
                       type="button"
                       className="is-secondary"
                       onClick={
+                        saveCurrentSolution
+                      }
+                    >
+                      Save solution
+                    </button>
+
+                    <button
+                      type="button"
+                      className="is-secondary"
+                      onClick={
                         copySolverReport
                       }
                     >
@@ -893,6 +1164,157 @@ export function HomepageProblemSolverPanel({
             )}
           </div>
         </div>
+
+        <section
+          className="homepage-problem-history"
+          aria-labelledby="homepage-problem-history-title"
+        >
+          <header className="homepage-problem-history-header">
+            <div>
+              <span>
+                Saved engineering cases
+              </span>
+
+              <h3 id="homepage-problem-history-title">
+                Recent solutions
+              </h3>
+
+              <p>
+                Keep up to six engineering problems in
+                this browser and reopen them without
+                entering the variables again.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              disabled={
+                savedCases.length ===
+                0
+              }
+              onClick={
+                clearSavedCases
+              }
+            >
+              Clear saved
+            </button>
+          </header>
+
+          {savedCases.length > 0 ? (
+            <div className="homepage-problem-history-grid">
+              {savedCases.map(
+                (savedCase) => (
+                  <article
+                    key={
+                      savedCase.id
+                    }
+                  >
+                    <div className="homepage-problem-history-meta">
+                      <span>
+                        {
+                          savedCase.category
+                        }
+                      </span>
+
+                      <time
+                        dateTime={
+                          savedCase.savedAt
+                        }
+                      >
+                        {
+                          formatSavedDate(
+                            savedCase.savedAt,
+                          )
+                        }
+                      </time>
+                    </div>
+
+                    <h4>
+                      {
+                        savedCase.title
+                      }
+                    </h4>
+
+                    <p>
+                      {
+                        savedCase.query
+                      }
+                    </p>
+
+                    <div className="homepage-problem-history-result">
+                      <strong>
+                        {
+                          savedCase.result
+                        }
+                      </strong>
+
+                      <span>
+                        {
+                          savedCase
+                            .readinessPercent
+                        }
+                        % ready
+                      </span>
+                    </div>
+
+                    <div className="homepage-problem-history-actions">
+                      <button
+                        type="button"
+                        className="is-primary"
+                        onClick={() =>
+                          loadSavedCase(
+                            savedCase,
+                          )
+                        }
+                      >
+                        Load case
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          onOpenCalculator(
+                            savedCase
+                              .calculatorId,
+                          )
+                        }
+                      >
+                        Open calculator
+                      </button>
+
+                      <button
+                        type="button"
+                        className="is-danger"
+                        aria-label={
+                          'Remove ' +
+                          savedCase.title
+                        }
+                        onClick={() =>
+                          removeSavedCase(
+                            savedCase.id,
+                          )
+                        }
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </article>
+                ),
+              )}
+            </div>
+          ) : (
+            <div className="homepage-problem-history-empty">
+              <strong>
+                No saved solutions yet
+              </strong>
+
+              <p>
+                Solve a problem and press
+                “Save solution” to keep it here.
+              </p>
+            </div>
+          )}
+        </section>
       </div>
     </section>
   )

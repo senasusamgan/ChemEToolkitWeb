@@ -200,3 +200,70 @@ test(
     }
   },
 )
+
+test(
+  'saves and restores recent engineering solutions',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'SAVED_SOLVER_CASES_KEY',
+        'interface SavedSolverCase',
+        'readSavedSolverCases',
+        'window.localStorage',
+        'function saveCurrentSolution()',
+        'function loadSavedCase(',
+        'function removeSavedCase(',
+        'function clearSavedCases()',
+        'Save solution',
+        'Recent solutions',
+        'Load case',
+        'Clear saved',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing saved-solution contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles saved solution history responsively',
+  async () => {
+    const source =
+      await readFile(
+        stylePath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.homepage-problem-history',
+        '.homepage-problem-history-header',
+        '.homepage-problem-history-grid',
+        '.homepage-problem-history-result',
+        '.homepage-problem-history-actions',
+        '.homepage-problem-history-empty',
+        '@media (max-width: 1000px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing saved-history style: ${contract}`,
+      )
+    }
+  },
+)

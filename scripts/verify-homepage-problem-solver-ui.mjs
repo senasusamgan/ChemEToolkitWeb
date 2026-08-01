@@ -217,6 +217,72 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'SAVED_SOLVER_CASES_KEY',
+    'interface SavedSolverCase',
+    'readSavedSolverCases',
+    'window.localStorage',
+    'function saveCurrentSolution()',
+    'function loadSavedCase(',
+    'function removeSavedCase(',
+    'function clearSavedCases()',
+    'Save solution',
+    'Recent solutions',
+    'Load case',
+    'Clear saved',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage saved-solution contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.homepage-problem-history',
+    '.homepage-problem-history-header',
+    '.homepage-problem-history-grid',
+    '.homepage-problem-history-actions',
+  ]
+) {
+  if (
+    !styles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage saved-solution style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'saves and restores recent engineering solutions',
+    'styles saved solution history responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage saved-solution test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
