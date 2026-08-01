@@ -589,3 +589,100 @@ test(
     }
   },
 )
+
+test(
+  'provides an automated engineering validation gate',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/EngineeringValidationGate.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Engineering validation',
+        'checkPhysicalPlausibility',
+        'Quality score',
+        'Validation status',
+        'Input completeness',
+        'Unit coverage',
+        'Equation diagnostics',
+        'Numerical result',
+        'Physical findings',
+        'Copy validation summary',
+        'Engineering judgment remains required',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing validation contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates validation with the live solver result',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'EngineeringValidationGate',
+        'calculatorTitle={',
+        'missingVariables={',
+        'diagnostics={',
+        'assignments={',
+        'quickSolution={',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing validation integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles validation states responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/engineering-validation-gate.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.engineering-validation-gate',
+        'data-status="review"',
+        'data-status="block"',
+        '.engineering-validation-status',
+        '.engineering-validation-checks',
+        '.engineering-validation-findings',
+        '.engineering-validation-footer',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing validation style: ${contract}`,
+      )
+    }
+  },
+)

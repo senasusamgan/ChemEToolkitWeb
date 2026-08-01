@@ -14,6 +14,9 @@ import {
 import {
   SensitivitySweepPanel,
 } from './SensitivitySweepPanel'
+import {
+  EngineeringValidationGate,
+} from './EngineeringValidationGate'
 
 import '../styles/homepage-problem-solver.css'
 
@@ -1675,6 +1678,50 @@ export function HomepageProblemSolverPanel({
                     </ol>
                   </div>
                 ) : null}
+
+                <EngineeringValidationGate
+                  calculatorTitle={
+                    bestMatch.title
+                  }
+                  category={
+                    bestMatch.category
+                  }
+                  targetName={
+                    bestMatch
+                      .equationIntent
+                      .targetName ??
+                    null
+                  }
+                  readinessPercent={
+                    bestMatch
+                      .equationContext
+                      .readinessPercent
+                  }
+                  status={
+                    bestMatch
+                      .equationContext
+                      .status
+                  }
+                  missingVariables={
+                    bestMatch
+                      .equationContext
+                      .missingVariableNames
+                  }
+                  diagnostics={
+                    bestMatch
+                      .equationContext
+                      .diagnostics
+                  }
+                  assignments={
+                    bestMatch
+                      .equationAssignments
+                  }
+                  quickSolution={
+                    bestMatch
+                      .quickSolution ??
+                    null
+                  }
+                />
 
                 <footer className="homepage-problem-result-footer">
                   <div>

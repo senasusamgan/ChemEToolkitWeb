@@ -610,6 +610,107 @@ for (
   }
 }
 
+const validationGate =
+  await readFile(
+    'src/components/EngineeringValidationGate.tsx',
+    'utf8',
+  )
+
+const validationGateStyles =
+  await readFile(
+    'src/styles/engineering-validation-gate.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Engineering validation',
+    'checkPhysicalPlausibility',
+    'Quality score',
+    'Validation status',
+    'Input completeness',
+    'Unit coverage',
+    'Equation diagnostics',
+    'Numerical result',
+    'Physical findings',
+    'Copy validation summary',
+    'Engineering judgment remains required',
+  ]
+) {
+  if (
+    !validationGate.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage validation gate contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'EngineeringValidationGate',
+    'calculatorTitle={',
+    'missingVariables={',
+    'diagnostics={',
+    'assignments={',
+    'quickSolution={',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage validation integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.engineering-validation-gate',
+    '.engineering-validation-status',
+    '.engineering-validation-checks',
+    '.engineering-validation-findings',
+    '.engineering-validation-footer',
+  ]
+) {
+  if (
+    !validationGateStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage validation style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides an automated engineering validation gate',
+    'integrates validation with the live solver result',
+    'styles validation states responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage validation test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
