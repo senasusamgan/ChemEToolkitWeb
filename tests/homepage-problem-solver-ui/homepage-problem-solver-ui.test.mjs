@@ -493,3 +493,99 @@ test(
     }
   },
 )
+
+test(
+  'provides a parametric sensitivity sweep',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/SensitivitySweepPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Sensitivity sweep',
+        'parseNumericAssignments',
+        'replaceNumericAssignment',
+        'rankProblemSolvers',
+        'Response curve',
+        'Solvable points',
+        'Minimum result',
+        'Maximum result',
+        'Export CSV',
+        'Use minimum case',
+        'Use maximum case',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing sensitivity contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates sensitivity analysis with the homepage solver',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'SensitivitySweepPanel',
+        'isSensitivitySweepOpen',
+        'Sensitivity sweep',
+        'Sensitivity operating point loaded.',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing sensitivity integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles the sensitivity chart and table responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/sensitivity-sweep-panel.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.sensitivity-sweep-panel',
+        '.sensitivity-sweep-controls',
+        '.sensitivity-sweep-summary',
+        '.sensitivity-sweep-chart',
+        '.sensitivity-line',
+        '.sensitivity-point',
+        '.sensitivity-sweep-table',
+        '.sensitivity-sweep-actions',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing sensitivity style: ${contract}`,
+      )
+    }
+  },
+)

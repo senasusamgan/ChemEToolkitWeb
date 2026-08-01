@@ -511,6 +511,105 @@ for (
   }
 }
 
+const sensitivitySweep =
+  await readFile(
+    'src/components/SensitivitySweepPanel.tsx',
+    'utf8',
+  )
+
+const sensitivitySweepStyles =
+  await readFile(
+    'src/styles/sensitivity-sweep-panel.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Sensitivity sweep',
+    'parseNumericAssignments',
+    'replaceNumericAssignment',
+    'rankProblemSolvers',
+    'Response curve',
+    'Solvable points',
+    'Minimum result',
+    'Maximum result',
+    'Export CSV',
+    'Use minimum case',
+    'Use maximum case',
+  ]
+) {
+  if (
+    !sensitivitySweep.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage sensitivity sweep contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'SensitivitySweepPanel',
+    'isSensitivitySweepOpen',
+    'Sensitivity sweep',
+    'Sensitivity operating point loaded.',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage sensitivity integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.sensitivity-sweep-panel',
+    '.sensitivity-sweep-controls',
+    '.sensitivity-sweep-chart',
+    '.sensitivity-sweep-table',
+    '.sensitivity-sweep-actions',
+  ]
+) {
+  if (
+    !sensitivitySweepStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage sensitivity style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides a parametric sensitivity sweep',
+    'integrates sensitivity analysis with the homepage solver',
+    'styles the sensitivity chart and table responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage sensitivity test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
