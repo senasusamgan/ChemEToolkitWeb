@@ -8,6 +8,9 @@ import { calculators } from '../data/calculators'
 import {
   rankProblemSolvers,
 } from '../features/problem-solver/problemSolverEngine'
+import {
+  GuidedProblemBuilder,
+} from './GuidedProblemBuilder'
 
 import '../styles/homepage-problem-solver.css'
 
@@ -331,6 +334,11 @@ export function HomepageProblemSolverPanel({
     actionMessage,
     setActionMessage,
   ] = useState('')
+
+  const [
+    isGuidedBuilderOpen,
+    setIsGuidedBuilderOpen,
+  ] = useState(false)
 
   const [
     isComparisonOpen,
@@ -1195,6 +1203,32 @@ export function HomepageProblemSolverPanel({
           </div>
         </header>
 
+        <GuidedProblemBuilder
+          isOpen={
+            isGuidedBuilderOpen
+          }
+          onClose={() =>
+            setIsGuidedBuilderOpen(
+              false,
+            )
+          }
+          onUseProblem={(
+            generatedProblem,
+          ) => {
+            setQuery(
+              generatedProblem,
+            )
+
+            setSharedProblemLoaded(
+              false,
+            )
+
+            setActionMessage(
+              'Guided engineering problem loaded.',
+            )
+          }}
+        />
+
         <div className="homepage-problem-solver-layout">
           <div className="homepage-problem-solver-editor">
             <label htmlFor="homepage-problem-query">
@@ -1276,6 +1310,18 @@ export function HomepageProblemSolverPanel({
 
             <div className="homepage-problem-editor-actions">
               <div>
+                <button
+                  type="button"
+                  className="is-compare"
+                  onClick={() =>
+                    setIsGuidedBuilderOpen(
+                      true,
+                    )
+                  }
+                >
+                  Guided input
+                </button>
+
                 <button
                   type="button"
                   className="is-compare"

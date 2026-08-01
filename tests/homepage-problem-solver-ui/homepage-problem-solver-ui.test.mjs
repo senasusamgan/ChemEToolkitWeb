@@ -398,3 +398,98 @@ test(
     }
   },
 )
+
+test(
+  'provides a guided engineering input builder',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/GuidedProblemBuilder.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Guided input builder',
+        'BUILDER_PRESETS',
+        'Ideal gas law',
+        'Reynolds number',
+        'Flow continuity',
+        'Darcy–Weisbach pressure drop',
+        'Solve for',
+        'Input completion',
+        'Generated problem',
+        'Fill sample values',
+        'Use in solver →',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing guided builder contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates guided inputs with the homepage solver',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'GuidedProblemBuilder',
+        'isGuidedBuilderOpen',
+        'Guided input',
+        'Guided engineering problem loaded.',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing guided integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles the guided builder responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/guided-problem-builder.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.guided-problem-builder',
+        '.guided-problem-builder-layout',
+        '.guided-problem-models',
+        '.guided-problem-variable-grid',
+        '.guided-problem-progress',
+        '.guided-problem-preview',
+        '.guided-problem-actions',
+        '@media (max-width: 850px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing guided builder style: ${contract}`,
+      )
+    }
+  },
+)

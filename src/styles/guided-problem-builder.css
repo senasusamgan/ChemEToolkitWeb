@@ -1,0 +1,520 @@
+.guided-problem-builder {
+  margin-top: 18px;
+  padding: 16px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.46);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(231, 247, 245, 0.78)
+    );
+  box-shadow:
+    0 16px 38px
+    rgba(11, 53, 86, 0.075);
+}
+
+.guided-problem-builder-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.guided-problem-builder-header
+> div {
+  display: grid;
+  gap: 5px;
+}
+
+.guided-problem-builder-header
+span,
+.guided-problem-models
+> span,
+.guided-problem-model-summary
+span,
+.guided-problem-target
+> span,
+.guided-problem-progress
+span,
+.guided-problem-preview
+> span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.51rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.guided-problem-builder-header
+h3 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size:
+    clamp(
+      1.15rem,
+      2.4vw,
+      1.75rem
+    );
+}
+
+.guided-problem-builder-header
+p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.58rem;
+}
+
+.guided-problem-builder-header
+> button {
+  min-height: 35px;
+  padding: 0 11px;
+  border:
+    1px solid
+    rgba(187, 82, 65, 0.34);
+  border-radius: 8px;
+  color:
+    #914535;
+  background:
+    rgba(187, 82, 65, 0.05);
+  font: inherit;
+  font-size: 0.52rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.guided-problem-builder-layout {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns:
+    minmax(180px, 0.34fr)
+    minmax(0, 1fr);
+  gap: 10px;
+}
+
+.guided-problem-models {
+  padding: 11px;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.78);
+  border-radius: 10px;
+  background:
+    rgba(249, 246, 238, 0.55);
+}
+
+.guided-problem-models
+> div {
+  display: grid;
+  gap: 6px;
+}
+
+.guided-problem-models
+button {
+  min-width: 0;
+  padding: 9px;
+  display: grid;
+  gap: 3px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.8);
+  border-radius: 8px;
+  color:
+    var(--ink, #0b3556);
+  background:
+    rgba(255, 255, 255, 0.78);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.guided-problem-models
+button.is-active {
+  border-color:
+    rgba(7, 156, 153, 0.55);
+  background:
+    rgba(7, 156, 153, 0.08);
+}
+
+.guided-problem-models
+button strong {
+  font-size: 0.58rem;
+}
+
+.guided-problem-models
+button small {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.48rem;
+}
+
+.guided-problem-models
+button code {
+  overflow-wrap: anywhere;
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.52rem;
+}
+
+.guided-problem-fields {
+  min-width: 0;
+  padding: 12px;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.8);
+  border-radius: 10px;
+  background:
+    rgba(255, 255, 255, 0.82);
+}
+
+.guided-problem-model-summary {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.guided-problem-model-summary
+> div {
+  display: grid;
+  gap: 4px;
+}
+
+.guided-problem-model-summary
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.85rem;
+}
+
+.guided-problem-model-summary
+code {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.62rem;
+}
+
+.guided-problem-model-summary
+p {
+  max-width: 420px;
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.53rem;
+  line-height: 1.5;
+}
+
+.guided-problem-target {
+  display: grid;
+  gap: 5px;
+}
+
+.guided-problem-target
+select {
+  min-height: 39px;
+  padding: 0 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.4);
+  border-radius: 8px;
+  outline: 0;
+  color:
+    var(--ink, #0b3556);
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.58rem;
+  font-weight: 750;
+}
+
+.guided-problem-variable-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  gap: 7px;
+}
+
+.guided-problem-variable-grid
+> label {
+  min-width: 0;
+  padding: 9px;
+  display: grid;
+  gap: 6px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.75);
+  border-radius: 8px;
+  background:
+    rgba(249, 246, 238, 0.42);
+}
+
+.guided-problem-variable-grid
+> label.is-target {
+  border-color:
+    rgba(7, 156, 153, 0.4);
+  background:
+    rgba(7, 156, 153, 0.065);
+}
+
+.guided-problem-variable-grid
+> label > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.51rem;
+}
+
+.guided-problem-variable-grid
+> label > span b {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.72rem;
+}
+
+.guided-problem-value-input {
+  display: flex;
+  align-items: stretch;
+}
+
+.guided-problem-value-input
+input {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 9px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.35);
+  border-radius:
+    7px 0 0 7px;
+  outline: 0;
+  color:
+    var(--ink, #0b3556);
+  background: #ffffff;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.59rem;
+}
+
+.guided-problem-value-input
+input:only-child {
+  border-radius: 7px;
+}
+
+.guided-problem-value-input
+> span {
+  min-width: 58px;
+  padding: 0 8px;
+  display: grid;
+  place-items: center;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.35);
+  border-left: 0;
+  border-radius:
+    0 7px 7px 0;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.065);
+  font-size: 0.5rem;
+  font-weight: 800;
+}
+
+.guided-problem-unknown {
+  min-height: 38px;
+  display: grid;
+  place-items: center;
+  border:
+    1px dashed
+    rgba(7, 156, 153, 0.48);
+  border-radius: 7px;
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.55rem;
+  font-weight: 900;
+}
+
+.guided-problem-progress {
+  display: grid;
+  gap: 5px;
+}
+
+.guided-problem-progress
+> div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.guided-problem-progress
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.55rem;
+}
+
+.guided-problem-progress
+progress {
+  width: 100%;
+  height: 8px;
+  accent-color:
+    var(--teal-dark, #007b78);
+}
+
+.guided-problem-preview {
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.25);
+  border-radius: 8px;
+  background:
+    rgba(7, 156, 153, 0.045);
+}
+
+.guided-problem-preview
+code {
+  overflow-wrap: anywhere;
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.58rem;
+  line-height: 1.55;
+}
+
+.guided-problem-message {
+  margin: 0;
+  padding: 8px 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.26);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.05);
+  font-size: 0.52rem;
+  font-weight: 800;
+}
+
+.guided-problem-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.guided-problem-actions
+> div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.guided-problem-actions
+button {
+  min-height: 36px;
+  padding: 0 11px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.4);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font: inherit;
+  font-size: 0.52rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.guided-problem-actions
+button.is-primary {
+  color: #ffffff;
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.guided-problem-actions
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 850px) {
+  .guided-problem-builder-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .guided-problem-models
+  > div {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+@media (max-width: 700px) {
+  .guided-problem-builder-header,
+  .guided-problem-model-summary,
+  .guided-problem-actions {
+    display: grid;
+  }
+
+  .guided-problem-builder-header
+  > button,
+  .guided-problem-actions
+  > button {
+    width: 100%;
+  }
+
+  .guided-problem-variable-grid,
+  .guided-problem-models
+  > div {
+    grid-template-columns: 1fr;
+  }
+
+  .guided-problem-actions
+  > div {
+    display: grid;
+  }
+
+  .guided-problem-actions
+  button {
+    width: 100%;
+  }
+}
