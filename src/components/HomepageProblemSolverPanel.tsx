@@ -21,6 +21,9 @@ import {
   MissingInputAssistant,
 } from './MissingInputAssistant'
 import {
+  CalculationTracePanel,
+} from './CalculationTracePanel'
+import {
   UncertaintyAnalysisPanel,
 } from './UncertaintyAnalysisPanel'
 import {
@@ -1950,6 +1953,54 @@ export function HomepageProblemSolverPanel({
                     </ol>
                   </div>
                 ) : null}
+
+                <CalculationTracePanel
+                  calculatorTitle={
+                    bestMatch.title
+                  }
+                  equationLabel={
+                    bestMatch
+                      .equationIntent
+                      .equationLabel ??
+                    bestMatch
+                      .equationHint ??
+                    bestMatch.title
+                  }
+                  equation={
+                    bestMatch
+                      .equationIntent
+                      .equation ??
+                    bestMatch
+                      .equationHint ??
+                    bestMatch
+                      .quickSolution
+                      ?.equation ??
+                    ''
+                  }
+                  targetName={
+                    bestMatch
+                      .equationIntent
+                      .targetName ??
+                    bestMatch
+                      .equationContext
+                      .targetName ??
+                    null
+                  }
+                  readinessPercent={
+                    bestMatch
+                      .equationContext
+                      .readinessPercent
+                  }
+                  assignments={
+                    bestMatch
+                      .equationAssignments
+                  }
+                  quickSolution={
+                    bestMatch
+                      .quickSolution ??
+                    null
+                  }
+                />
 
                 <MissingInputAssistant
                   key={

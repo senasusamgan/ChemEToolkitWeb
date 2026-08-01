@@ -1400,3 +1400,131 @@ test(
     }
   },
 )
+
+test(
+  'provides a step-by-step calculation trace',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/CalculationTracePanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Step-by-step calculation trace',
+        'FORMULA_PROFILES',
+        'findFormulaTarget',
+        'createCalculationTrace',
+        'Governing equation',
+        'Rearrange for the requested unknown',
+        'Numerical substitution',
+        'Computed result',
+        'Copy calculation trace',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Calculation Trace contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'supports specialized equation rearrangements',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/CalculationTracePanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        "'ideal gas'",
+        "'reynolds'",
+        "'continuity'",
+        "'darcy'",
+        "'pump power'",
+        "'heat exchanger'",
+        "'fick'",
+        'P·V = n·R·T',
+        'Re=(ρ·v·D)/μ',
+        'Q=U·A·ΔTlm',
+        'J=−D·ΔC/L',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing formula profile: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates Calculation Trace with Quick Solve',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'CalculationTracePanel',
+        'equationLabel={',
+        'readinessPercent={',
+        'assignments={',
+        'quickSolution={',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Calculation Trace integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles Calculation Trace responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/calculation-trace-panel.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.calculation-trace-panel',
+        '.calculation-trace-launcher',
+        '.calculation-trace-steps',
+        '.calculation-trace-input-table',
+        '.calculation-trace-unit-audit',
+        '.calculation-trace-footer',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Calculation Trace style: ${contract}`,
+      )
+    }
+  },
+)
