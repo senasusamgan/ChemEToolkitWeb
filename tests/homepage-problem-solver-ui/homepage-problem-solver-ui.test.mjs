@@ -329,3 +329,72 @@ test(
     }
   },
 )
+
+test(
+  'compares two engineering scenarios',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'formatComparisonValue',
+        'isComparisonOpen',
+        'comparisonQuery',
+        'comparisonMatches',
+        'comparisonBestMatch',
+        'scenarioDifference',
+        'function openScenarioComparison()',
+        'function closeScenarioComparison()',
+        'function useComparisonAsMain()',
+        'Compare scenarios',
+        'Scenario A',
+        'Scenario B',
+        'Absolute change',
+        'Percentage change',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing comparison contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles responsive scenario comparison',
+  async () => {
+    const source =
+      await readFile(
+        stylePath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.homepage-problem-comparison',
+        '.homepage-problem-comparison-grid',
+        '.homepage-problem-scenario-card',
+        '.homepage-problem-scenario-summary',
+        '.homepage-problem-comparison-result',
+        '.homepage-problem-comparison-metrics',
+        '@media (max-width: 850px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing comparison style: ${contract}`,
+      )
+    }
+  },
+)
