@@ -283,6 +283,69 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'SHARED_PROBLEM_QUERY_PARAM',
+    'SOLVER_DRAFT_KEY',
+    'function readSharedProblem()',
+    'function readInitialProblem()',
+    'function buildProblemShareUrl(',
+    'async function shareCurrentProblem()',
+    'navigator.share',
+    'URLSearchParams',
+    'window.history.replaceState',
+    'Share case',
+    'Shared problem loaded',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage shareable-case contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.homepage-problem-share-notice',
+    'button:first-child::before',
+  ]
+) {
+  if (
+    !styles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage shareable-case style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'creates shareable Problem Solver links',
+    'styles shared problem feedback',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage shareable-case test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )

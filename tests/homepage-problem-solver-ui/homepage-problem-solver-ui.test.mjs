@@ -267,3 +267,65 @@ test(
     }
   },
 )
+
+test(
+  'creates shareable Problem Solver links',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'SHARED_PROBLEM_QUERY_PARAM',
+        'SOLVER_DRAFT_KEY',
+        'function readSharedProblem()',
+        'function readInitialProblem()',
+        'function buildProblemShareUrl(',
+        'async function shareCurrentProblem()',
+        'navigator.share',
+        'navigator.clipboard',
+        'URLSearchParams',
+        'window.history.replaceState',
+        'Share case',
+        'Shared problem loaded',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing sharing contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles shared problem feedback',
+  async () => {
+    const source =
+      await readFile(
+        stylePath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.homepage-problem-share-notice',
+        'button:first-child::before',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing sharing style: ${contract}`,
+      )
+    }
+  },
+)

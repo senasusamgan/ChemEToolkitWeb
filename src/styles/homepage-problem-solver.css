@@ -1041,3 +1041,49 @@ p {
     width: 100%;
   }
 }
+
+/* Homepage Problem Solver sharing */
+
+.homepage-problem-share-notice {
+  padding: 10px;
+  display: grid;
+  gap: 3px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.34);
+  border-radius: 9px;
+  background:
+    rgba(7, 156, 153, 0.065);
+}
+
+.homepage-problem-share-notice
+strong {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.57rem;
+}
+
+.homepage-problem-share-notice
+span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.51rem;
+  line-height: 1.45;
+}
+
+.homepage-problem-result-actions
+button:first-child {
+  position: relative;
+}
+
+.homepage-problem-result-actions
+button:first-child::before {
+  content: "↗";
+  margin-right: 5px;
+}
+
+@media (max-width: 700px) {
+  .homepage-problem-share-notice {
+    padding: 9px;
+  }
+}
