@@ -711,6 +711,107 @@ for (
   }
 }
 
+const uncertaintyAnalysis =
+  await readFile(
+    'src/components/UncertaintyAnalysisPanel.tsx',
+    'utf8',
+  )
+
+const uncertaintyStyles =
+  await readFile(
+    'src/styles/uncertainty-analysis-panel.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Monte Carlo uncertainty',
+    'createSeededRandom',
+    'createNormalRandom',
+    'parseNumericAssignments',
+    'rankProblemSolvers',
+    'Simulated mean',
+    'Standard deviation',
+    '90% interval',
+    'Coefficient of variation',
+    'Output distribution',
+    'Export samples CSV',
+    'Use P5 case',
+    'Use P95 case',
+  ]
+) {
+  if (
+    !uncertaintyAnalysis.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage uncertainty contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'UncertaintyAnalysisPanel',
+    'isUncertaintyAnalysisOpen',
+    'Uncertainty analysis',
+    'Uncertainty operating case loaded.',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage uncertainty integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.uncertainty-analysis-panel',
+    '.uncertainty-analysis-controls',
+    '.uncertainty-histogram',
+    '.uncertainty-percentile-grid',
+    '.uncertainty-analysis-actions',
+  ]
+) {
+  if (
+    !uncertaintyStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage uncertainty style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides deterministic Monte Carlo uncertainty analysis',
+    'integrates uncertainty analysis with the homepage solver',
+    'styles uncertainty controls and histogram responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage uncertainty test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
