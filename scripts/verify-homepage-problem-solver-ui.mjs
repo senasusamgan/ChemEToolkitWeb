@@ -1401,6 +1401,129 @@ for (
   }
 }
 
+const assumptionReview =
+  await readFile(
+    'src/components/AssumptionReviewPanel.tsx',
+    'utf8',
+  )
+
+const assumptionReviewStyles =
+  await readFile(
+    'src/styles/assumption-review-panel.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Engineering assumption review',
+    'ASSUMPTION_PROFILES',
+    'createAssumptions',
+    'Ideal Gas Law',
+    'Reynolds Number',
+    'Darcy–Weisbach',
+    'Pump Power',
+    'Heat Exchanger',
+    'Fickian Diffusion',
+    'Confirm all assumptions',
+    'Copy assumption register',
+  ]
+) {
+  if (
+    !assumptionReview.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Assumption Review contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'STORAGE_PREFIX',
+    'window.localStorage.getItem',
+    'window.localStorage.setItem',
+    'engineeringNotes',
+  ]
+) {
+  if (
+    !assumptionReview.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Assumption Review persistence missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'AssumptionReviewPanel',
+    '<AssumptionReviewPanel',
+    'baseQuery={',
+    'equationLabel={',
+    'assignments={',
+    'quickSolution={',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Assumption Review integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.assumption-review-panel',
+    '.assumption-review-summary',
+    '.assumption-review-list',
+    '.assumption-review-notes',
+    '.assumption-review-actions',
+    '.assumption-review-final-state',
+  ]
+) {
+  if (
+    !assumptionReviewStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Assumption Review style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides a model-specific engineering assumption review',
+    'persists assumption decisions and engineering notes',
+    'integrates Assumption Review with the homepage solver',
+    'styles Assumption Review responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Assumption Review test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )

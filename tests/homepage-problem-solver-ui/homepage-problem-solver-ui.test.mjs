@@ -1528,3 +1528,132 @@ test(
     }
   },
 )
+
+test(
+  'provides a model-specific engineering assumption review',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/AssumptionReviewPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Engineering assumption review',
+        'ASSUMPTION_PROFILES',
+        'createAssumptions',
+        'Ideal Gas Law',
+        'Reynolds Number',
+        'Darcy–Weisbach',
+        'Pump Power',
+        'Heat Exchanger',
+        'Fickian Diffusion',
+        'Confirm all assumptions',
+        'Copy assumption register',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Assumption Review contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'persists assumption decisions and engineering notes',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/AssumptionReviewPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'STORAGE_PREFIX',
+        'window.localStorage.getItem',
+        'window.localStorage.setItem',
+        'window.localStorage.removeItem',
+        'engineeringNotes',
+        "'confirmed'",
+        "'review'",
+        "'not-applicable'",
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing assumption persistence contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates Assumption Review with the homepage solver',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'AssumptionReviewPanel',
+        '<AssumptionReviewPanel',
+        'baseQuery={',
+        'equationLabel={',
+        'assignments={',
+        'quickSolution={',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Assumption Review integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles Assumption Review responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/assumption-review-panel.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.assumption-review-panel',
+        '.assumption-review-summary',
+        '.assumption-review-list',
+        '.assumption-review-evidence-snapshot',
+        '.assumption-review-notes',
+        '.assumption-review-actions',
+        '.assumption-review-final-state',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Assumption Review style: ${contract}`,
+      )
+    }
+  },
+)
