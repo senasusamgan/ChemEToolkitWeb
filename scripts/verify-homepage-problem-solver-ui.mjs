@@ -912,6 +912,103 @@ for (
   }
 }
 
+const batchSolver =
+  await readFile(
+    'src/components/BatchProblemSolverPanel.tsx',
+    'utf8',
+  )
+
+const batchSolverStyles =
+  await readFile(
+    'src/styles/batch-problem-solver-panel.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Batch case solver',
+    'MAXIMUM_CASES',
+    'rankProblemSolvers',
+    'One problem per line',
+    'Average readiness',
+    'Load sample batch',
+    'Copy batch summary',
+    'Export batch CSV',
+    'Load in Solver',
+  ]
+) {
+  if (
+    !batchSolver.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Batch Solver contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'BatchProblemSolverPanel',
+    'onLoadCase={',
+    'Batch engineering case loaded.',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Batch Solver integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.batch-problem-solver-panel',
+    '.batch-problem-solver-content',
+    '.batch-problem-summary',
+    '.batch-problem-table',
+    '.batch-problem-footer',
+  ]
+) {
+  if (
+    !batchSolverStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Batch Solver style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides multi-case batch engineering solving',
+    'classifies solved incomplete and unmatched batch cases',
+    'integrates batch cases with the main Problem Solver',
+    'styles Batch Solver responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Batch Solver test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )

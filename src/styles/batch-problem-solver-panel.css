@@ -1,0 +1,634 @@
+.batch-problem-solver-panel {
+  margin-top: 18px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.4);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.94),
+      rgba(235, 247, 247, 0.75)
+    );
+  box-shadow:
+    0 14px 34px
+    rgba(11, 53, 86, 0.065);
+}
+
+.batch-problem-solver-launcher {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.batch-problem-solver-launcher
+> div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.batch-problem-solver-launcher
+> div:first-child > span,
+.batch-problem-editor-header
+span,
+.batch-problem-summary
+span,
+.batch-problem-filter-bar
+> span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.5rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.batch-problem-solver-launcher
+h3 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size:
+    clamp(
+      1.05rem,
+      2.2vw,
+      1.55rem
+    );
+}
+
+.batch-problem-solver-launcher
+p {
+  max-width: 730px;
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.55rem;
+  line-height: 1.5;
+}
+
+.batch-problem-solver-launcher-actions {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+.batch-problem-solver-launcher-actions
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.52rem;
+}
+
+.batch-problem-solver-launcher-actions
+button {
+  min-height: 36px;
+  padding: 0 12px;
+  border:
+    1px solid
+    var(--teal-dark, #007b78);
+  border-radius: 8px;
+  color: #ffffff;
+  background:
+    var(--teal-dark, #007b78);
+  font: inherit;
+  font-size: 0.53rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.batch-problem-solver-content {
+  padding: 0 16px 16px;
+  display: grid;
+  grid-template-columns:
+    minmax(260px, 0.38fr)
+    minmax(0, 1fr);
+  gap: 10px;
+}
+
+.batch-problem-solver-editor,
+.batch-problem-solver-results {
+  min-width: 0;
+  padding: 11px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.78);
+  border-radius: 10px;
+  background:
+    rgba(255, 255, 255, 0.8);
+}
+
+.batch-problem-solver-editor {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+
+.batch-problem-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.batch-problem-editor-header
+> div {
+  display: grid;
+  gap: 3px;
+}
+
+.batch-problem-editor-header
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.61rem;
+}
+
+.batch-problem-solver-editor
+label {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.53rem;
+  font-weight: 850;
+}
+
+.batch-problem-solver-editor
+textarea {
+  width: 100%;
+  min-height: 260px;
+  resize: vertical;
+  padding: 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.4);
+  border-radius: 8px;
+  outline: 0;
+  color:
+    var(--ink, #0b3556);
+  background: #ffffff;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.54rem;
+  line-height: 1.6;
+}
+
+.batch-problem-solver-editor
+textarea:focus {
+  border-color:
+    var(--teal-dark, #007b78);
+  box-shadow:
+    0 0 0 3px
+    rgba(7, 156, 153, 0.1);
+}
+
+.batch-problem-editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.batch-problem-editor-actions
+button,
+.batch-problem-footer
+button {
+  min-height: 34px;
+  padding: 0 10px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.38);
+  border-radius: 7px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font: inherit;
+  font-size: 0.5rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.batch-problem-editor-actions
+button.is-danger {
+  color:
+    #914535;
+  border-color:
+    rgba(187, 82, 65, 0.34);
+  background:
+    rgba(187, 82, 65, 0.05);
+}
+
+.batch-problem-solver-editor
+> p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.48rem;
+  line-height: 1.45;
+}
+
+.batch-problem-solver-results {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+}
+
+.batch-problem-summary {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      5,
+      minmax(0, 1fr)
+    );
+  gap: 6px;
+}
+
+.batch-problem-summary
+article {
+  min-width: 0;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.7);
+  border-radius: 8px;
+  background:
+    rgba(249, 246, 238, 0.48);
+}
+
+.batch-problem-summary
+article[data-state="solved"] {
+  border-color:
+    rgba(7, 156, 153, 0.32);
+  background:
+    rgba(7, 156, 153, 0.05);
+}
+
+.batch-problem-summary
+article[data-state="review"] {
+  border-color:
+    rgba(194, 132, 32, 0.36);
+  background:
+    rgba(194, 132, 32, 0.05);
+}
+
+.batch-problem-summary
+article[data-state="blocked"] {
+  border-color:
+    rgba(187, 82, 65, 0.34);
+  background:
+    rgba(187, 82, 65, 0.045);
+}
+
+.batch-problem-summary
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.88rem;
+}
+
+.batch-problem-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.batch-problem-filter-bar
+> div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.batch-problem-filter-bar
+button {
+  min-height: 30px;
+  padding: 0 9px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.28);
+  border-radius: 999px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(255, 255, 255, 0.75);
+  font: inherit;
+  font-size: 0.47rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.batch-problem-filter-bar
+button.is-active {
+  color: #ffffff;
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.batch-problem-table-wrap {
+  overflow-x: auto;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.76);
+  border-radius: 9px;
+}
+
+.batch-problem-table {
+  width: 100%;
+  min-width: 930px;
+  border-collapse: collapse;
+  background:
+    rgba(255, 255, 255, 0.76);
+}
+
+.batch-problem-table
+th,
+.batch-problem-table
+td {
+  padding: 8px;
+  border-bottom:
+    1px solid
+    rgba(217, 208, 189, 0.65);
+  color:
+    var(--ink, #0b3556);
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.49rem;
+  line-height: 1.45;
+}
+
+.batch-problem-table
+th {
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.05);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.batch-problem-table
+tbody tr:last-child
+td {
+  border-bottom: 0;
+}
+
+.batch-problem-table
+tbody tr[data-status="solved"] {
+  background:
+    rgba(7, 156, 153, 0.025);
+}
+
+.batch-problem-table
+tbody tr[data-status="needs-inputs"] {
+  background:
+    rgba(194, 132, 32, 0.03);
+}
+
+.batch-problem-table
+tbody tr[data-status="unmatched"] {
+  background:
+    rgba(187, 82, 65, 0.03);
+}
+
+.batch-problem-table
+td:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.batch-problem-table
+td:first-child span,
+.batch-problem-table
+td:nth-child(3) span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.45rem;
+}
+
+.batch-problem-table
+code {
+  display: block;
+  max-width: 320px;
+  overflow-wrap: anywhere;
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.48rem;
+}
+
+.batch-problem-readiness {
+  min-width: 80px;
+  display: grid;
+  gap: 4px;
+}
+
+.batch-problem-readiness
+progress {
+  width: 100%;
+  height: 6px;
+  accent-color:
+    var(--teal-dark, #007b78);
+}
+
+.batch-problem-result-value,
+.batch-problem-result-issue {
+  min-width: 130px;
+  display: grid;
+  gap: 3px;
+}
+
+.batch-problem-result-value
+strong,
+.batch-problem-result-issue
+strong {
+  overflow-wrap: anywhere;
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.5rem;
+}
+
+.batch-problem-result-value
+span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.45rem;
+}
+
+.batch-problem-result-issue
+span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.45rem;
+}
+
+.batch-problem-table
+td:last-child button {
+  min-height: 31px;
+  padding: 0 8px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.38);
+  border-radius: 7px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font: inherit;
+  font-size: 0.47rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.batch-problem-empty {
+  min-height: 110px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 5px;
+  border:
+    1px dashed
+    rgba(217, 208, 189, 0.88);
+  border-radius: 9px;
+  text-align: center;
+}
+
+.batch-problem-empty
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+}
+
+.batch-problem-empty
+p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.5rem;
+}
+
+.batch-problem-feedback {
+  margin: 0;
+  padding: 8px 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.27);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.05);
+  font-size: 0.5rem;
+  font-weight: 800;
+}
+
+.batch-problem-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.batch-problem-footer
+> div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.batch-problem-footer
+button.is-primary {
+  color: #ffffff;
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.batch-problem-footer
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.batch-problem-footer
+> span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.47rem;
+  text-align: right;
+}
+
+@media (max-width: 1050px) {
+  .batch-problem-solver-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .batch-problem-summary {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+@media (max-width: 700px) {
+  .batch-problem-solver-launcher,
+  .batch-problem-filter-bar,
+  .batch-problem-footer {
+    display: grid;
+  }
+
+  .batch-problem-solver-launcher-actions {
+    justify-items: stretch;
+  }
+
+  .batch-problem-solver-launcher-actions
+  button {
+    width: 100%;
+  }
+
+  .batch-problem-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .batch-problem-filter-bar
+  > div,
+  .batch-problem-footer
+  > div {
+    display: grid;
+  }
+
+  .batch-problem-filter-bar
+  button,
+  .batch-problem-footer
+  button {
+    width: 100%;
+  }
+
+  .batch-problem-footer
+  > span {
+    text-align: left;
+  }
+}
