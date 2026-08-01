@@ -1205,6 +1205,102 @@ for (
   }
 }
 
+const missingInputAssistant =
+  await readFile(
+    'src/components/MissingInputAssistant.tsx',
+    'utf8',
+  )
+
+const missingInputAssistantStyles =
+  await readFile(
+    'src/styles/missing-input-assistant.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Complete the missing inputs',
+    'VARIABLE_PROFILES',
+    'findVariableProfile',
+    'appendAssignments',
+    'Input readiness',
+    'Completed problem preview',
+    'Fill example values',
+    'Add inputs and solve →',
+  ]
+) {
+  if (
+    !missingInputAssistant.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Missing Input Assistant contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'MissingInputAssistant',
+    'missingVariables={',
+    'Missing inputs added and problem recalculated.',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Missing Input Assistant integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.missing-input-assistant',
+    '.missing-input-assistant-progress',
+    '.missing-input-assistant-grid',
+    '.missing-input-assistant-preview',
+    '.missing-input-assistant-actions',
+  ]
+) {
+  if (
+    !missingInputAssistantStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Missing Input Assistant style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides a guided missing-input completion assistant',
+    'supports core equation-context variables',
+    'integrates missing-input completion with Quick Solve',
+    'styles the missing-input assistant responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Missing Input Assistant test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
