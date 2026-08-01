@@ -1277,3 +1277,126 @@ test(
     }
   },
 )
+
+test(
+  'provides a guided missing-input completion assistant',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/MissingInputAssistant.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Complete the missing inputs',
+        'VARIABLE_PROFILES',
+        'findVariableProfile',
+        'appendAssignments',
+        'Input readiness',
+        'Completed problem preview',
+        'Fill example values',
+        'Add inputs and solve →',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing input assistant contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'supports core equation-context variables',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/MissingInputAssistant.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        "'absolute pressure'",
+        "'gas volume'",
+        "'dynamic viscosity'",
+        "'pressure difference'",
+        "'pump efficiency'",
+        "'overall heat-transfer coefficient'",
+        "'log-mean temperature difference'",
+        "'molar flux'",
+        "'concentration difference'",
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing variable profile: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates missing-input completion with Quick Solve',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'MissingInputAssistant',
+        'missingVariables={',
+        'Missing inputs added and problem recalculated.',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing assistant integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles the missing-input assistant responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/missing-input-assistant.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.missing-input-assistant',
+        '.missing-input-assistant-progress',
+        '.missing-input-assistant-grid',
+        '.missing-input-assistant-field-row',
+        '.missing-input-assistant-preview',
+        '.missing-input-assistant-actions',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing assistant style: ${contract}`,
+      )
+    }
+  },
+)

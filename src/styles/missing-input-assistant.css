@@ -1,0 +1,364 @@
+.missing-input-assistant {
+  margin-top: 9px;
+  padding: 12px;
+  border:
+    1px solid
+    rgba(194, 132, 32, 0.42);
+  border-radius: 10px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 246, 225, 0.68)
+    );
+}
+
+.missing-input-assistant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.missing-input-assistant-header
+> div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.missing-input-assistant-header
+> div:first-child > span,
+.missing-input-assistant-progress
+span,
+.missing-input-assistant-grid
+article header span,
+.missing-input-assistant-field-row
+label > span,
+.missing-input-assistant-preview
+> span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.49rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.missing-input-assistant-header
+h4 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.94rem;
+}
+
+.missing-input-assistant-header
+p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.52rem;
+  line-height: 1.45;
+}
+
+.missing-input-assistant-score {
+  min-width: 92px;
+  padding: 9px;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  border:
+    1px solid
+    rgba(194, 132, 32, 0.35);
+  border-radius: 9px;
+  background:
+    rgba(255, 255, 255, 0.72);
+}
+
+.missing-input-assistant-score
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 1.2rem;
+}
+
+.missing-input-assistant-score
+span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.47rem;
+  font-weight: 800;
+}
+
+.missing-input-assistant-progress {
+  margin-top: 9px;
+  display: grid;
+  gap: 5px;
+}
+
+.missing-input-assistant-progress
+> div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.missing-input-assistant-progress
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.53rem;
+}
+
+.missing-input-assistant-progress
+progress {
+  width: 100%;
+  height: 8px;
+  accent-color:
+    var(--teal-dark, #007b78);
+}
+
+.missing-input-assistant-grid {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  gap: 7px;
+}
+
+.missing-input-assistant-grid
+article {
+  min-width: 0;
+  padding: 9px;
+  display: grid;
+  gap: 7px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.76);
+  border-radius: 9px;
+  background:
+    rgba(255, 255, 255, 0.76);
+}
+
+.missing-input-assistant-grid
+article header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+}
+
+.missing-input-assistant-grid
+article header > div {
+  display: grid;
+  gap: 3px;
+}
+
+.missing-input-assistant-grid
+article header strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.57rem;
+}
+
+.missing-input-assistant-grid
+article header code {
+  min-width: 37px;
+  min-height: 30px;
+  padding: 0 7px;
+  display: grid;
+  place-items: center;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.28);
+  border-radius: 7px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font-size: 0.6rem;
+  font-weight: 900;
+}
+
+.missing-input-assistant-grid
+article > p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.49rem;
+  line-height: 1.45;
+}
+
+.missing-input-assistant-field-row {
+  display: grid;
+  grid-template-columns:
+    minmax(68px, 0.55fr)
+    minmax(100px, 1fr)
+    minmax(100px, 0.9fr);
+  gap: 6px;
+}
+
+.missing-input-assistant-field-row
+label {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.missing-input-assistant-field-row
+input {
+  width: 100%;
+  min-width: 0;
+  min-height: 36px;
+  padding: 0 8px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.35);
+  border-radius: 7px;
+  outline: 0;
+  color:
+    var(--ink, #0b3556);
+  background: #ffffff;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 0.54rem;
+}
+
+.missing-input-assistant-field-row
+input:focus {
+  border-color:
+    var(--teal-dark, #007b78);
+  box-shadow:
+    0 0 0 3px
+    rgba(7, 156, 153, 0.1);
+}
+
+.missing-input-assistant-preview {
+  margin-top: 8px;
+  padding: 9px;
+  display: grid;
+  gap: 5px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.25);
+  border-radius: 8px;
+  background:
+    rgba(7, 156, 153, 0.045);
+}
+
+.missing-input-assistant-preview
+code {
+  overflow-wrap: anywhere;
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.54rem;
+  line-height: 1.5;
+}
+
+.missing-input-assistant-feedback {
+  margin: 8px 0 0;
+  padding: 8px 9px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.27);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.05);
+  font-size: 0.5rem;
+  font-weight: 800;
+}
+
+.missing-input-assistant-actions {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+}
+
+.missing-input-assistant-actions
+> div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.missing-input-assistant-actions
+button {
+  min-height: 35px;
+  padding: 0 10px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.4);
+  border-radius: 7px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font: inherit;
+  font-size: 0.5rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.missing-input-assistant-actions
+button.is-primary {
+  color: #ffffff;
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.missing-input-assistant-actions
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 850px) {
+  .missing-input-assistant-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .missing-input-assistant-header,
+  .missing-input-assistant-actions {
+    display: grid;
+  }
+
+  .missing-input-assistant-score {
+    width: 100%;
+  }
+
+  .missing-input-assistant-field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .missing-input-assistant-actions
+  > div {
+    display: grid;
+  }
+
+  .missing-input-assistant-actions
+  button {
+    width: 100%;
+  }
+}

@@ -18,6 +18,9 @@ import {
   EngineeringValidationGate,
 } from './EngineeringValidationGate'
 import {
+  MissingInputAssistant,
+} from './MissingInputAssistant'
+import {
   UncertaintyAnalysisPanel,
 } from './UncertaintyAnalysisPanel'
 import {
@@ -1947,6 +1950,46 @@ export function HomepageProblemSolverPanel({
                     </ol>
                   </div>
                 ) : null}
+
+                <MissingInputAssistant
+                  key={
+                    bestMatch
+                      .equationContext
+                      .missingVariableNames
+                      .join('|')
+                  }
+                  calculatorTitle={
+                    bestMatch.title
+                  }
+                  targetName={
+                    bestMatch
+                      .equationContext
+                      .targetName
+                  }
+                  baseQuery={
+                    query
+                  }
+                  missingVariables={
+                    bestMatch
+                      .equationContext
+                      .missingVariableNames
+                  }
+                  onApplyProblem={(
+                    completedProblem,
+                  ) => {
+                    setQuery(
+                      completedProblem,
+                    )
+
+                    setSharedProblemLoaded(
+                      false,
+                    )
+
+                    setActionMessage(
+                      'Missing inputs added and problem recalculated.',
+                    )
+                  }}
+                />
 
                 <EngineeringValidationGate
                   calculatorTitle={
