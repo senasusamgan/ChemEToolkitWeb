@@ -158,6 +158,122 @@ function formatSavedDate(
   return date.toLocaleString()
 }
 
+const SHARED_PROBLEM_QUERY_PARAM =
+  'problem'
+
+const SOLVER_DRAFT_KEY =
+  'cheme-toolkit.homepage-problem-solver.draft.v1'
+
+function readSharedProblem():
+  string | null {
+  if (
+    typeof window ===
+    'undefined'
+  ) {
+    return null
+  }
+
+  try {
+    const parameters =
+      new URLSearchParams(
+        window.location.search,
+      )
+
+    const sharedProblem =
+      parameters.get(
+        SHARED_PROBLEM_QUERY_PARAM,
+      )
+
+    if (
+      !sharedProblem ||
+      sharedProblem.trim().length ===
+        0
+    ) {
+      return null
+    }
+
+    return sharedProblem
+      .trim()
+      .slice(
+        0,
+        5000,
+      )
+  } catch {
+    return null
+  }
+}
+
+function readInitialProblem():
+  string {
+  const sharedProblem =
+    readSharedProblem()
+
+  if (
+    sharedProblem
+  ) {
+    return sharedProblem
+  }
+
+  if (
+    typeof window !==
+    'undefined'
+  ) {
+    try {
+      const draft =
+        window.localStorage.getItem(
+          SOLVER_DRAFT_KEY,
+        )
+
+      if (
+        draft &&
+        draft.trim().length >
+          0
+      ) {
+        return draft
+          .trim()
+          .slice(
+            0,
+            5000,
+          )
+      }
+    } catch {
+      // Storage can be unavailable.
+    }
+  }
+
+  return EXAMPLES[0].query
+}
+
+function hasSharedProblem():
+  boolean {
+  return Boolean(
+    readSharedProblem(),
+  )
+}
+
+function buildProblemShareUrl(
+  problem: string,
+): string {
+  const url =
+    new URL(
+      window.location.href,
+    )
+
+  url.searchParams.delete(
+    'release',
+  )
+
+  url.searchParams.set(
+    SHARED_PROBLEM_QUERY_PARAM,
+    problem,
+  )
+
+  url.hash =
+    'problem-solver'
+
+  return url.toString()
+}
+
 function statusLabel(
   status: string,
 ): string {
@@ -183,7 +299,14 @@ export function HomepageProblemSolverPanel({
     query,
     setQuery,
   ] = useState<string>(
-    EXAMPLES[0].query,
+    readInitialProblem,
+  )
+
+  const [
+    sharedProblemLoaded,
+    setSharedProblemLoaded,
+  ] = useState(
+    hasSharedProblem,
   )
 
   const [
@@ -215,6 +338,31 @@ export function HomepageProblemSolverPanel({
     },
     [
       savedCases,
+    ],
+  )
+
+  useEffect(
+    () => {
+      try {
+        if (
+          query.trim().length >
+          0
+        ) {
+          window.localStorage.setItem(
+            SOLVER_DRAFT_KEY,
+            query,
+          )
+        } else {
+          window.localStorage.removeItem(
+            SOLVER_DRAFT_KEY,
+          )
+        }
+      } catch {
+        // Storage can be unavailable.
+      }
+    },
+    [
+      query,
     ],
   )
 
@@ -526,8 +674,180 @@ export function HomepageProblemSolverPanel({
     )
   }
 
+  async function copyShareLink(
+    shareUrl: string,
+  ) {
+    if (
+      navigator.clipboard &&
+      typeof navigator
+        .clipboard
+        .writeText ===
+        'function'
+    ) {
+      await navigator
+        .clipboard
+        .writeText(
+          shareUrl,
+        )
+
+      return
+    }
+
+    const textArea =
+      document.createElement(
+        'textarea',
+      )
+
+    textArea.value =
+      shareUrl
+
+    textArea.setAttribute(
+      'readonly',
+      '',
+    )
+
+    textArea.style.position =
+      'fixed'
+
+    textArea.style.opacity =
+      '0'
+
+    document.body.appendChild(
+      textArea,
+    )
+
+    textArea.select()
+
+    const copied =
+      document.execCommand(
+        'copy',
+      )
+
+    textArea.remove()
+
+    if (!copied) {
+      throw new Error(
+        'Browser copy command failed.',
+      )
+    }
+  }
+
+  async function shareCurrentProblem() {
+    const cleanProblem =
+      query.trim()
+
+    if (
+      cleanProblem.length ===
+      0
+    ) {
+      setActionMessage(
+        'Enter a problem before sharing.',
+      )
+      return
+    }
+
+    const shareUrl =
+      buildProblemShareUrl(
+        cleanProblem,
+      )
+
+    if (
+      shareUrl.length >
+      8000
+    ) {
+      setActionMessage(
+        'This problem is too long for a share link. Download the report instead.',
+      )
+      return
+    }
+
+    try {
+      if (
+        typeof navigator.share ===
+        'function'
+      ) {
+        await navigator.share({
+          title:
+            'ChemE Toolkit Engineering Problem',
+          text:
+            bestMatch
+              ? bestMatch.title +
+                ' engineering problem'
+              : 'ChemE Toolkit engineering problem',
+          url:
+            shareUrl,
+        })
+
+        setActionMessage(
+          'Problem shared.',
+        )
+        return
+      }
+
+      await copyShareLink(
+        shareUrl,
+      )
+
+      setActionMessage(
+        'Share link copied.',
+      )
+    } catch (
+      error
+    ) {
+      if (
+        error instanceof
+          DOMException &&
+        error.name ===
+          'AbortError'
+      ) {
+        return
+      }
+
+      try {
+        await copyShareLink(
+          shareUrl,
+        )
+
+        setActionMessage(
+          'Share link copied.',
+        )
+      } catch {
+        setActionMessage(
+          'Sharing failed. Download the report instead.',
+        )
+      }
+    }
+  }
+
   function clearProblem() {
     setQuery('')
+    setSharedProblemLoaded(
+      false,
+    )
+
+    try {
+      window.localStorage.removeItem(
+        SOLVER_DRAFT_KEY,
+      )
+
+      const url =
+        new URL(
+          window.location.href,
+        )
+
+      url.searchParams.delete(
+        SHARED_PROBLEM_QUERY_PARAM,
+      )
+
+      window.history.replaceState(
+        null,
+        '',
+        url.toString(),
+      )
+    } catch {
+      // URL or storage updates can be unavailable.
+    }
+
     setActionMessage(
       'Problem cleared.',
     )
@@ -704,11 +1024,31 @@ export function HomepageProblemSolverPanel({
                   event.target.value,
                 )
 
+                setSharedProblemLoaded(
+                  false,
+                )
+
                 setActionMessage(
                   '',
                 )
               }}
             />
+
+            {sharedProblemLoaded ? (
+              <div
+                className="homepage-problem-share-notice"
+                role="status"
+              >
+                <strong>
+                  Shared problem loaded
+                </strong>
+
+                <span>
+                  The equation and variables were restored
+                  from a ChemE Toolkit link.
+                </span>
+              </div>
+            ) : null}
 
             <div className="homepage-problem-solver-examples">
               <span>
@@ -1051,6 +1391,16 @@ export function HomepageProblemSolverPanel({
                   </div>
 
                   <div className="homepage-problem-result-actions">
+                    <button
+                      type="button"
+                      className="is-secondary"
+                      onClick={
+                        shareCurrentProblem
+                      }
+                    >
+                      Share case
+                    </button>
+
                     <button
                       type="button"
                       className="is-secondary"
