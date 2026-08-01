@@ -155,6 +155,68 @@ if (
   )
 }
 
+for (
+  const contract
+  of [
+    'function buildSolverReport()',
+    'async function copySolverReport()',
+    'function downloadSolverReport()',
+    'function clearProblem()',
+    'Copy report',
+    'Download .txt',
+    'Clear problem',
+    'homepage-problem-result-actions',
+    'homepage-problem-action-feedback',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage solver report action missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.homepage-problem-editor-actions',
+    '.homepage-problem-result-actions',
+    '.homepage-problem-action-feedback',
+  ]
+) {
+  if (
+    !styles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage solver report style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides copy download and clear result actions',
+    'styles report actions and feedback responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage solver report test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )

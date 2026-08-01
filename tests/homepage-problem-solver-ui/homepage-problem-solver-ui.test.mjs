@@ -137,3 +137,66 @@ test(
     }
   },
 )
+
+test(
+  'provides copy download and clear result actions',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'function buildSolverReport()',
+        'async function copySolverReport()',
+        'function downloadSolverReport()',
+        'function clearProblem()',
+        'navigator.clipboard',
+        'new Blob',
+        'Copy report',
+        'Download .txt',
+        'Clear problem',
+        'Engineering Solution Report',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing result action: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles report actions and feedback responsively',
+  async () => {
+    const source =
+      await readFile(
+        stylePath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.homepage-problem-editor-actions',
+        '.homepage-problem-result-actions',
+        'button.is-secondary',
+        'button.is-primary',
+        '.homepage-problem-action-feedback',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing result action style: ${contract}`,
+      )
+    }
+  },
+)
