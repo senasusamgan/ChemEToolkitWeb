@@ -11,6 +11,9 @@ import {
 import {
   GuidedProblemBuilder,
 } from './GuidedProblemBuilder'
+import {
+  SensitivitySweepPanel,
+} from './SensitivitySweepPanel'
 
 import '../styles/homepage-problem-solver.css'
 
@@ -338,6 +341,11 @@ export function HomepageProblemSolverPanel({
   const [
     isGuidedBuilderOpen,
     setIsGuidedBuilderOpen,
+  ] = useState(false)
+
+  const [
+    isSensitivitySweepOpen,
+    setIsSensitivitySweepOpen,
   ] = useState(false)
 
   const [
@@ -1203,6 +1211,35 @@ export function HomepageProblemSolverPanel({
           </div>
         </header>
 
+        <SensitivitySweepPanel
+          isOpen={
+            isSensitivitySweepOpen
+          }
+          baseQuery={
+            query
+          }
+          onClose={() =>
+            setIsSensitivitySweepOpen(
+              false,
+            )
+          }
+          onUseProblem={(
+            generatedProblem,
+          ) => {
+            setQuery(
+              generatedProblem,
+            )
+
+            setSharedProblemLoaded(
+              false,
+            )
+
+            setActionMessage(
+              'Sensitivity operating point loaded.',
+            )
+          }}
+        />
+
         <GuidedProblemBuilder
           isOpen={
             isGuidedBuilderOpen
@@ -1313,11 +1350,35 @@ export function HomepageProblemSolverPanel({
                 <button
                   type="button"
                   className="is-compare"
-                  onClick={() =>
+                  disabled={
+                    query.trim().length ===
+                    0
+                  }
+                  onClick={() => {
+                    setIsSensitivitySweepOpen(
+                      true,
+                    )
+
+                    setIsGuidedBuilderOpen(
+                      false,
+                    )
+                  }}
+                >
+                  Sensitivity sweep
+                </button>
+
+                <button
+                  type="button"
+                  className="is-compare"
+                  onClick={() => {
                     setIsGuidedBuilderOpen(
                       true,
                     )
-                  }
+
+                    setIsSensitivitySweepOpen(
+                      false,
+                    )
+                  }}
                 >
                   Guided input
                 </button>

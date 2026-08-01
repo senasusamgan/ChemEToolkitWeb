@@ -1,0 +1,492 @@
+.sensitivity-sweep-panel {
+  margin-top: 18px;
+  padding: 16px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.46);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(232, 247, 246, 0.8)
+    );
+  box-shadow:
+    0 16px 38px
+    rgba(11, 53, 86, 0.075);
+}
+
+.sensitivity-sweep-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.sensitivity-sweep-header
+> div {
+  display: grid;
+  gap: 5px;
+}
+
+.sensitivity-sweep-header
+span,
+.sensitivity-sweep-controls
+label > span,
+.sensitivity-sweep-summary
+span,
+.sensitivity-sweep-chart-header
+span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.5rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.sensitivity-sweep-header
+h3 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size:
+    clamp(
+      1.15rem,
+      2.4vw,
+      1.75rem
+    );
+}
+
+.sensitivity-sweep-header
+p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.58rem;
+  line-height: 1.5;
+}
+
+.sensitivity-sweep-header
+> button {
+  min-height: 35px;
+  padding: 0 11px;
+  border:
+    1px solid
+    rgba(187, 82, 65, 0.34);
+  border-radius: 8px;
+  color:
+    #914535;
+  background:
+    rgba(187, 82, 65, 0.05);
+  font: inherit;
+  font-size: 0.52rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.sensitivity-sweep-controls {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns:
+    minmax(135px, 1.2fr)
+    repeat(
+      3,
+      minmax(100px, 0.8fr)
+    )
+    auto;
+  gap: 7px;
+  align-items: end;
+}
+
+.sensitivity-sweep-controls
+label {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.sensitivity-sweep-controls
+select,
+.sensitivity-sweep-controls
+input {
+  width: 100%;
+  min-height: 39px;
+  padding: 0 9px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.38);
+  border-radius: 8px;
+  outline: 0;
+  color:
+    var(--ink, #0b3556);
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.56rem;
+  font-weight: 750;
+}
+
+.sensitivity-sweep-controls
+select:focus,
+.sensitivity-sweep-controls
+input:focus {
+  border-color:
+    var(--teal-dark, #007b78);
+  box-shadow:
+    0 0 0 3px
+    rgba(7, 156, 153, 0.1);
+}
+
+.sensitivity-sweep-controls
+> button {
+  min-height: 39px;
+  padding: 0 11px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.4);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font: inherit;
+  font-size: 0.52rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.sensitivity-sweep-summary {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+  gap: 7px;
+}
+
+.sensitivity-sweep-summary
+article {
+  min-width: 0;
+  padding: 9px;
+  display: grid;
+  gap: 4px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.76);
+  border-radius: 9px;
+  background:
+    rgba(255, 255, 255, 0.76);
+}
+
+.sensitivity-sweep-summary
+strong {
+  overflow-wrap: anywhere;
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.57rem;
+  line-height: 1.45;
+}
+
+.sensitivity-sweep-visual {
+  margin-top: 9px;
+  padding: 11px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.76);
+  border-radius: 10px;
+  background:
+    rgba(255, 255, 255, 0.78);
+}
+
+.sensitivity-sweep-chart-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sensitivity-sweep-chart-header
+> div {
+  display: grid;
+  gap: 4px;
+}
+
+.sensitivity-sweep-chart-header
+h4 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.85rem;
+}
+
+.sensitivity-sweep-chart {
+  margin-top: 8px;
+  overflow-x: auto;
+}
+
+.sensitivity-sweep-chart
+svg {
+  width: 100%;
+  min-width: 580px;
+  min-height: 260px;
+}
+
+.sensitivity-axis {
+  stroke:
+    rgba(11, 53, 86, 0.24);
+  stroke-width: 1.5;
+}
+
+.sensitivity-line {
+  fill: none;
+  stroke:
+    var(--teal-dark, #007b78);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sensitivity-point {
+  fill:
+    #ffffff;
+  stroke:
+    var(--teal-dark, #007b78);
+  stroke-width: 3;
+}
+
+.sensitivity-sweep-chart
+text {
+  fill:
+    var(--muted, #647a8e);
+  font-size: 11px;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+}
+
+.sensitivity-sweep-chart-empty,
+.sensitivity-sweep-empty {
+  min-height: 130px;
+  margin-top: 9px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 6px;
+  border:
+    1px dashed
+    rgba(217, 208, 189, 0.9);
+  border-radius: 9px;
+  text-align: center;
+}
+
+.sensitivity-sweep-chart-empty
+strong,
+.sensitivity-sweep-empty
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+}
+
+.sensitivity-sweep-chart-empty
+p,
+.sensitivity-sweep-empty
+p {
+  max-width: 450px;
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.54rem;
+  line-height: 1.5;
+}
+
+.sensitivity-sweep-table-wrap {
+  margin-top: 9px;
+  overflow-x: auto;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.8);
+  border-radius: 10px;
+  background:
+    rgba(255, 255, 255, 0.78);
+}
+
+.sensitivity-sweep-table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+}
+
+.sensitivity-sweep-table
+th,
+.sensitivity-sweep-table
+td {
+  padding: 8px 9px;
+  border-bottom:
+    1px solid
+    rgba(217, 208, 189, 0.68);
+  color:
+    var(--ink, #0b3556);
+  text-align: left;
+  font-size: 0.51rem;
+  line-height: 1.4;
+}
+
+.sensitivity-sweep-table
+th {
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sensitivity-sweep-table
+tbody tr:last-child
+td {
+  border-bottom: 0;
+}
+
+.sensitivity-sweep-table
+tbody tr:hover {
+  background:
+    rgba(7, 156, 153, 0.04);
+}
+
+.sensitivity-sweep-feedback {
+  margin: 9px 0 0;
+  padding: 8px 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.27);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.05);
+  font-size: 0.52rem;
+  font-weight: 800;
+}
+
+.sensitivity-sweep-actions {
+  margin-top: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sensitivity-sweep-actions
+> div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sensitivity-sweep-actions
+button {
+  min-height: 36px;
+  padding: 0 11px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.4);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font: inherit;
+  font-size: 0.52rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.sensitivity-sweep-actions
+button:last-child {
+  color: #ffffff;
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.sensitivity-sweep-actions
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.sensitivity-sweep-actions
+> span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.49rem;
+  text-align: right;
+}
+
+@media (max-width: 1000px) {
+  .sensitivity-sweep-controls {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .sensitivity-sweep-summary {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+@media (max-width: 700px) {
+  .sensitivity-sweep-header,
+  .sensitivity-sweep-chart-header,
+  .sensitivity-sweep-actions {
+    display: grid;
+  }
+
+  .sensitivity-sweep-header
+  > button {
+    width: 100%;
+  }
+
+  .sensitivity-sweep-controls,
+  .sensitivity-sweep-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .sensitivity-sweep-actions
+  > div {
+    display: grid;
+  }
+
+  .sensitivity-sweep-actions
+  button {
+    width: 100%;
+  }
+
+  .sensitivity-sweep-actions
+  > span {
+    text-align: left;
+  }
+}
