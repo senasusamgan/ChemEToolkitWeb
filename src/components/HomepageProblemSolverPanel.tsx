@@ -71,6 +71,11 @@ export function HomepageProblemSolverPanel({
     EXAMPLES[0].query,
   )
 
+  const [
+    actionMessage,
+    setActionMessage,
+  ] = useState('')
+
   const matches =
     useMemo(
       () =>
@@ -87,6 +92,304 @@ export function HomepageProblemSolverPanel({
 
   const bestMatch =
     matches[0]
+
+  function buildSolverReport(): string {
+    if (!bestMatch) {
+      return [
+        'ChemE Toolkit Engineering Solution Report',
+        '',
+        'Problem',
+        query || 'No problem entered.',
+        '',
+        'No calculator match is currently available.',
+      ].join('\n')
+    }
+
+    const assignmentLines =
+      bestMatch
+        .equationAssignments
+        .map(
+          (assignment) =>
+            assignment.symbol +
+            ' = ' +
+            assignment.value +
+            (
+              assignment.unit
+                ? ' ' +
+                  assignment.unit
+                : ''
+            ) +
+            ' — ' +
+            assignment.canonicalName,
+        )
+        .join('\n')
+
+    const solutionLines =
+      bestMatch
+        .solutionPlan
+        .map(
+          (step, index) =>
+            String(index + 1) +
+            '. ' +
+            step,
+        )
+        .join('\n')
+
+    const assumptionLines =
+      bestMatch
+        .assumptions
+        .map(
+          (assumption) =>
+            '- ' +
+            assumption,
+        )
+        .join('\n')
+
+    const verificationLines =
+      bestMatch
+        .verificationChecklist
+        .map(
+          (check) =>
+            '- ' +
+            check,
+        )
+        .join('\n')
+
+    const missingInputs =
+      bestMatch
+        .equationContext
+        .missingVariableNames
+        .length > 0
+        ? bestMatch
+            .equationContext
+            .missingVariableNames
+            .join(', ')
+        : 'None'
+
+    const quickResult =
+      bestMatch.quickSolution
+        ? bestMatch
+            .quickSolution
+            .resultLabel +
+          ' = ' +
+          bestMatch
+            .quickSolution
+            .resultValue
+        : 'Quick Solve result is not available.'
+
+    return [
+      'ChemE Toolkit Engineering Solution Report',
+      '',
+      'PROBLEM',
+      query,
+      '',
+      'CALCULATOR',
+      bestMatch.title +
+        ' — ' +
+        bestMatch.category,
+      '',
+      'RECOGNIZED MODEL',
+      bestMatch
+        .equationIntent
+        .equationLabel ??
+        bestMatch
+          .equationHint ??
+        'Engineering calculator model',
+      bestMatch
+        .equationIntent
+        .equation ??
+        bestMatch
+          .equationHint ??
+        '',
+      '',
+      'REQUESTED UNKNOWN',
+      bestMatch
+        .equationIntent
+        .targetName ??
+        'Not explicitly identified',
+      '',
+      'READINESS',
+      String(
+        bestMatch
+          .equationContext
+          .readinessPercent,
+      ) +
+        '% — ' +
+        statusLabel(
+          bestMatch
+            .equationContext
+            .status,
+        ),
+      '',
+      'PARSED INPUTS',
+      assignmentLines ||
+        'No symbolic assignments detected.',
+      '',
+      'MISSING INPUTS',
+      missingInputs,
+      '',
+      'QUICK SOLVE',
+      quickResult,
+      '',
+      'SOLUTION BLUEPRINT',
+      solutionLines ||
+        'No solution blueprint available.',
+      '',
+      'ENGINEERING ASSUMPTIONS',
+      assumptionLines ||
+        'Review the calculator documentation.',
+      '',
+      'VERIFICATION CHECKLIST',
+      verificationLines ||
+        'Verify units and physical plausibility.',
+      '',
+      'ENGINEERING SUMMARY',
+      bestMatch
+        .engineeringReport
+        .summary,
+      '',
+      'Generated locally by ChemE Toolkit.',
+    ].join('\n')
+  }
+
+  async function copySolverReport() {
+    const report =
+      buildSolverReport()
+
+    try {
+      if (
+        navigator.clipboard &&
+        typeof navigator
+          .clipboard
+          .writeText ===
+          'function'
+      ) {
+        await navigator
+          .clipboard
+          .writeText(
+            report,
+          )
+      } else {
+        const textArea =
+          document.createElement(
+            'textarea',
+          )
+
+        textArea.value =
+          report
+
+        textArea.setAttribute(
+          'readonly',
+          '',
+        )
+
+        textArea.style.position =
+          'fixed'
+
+        textArea.style.opacity =
+          '0'
+
+        document.body.appendChild(
+          textArea,
+        )
+
+        textArea.select()
+
+        const copied =
+          document.execCommand(
+            'copy',
+          )
+
+        textArea.remove()
+
+        if (!copied) {
+          throw new Error(
+            'Browser copy command failed.',
+          )
+        }
+      }
+
+      setActionMessage(
+        'Engineering report copied.',
+      )
+    } catch {
+      setActionMessage(
+        'Copy failed. Use Download .txt instead.',
+      )
+    }
+  }
+
+  function downloadSolverReport() {
+    if (!bestMatch) {
+      return
+    }
+
+    const report =
+      buildSolverReport()
+
+    const blob =
+      new Blob(
+        [
+          report,
+        ],
+        {
+          type:
+            'text/plain;charset=utf-8',
+        },
+      )
+
+    const objectUrl =
+      URL.createObjectURL(
+        blob,
+      )
+
+    const link =
+      document.createElement(
+        'a',
+      )
+
+    const fileName =
+      (
+        'cheme-toolkit-' +
+        bestMatch.calculatorId +
+        '-solution.txt'
+      ).replace(
+        /[^a-z0-9._-]/gi,
+        '-',
+      )
+
+    link.href =
+      objectUrl
+
+    link.download =
+      fileName
+
+    document.body.appendChild(
+      link,
+    )
+
+    link.click()
+    link.remove()
+
+    window.setTimeout(
+      () =>
+        URL.revokeObjectURL(
+          objectUrl,
+        ),
+      0,
+    )
+
+    setActionMessage(
+      'Engineering report downloaded.',
+    )
+  }
+
+  function clearProblem() {
+    setQuery('')
+    setActionMessage(
+      'Problem cleared.',
+    )
+  }
 
   return (
     <section
@@ -135,11 +438,15 @@ export function HomepageProblemSolverPanel({
               value={query}
               rows={7}
               spellCheck={false}
-              onChange={(event) =>
+              onChange={(event) => {
                 setQuery(
                   event.target.value,
                 )
-              }
+
+                setActionMessage(
+                  '',
+                )
+              }}
             />
 
             <div className="homepage-problem-solver-examples">
@@ -176,6 +483,21 @@ export function HomepageProblemSolverPanel({
               <span>
                 Your problem is processed inside this
                 browser.
+              </span>
+            </div>
+
+            <div className="homepage-problem-editor-actions">
+              <button
+                type="button"
+                onClick={
+                  clearProblem
+                }
+              >
+                Clear problem
+              </button>
+
+              <span>
+                Reset the editor and enter a new case.
               </span>
             </div>
           </div>
@@ -467,18 +789,50 @@ export function HomepageProblemSolverPanel({
                     </span>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onOpenCalculator(
-                        bestMatch
-                          .calculatorId,
-                      )
-                    }
-                  >
-                    Open calculator →
-                  </button>
+                  <div className="homepage-problem-result-actions">
+                    <button
+                      type="button"
+                      className="is-secondary"
+                      onClick={
+                        copySolverReport
+                      }
+                    >
+                      Copy report
+                    </button>
+
+                    <button
+                      type="button"
+                      className="is-secondary"
+                      onClick={
+                        downloadSolverReport
+                      }
+                    >
+                      Download .txt
+                    </button>
+
+                    <button
+                      type="button"
+                      className="is-primary"
+                      onClick={() =>
+                        onOpenCalculator(
+                          bestMatch
+                            .calculatorId,
+                        )
+                      }
+                    >
+                      Open calculator →
+                    </button>
+                  </div>
                 </footer>
+
+                {actionMessage ? (
+                  <p
+                    className="homepage-problem-action-feedback"
+                    role="status"
+                  >
+                    {actionMessage}
+                  </p>
+                ) : null}
 
                 {matches.length > 1 ? (
                   <div className="homepage-problem-alternatives">
