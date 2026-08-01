@@ -414,6 +414,103 @@ for (
   }
 }
 
+const guidedBuilder =
+  await readFile(
+    'src/components/GuidedProblemBuilder.tsx',
+    'utf8',
+  )
+
+const guidedBuilderStyles =
+  await readFile(
+    'src/styles/guided-problem-builder.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Guided input builder',
+    'BUILDER_PRESETS',
+    'Ideal gas law',
+    'Reynolds number',
+    'Flow continuity',
+    'Darcy–Weisbach pressure drop',
+    'Input completion',
+    'Generated problem',
+    'Fill sample values',
+    'Use in solver →',
+  ]
+) {
+  if (
+    !guidedBuilder.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage guided builder contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'GuidedProblemBuilder',
+    'isGuidedBuilderOpen',
+    'Guided input',
+    'Guided engineering problem loaded.',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage guided integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.guided-problem-builder',
+    '.guided-problem-builder-layout',
+    '.guided-problem-variable-grid',
+    '.guided-problem-actions',
+  ]
+) {
+  if (
+    !guidedBuilderStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage guided builder style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides a guided engineering input builder',
+    'integrates guided inputs with the homepage solver',
+    'styles the guided builder responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage guided builder test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
