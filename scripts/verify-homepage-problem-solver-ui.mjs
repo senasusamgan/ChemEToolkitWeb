@@ -1009,6 +1009,104 @@ for (
   }
 }
 
+const designEnvelope =
+  await readFile(
+    'src/components/DesignEnvelopePanel.tsx',
+    'utf8',
+  )
+
+const designEnvelopeStyles =
+  await readFile(
+    'src/styles/design-envelope-panel.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Design envelope explorer',
+    'parseNumericAssignments',
+    'replaceNumericAssignment',
+    'createRange',
+    'rankProblemSolvers',
+    'Operating-window heat map',
+    'Minimum output',
+    'Maximum output',
+    'Use selected case',
+    'Export envelope CSV',
+  ]
+) {
+  if (
+    !designEnvelope.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Design Envelope contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'DesignEnvelopePanel',
+    'baseQuery={',
+    'Design-envelope operating point loaded.',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Design Envelope integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.design-envelope-panel',
+    '.design-envelope-controls',
+    '.design-envelope-summary',
+    '.design-envelope-grid',
+    '.design-envelope-actions',
+  ]
+) {
+  if (
+    !designEnvelopeStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Design Envelope style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides a two-variable design envelope explorer',
+    'supports 25 to 81 design-envelope operating points',
+    'integrates the Design Envelope with the main Solver',
+    'styles the Design Envelope responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Design Envelope test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )

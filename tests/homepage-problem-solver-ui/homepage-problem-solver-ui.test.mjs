@@ -1034,3 +1034,125 @@ test(
     }
   },
 )
+
+test(
+  'provides a two-variable design envelope explorer',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/DesignEnvelopePanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Design envelope explorer',
+        'parseNumericAssignments',
+        'replaceNumericAssignment',
+        'createRange',
+        'rankProblemSolvers',
+        'Operating-window heat map',
+        'Minimum output',
+        'Maximum output',
+        'Use selected case',
+        'Export envelope CSV',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Design Envelope contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'supports 25 to 81 design-envelope operating points',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/DesignEnvelopePanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '<option value="5">',
+        '<option value="7">',
+        '<option value="9">',
+        '5 × 5',
+        '7 × 7',
+        '9 × 9',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Design Envelope resolution: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates the Design Envelope with the main Solver',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'DesignEnvelopePanel',
+        'baseQuery={',
+        'Design-envelope operating point loaded.',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Design Envelope integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles the Design Envelope responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/design-envelope-panel.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.design-envelope-panel',
+        '.design-envelope-controls',
+        '.design-envelope-summary',
+        '.design-envelope-grid',
+        '.design-envelope-point-details',
+        '.design-envelope-actions',
+        '@media (max-width: 750px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Design Envelope style: ${contract}`,
+      )
+    }
+  },
+)
