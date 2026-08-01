@@ -812,6 +812,106 @@ for (
   }
 }
 
+const unitHarmonizer =
+  await readFile(
+    'src/components/UnitHarmonizerPanel.tsx',
+    'utf8',
+  )
+
+const unitHarmonizerStyles =
+  await readFile(
+    'src/styles/unit-harmonizer-panel.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Unit harmonizer',
+    'UNIT_DEFINITIONS',
+    'normalizeUnitToken',
+    'findUnitDefinition',
+    'harmonizeQuery',
+    'Converted to SI',
+    'Already SI',
+    'Unit review',
+    'SI-normalized problem',
+    'Copy normalized problem',
+    'Normalize and solve →',
+  ]
+) {
+  if (
+    !unitHarmonizer.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Unit Harmonizer contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'UnitHarmonizerPanel',
+    'isUnitHarmonizerOpen',
+    'Unit harmonizer',
+    'SI-normalized problem loaded.',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Unit Harmonizer integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.unit-harmonizer-panel',
+    '.unit-harmonizer-summary',
+    '.unit-harmonizer-table',
+    '.unit-harmonizer-preview',
+    '.unit-harmonizer-actions',
+  ]
+) {
+  if (
+    !unitHarmonizerStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Unit Harmonizer style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides automatic engineering unit harmonization',
+    'supports common chemical engineering unit families',
+    'integrates Unit Harmonizer with the homepage solver',
+    'styles Unit Harmonizer responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Unit Harmonizer test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
