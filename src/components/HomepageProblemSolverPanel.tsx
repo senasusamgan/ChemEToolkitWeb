@@ -17,6 +17,9 @@ import {
 import {
   EngineeringValidationGate,
 } from './EngineeringValidationGate'
+import {
+  UncertaintyAnalysisPanel,
+} from './UncertaintyAnalysisPanel'
 
 import '../styles/homepage-problem-solver.css'
 
@@ -349,6 +352,11 @@ export function HomepageProblemSolverPanel({
   const [
     isSensitivitySweepOpen,
     setIsSensitivitySweepOpen,
+  ] = useState(false)
+
+  const [
+    isUncertaintyAnalysisOpen,
+    setIsUncertaintyAnalysisOpen,
   ] = useState(false)
 
   const [
@@ -1214,6 +1222,35 @@ export function HomepageProblemSolverPanel({
           </div>
         </header>
 
+        <UncertaintyAnalysisPanel
+          isOpen={
+            isUncertaintyAnalysisOpen
+          }
+          baseQuery={
+            query
+          }
+          onClose={() =>
+            setIsUncertaintyAnalysisOpen(
+              false,
+            )
+          }
+          onApplyProblem={(
+            generatedProblem,
+          ) => {
+            setQuery(
+              generatedProblem,
+            )
+
+            setSharedProblemLoaded(
+              false,
+            )
+
+            setActionMessage(
+              'Uncertainty operating case loaded.',
+            )
+          }}
+        />
+
         <SensitivitySweepPanel
           isOpen={
             isSensitivitySweepOpen
@@ -1358,8 +1395,40 @@ export function HomepageProblemSolverPanel({
                     0
                   }
                   onClick={() => {
+                    setIsUncertaintyAnalysisOpen(
+                      true,
+                    )
+
+                    setIsSensitivitySweepOpen(
+                      false,
+                    )
+
+                    setIsGuidedBuilderOpen(
+                      false,
+                    )
+
+                    setIsComparisonOpen(
+                      false,
+                    )
+                  }}
+                >
+                  Uncertainty analysis
+                </button>
+
+                <button
+                  type="button"
+                  className="is-compare"
+                  disabled={
+                    query.trim().length ===
+                    0
+                  }
+                  onClick={() => {
                     setIsSensitivitySweepOpen(
                       true,
+                    )
+
+                    setIsUncertaintyAnalysisOpen(
+                      false,
                     )
 
                     setIsGuidedBuilderOpen(
@@ -1379,6 +1448,10 @@ export function HomepageProblemSolverPanel({
                     )
 
                     setIsSensitivitySweepOpen(
+                      false,
+                    )
+
+                    setIsUncertaintyAnalysisOpen(
                       false,
                     )
                   }}

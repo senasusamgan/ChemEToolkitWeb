@@ -686,3 +686,100 @@ test(
     }
   },
 )
+
+test(
+  'provides deterministic Monte Carlo uncertainty analysis',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/UncertaintyAnalysisPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Monte Carlo uncertainty',
+        'createSeededRandom',
+        'createNormalRandom',
+        'parseNumericAssignments',
+        'rankProblemSolvers',
+        'Simulated mean',
+        'Standard deviation',
+        '90% interval',
+        'Coefficient of variation',
+        'Output distribution',
+        'Export samples CSV',
+        'Use P5 case',
+        'Use P95 case',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing uncertainty contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates uncertainty analysis with the homepage solver',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'UncertaintyAnalysisPanel',
+        'isUncertaintyAnalysisOpen',
+        'Uncertainty analysis',
+        'Uncertainty operating case loaded.',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing uncertainty integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles uncertainty controls and histogram responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/uncertainty-analysis-panel.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.uncertainty-analysis-panel',
+        '.uncertainty-analysis-controls',
+        '.uncertainty-analysis-summary',
+        '.uncertainty-histogram',
+        '.uncertainty-bar',
+        '.uncertainty-percentile-grid',
+        '.uncertainty-analysis-actions',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing uncertainty style: ${contract}`,
+      )
+    }
+  },
+)

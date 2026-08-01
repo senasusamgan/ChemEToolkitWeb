@@ -1,0 +1,507 @@
+.uncertainty-analysis-panel {
+  margin-top: 18px;
+  padding: 16px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.46);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(233, 246, 249, 0.8)
+    );
+  box-shadow:
+    0 16px 38px
+    rgba(11, 53, 86, 0.075);
+}
+
+.uncertainty-analysis-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.uncertainty-analysis-header
+> div {
+  display: grid;
+  gap: 5px;
+}
+
+.uncertainty-analysis-header
+span,
+.uncertainty-analysis-controls
+label > span,
+.uncertainty-analysis-summary
+span,
+.uncertainty-analysis-interpretation
+span,
+.uncertainty-histogram-section
+header span,
+.uncertainty-percentile-grid
+span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.5rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.uncertainty-analysis-header
+h3 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size:
+    clamp(
+      1.15rem,
+      2.4vw,
+      1.75rem
+    );
+}
+
+.uncertainty-analysis-header
+p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.58rem;
+  line-height: 1.5;
+}
+
+.uncertainty-analysis-header
+> button {
+  min-height: 35px;
+  padding: 0 11px;
+  border:
+    1px solid
+    rgba(187, 82, 65, 0.34);
+  border-radius: 8px;
+  color:
+    #914535;
+  background:
+    rgba(187, 82, 65, 0.05);
+  font: inherit;
+  font-size: 0.52rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.uncertainty-analysis-controls {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns:
+    minmax(150px, 1.35fr)
+    repeat(
+      4,
+      minmax(100px, 0.8fr)
+    );
+  gap: 7px;
+}
+
+.uncertainty-analysis-controls
+label {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 5px;
+}
+
+.uncertainty-analysis-controls
+select,
+.uncertainty-analysis-controls
+input {
+  width: 100%;
+  min-height: 39px;
+  padding: 0 9px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.38);
+  border-radius: 8px;
+  outline: 0;
+  color:
+    var(--ink, #0b3556);
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.55rem;
+  font-weight: 750;
+}
+
+.uncertainty-analysis-controls
+select:focus,
+.uncertainty-analysis-controls
+input:focus {
+  border-color:
+    var(--teal-dark, #007b78);
+  box-shadow:
+    0 0 0 3px
+    rgba(7, 156, 153, 0.1);
+}
+
+.uncertainty-percent-input {
+  display: flex;
+  align-items: stretch;
+}
+
+.uncertainty-percent-input
+input {
+  border-radius:
+    8px 0 0 8px;
+}
+
+.uncertainty-percent-input
+> span {
+  min-width: 38px;
+  display: grid;
+  place-items: center;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.38);
+  border-left: 0;
+  border-radius:
+    0 8px 8px 0;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.06);
+  font-size: 0.55rem;
+  font-weight: 900;
+}
+
+.uncertainty-analysis-summary {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+  gap: 7px;
+}
+
+.uncertainty-analysis-summary
+article,
+.uncertainty-percentile-grid
+article {
+  min-width: 0;
+  padding: 9px;
+  display: grid;
+  gap: 4px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.76);
+  border-radius: 9px;
+  background:
+    rgba(255, 255, 255, 0.78);
+}
+
+.uncertainty-analysis-summary
+strong,
+.uncertainty-percentile-grid
+strong {
+  overflow-wrap: anywhere;
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.58rem;
+  line-height: 1.45;
+}
+
+.uncertainty-analysis-interpretation {
+  margin-top: 9px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.28);
+  border-radius: 9px;
+  background:
+    rgba(7, 156, 153, 0.05);
+}
+
+.uncertainty-analysis-interpretation
+> div {
+  display: grid;
+  gap: 4px;
+}
+
+.uncertainty-analysis-interpretation
+h4 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.8rem;
+}
+
+.uncertainty-analysis-interpretation
+p {
+  max-width: 620px;
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.53rem;
+  line-height: 1.5;
+}
+
+.uncertainty-histogram-section {
+  margin-top: 9px;
+  padding: 11px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.76);
+  border-radius: 10px;
+  background:
+    rgba(255, 255, 255, 0.8);
+}
+
+.uncertainty-histogram-section
+header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.uncertainty-histogram-section
+header > div {
+  display: grid;
+  gap: 4px;
+}
+
+.uncertainty-histogram-section
+h4 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.85rem;
+}
+
+.uncertainty-histogram {
+  margin-top: 8px;
+  overflow-x: auto;
+}
+
+.uncertainty-histogram
+svg {
+  width: 100%;
+  min-width: 620px;
+  min-height: 280px;
+}
+
+.uncertainty-axis {
+  stroke:
+    rgba(11, 53, 86, 0.24);
+  stroke-width: 1.5;
+}
+
+.uncertainty-bar {
+  fill:
+    rgba(7, 156, 153, 0.68);
+  stroke:
+    var(--teal-dark, #007b78);
+  stroke-width: 1;
+}
+
+.uncertainty-histogram
+text {
+  fill:
+    var(--muted, #647a8e);
+  font-size: 11px;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+}
+
+.uncertainty-percentile-grid {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      5,
+      minmax(0, 1fr)
+    );
+  gap: 6px;
+}
+
+.uncertainty-analysis-empty {
+  min-height: 140px;
+  margin-top: 10px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 6px;
+  border:
+    1px dashed
+    rgba(217, 208, 189, 0.9);
+  border-radius: 9px;
+  text-align: center;
+}
+
+.uncertainty-analysis-empty
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+}
+
+.uncertainty-analysis-empty
+p {
+  max-width: 470px;
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.54rem;
+  line-height: 1.5;
+}
+
+.uncertainty-analysis-feedback {
+  margin: 9px 0 0;
+  padding: 8px 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.27);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.05);
+  font-size: 0.52rem;
+  font-weight: 800;
+}
+
+.uncertainty-analysis-actions {
+  margin-top: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.uncertainty-analysis-actions
+> div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.uncertainty-analysis-actions
+button {
+  min-height: 36px;
+  padding: 0 11px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.4);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font: inherit;
+  font-size: 0.52rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.uncertainty-analysis-actions
+button:last-child {
+  color: #ffffff;
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.uncertainty-analysis-actions
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.uncertainty-analysis-actions
+> span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.49rem;
+  text-align: right;
+}
+
+@media (max-width: 1000px) {
+  .uncertainty-analysis-controls {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .uncertainty-analysis-summary {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .uncertainty-percentile-grid {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+@media (max-width: 700px) {
+  .uncertainty-analysis-header,
+  .uncertainty-analysis-interpretation,
+  .uncertainty-histogram-section
+  header,
+  .uncertainty-analysis-actions {
+    display: grid;
+  }
+
+  .uncertainty-analysis-header
+  > button {
+    width: 100%;
+  }
+
+  .uncertainty-analysis-controls,
+  .uncertainty-analysis-summary,
+  .uncertainty-percentile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uncertainty-analysis-actions
+  > div {
+    display: grid;
+  }
+
+  .uncertainty-analysis-actions
+  button {
+    width: 100%;
+  }
+
+  .uncertainty-analysis-actions
+  > span {
+    text-align: left;
+  }
+}
