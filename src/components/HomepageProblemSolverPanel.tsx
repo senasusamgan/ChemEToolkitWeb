@@ -24,6 +24,9 @@ import {
   CalculationTracePanel,
 } from './CalculationTracePanel'
 import {
+  AssumptionReviewPanel,
+} from './AssumptionReviewPanel'
+import {
   UncertaintyAnalysisPanel,
 } from './UncertaintyAnalysisPanel'
 import {
@@ -1953,6 +1956,52 @@ export function HomepageProblemSolverPanel({
                     </ol>
                   </div>
                 ) : null}
+
+                <AssumptionReviewPanel
+                  baseQuery={
+                    query
+                  }
+                  calculatorTitle={
+                    bestMatch.title
+                  }
+                  equationLabel={
+                    bestMatch
+                      .equationIntent
+                      .equationLabel ??
+                    bestMatch
+                      .equationHint ??
+                    bestMatch.title
+                  }
+                  equation={
+                    bestMatch
+                      .equationIntent
+                      .equation ??
+                    bestMatch
+                      .equationHint ??
+                    bestMatch
+                      .quickSolution
+                      ?.equation ??
+                    ''
+                  }
+                  targetName={
+                    bestMatch
+                      .equationIntent
+                      .targetName ??
+                    bestMatch
+                      .equationContext
+                      .targetName ??
+                    null
+                  }
+                  assignments={
+                    bestMatch
+                      .equationAssignments
+                  }
+                  quickSolution={
+                    bestMatch
+                      .quickSolution ??
+                    null
+                  }
+                />
 
                 <CalculationTracePanel
                   calculatorTitle={
