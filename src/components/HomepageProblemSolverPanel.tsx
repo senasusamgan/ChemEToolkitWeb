@@ -20,6 +20,9 @@ import {
 import {
   UncertaintyAnalysisPanel,
 } from './UncertaintyAnalysisPanel'
+import {
+  UnitHarmonizerPanel,
+} from './UnitHarmonizerPanel'
 
 import '../styles/homepage-problem-solver.css'
 
@@ -357,6 +360,11 @@ export function HomepageProblemSolverPanel({
   const [
     isUncertaintyAnalysisOpen,
     setIsUncertaintyAnalysisOpen,
+  ] = useState(false)
+
+  const [
+    isUnitHarmonizerOpen,
+    setIsUnitHarmonizerOpen,
   ] = useState(false)
 
   const [
@@ -1222,6 +1230,35 @@ export function HomepageProblemSolverPanel({
           </div>
         </header>
 
+        <UnitHarmonizerPanel
+          isOpen={
+            isUnitHarmonizerOpen
+          }
+          baseQuery={
+            query
+          }
+          onClose={() =>
+            setIsUnitHarmonizerOpen(
+              false,
+            )
+          }
+          onApplyProblem={(
+            normalizedProblem,
+          ) => {
+            setQuery(
+              normalizedProblem,
+            )
+
+            setSharedProblemLoaded(
+              false,
+            )
+
+            setActionMessage(
+              'SI-normalized problem loaded.',
+            )
+          }}
+        />
+
         <UncertaintyAnalysisPanel
           isOpen={
             isUncertaintyAnalysisOpen
@@ -1395,8 +1432,44 @@ export function HomepageProblemSolverPanel({
                     0
                   }
                   onClick={() => {
+                    setIsUnitHarmonizerOpen(
+                      true,
+                    )
+
+                    setIsUncertaintyAnalysisOpen(
+                      false,
+                    )
+
+                    setIsSensitivitySweepOpen(
+                      false,
+                    )
+
+                    setIsGuidedBuilderOpen(
+                      false,
+                    )
+
+                    setIsComparisonOpen(
+                      false,
+                    )
+                  }}
+                >
+                  Unit harmonizer
+                </button>
+
+                <button
+                  type="button"
+                  className="is-compare"
+                  disabled={
+                    query.trim().length ===
+                    0
+                  }
+                  onClick={() => {
                     setIsUncertaintyAnalysisOpen(
                       true,
+                    )
+
+                    setIsUnitHarmonizerOpen(
+                      false,
                     )
 
                     setIsSensitivitySweepOpen(
@@ -1427,6 +1500,10 @@ export function HomepageProblemSolverPanel({
                       true,
                     )
 
+                    setIsUnitHarmonizerOpen(
+                      false,
+                    )
+
                     setIsUncertaintyAnalysisOpen(
                       false,
                     )
@@ -1445,6 +1522,10 @@ export function HomepageProblemSolverPanel({
                   onClick={() => {
                     setIsGuidedBuilderOpen(
                       true,
+                    )
+
+                    setIsUnitHarmonizerOpen(
+                      false,
                     )
 
                     setIsSensitivitySweepOpen(
@@ -1466,9 +1547,25 @@ export function HomepageProblemSolverPanel({
                     query.trim().length ===
                     0
                   }
-                  onClick={
-                    openScenarioComparison
-                  }
+                  onClick={() => {
+                    setIsUnitHarmonizerOpen(
+                      false,
+                    )
+
+                    setIsUncertaintyAnalysisOpen(
+                      false,
+                    )
+
+                    setIsSensitivitySweepOpen(
+                      false,
+                    )
+
+                    setIsGuidedBuilderOpen(
+                      false,
+                    )
+
+                    openScenarioComparison()
+                  }}
                 >
                   Compare scenarios
                 </button>

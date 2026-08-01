@@ -783,3 +783,132 @@ test(
     }
   },
 )
+
+test(
+  'provides automatic engineering unit harmonization',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/UnitHarmonizerPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Unit harmonizer',
+        'UNIT_DEFINITIONS',
+        'normalizeUnitToken',
+        'findUnitDefinition',
+        'harmonizeQuery',
+        'Converted to SI',
+        'Already SI',
+        'Unit review',
+        'SI-normalized problem',
+        'Copy normalized problem',
+        'Normalize and solve →',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Unit Harmonizer contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'supports common chemical engineering unit families',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/UnitHarmonizerPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        "'Pressure'",
+        "'Temperature'",
+        "'Volumetric flow'",
+        "'Mass flow'",
+        "'Molar flow'",
+        "'Density'",
+        "'Dynamic viscosity'",
+        "'Energy'",
+        "'Power'",
+        "'Force'",
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing unit family: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates Unit Harmonizer with the homepage solver',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'UnitHarmonizerPanel',
+        'isUnitHarmonizerOpen',
+        'Unit harmonizer',
+        'SI-normalized problem loaded.',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Unit Harmonizer integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles Unit Harmonizer responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/unit-harmonizer-panel.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.unit-harmonizer-panel',
+        '.unit-harmonizer-summary',
+        '.unit-harmonizer-table',
+        '.unit-harmonizer-preview',
+        '.unit-harmonizer-warning',
+        '.unit-harmonizer-reference',
+        '.unit-harmonizer-actions',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Unit Harmonizer style: ${contract}`,
+      )
+    }
+  },
+)
