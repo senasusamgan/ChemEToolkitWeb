@@ -1,0 +1,612 @@
+.target-operating-point-panel {
+  margin-top: 18px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.42);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(235, 247, 243, 0.8)
+    );
+  box-shadow:
+    0 14px 34px
+    rgba(11, 53, 86, 0.065);
+}
+
+.target-operating-point-launcher {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.target-operating-point-launcher
+> div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.target-operating-point-launcher
+> div:first-child > span,
+.target-operating-point-controls
+label > span,
+.target-operating-point-summary
+span,
+.target-operating-point-best
+> div:first-child > span,
+.target-operating-point-candidates
+header span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.5rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.target-operating-point-launcher
+h3 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size:
+    clamp(
+      1.05rem,
+      2.2vw,
+      1.55rem
+    );
+}
+
+.target-operating-point-launcher
+p {
+  max-width: 740px;
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.55rem;
+  line-height: 1.5;
+}
+
+.target-operating-point-launcher-actions {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+.target-operating-point-launcher-actions
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.51rem;
+}
+
+.target-operating-point-launcher-actions
+button {
+  min-height: 36px;
+  padding: 0 12px;
+  border:
+    1px solid
+    var(--teal-dark, #007b78);
+  border-radius: 8px;
+  color: #ffffff;
+  background:
+    var(--teal-dark, #007b78);
+  font: inherit;
+  font-size: 0.53rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.target-operating-point-launcher-actions
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.target-operating-point-content {
+  padding:
+    0 16px 16px;
+}
+
+.target-operating-point-controls {
+  display: grid;
+  grid-template-columns:
+    minmax(145px, 1.2fr)
+    repeat(
+      5,
+      minmax(95px, 0.75fr)
+    );
+  gap: 7px;
+}
+
+.target-operating-point-controls
+label {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.target-operating-point-controls
+select,
+.target-operating-point-controls
+input {
+  width: 100%;
+  min-height: 39px;
+  padding: 0 9px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.38);
+  border-radius: 8px;
+  outline: 0;
+  color:
+    var(--ink, #0b3556);
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.54rem;
+  font-weight: 750;
+}
+
+.target-operating-point-controls
+select:focus,
+.target-operating-point-controls
+input:focus {
+  border-color:
+    var(--teal-dark, #007b78);
+  box-shadow:
+    0 0 0 3px
+    rgba(7, 156, 153, 0.1);
+}
+
+.target-operating-point-percent {
+  display: flex;
+  align-items: stretch;
+}
+
+.target-operating-point-percent
+input {
+  border-radius:
+    8px 0 0 8px;
+}
+
+.target-operating-point-percent
+> span {
+  min-width: 36px;
+  display: grid;
+  place-items: center;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.38);
+  border-left: 0;
+  border-radius:
+    0 8px 8px 0;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.06);
+  font-size: 0.52rem;
+  font-weight: 900;
+}
+
+.target-operating-point-tools {
+  margin-top: 7px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.target-operating-point-tools
+button,
+.target-operating-point-actions
+button {
+  min-height: 34px;
+  padding: 0 10px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.38);
+  border-radius: 7px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font: inherit;
+  font-size: 0.5rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.target-operating-point-summary {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      5,
+      minmax(0, 1fr)
+    );
+  gap: 6px;
+}
+
+.target-operating-point-summary
+article {
+  min-width: 0;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.72);
+  border-radius: 8px;
+  background:
+    rgba(255, 255, 255, 0.76);
+}
+
+.target-operating-point-summary
+strong {
+  overflow-wrap: anywhere;
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.56rem;
+  line-height: 1.4;
+}
+
+.target-operating-point-best {
+  margin-top: 9px;
+  padding: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.36);
+  border-radius: 10px;
+  background:
+    rgba(7, 156, 153, 0.055);
+}
+
+.target-operating-point-best[
+  data-state="close"
+] {
+  border-color:
+    rgba(194, 132, 32, 0.42);
+  background:
+    rgba(194, 132, 32, 0.05);
+}
+
+.target-operating-point-best[
+  data-state="outside"
+] {
+  border-color:
+    rgba(187, 82, 65, 0.4);
+  background:
+    rgba(187, 82, 65, 0.045);
+}
+
+.target-operating-point-best
+> div {
+  display: grid;
+  gap: 4px;
+}
+
+.target-operating-point-best
+h4 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.9rem;
+}
+
+.target-operating-point-best
+p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.52rem;
+  line-height: 1.45;
+}
+
+.target-operating-point-best
+> div:last-child {
+  justify-items: end;
+  text-align: right;
+}
+
+.target-operating-point-best
+> div:last-child strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.55rem;
+}
+
+.target-operating-point-best
+> div:last-child span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.48rem;
+}
+
+.target-operating-point-candidates {
+  margin-top: 9px;
+  padding: 10px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.76);
+  border-radius: 10px;
+  background:
+    rgba(255, 255, 255, 0.78);
+}
+
+.target-operating-point-candidates
+header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.target-operating-point-candidates
+header > div {
+  display: grid;
+  gap: 4px;
+}
+
+.target-operating-point-candidates
+h4 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.82rem;
+}
+
+.target-operating-point-candidates
+> div {
+  margin-top: 8px;
+  display: grid;
+  gap: 5px;
+}
+
+.target-operating-point-candidates
+article {
+  padding: 8px;
+  display: grid;
+  grid-template-columns:
+    auto minmax(150px, 1fr)
+    minmax(110px, 0.5fr)
+    auto;
+  align-items: center;
+  gap: 9px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.68);
+  border-radius: 8px;
+  background:
+    rgba(249, 246, 238, 0.4);
+}
+
+.target-candidate-rank,
+.target-candidate-values,
+.target-candidate-error {
+  display: grid;
+  gap: 3px;
+}
+
+.target-candidate-rank
+strong,
+.target-candidate-values
+strong,
+.target-candidate-error
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.52rem;
+}
+
+.target-candidate-rank
+span,
+.target-candidate-values
+span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.46rem;
+}
+
+.target-candidate-error
+> div {
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background:
+    rgba(217, 208, 189, 0.7);
+}
+
+.target-candidate-error
+> div > span {
+  height: 100%;
+  display: block;
+  border-radius: inherit;
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.target-operating-point-candidates
+article > button {
+  min-height: 31px;
+  padding: 0 8px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.38);
+  border-radius: 7px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font: inherit;
+  font-size: 0.47rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.target-operating-point-empty {
+  min-height: 125px;
+  margin:
+    9px 0 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 6px;
+  border:
+    1px dashed
+    rgba(217, 208, 189, 0.88);
+  border-radius: 9px;
+  text-align: center;
+}
+
+.target-operating-point-panel
+> .target-operating-point-empty {
+  margin:
+    0 16px 16px;
+}
+
+.target-operating-point-empty
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+}
+
+.target-operating-point-empty
+p {
+  max-width: 470px;
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.52rem;
+  line-height: 1.5;
+}
+
+.target-operating-point-feedback {
+  margin: 9px 0 0;
+  padding: 8px 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.27);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.05);
+  font-size: 0.5rem;
+  font-weight: 800;
+}
+
+.target-operating-point-actions {
+  margin-top: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.target-operating-point-actions
+> div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.target-operating-point-actions
+button.is-primary {
+  color: #ffffff;
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.target-operating-point-actions
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1100px) {
+  .target-operating-point-controls {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  }
+
+  .target-operating-point-summary {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+@media (max-width: 750px) {
+  .target-operating-point-launcher,
+  .target-operating-point-best,
+  .target-operating-point-candidates
+  header,
+  .target-operating-point-actions {
+    display: grid;
+  }
+
+  .target-operating-point-launcher-actions {
+    justify-items: stretch;
+  }
+
+  .target-operating-point-launcher-actions
+  button {
+    width: 100%;
+  }
+
+  .target-operating-point-controls,
+  .target-operating-point-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .target-operating-point-best
+  > div:last-child {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .target-operating-point-candidates
+  article {
+    grid-template-columns: 1fr;
+  }
+
+  .target-operating-point-candidates
+  article > button {
+    width: 100%;
+  }
+
+  .target-operating-point-actions
+  > div {
+    display: grid;
+  }
+
+  .target-operating-point-actions
+  button {
+    width: 100%;
+  }
+}

@@ -1107,6 +1107,104 @@ for (
   }
 }
 
+const targetFinder =
+  await readFile(
+    'src/components/TargetOperatingPointPanel.tsx',
+    'utf8',
+  )
+
+const targetFinderStyles =
+  await readFile(
+    'src/styles/target-operating-point-panel.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Target operating point finder',
+    'parseNumericAssignments',
+    'replaceNumericAssignment',
+    'createLinearRange',
+    'determineTrend',
+    'rankProblemSolvers',
+    'Desired output',
+    'Target bracketed',
+    'Recommended input',
+    'Top five candidates',
+    'Use closest operating point →',
+  ]
+) {
+  if (
+    !targetFinder.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Target Finder contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'TargetOperatingPointPanel',
+    'Target operating point loaded.',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Target Finder integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.target-operating-point-panel',
+    '.target-operating-point-controls',
+    '.target-operating-point-summary',
+    '.target-operating-point-candidates',
+    '.target-operating-point-actions',
+  ]
+) {
+  if (
+    !targetFinderStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Target Finder style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides an inverse target operating-point search',
+    'supports 41 to 121 target-search operating points',
+    'integrates Target Finder with the main Solver',
+    'styles Target Finder responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Target Finder test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
