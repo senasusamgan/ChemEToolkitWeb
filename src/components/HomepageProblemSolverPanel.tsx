@@ -23,6 +23,9 @@ import {
 import {
   UnitHarmonizerPanel,
 } from './UnitHarmonizerPanel'
+import {
+  BatchProblemSolverPanel,
+} from './BatchProblemSolverPanel'
 
 import '../styles/homepage-problem-solver.css'
 
@@ -1229,6 +1232,34 @@ export function HomepageProblemSolverPanel({
             </span>
           </div>
         </header>
+
+        <BatchProblemSolverPanel
+          onLoadCase={(
+            selectedProblem,
+          ) => {
+            setQuery(
+              selectedProblem,
+            )
+
+            setSharedProblemLoaded(
+              false,
+            )
+
+            setActionMessage(
+              'Batch engineering case loaded.',
+            )
+
+            window.requestAnimationFrame(
+              () => {
+                document
+                  .getElementById(
+                    'homepage-problem-query',
+                  )
+                  ?.focus()
+              },
+            )
+          }}
+        />
 
         <UnitHarmonizerPanel
           isOpen={

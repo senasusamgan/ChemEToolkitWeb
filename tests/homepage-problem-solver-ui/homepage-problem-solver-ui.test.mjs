@@ -912,3 +912,125 @@ test(
     }
   },
 )
+
+test(
+  'provides multi-case batch engineering solving',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/BatchProblemSolverPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Batch case solver',
+        'MAXIMUM_CASES',
+        'rankProblemSolvers',
+        'One problem per line',
+        'Average readiness',
+        'Load sample batch',
+        'Copy batch summary',
+        'Export batch CSV',
+        'Load in Solver',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Batch Solver contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'classifies solved incomplete and unmatched batch cases',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/BatchProblemSolverPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        "'solved'",
+        "'needs-inputs'",
+        "'unmatched'",
+        'Inputs required',
+        'No calculator match',
+        'missingVariableNames',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Batch Solver status: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates batch cases with the main Problem Solver',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'BatchProblemSolverPanel',
+        'onLoadCase={',
+        'Batch engineering case loaded.',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Batch Solver integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles Batch Solver responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/batch-problem-solver-panel.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.batch-problem-solver-panel',
+        '.batch-problem-solver-content',
+        '.batch-problem-summary',
+        '.batch-problem-filter-bar',
+        '.batch-problem-table',
+        '.batch-problem-readiness',
+        '.batch-problem-footer',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Batch Solver style: ${contract}`,
+      )
+    }
+  },
+)
