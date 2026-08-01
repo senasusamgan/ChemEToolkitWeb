@@ -29,6 +29,9 @@ import {
 import {
   DesignEnvelopePanel,
 } from './DesignEnvelopePanel'
+import {
+  TargetOperatingPointPanel,
+} from './TargetOperatingPointPanel'
 
 import '../styles/homepage-problem-solver.css'
 
@@ -1235,6 +1238,37 @@ export function HomepageProblemSolverPanel({
             </span>
           </div>
         </header>
+
+        <TargetOperatingPointPanel
+          baseQuery={
+            query
+          }
+          onApplyProblem={(
+            selectedProblem,
+          ) => {
+            setQuery(
+              selectedProblem,
+            )
+
+            setSharedProblemLoaded(
+              false,
+            )
+
+            setActionMessage(
+              'Target operating point loaded.',
+            )
+
+            window.requestAnimationFrame(
+              () => {
+                document
+                  .getElementById(
+                    'homepage-problem-query',
+                  )
+                  ?.focus()
+              },
+            )
+          }}
+        />
 
         <DesignEnvelopePanel
           baseQuery={

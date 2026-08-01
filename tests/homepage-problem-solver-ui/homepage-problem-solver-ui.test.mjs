@@ -1156,3 +1156,124 @@ test(
     }
   },
 )
+
+test(
+  'provides an inverse target operating-point search',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/TargetOperatingPointPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Target operating point finder',
+        'parseNumericAssignments',
+        'replaceNumericAssignment',
+        'createLinearRange',
+        'determineTrend',
+        'rankProblemSolvers',
+        'Desired output',
+        'Target bracketed',
+        'Recommended input',
+        'Top five candidates',
+        'Use closest operating point →',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Target Finder contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'supports 41 to 121 target-search operating points',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/TargetOperatingPointPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '<option value="41">',
+        '<option value="81">',
+        '<option value="121">',
+        'Target nominal +10%',
+        'Reset range ±50%',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Target Finder resolution: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates Target Finder with the main Solver',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'TargetOperatingPointPanel',
+        'Target operating point loaded.',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Target Finder integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles Target Finder responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/target-operating-point-panel.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.target-operating-point-panel',
+        '.target-operating-point-controls',
+        '.target-operating-point-summary',
+        '.target-operating-point-best',
+        '.target-operating-point-candidates',
+        '.target-operating-point-actions',
+        '@media (max-width: 750px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Target Finder style: ${contract}`,
+      )
+    }
+  },
+)
