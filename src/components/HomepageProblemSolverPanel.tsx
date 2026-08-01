@@ -26,6 +26,9 @@ import {
 import {
   BatchProblemSolverPanel,
 } from './BatchProblemSolverPanel'
+import {
+  DesignEnvelopePanel,
+} from './DesignEnvelopePanel'
 
 import '../styles/homepage-problem-solver.css'
 
@@ -1232,6 +1235,37 @@ export function HomepageProblemSolverPanel({
             </span>
           </div>
         </header>
+
+        <DesignEnvelopePanel
+          baseQuery={
+            query
+          }
+          onApplyProblem={(
+            selectedProblem,
+          ) => {
+            setQuery(
+              selectedProblem,
+            )
+
+            setSharedProblemLoaded(
+              false,
+            )
+
+            setActionMessage(
+              'Design-envelope operating point loaded.',
+            )
+
+            window.requestAnimationFrame(
+              () => {
+                document
+                  .getElementById(
+                    'homepage-problem-query',
+                  )
+                  ?.focus()
+              },
+            )
+          }}
+        />
 
         <BatchProblemSolverPanel
           onLoadCase={(
