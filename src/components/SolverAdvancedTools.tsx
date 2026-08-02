@@ -17,6 +17,7 @@ type AdvancedToolId =
   | 'mixing'
   | 'pump'
   | 'compressor'
+  | 'heatx'
   | 'target'
   | 'design'
   | 'constraint'
@@ -111,6 +112,12 @@ const loadMultistageCompressorPanel =
   () =>
     import(
       './MultistageCompressorPanel'
+    )
+
+const loadHeatExchangerPerformancePanel =
+  () =>
+    import(
+      './HeatExchangerPerformancePanel'
     )
 
 const loadTargetOperatingPointPanel =
@@ -305,6 +312,20 @@ const MultistageCompressorPanel =
     },
   )
 
+const HeatExchangerPerformancePanel =
+  lazy(
+    async () => {
+      const module =
+        await loadHeatExchangerPerformancePanel()
+
+      return {
+        default:
+          module
+            .HeatExchangerPerformancePanel,
+      }
+    },
+  )
+
 const TargetOperatingPointPanel =
   lazy(
     async () => {
@@ -473,6 +494,14 @@ const TOOL_OPTIONS:
         'Compressor staging',
       description:
         'Compare single and multistage compression with intercooling.',
+    },
+    {
+      id:
+        'heatx',
+      label:
+        'Heat exchanger rating',
+      description:
+        'Calculate ε–NTU performance, fouling loss and target area.',
     },
     {
       id:
@@ -958,6 +987,32 @@ export function SolverAdvancedTools({
               applyProblem(
                 dischargeProblem,
                 'Compressor discharge state loaded.',
+              )
+            }
+          />
+        </Suspense>
+      ) : null}
+
+      {activeTool ===
+      'heatx' ? (
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Heat exchanger rating" />
+          }
+        >
+          <HeatExchangerPerformancePanel
+            key={
+              baseQuery
+            }
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
+              outletProblem,
+            ) =>
+              applyProblem(
+                outletProblem,
+                'Heat-exchanger outlet state loaded.',
               )
             }
           />
