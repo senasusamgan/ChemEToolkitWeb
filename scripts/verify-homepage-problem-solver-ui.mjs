@@ -6,6 +6,9 @@ const [
   homepageComponent,
   advancedToolsComponent,
   resultToolsComponent,
+  workerSource,
+  workerClient,
+  workerHook,
   app,
   styles,
   tests,
@@ -22,6 +25,18 @@ const [
     ),
     readFile(
       'src/components/SolverResultTools.tsx',
+      'utf8',
+    ),
+    readFile(
+      'src/features/problem-solver/problemSolver.worker.ts',
+      'utf8',
+    ),
+    readFile(
+      'src/features/problem-solver/problemSolverWorkerClient.ts',
+      'utf8',
+    ),
+    readFile(
+      'src/features/problem-solver/useProblemSolverWorker.ts',
       'utf8',
     ),
     readFile(
@@ -46,6 +61,9 @@ const component = [
   homepageComponent,
   advancedToolsComponent,
   resultToolsComponent,
+  workerSource,
+  workerClient,
+  workerHook,
 ].join(
   '\n',
 )
@@ -1904,6 +1922,153 @@ for (
   ) {
     throw new Error(
       `Problem Solver chunk test missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    "from '../../data/calculators'",
+    "from './problemSolverEngine'",
+    'rankProblemSolvers',
+    'performance.now',
+    'workerScope.onmessage',
+    'workerScope.postMessage',
+  ]
+) {
+  if (
+    !workerSource.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Background Solver worker contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'new Worker(',
+    "'./problemSolver.worker.ts'",
+    'pendingRequests',
+    'inFlightRequests',
+    'resultCache',
+    'requestProblemSolverMatches',
+    "'fallback'",
+  ]
+) {
+  if (
+    !workerClient.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Background Solver client contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'useProblemSolverWorker',
+    'requestProblemSolverMatches',
+    'isCurrent',
+    'resolvedQuery',
+    'isStale',
+  ]
+) {
+  if (
+    !workerHook.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Background Solver hook contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'useProblemSolverWorker',
+    'isWorkerAnalyzing',
+    'isComparisonWorkerAnalyzing',
+    'Background Solver worker',
+    'Model matching runs outside the main',
+  ]
+) {
+  if (
+    !homepageComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage worker integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const forbidden
+  of [
+    'import { calculators }',
+    "from '../features/problem-solver/problemSolverEngine'",
+    'rankProblemSolvers(',
+  ]
+) {
+  if (
+    homepageComponent.includes(
+      forbidden,
+    )
+  ) {
+    throw new Error(
+      `Homepage still performs synchronous Solver ranking: ${forbidden}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.homepage-problem-worker-status',
+    'data-mode="cache"',
+    'data-mode="fallback"',
+    'data-mode="error"',
+  ]
+) {
+  if (
+    !styles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Background Solver status style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'runs homepage Solver ranking in a background Web Worker',
+    'shares, caches and safely falls back from the Solver worker',
+    'prevents stale background Solver results from rendering',
+    'removes synchronous Solver engine imports from the homepage',
+    'styles the background Solver execution status',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Background Solver worker test missing: ${contract}`,
     )
   }
 }
