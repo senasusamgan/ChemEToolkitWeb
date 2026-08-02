@@ -12,6 +12,7 @@ type AdvancedToolId =
   | 'robustness'
   | 'calibration'
   | 'doe'
+  | 'surface'
   | 'target'
   | 'design'
   | 'constraint'
@@ -76,6 +77,12 @@ const loadFullFactorialDoePanel =
   () =>
     import(
       './FullFactorialDoePanel'
+    )
+
+const loadResponseSurfacePanel =
+  () =>
+    import(
+      './ResponseSurfacePanel'
     )
 
 const loadTargetOperatingPointPanel =
@@ -196,6 +203,20 @@ const FullFactorialDoePanel =
         default:
           module
             .FullFactorialDoePanel,
+      }
+    },
+  )
+
+const ResponseSurfacePanel =
+  lazy(
+    async () => {
+      const module =
+        await loadResponseSurfacePanel()
+
+      return {
+        default:
+          module
+            .ResponseSurfacePanel,
       }
     },
   )
@@ -328,6 +349,14 @@ const TOOL_OPTIONS:
         'Factorial DOE',
       description:
         'Measure factor and interaction effects across structured runs.',
+    },
+    {
+      id:
+        'surface',
+      label:
+        'Response surface',
+      description:
+        'Fit a quadratic model and predict an optimum operating point.',
     },
     {
       id:
@@ -683,6 +712,32 @@ export function SolverAdvancedTools({
               applyProblem(
                 experimentalProblem,
                 'Selected factorial DOE run loaded.',
+              )
+            }
+          />
+        </Suspense>
+      ) : null}
+
+      {activeTool ===
+      'surface' ? (
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Response surface" />
+          }
+        >
+          <ResponseSurfacePanel
+            key={
+              baseQuery
+            }
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
+              optimumProblem,
+            ) =>
+              applyProblem(
+                optimumProblem,
+                'Predicted response-surface optimum loaded.',
               )
             }
           />
