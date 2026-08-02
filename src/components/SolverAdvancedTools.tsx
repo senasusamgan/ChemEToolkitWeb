@@ -172,27 +172,8 @@ const BatchProblemSolverPanel =
     },
   )
 
-const TOOL_PREFETCHERS:
-  Record<
-    AdvancedToolId,
-    () =>
-      Promise<unknown>
-  > = {
-    guided:
-      loadGuidedProblemBuilder,
-    unit:
-      loadUnitHarmonizerPanel,
-    sensitivity:
-      loadSensitivitySweepPanel,
-    uncertainty:
-      loadUncertaintyAnalysisPanel,
-    target:
-      loadTargetOperatingPointPanel,
-    design:
-      loadDesignEnvelopePanel,
-    batch:
-      loadBatchProblemSolverPanel,
-  }
+export const TOOL_PREFETCHERS =
+  'explicit-click-loading-v8' as const
 
 export const
   SOLVER_ADVANCED_TOOL_COMPATIBILITY_MARKERS = [
@@ -313,15 +294,6 @@ export function SolverAdvancedTools({
     )
   }
 
-  function prefetchTool(
-    toolId:
-      AdvancedToolId,
-  ) {
-    void TOOL_PREFETCHERS[
-      toolId
-    ]()
-  }
-
   return (
     <section
       className="solver-advanced-tools"
@@ -372,16 +344,6 @@ export function SolverAdvancedTools({
                 activeTool ===
                 tool.id
               }
-              onPointerEnter={() =>
-                prefetchTool(
-                  tool.id,
-                )
-              }
-              onFocus={() =>
-                prefetchTool(
-                  tool.id,
-                )
-              }
               onClick={() =>
                 setActiveTool(
                   (current) =>
@@ -414,9 +376,8 @@ export function SolverAdvancedTools({
           </strong>
 
           <p>
-            Hovering or focusing a tool prepares only
-            that tool’s chunk. Other analyses remain
-            unloaded.
+            Tools download only after explicit selection.
+            Moving the pointer across the workspace does not start background downloads.
           </p>
         </div>
       ) : null}

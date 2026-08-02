@@ -2331,6 +2331,130 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'TOOL_PREFETCHERS',
+    "'explicit-click-loading-v8'",
+    'Tools download only after explicit selection',
+    'does not start background downloads',
+  ]
+) {
+  if (
+    !advancedToolsComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver explicit-click contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const forbidden
+  of [
+    'onPointerEnter',
+    'prefetchTool(',
+  ]
+) {
+  if (
+    advancedToolsComponent.includes(
+      forbidden,
+    )
+  ) {
+    throw new Error(
+      `Advanced Tool still prefetches before selection: ${forbidden}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'RESULT_TOOL_PREFETCHERS',
+    "'explicit-click-loading-v8'",
+    'Result tools download only after explicit selection',
+    'do not start background downloads',
+  ]
+) {
+  if (
+    !resultToolsComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Result Tool explicit-click contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const forbidden
+  of [
+    'onPointerEnter',
+    'prefetchTool(',
+  ]
+) {
+  if (
+    resultToolsComponent.includes(
+      forbidden,
+    )
+  ) {
+    throw new Error(
+      `Result Tool still prefetches before selection: ${forbidden}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'isComparisonOpen &&',
+    'Closed scenario comparison performs no',
+    'background ranking request',
+  ]
+) {
+  if (
+    !homepageComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Closed-comparison worker contract missing: ${contract}`,
+    )
+  }
+}
+
+if (
+  !homepageComponent.includes(
+    'enabled:\n        isSolverActive &&\n        isComparisonOpen &&\n        comparisonAnalysisQuery',
+  )
+) {
+  throw new Error(
+    'Comparison worker is not gated by the Scenario Comparison open state.',
+  )
+}
+
+for (
+  const contract
+  of [
+    'downloads advanced tools only after explicit selection',
+    'downloads result tools only after explicit selection',
+    'keeps the comparison worker idle while Scenario Comparison is closed',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver v8 test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )

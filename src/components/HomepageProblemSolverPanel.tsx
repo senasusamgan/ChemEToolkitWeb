@@ -705,6 +705,7 @@ export function HomepageProblemSolverPanel({
         PROBLEM_SOLVER_COMPARISON_MATCH_LIMIT,
       enabled:
         isSolverActive &&
+        isComparisonOpen &&
         comparisonAnalysisQuery
           .trim()
           .length >=
@@ -1743,6 +1744,8 @@ export function HomepageProblemSolverPanel({
                 enriched after the 350 ms typing pause.
                 Previous confirmed result stays mounted
                 during the background refresh.
+                Closed scenario comparison performs no
+                background ranking request.
               </span>
             </div>
           </div>
