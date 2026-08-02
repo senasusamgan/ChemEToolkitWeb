@@ -89,7 +89,7 @@
     "test:reaction-engineering-batch09": "node --experimental-strip-types --test tests/reaction-engineering-batch09/*.test.ts",
     "verify:reaction-engineering-batch09": "node scripts/verify-reaction-engineering-batch09.mjs",
     "verify:workspace-release": "node scripts/verify-workspace-release-v1.mjs",
-    "verify:release": "npm run verify:calculator-catalog && npm run verify:calculator-routing && npm run verify:problem-solver-v1 && npm run verify:problem-solver-v2 && npm run verify:problem-solver-v3 && npm run verify:problem-solver-v4 && npm run verify:problem-solver-v5 && npm run verify:constraint-operating-window-v1 && npm run verify:robustness-corner-analysis-v1 && npm run verify:parameter-calibration-v1 && npm run verify:full-factorial-doe-v1 && npm run verify:response-surface-v1 && npm run verify:scale-up-similarity-v1 && npm run verify:homepage-problem-solver-ui && npm run verify:engineering-fundamentals-batch01 && npm run verify:calculator-test-coverage && npm run verify:workspace-release && npm run build && node scripts/verify-performance-v1.mjs && npm run verify:problem-solver-performance-v10 && npm run verify:production-readiness && npm run verify:accessibility && npm run verify:smoke && npm run lint",
+    "verify:release": "npm run verify:calculator-catalog && npm run verify:calculator-routing && npm run verify:problem-solver-v1 && npm run verify:problem-solver-v2 && npm run verify:problem-solver-v3 && npm run verify:problem-solver-v4 && npm run verify:problem-solver-v5 && npm run verify:constraint-operating-window-v1 && npm run verify:robustness-corner-analysis-v1 && npm run verify:parameter-calibration-v1 && npm run verify:full-factorial-doe-v1 && npm run verify:response-surface-v1 && npm run verify:scale-up-similarity-v1 && npm run verify:agitated-vessel-scale-up-v1 && npm run verify:homepage-problem-solver-ui && npm run verify:engineering-fundamentals-batch01 && npm run verify:calculator-test-coverage && npm run verify:workspace-release && npm run build && node scripts/verify-performance-v1.mjs && npm run verify:problem-solver-performance-v10 && npm run verify:production-readiness && npm run verify:accessibility && npm run verify:smoke && npm run lint",
     "verify:performance": "npm run build && node scripts/verify-performance-v1.mjs",
     "verify:production-readiness": "node scripts/verify-production-readiness-v1.mjs",
     "verify:smoke": "node scripts/verify-production-smoke-v1.mjs",
@@ -124,7 +124,9 @@
     "test:response-surface-v1": "node --experimental-strip-types --test tests/response-surface/*.test.ts",
     "verify:response-surface-v1": "npm run test:response-surface-v1 && node scripts/verify-response-surface-v1.mjs",
     "test:scale-up-similarity-v1": "node --experimental-strip-types --test tests/scale-up-similarity/*.test.ts",
-    "verify:scale-up-similarity-v1": "npm run test:scale-up-similarity-v1 && node scripts/verify-scale-up-similarity-v1.mjs"
+    "verify:scale-up-similarity-v1": "npm run test:scale-up-similarity-v1 && node scripts/verify-scale-up-similarity-v1.mjs",
+    "test:agitated-vessel-scale-up-v1": "node --experimental-strip-types --test tests/agitated-vessel-scale-up/*.test.ts",
+    "verify:agitated-vessel-scale-up-v1": "npm run test:agitated-vessel-scale-up-v1 && node scripts/verify-agitated-vessel-scale-up-v1.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

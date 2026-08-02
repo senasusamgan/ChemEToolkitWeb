@@ -1,0 +1,483 @@
+.agitated-vessel-panel {
+  margin-top: 12px;
+  padding: 16px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.3);
+  border-radius: 12px;
+  background:
+    rgba(255, 253, 250, 0.95);
+}
+
+.agitated-vessel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.agitated-vessel-header span,
+.agitated-vessel-input-grid article > span,
+.agitated-vessel-summary span,
+.agitated-vessel-mechanical span,
+.agitated-vessel-transfer span {
+  color:
+    var(--teal-dark, #007a79);
+  font-size: 0.47rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.agitated-vessel-header h3 {
+  margin:
+    4px 0 0;
+  color:
+    var(--ink, #0b3658);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 1rem;
+}
+
+.agitated-vessel-header p {
+  max-width: 650px;
+  margin:
+    7px 0 0;
+  color:
+    var(--muted, #557087);
+  font-size: 0.55rem;
+  line-height: 1.5;
+}
+
+.agitated-vessel-header > strong {
+  flex: 0 0 auto;
+  padding:
+    5px 8px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.25);
+  border-radius: 999px;
+  color:
+    var(--teal-dark, #007a79);
+  font-size: 0.47rem;
+}
+
+.agitated-vessel-empty {
+  margin-top: 12px;
+  padding: 20px;
+  border:
+    1px dashed
+    rgba(217, 208, 189, 0.9);
+  border-radius: 9px;
+  color:
+    var(--muted, #557087);
+  font-size: 0.54rem;
+  text-align: center;
+}
+
+.agitated-vessel-symbols {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 8px;
+}
+
+.agitated-vessel-symbols label,
+.agitated-vessel-input-grid label {
+  display: grid;
+  gap: 4px;
+  color:
+    var(--muted, #557087);
+  font-size: 0.48rem;
+  font-weight: 800;
+}
+
+.agitated-vessel-symbols select,
+.agitated-vessel-input-grid input {
+  width: 100%;
+  min-height: 34px;
+  padding:
+    0 8px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.95);
+  border-radius: 6px;
+  color:
+    var(--ink, #0b3658);
+  background:
+    #ffffff;
+  font: inherit;
+  font-size: 0.54rem;
+}
+
+.agitated-vessel-criteria {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 7px;
+}
+
+.agitated-vessel-criteria button {
+  padding: 10px;
+  display: grid;
+  gap: 5px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.88);
+  border-radius: 8px;
+  color:
+    var(--muted, #557087);
+  background:
+    rgba(251, 248, 239, 0.55);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.agitated-vessel-criteria button[
+  data-selected="true"
+] {
+  border-color:
+    rgba(7, 156, 153, 0.5);
+  background:
+    rgba(7, 156, 153, 0.06);
+}
+
+.agitated-vessel-criteria strong {
+  color:
+    var(--ink, #0b3658);
+  font-size: 0.54rem;
+}
+
+.agitated-vessel-criteria code {
+  color:
+    var(--teal-dark, #007a79);
+  font-size: 0.49rem;
+  font-weight: 850;
+}
+
+.agitated-vessel-criteria span {
+  font-size: 0.45rem;
+  line-height: 1.4;
+}
+
+.agitated-vessel-input-grid {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 8px;
+}
+
+.agitated-vessel-input-grid article {
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.87);
+  border-radius: 9px;
+}
+
+.agitated-vessel-input-grid article > strong {
+  color:
+    var(--ink, #0b3658);
+  font-size: 0.56rem;
+}
+
+.agitated-vessel-input-grid article > code {
+  color:
+    var(--teal-dark, #007a79);
+  font-size: 0.52rem;
+}
+
+.agitated-vessel-assumption {
+  margin:
+    9px 0 0;
+  padding:
+    8px 9px;
+  border-left:
+    3px solid
+    rgba(7, 156, 153, 0.7);
+  color:
+    var(--muted, #557087);
+  background:
+    rgba(7, 156, 153, 0.04);
+  font-size: 0.48rem;
+  line-height: 1.45;
+}
+
+.agitated-vessel-actions {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+
+.agitated-vessel-actions button,
+.agitated-vessel-transfer button {
+  min-height: 34px;
+  padding:
+    0 10px;
+  border:
+    1px solid
+    var(--teal-dark, #007a79);
+  border-radius: 7px;
+  color: #ffffff;
+  background:
+    var(--teal-dark, #007a79);
+  font: inherit;
+  font-size: 0.51rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.agitated-vessel-actions button:nth-child(2) {
+  color:
+    var(--teal-dark, #007a79);
+  background:
+    transparent;
+}
+
+.agitated-vessel-actions span {
+  margin-left: auto;
+  color:
+    var(--muted, #557087);
+  font-size: 0.47rem;
+}
+
+.agitated-vessel-feedback {
+  margin:
+    9px 0 0;
+  padding:
+    7px 9px;
+  border-left:
+    3px solid
+    var(--teal, #079c99);
+  color:
+    var(--muted, #557087);
+  background:
+    rgba(7, 156, 153, 0.045);
+  font-size: 0.5rem;
+}
+
+.agitated-vessel-summary {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 7px;
+}
+
+.agitated-vessel-summary article,
+.agitated-vessel-mechanical article {
+  padding: 10px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.85);
+  border-radius: 8px;
+}
+
+.agitated-vessel-summary strong,
+.agitated-vessel-mechanical strong {
+  display: block;
+  margin-top: 5px;
+  color:
+    var(--ink, #0b3658);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.68rem;
+}
+
+.agitated-vessel-comparison-scroll {
+  margin-top: 9px;
+  overflow-x: auto;
+}
+
+.agitated-vessel-comparison {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.agitated-vessel-comparison th,
+.agitated-vessel-comparison td {
+  padding: 8px;
+  border-bottom:
+    1px solid
+    rgba(217, 208, 189, 0.74);
+  color:
+    var(--muted, #557087);
+  font-size: 0.48rem;
+  text-align: left;
+}
+
+.agitated-vessel-comparison th {
+  color:
+    var(--ink, #0b3658);
+  font-weight: 900;
+}
+
+.agitated-vessel-comparison tr[
+  data-preserved="true"
+] {
+  background:
+    rgba(39, 150, 91, 0.07);
+}
+
+.agitated-vessel-comparison td strong {
+  display: block;
+  color:
+    var(--ink, #0b3658);
+}
+
+.agitated-vessel-comparison td small {
+  display: block;
+  margin-top: 3px;
+  color:
+    #18653e;
+  font-weight: 850;
+}
+
+.agitated-vessel-score {
+  min-width: 130px;
+  display: grid;
+  grid-template-columns:
+    minmax(
+      80px,
+      1fr
+    )
+    auto;
+  gap: 7px;
+  align-items: center;
+}
+
+.agitated-vessel-score progress {
+  width: 100%;
+  accent-color:
+    var(--teal, #079c99);
+}
+
+.agitated-vessel-mechanical {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 7px;
+}
+
+.agitated-vessel-mechanical p {
+  margin:
+    4px 0 0;
+  color:
+    var(--muted, #557087);
+  font-size: 0.47rem;
+}
+
+.agitated-vessel-transfer {
+  margin-top: 9px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.28);
+  border-radius: 9px;
+  background:
+    rgba(7, 156, 153, 0.04);
+}
+
+.agitated-vessel-transfer strong {
+  display: block;
+  margin-top: 5px;
+  color:
+    var(--ink, #0b3658);
+  font-size: 0.63rem;
+}
+
+.agitated-vessel-transfer p {
+  max-width: 600px;
+  margin:
+    4px 0 0;
+  color:
+    var(--muted, #557087);
+  font-size: 0.48rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 980px) {
+  .agitated-vessel-criteria,
+  .agitated-vessel-summary {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+  .agitated-vessel-input-grid {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .agitated-vessel-header,
+  .agitated-vessel-transfer {
+    display: grid;
+  }
+
+  .agitated-vessel-symbols,
+  .agitated-vessel-criteria,
+  .agitated-vessel-summary,
+  .agitated-vessel-mechanical {
+    grid-template-columns:
+      1fr;
+  }
+
+  .agitated-vessel-actions span {
+    width: 100%;
+    margin-left: 0;
+  }
+}

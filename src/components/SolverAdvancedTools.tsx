@@ -14,6 +14,7 @@ type AdvancedToolId =
   | 'doe'
   | 'surface'
   | 'scaleup'
+  | 'mixing'
   | 'target'
   | 'design'
   | 'constraint'
@@ -90,6 +91,12 @@ const loadScaleUpSimilarityPanel =
   () =>
     import(
       './ScaleUpSimilarityPanel'
+    )
+
+const loadAgitatedVesselScaleUpPanel =
+  () =>
+    import(
+      './AgitatedVesselScaleUpPanel'
     )
 
 const loadTargetOperatingPointPanel =
@@ -242,6 +249,20 @@ const ScaleUpSimilarityPanel =
     },
   )
 
+const AgitatedVesselScaleUpPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadAgitatedVesselScaleUpPanel()
+
+      return {
+        default:
+          module
+            .AgitatedVesselScaleUpPanel,
+      }
+    },
+  )
+
 const TargetOperatingPointPanel =
   lazy(
     async () => {
@@ -386,6 +407,14 @@ const TOOL_OPTIONS:
         'Scale-up similarity',
       description:
         'Preserve Reynolds, Froude or Weber similarity during scale-up.',
+    },
+    {
+      id:
+        'mixing',
+      label:
+        'Agitator scale-up',
+      description:
+        'Scale mixing speed by tip speed, P/V, Reynolds or Froude similarity.',
     },
     {
       id:
@@ -793,6 +822,32 @@ export function SolverAdvancedTools({
               applyProblem(
                 scaledProblem,
                 'Scaled similarity case loaded.',
+              )
+            }
+          />
+        </Suspense>
+      ) : null}
+
+      {activeTool ===
+      'mixing' ? (
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Agitator scale-up" />
+          }
+        >
+          <AgitatedVesselScaleUpPanel
+            key={
+              baseQuery
+            }
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
+              scaledProblem,
+            ) =>
+              applyProblem(
+                scaledProblem,
+                'Scaled agitator case loaded.',
               )
             }
           />
