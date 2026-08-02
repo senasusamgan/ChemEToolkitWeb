@@ -116,23 +116,8 @@ const ResultUnitConverterPanel =
     },
   )
 
-const RESULT_TOOL_PREFETCHERS:
-  Record<
-    ResultToolId,
-    () =>
-      Promise<unknown>
-  > = {
-    missing:
-      loadMissingInputAssistant,
-    convert:
-      loadResultUnitConverterPanel,
-    trace:
-      loadCalculationTracePanel,
-    assumptions:
-      loadAssumptionReviewPanel,
-    validation:
-      loadEngineeringValidationGate,
-  }
+export const RESULT_TOOL_PREFETCHERS =
+  'explicit-click-loading-v8' as const
 
 type TraceProps =
   ComponentProps<
@@ -285,15 +270,6 @@ export function SolverResultTools({
     },
   ]
 
-  function prefetchTool(
-    toolId:
-      ResultToolId,
-  ) {
-    void RESULT_TOOL_PREFETCHERS[
-      toolId
-    ]()
-  }
-
   return (
     <section
       className="solver-result-tools"
@@ -352,24 +328,6 @@ export function SolverResultTools({
                   ? 'is-active'
                   : undefined
               }
-              onPointerEnter={() => {
-                if (
-                  !option.disabled
-                ) {
-                  prefetchTool(
-                    option.id,
-                  )
-                }
-              }}
-              onFocus={() => {
-                if (
-                  !option.disabled
-                ) {
-                  prefetchTool(
-                    option.id,
-                  )
-                }
-              }}
               onClick={() =>
                 setActiveTool(
                   option.id,
@@ -390,8 +348,8 @@ export function SolverResultTools({
           </strong>
 
           <p>
-            Converter, trace, assumptions and validation
-            remain unloaded until you select one.
+            Result tools download only after explicit selection.
+            Hover and keyboard navigation do not start background downloads.
           </p>
         </div>
       ) : null}

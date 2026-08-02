@@ -2610,3 +2610,130 @@ test(
     }
   },
 )
+
+
+test(
+  'downloads advanced tools only after explicit selection',
+  async () => {
+    const source =
+      await readFile(
+        advancedToolsPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'TOOL_PREFETCHERS',
+        "'explicit-click-loading-v8'",
+        'Tools download only after explicit selection',
+        'does not start background downloads',
+        'lazy(',
+        '<Suspense',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing advanced click-loading contract: ${contract}`,
+      )
+    }
+
+    for (
+      const forbidden
+      of [
+        'onPointerEnter',
+        'prefetchTool(',
+      ]
+    ) {
+      assert.equal(
+        source.includes(
+          forbidden,
+        ),
+        false,
+        `Advanced Tool still prefetches without selection: ${forbidden}`,
+      )
+    }
+  },
+)
+
+test(
+  'downloads result tools only after explicit selection',
+  async () => {
+    const source =
+      await readFile(
+        resultToolsPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'RESULT_TOOL_PREFETCHERS',
+        "'explicit-click-loading-v8'",
+        'Result tools download only after explicit selection',
+        'do not start background downloads',
+        'lazy(',
+        '<Suspense',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing result click-loading contract: ${contract}`,
+      )
+    }
+
+    for (
+      const forbidden
+      of [
+        'onPointerEnter',
+        'prefetchTool(',
+      ]
+    ) {
+      assert.equal(
+        source.includes(
+          forbidden,
+        ),
+        false,
+        `Result Tool still prefetches without selection: ${forbidden}`,
+      )
+    }
+  },
+)
+
+test(
+  'keeps the comparison worker idle while Scenario Comparison is closed',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'isComparisonOpen &&',
+        'Closed scenario comparison performs no',
+        'background ranking request',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing closed-comparison contract: ${contract}`,
+      )
+    }
+
+    assert.ok(
+      source.includes(
+        'enabled:\n        isSolverActive &&\n        isComparisonOpen &&\n        comparisonAnalysisQuery',
+      ),
+      'Comparison worker request is not gated by isComparisonOpen.',
+    )
+  },
+)
