@@ -599,6 +599,7 @@ const toolSources = [
   'src/components/ResponseSurfacePanel.tsx',
   'src/components/ScaleUpSimilarityPanel.tsx',
   'src/components/AgitatedVesselScaleUpPanel.tsx',
+  'src/components/PumpAffinitySystemPanel.tsx',
   'src/components/TargetOperatingPointPanel.tsx',
   'src/components/DesignEnvelopePanel.tsx',
   'src/components/ConstraintOperatingWindowPanel.tsx',
