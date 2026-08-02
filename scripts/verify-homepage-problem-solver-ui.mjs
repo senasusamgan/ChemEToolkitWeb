@@ -2238,6 +2238,99 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'PROBLEM_SOLVER_STABLE_RESULT_MODE',
+    "'keep-last-confirmed-result-v7'",
+    'resultQuery',
+    'currentState.matches',
+    'isRequestPending',
+    'isStale',
+  ]
+) {
+  if (
+    !workerHook.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver stable-result contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'isWorkerResultStale',
+    'isDisplayedResultStale',
+    'const bestMatch =\n    matches[0]',
+    'data-stale={',
+    'aria-busy={',
+    'Updating engineering result',
+    'Previous result remains visible',
+    'Previous confirmed result stays mounted',
+  ]
+) {
+  if (
+    !homepageComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage stable-result contract missing: ${contract}`,
+    )
+  }
+}
+
+if (
+  homepageComponent.includes(
+    'const bestMatch =\n    isAnalysisPending\n      ? undefined\n      : matches[0]',
+  )
+) {
+  throw new Error(
+    'Homepage still removes the result tree during analysis.',
+  )
+}
+
+for (
+  const contract
+  of [
+    '.homepage-problem-result-refreshing',
+    'data-stale="true"',
+  ]
+) {
+  if (
+    !styles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Stable-result style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'preserves the last confirmed Solver result while a refresh is running',
+    'keeps the homepage result tree mounted during background analysis',
+    'styles the background result-refresh status responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Stable-result test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )

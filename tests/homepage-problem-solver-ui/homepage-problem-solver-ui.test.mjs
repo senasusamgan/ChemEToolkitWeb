@@ -2504,3 +2504,109 @@ test(
     )
   },
 )
+
+test(
+  'preserves the last confirmed Solver result while a refresh is running',
+  async () => {
+    const source =
+      await readFile(
+        workerHookPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'PROBLEM_SOLVER_STABLE_RESULT_MODE',
+        "'keep-last-confirmed-result-v7'",
+        'resultQuery',
+        'currentState.matches',
+        'isRequestPending',
+        'isStale',
+        'matches:\n      isEligible\n        ? state.matches',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing stable worker-result contract: ${contract}`,
+      )
+    }
+
+    assert.equal(
+      source.includes(
+        'matches:\n          [],\n        isLoading:\n          true',
+      ),
+      false,
+      'Worker loading still clears the confirmed result.',
+    )
+  },
+)
+
+test(
+  'keeps the homepage result tree mounted during background analysis',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'isWorkerResultStale',
+        'isDisplayedResultStale',
+        'const bestMatch =\n    matches[0]',
+        'data-stale={',
+        'aria-busy={',
+        'Updating engineering result',
+        'Previous result remains visible',
+        'Previous confirmed result stays mounted',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing mounted-result contract: ${contract}`,
+      )
+    }
+
+    assert.equal(
+      source.includes(
+        'const bestMatch =\n    isAnalysisPending\n      ? undefined\n      : matches[0]',
+      ),
+      false,
+      'The result tree is still removed while analysis is pending.',
+    )
+  },
+)
+
+test(
+  'styles the background result-refresh status responsively',
+  async () => {
+    const source =
+      await readFile(
+        stylePath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.homepage-problem-result-refreshing',
+        'data-stale="true"',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing stable-result style: ${contract}`,
+      )
+    }
+  },
+)
