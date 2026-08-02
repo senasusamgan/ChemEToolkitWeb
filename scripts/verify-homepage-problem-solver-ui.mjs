@@ -1524,6 +1524,104 @@ for (
   }
 }
 
+const resultUnitConverter =
+  await readFile(
+    'src/components/ResultUnitConverterPanel.tsx',
+    'utf8',
+  )
+
+const resultUnitConverterStyles =
+  await readFile(
+    'src/styles/result-unit-converter-panel.css',
+    'utf8',
+  )
+
+for (
+  const contract
+  of [
+    'Result unit converter',
+    'UNIT_FAMILIES',
+    'resolveUnit',
+    'formatEngineering',
+    'formatScientific',
+    'Converted engineering result',
+    'Compatible result units',
+    'Copy converted result',
+  ]
+) {
+  if (
+    !resultUnitConverter.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Result Unit Converter contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'ResultUnitConverterPanel',
+    '<ResultUnitConverterPanel',
+    'numericValue={',
+    'sourceUnit={',
+  ]
+) {
+  if (
+    !component.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Result Unit Converter integration missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.result-unit-converter-panel',
+    '.result-unit-converter-controls',
+    '.result-unit-converter-comparison',
+    '.result-unit-converter-family',
+    '.result-unit-converter-options',
+    '.result-unit-converter-actions',
+  ]
+) {
+  if (
+    !resultUnitConverterStyles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Result Unit Converter style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'provides a Quick Solve result unit converter',
+    'supports core chemical engineering result units',
+    'integrates the Result Unit Converter with Quick Solve',
+    'styles the Result Unit Converter responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Homepage Result Unit Converter test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
