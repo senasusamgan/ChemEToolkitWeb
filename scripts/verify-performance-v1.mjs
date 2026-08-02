@@ -320,6 +320,157 @@ if (
 }
 
 
+requireMarker(
+  app,
+  'const HomepageProblemSolverPanel =',
+  'lazy Problem Solver definition',
+)
+
+requireMarker(
+  app,
+  "import(\n      './components/HomepageProblemSolverPanel'",
+  'dynamic Problem Solver import',
+)
+
+requireMarker(
+  app,
+  'shouldLoadProblemSolver',
+  'Problem Solver loading state',
+)
+
+requireMarker(
+  app,
+  'problemSolverSectionRef',
+  'Problem Solver observer reference',
+)
+
+requireMarker(
+  app,
+  'problem-solver-lazy-shell',
+  'Problem Solver lazy shell',
+)
+
+if (
+  app.includes(
+    "import { HomepageProblemSolverPanel } from './components/HomepageProblemSolverPanel'",
+  )
+) {
+  fail(
+    'Homepage Problem Solver is still statically imported.',
+  )
+}
+
+if (
+  fs.existsSync(
+    manifestPath,
+  )
+) {
+  try {
+    const manifest =
+      JSON.parse(
+        fs.readFileSync(
+          manifestPath,
+          'utf8',
+        ),
+      )
+
+    const solverManifestEntry =
+      Object.entries(
+        manifest,
+      ).find(
+        (
+          [
+            key,
+          ],
+        ) =>
+          key.endsWith(
+            'src/components/HomepageProblemSolverPanel.tsx',
+          ),
+      )
+
+    if (!solverManifestEntry) {
+      fail(
+        'Problem Solver dynamic manifest entry is missing.',
+      )
+    } else {
+      const [
+        ,
+        entry,
+      ] =
+        solverManifestEntry
+
+      if (
+        entry.isDynamicEntry !==
+        true
+      ) {
+        fail(
+          'Homepage Problem Solver is not marked as a dynamic entry.',
+        )
+      }
+
+      if (
+        typeof entry.file !==
+        'string'
+      ) {
+        fail(
+          'Problem Solver dynamic JavaScript asset is missing.',
+        )
+      } else {
+        const solverAssetPath =
+          path.join(
+            root,
+            'dist',
+            entry.file,
+          )
+
+        if (
+          !fs.existsSync(
+            solverAssetPath,
+          )
+        ) {
+          fail(
+            'Problem Solver dynamic asset does not exist.',
+          )
+        } else {
+          const solverChunkBytes =
+            fs.statSync(
+              solverAssetPath,
+            ).size
+
+          const maximumSolverChunkBytes =
+            900_000
+
+          if (
+            solverChunkBytes >
+            maximumSolverChunkBytes
+          ) {
+            fail(
+              'Problem Solver chunk is ' +
+              String(
+                solverChunkBytes,
+              ) +
+              ' bytes; budget is ' +
+              String(
+                maximumSolverChunkBytes,
+              ) +
+              ' bytes.',
+            )
+          }
+        }
+      }
+    }
+  } catch (
+    error
+  ) {
+    fail(
+      'Problem Solver manifest verification failed: ' +
+      String(
+        error,
+      ),
+    )
+  }
+}
+
 if (
   failures.length > 0
 ) {
