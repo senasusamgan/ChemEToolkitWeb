@@ -11,6 +11,7 @@ type AdvancedToolId =
   | 'uncertainty'
   | 'target'
   | 'design'
+  | 'constraint'
   | 'batch'
 
 type AdvancedTool =
@@ -66,6 +67,12 @@ const loadDesignEnvelopePanel =
   () =>
     import(
       './DesignEnvelopePanel'
+    )
+
+const loadConstraintOperatingWindowPanel =
+  () =>
+    import(
+      './ConstraintOperatingWindowPanel'
     )
 
 const loadBatchProblemSolverPanel =
@@ -158,6 +165,20 @@ const DesignEnvelopePanel =
     },
   )
 
+const ConstraintOperatingWindowPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadConstraintOperatingWindowPanel()
+
+      return {
+        default:
+          module
+            .ConstraintOperatingWindowPanel,
+      }
+    },
+  )
+
 const BatchProblemSolverPanel =
   lazy(
     async () => {
@@ -236,6 +257,14 @@ const TOOL_OPTIONS:
         'Design envelope',
       description:
         'Explore a two-variable operating window.',
+    },
+    {
+      id:
+        'constraint',
+      label:
+        'Constraint window',
+      description:
+        'Find feasible operating points within output limits.',
     },
     {
       id:
@@ -537,6 +566,32 @@ export function SolverAdvancedTools({
               applyProblem(
                 selectedProblem,
                 'Design-envelope operating point loaded.',
+              )
+            }
+          />
+        </Suspense>
+      ) : null}
+
+      {activeTool ===
+      'constraint' ? (
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Constraint window" />
+          }
+        >
+          <ConstraintOperatingWindowPanel
+            key={
+              baseQuery
+            }
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
+              selectedProblem,
+            ) =>
+              applyProblem(
+                selectedProblem,
+                'Feasible constraint-window operating point loaded.',
               )
             }
           />
