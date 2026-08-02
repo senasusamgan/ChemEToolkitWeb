@@ -1,0 +1,240 @@
+.parameter-calibration-panel {
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid rgba(7, 156, 153, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 253, 250, 0.95);
+}
+
+.parameter-calibration-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.parameter-calibration-header span,
+.parameter-calibration-cases header span,
+.parameter-calibration-summary span {
+  color: var(--teal-dark, #007a79);
+  font-size: 0.47rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.parameter-calibration-header h3 {
+  margin: 4px 0 0;
+  color: var(--ink, #0b3658);
+  font-family: Georgia, serif;
+  font-size: 1rem;
+}
+
+.parameter-calibration-header p {
+  max-width: 620px;
+  margin: 7px 0 0;
+  color: var(--muted, #557087);
+  font-size: 0.55rem;
+  line-height: 1.5;
+}
+
+.parameter-calibration-header > strong {
+  padding: 5px 8px;
+  border: 1px solid rgba(7, 156, 153, 0.25);
+  border-radius: 999px;
+  color: var(--teal-dark, #007a79);
+  font-size: 0.47rem;
+}
+
+.parameter-calibration-empty {
+  margin-top: 12px;
+  padding: 20px;
+  border: 1px dashed rgba(217, 208, 189, 0.9);
+  border-radius: 9px;
+  color: var(--muted, #557087);
+  font-size: 0.54rem;
+  text-align: center;
+}
+
+.parameter-calibration-controls {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.parameter-calibration-controls label,
+.parameter-calibration-cases label {
+  display: grid;
+  gap: 4px;
+  color: var(--muted, #557087);
+  font-size: 0.48rem;
+  font-weight: 800;
+}
+
+.parameter-calibration-controls input,
+.parameter-calibration-controls select,
+.parameter-calibration-cases input,
+.parameter-calibration-cases textarea {
+  width: 100%;
+  padding: 7px 8px;
+  border: 1px solid rgba(217, 208, 189, 0.95);
+  border-radius: 6px;
+  color: var(--ink, #0b3658);
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.54rem;
+}
+
+.parameter-calibration-cases {
+  margin-top: 11px;
+}
+
+.parameter-calibration-cases > header,
+.parameter-calibration-cases article > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.parameter-calibration-cases article {
+  margin-top: 7px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(130px, 1fr);
+  gap: 9px;
+  border: 1px solid rgba(217, 208, 189, 0.86);
+  border-radius: 9px;
+}
+
+.parameter-calibration-cases article > div {
+  grid-column: 1 / -1;
+}
+
+.parameter-calibration-cases button,
+.parameter-calibration-actions button,
+.parameter-calibration-transfer {
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--teal-dark, #007a79);
+  border-radius: 7px;
+  color: #ffffff;
+  background: var(--teal-dark, #007a79);
+  font: inherit;
+  font-size: 0.51rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.parameter-calibration-cases article button {
+  min-height: 28px;
+  color: var(--teal-dark, #007a79);
+  background: transparent;
+}
+
+.parameter-calibration-actions {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: center;
+}
+
+.parameter-calibration-actions span {
+  margin-left: auto;
+  color: var(--muted, #557087);
+  font-size: 0.47rem;
+}
+
+.parameter-calibration-progress {
+  margin-top: 9px;
+  display: grid;
+  gap: 5px;
+  color: var(--muted, #557087);
+  font-size: 0.48rem;
+}
+
+.parameter-calibration-progress progress {
+  width: 100%;
+  accent-color: var(--teal, #079c99);
+}
+
+.parameter-calibration-feedback {
+  margin: 9px 0 0;
+  padding: 7px 9px;
+  border-left: 3px solid var(--teal, #079c99);
+  color: var(--muted, #557087);
+  background: rgba(7, 156, 153, 0.045);
+  font-size: 0.5rem;
+}
+
+.parameter-calibration-summary {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.parameter-calibration-summary article {
+  padding: 10px;
+  border: 1px solid rgba(217, 208, 189, 0.85);
+  border-radius: 8px;
+}
+
+.parameter-calibration-summary strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink, #0b3658);
+  font-family: Georgia, serif;
+  font-size: 0.7rem;
+}
+
+.parameter-calibration-table-scroll {
+  margin-top: 9px;
+  overflow-x: auto;
+}
+
+.parameter-calibration-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+.parameter-calibration-table th,
+.parameter-calibration-table td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(217, 208, 189, 0.75);
+  color: var(--muted, #557087);
+  font-size: 0.48rem;
+  text-align: left;
+}
+
+.parameter-calibration-transfer {
+  margin-top: 10px;
+}
+
+@media (max-width: 850px) {
+  .parameter-calibration-controls,
+  .parameter-calibration-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .parameter-calibration-header,
+  .parameter-calibration-cases article {
+    display: grid;
+  }
+
+  .parameter-calibration-controls,
+  .parameter-calibration-summary,
+  .parameter-calibration-cases article {
+    grid-template-columns: 1fr;
+  }
+
+  .parameter-calibration-actions span {
+    width: 100%;
+    margin-left: 0;
+  }
+}

@@ -594,6 +594,7 @@ const toolSources = [
   'src/components/SensitivitySweepPanel.tsx',
   'src/components/UncertaintyAnalysisPanel.tsx',
   'src/components/RobustnessCornerAnalysisPanel.tsx',
+  'src/components/ParameterCalibrationPanel.tsx',
   'src/components/TargetOperatingPointPanel.tsx',
   'src/components/DesignEnvelopePanel.tsx',
   'src/components/ConstraintOperatingWindowPanel.tsx',
