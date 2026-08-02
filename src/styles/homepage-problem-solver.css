@@ -1811,3 +1811,76 @@ button:disabled {
     width: 100%;
   }
 }
+
+/* Problem Solver Performance Rescue v2 */
+
+.solver-tool-chunk-loading {
+  margin-top: 9px;
+  min-height: 105px;
+  padding: 14px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 6px;
+  border:
+    1px dashed
+    rgba(7, 156, 153, 0.42);
+  border-radius: 9px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.045);
+  text-align: center;
+}
+
+.solver-tool-chunk-loading
+span {
+  font-size: 0.49rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.solver-tool-chunk-loading
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.72rem;
+}
+
+.solver-result-tools-empty {
+  min-height: 105px;
+  margin-top: 9px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 5px;
+  border:
+    1px dashed
+    rgba(217, 208, 189, 0.88);
+  border-radius: 9px;
+  text-align: center;
+}
+
+.solver-result-tools-empty
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.68rem;
+}
+
+.solver-result-tools-empty
+p {
+  margin: 0;
+  max-width: 430px;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.5rem;
+  line-height: 1.45;
+}

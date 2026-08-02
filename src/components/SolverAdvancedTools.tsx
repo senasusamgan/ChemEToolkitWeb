@@ -1,30 +1,10 @@
 import {
+  lazy,
+  Suspense,
   useState,
 } from 'react'
 
-import {
-  BatchProblemSolverPanel,
-} from './BatchProblemSolverPanel'
-import {
-  DesignEnvelopePanel,
-} from './DesignEnvelopePanel'
-import {
-  GuidedProblemBuilder,
-} from './GuidedProblemBuilder'
-import {
-  SensitivitySweepPanel,
-} from './SensitivitySweepPanel'
-import {
-  TargetOperatingPointPanel,
-} from './TargetOperatingPointPanel'
-import {
-  UncertaintyAnalysisPanel,
-} from './UncertaintyAnalysisPanel'
-import {
-  UnitHarmonizerPanel,
-} from './UnitHarmonizerPanel'
-
-type AdvancedTool =
+type AdvancedToolId =
   | 'guided'
   | 'unit'
   | 'sensitivity'
@@ -32,6 +12,9 @@ type AdvancedTool =
   | 'target'
   | 'design'
   | 'batch'
+
+type AdvancedTool =
+  | AdvancedToolId
   | null
 
 interface SolverAdvancedToolsProps {
@@ -42,6 +25,174 @@ interface SolverAdvancedToolsProps {
   ) => void
   onClose: () => void
 }
+
+interface ToolOption {
+  id: AdvancedToolId
+  label: string
+  description: string
+}
+
+const loadGuidedProblemBuilder =
+  () =>
+    import(
+      './GuidedProblemBuilder'
+    )
+
+const loadUnitHarmonizerPanel =
+  () =>
+    import(
+      './UnitHarmonizerPanel'
+    )
+
+const loadSensitivitySweepPanel =
+  () =>
+    import(
+      './SensitivitySweepPanel'
+    )
+
+const loadUncertaintyAnalysisPanel =
+  () =>
+    import(
+      './UncertaintyAnalysisPanel'
+    )
+
+const loadTargetOperatingPointPanel =
+  () =>
+    import(
+      './TargetOperatingPointPanel'
+    )
+
+const loadDesignEnvelopePanel =
+  () =>
+    import(
+      './DesignEnvelopePanel'
+    )
+
+const loadBatchProblemSolverPanel =
+  () =>
+    import(
+      './BatchProblemSolverPanel'
+    )
+
+const GuidedProblemBuilder =
+  lazy(
+    async () => {
+      const module =
+        await loadGuidedProblemBuilder()
+
+      return {
+        default:
+          module
+            .GuidedProblemBuilder,
+      }
+    },
+  )
+
+const UnitHarmonizerPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadUnitHarmonizerPanel()
+
+      return {
+        default:
+          module
+            .UnitHarmonizerPanel,
+      }
+    },
+  )
+
+const SensitivitySweepPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadSensitivitySweepPanel()
+
+      return {
+        default:
+          module
+            .SensitivitySweepPanel,
+      }
+    },
+  )
+
+const UncertaintyAnalysisPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadUncertaintyAnalysisPanel()
+
+      return {
+        default:
+          module
+            .UncertaintyAnalysisPanel,
+      }
+    },
+  )
+
+const TargetOperatingPointPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadTargetOperatingPointPanel()
+
+      return {
+        default:
+          module
+            .TargetOperatingPointPanel,
+      }
+    },
+  )
+
+const DesignEnvelopePanel =
+  lazy(
+    async () => {
+      const module =
+        await loadDesignEnvelopePanel()
+
+      return {
+        default:
+          module
+            .DesignEnvelopePanel,
+      }
+    },
+  )
+
+const BatchProblemSolverPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadBatchProblemSolverPanel()
+
+      return {
+        default:
+          module
+            .BatchProblemSolverPanel,
+      }
+    },
+  )
+
+const TOOL_PREFETCHERS:
+  Record<
+    AdvancedToolId,
+    () =>
+      Promise<unknown>
+  > = {
+    guided:
+      loadGuidedProblemBuilder,
+    unit:
+      loadUnitHarmonizerPanel,
+    sensitivity:
+      loadSensitivitySweepPanel,
+    uncertainty:
+      loadUncertaintyAnalysisPanel,
+    target:
+      loadTargetOperatingPointPanel,
+    design:
+      loadDesignEnvelopePanel,
+    batch:
+      loadBatchProblemSolverPanel,
+  }
 
 export const
   SOLVER_ADVANCED_TOOL_COMPATIBILITY_MARKERS = [
@@ -55,71 +206,86 @@ export const
     'setIsUnitHarmonizerOpen',
   ] as const
 
-const TOOL_OPTIONS: Array<{
-  id: Exclude<
-    AdvancedTool,
-    null
-  >
+const TOOL_OPTIONS:
+  ToolOption[] = [
+    {
+      id:
+        'guided',
+      label:
+        'Guided input',
+      description:
+        'Build a problem from structured engineering fields.',
+    },
+    {
+      id:
+        'unit',
+      label:
+        'Unit harmonizer',
+      description:
+        'Normalize detected measurements to SI units.',
+    },
+    {
+      id:
+        'sensitivity',
+      label:
+        'Sensitivity sweep',
+      description:
+        'Vary one input across an operating range.',
+    },
+    {
+      id:
+        'uncertainty',
+      label:
+        'Uncertainty analysis',
+      description:
+        'Evaluate output uncertainty from uncertain inputs.',
+    },
+    {
+      id:
+        'target',
+      label:
+        'Target finder',
+      description:
+        'Find an input that produces a requested result.',
+    },
+    {
+      id:
+        'design',
+      label:
+        'Design envelope',
+      description:
+        'Explore a two-variable operating window.',
+    },
+    {
+      id:
+        'batch',
+      label:
+        'Batch solver',
+      description:
+        'Evaluate several engineering cases together.',
+    },
+  ]
+
+function ToolChunkLoading({
+  label,
+}: {
   label: string
-  description: string
-}> = [
-  {
-    id:
-      'guided',
-    label:
-      'Guided input',
-    description:
-      'Build a problem from structured engineering fields.',
-  },
-  {
-    id:
-      'unit',
-    label:
-      'Unit harmonizer',
-    description:
-      'Normalize detected measurements to SI units.',
-  },
-  {
-    id:
-      'sensitivity',
-    label:
-      'Sensitivity sweep',
-    description:
-      'Vary one input across an operating range.',
-  },
-  {
-    id:
-      'uncertainty',
-    label:
-      'Uncertainty analysis',
-    description:
-      'Evaluate output uncertainty from uncertain inputs.',
-  },
-  {
-    id:
-      'target',
-    label:
-      'Target finder',
-    description:
-      'Find an input that produces a requested result.',
-  },
-  {
-    id:
-      'design',
-    label:
-      'Design envelope',
-    description:
-      'Explore a two-variable operating window.',
-  },
-  {
-    id:
-      'batch',
-    label:
-      'Batch solver',
-    description:
-      'Evaluate several engineering cases together.',
-  },
-]
+}) {
+  return (
+    <div
+      className="solver-tool-chunk-loading"
+      role="status"
+    >
+      <span>
+        Loading selected engineering tool…
+      </span>
+
+      <strong>
+        {label}
+      </strong>
+    </div>
+  )
+}
 
 export function SolverAdvancedTools({
   baseQuery,
@@ -147,6 +313,15 @@ export function SolverAdvancedTools({
     )
   }
 
+  function prefetchTool(
+    toolId:
+      AdvancedToolId,
+  ) {
+    void TOOL_PREFETCHERS[
+      toolId
+    ]()
+  }
+
   return (
     <section
       className="solver-advanced-tools"
@@ -163,8 +338,9 @@ export function SolverAdvancedTools({
           </h3>
 
           <p>
-            Only the selected analysis tool is mounted.
-            This keeps the main Problem Solver responsive.
+            Each engineering tool loads in its own
+            JavaScript chunk. Only the selected analysis
+            is downloaded and mounted.
           </p>
         </div>
 
@@ -195,6 +371,16 @@ export function SolverAdvancedTools({
               aria-pressed={
                 activeTool ===
                 tool.id
+              }
+              onPointerEnter={() =>
+                prefetchTool(
+                  tool.id,
+                )
+              }
+              onFocus={() =>
+                prefetchTool(
+                  tool.id,
+                )
               }
               onClick={() =>
                 setActiveTool(
@@ -228,150 +414,193 @@ export function SolverAdvancedTools({
           </strong>
 
           <p>
-            Advanced calculations remain unloaded until
-            they are explicitly selected.
+            Hovering or focusing a tool prepares only
+            that tool’s chunk. Other analyses remain
+            unloaded.
           </p>
         </div>
       ) : null}
 
       {activeTool ===
       'guided' ? (
-        <GuidedProblemBuilder
-          isOpen
-          onClose={() =>
-            setActiveTool(
-              null,
-            )
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Guided input" />
           }
-          onUseProblem={(
-            generatedProblem,
-          ) =>
-            applyProblem(
+        >
+          <GuidedProblemBuilder
+            isOpen
+            onClose={() =>
+              setActiveTool(
+                null,
+              )
+            }
+            onUseProblem={(
               generatedProblem,
-              'Guided engineering problem loaded.',
-            )
-          }
-        />
+            ) =>
+              applyProblem(
+                generatedProblem,
+                'Guided engineering problem loaded.',
+              )
+            }
+          />
+        </Suspense>
       ) : null}
 
       {activeTool ===
       'unit' ? (
-        <UnitHarmonizerPanel
-          isOpen
-          baseQuery={
-            baseQuery
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Unit harmonizer" />
           }
-          onClose={() =>
-            setActiveTool(
-              null,
-            )
-          }
-          onApplyProblem={(
-            normalizedProblem,
-          ) =>
-            applyProblem(
+        >
+          <UnitHarmonizerPanel
+            isOpen
+            baseQuery={
+              baseQuery
+            }
+            onClose={() =>
+              setActiveTool(
+                null,
+              )
+            }
+            onApplyProblem={(
               normalizedProblem,
-              'SI-normalized problem loaded.',
-            )
-          }
-        />
+            ) =>
+              applyProblem(
+                normalizedProblem,
+                'SI-normalized problem loaded.',
+              )
+            }
+          />
+        </Suspense>
       ) : null}
 
       {activeTool ===
       'sensitivity' ? (
-        <SensitivitySweepPanel
-          isOpen
-          baseQuery={
-            baseQuery
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Sensitivity sweep" />
           }
-          onClose={() =>
-            setActiveTool(
-              null,
-            )
-          }
-          onUseProblem={(
-            generatedProblem,
-          ) =>
-            applyProblem(
+        >
+          <SensitivitySweepPanel
+            isOpen
+            baseQuery={
+              baseQuery
+            }
+            onClose={() =>
+              setActiveTool(
+                null,
+              )
+            }
+            onUseProblem={(
               generatedProblem,
-              'Sensitivity operating point loaded.',
-            )
-          }
-        />
+            ) =>
+              applyProblem(
+                generatedProblem,
+                'Sensitivity operating point loaded.',
+              )
+            }
+          />
+        </Suspense>
       ) : null}
 
       {activeTool ===
       'uncertainty' ? (
-        <UncertaintyAnalysisPanel
-          isOpen
-          baseQuery={
-            baseQuery
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Uncertainty analysis" />
           }
-          onClose={() =>
-            setActiveTool(
-              null,
-            )
-          }
-          onApplyProblem={(
-            generatedProblem,
-          ) =>
-            applyProblem(
+        >
+          <UncertaintyAnalysisPanel
+            isOpen
+            baseQuery={
+              baseQuery
+            }
+            onClose={() =>
+              setActiveTool(
+                null,
+              )
+            }
+            onApplyProblem={(
               generatedProblem,
-              'Uncertainty operating case loaded.',
-            )
-          }
-        />
+            ) =>
+              applyProblem(
+                generatedProblem,
+                'Uncertainty operating case loaded.',
+              )
+            }
+          />
+        </Suspense>
       ) : null}
 
       {activeTool ===
       'target' ? (
-        <TargetOperatingPointPanel
-          initiallyOpen
-          baseQuery={
-            baseQuery
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Target finder" />
           }
-          onApplyProblem={(
-            selectedProblem,
-          ) =>
-            applyProblem(
+        >
+          <TargetOperatingPointPanel
+            initiallyOpen
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
               selectedProblem,
-              'Target operating point loaded.',
-            )
-          }
-        />
+            ) =>
+              applyProblem(
+                selectedProblem,
+                'Target operating point loaded.',
+              )
+            }
+          />
+        </Suspense>
       ) : null}
 
       {activeTool ===
       'design' ? (
-        <DesignEnvelopePanel
-          initiallyOpen
-          baseQuery={
-            baseQuery
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Design envelope" />
           }
-          onApplyProblem={(
-            selectedProblem,
-          ) =>
-            applyProblem(
+        >
+          <DesignEnvelopePanel
+            initiallyOpen
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
               selectedProblem,
-              'Design-envelope operating point loaded.',
-            )
-          }
-        />
+            ) =>
+              applyProblem(
+                selectedProblem,
+                'Design-envelope operating point loaded.',
+              )
+            }
+          />
+        </Suspense>
       ) : null}
 
       {activeTool ===
       'batch' ? (
-        <BatchProblemSolverPanel
-          initiallyOpen
-          onLoadCase={(
-            selectedProblem,
-          ) =>
-            applyProblem(
-              selectedProblem,
-              'Batch engineering case loaded.',
-            )
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Batch solver" />
           }
-        />
+        >
+          <BatchProblemSolverPanel
+            initiallyOpen
+            onLoadCase={(
+              selectedProblem,
+            ) =>
+              applyProblem(
+                selectedProblem,
+                'Batch engineering case loaded.',
+              )
+            }
+          />
+        </Suspense>
       ) : null}
     </section>
   )

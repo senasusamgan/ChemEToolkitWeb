@@ -1,44 +1,153 @@
 import {
+  lazy,
+  Suspense,
   useState,
+  type ComponentProps,
 } from 'react'
 
-import {
-  AssumptionReviewPanel,
-} from './AssumptionReviewPanel'
-import {
-  CalculationTracePanel,
-} from './CalculationTracePanel'
-import {
-  EngineeringValidationGate,
-} from './EngineeringValidationGate'
-import {
-  MissingInputAssistant,
-} from './MissingInputAssistant'
-import {
-  ResultUnitConverterPanel,
-} from './ResultUnitConverterPanel'
-
-type TraceProps =
-  Parameters<
-    typeof CalculationTracePanel
-  >[0]
-
-type ValidationProps =
-  Parameters<
-    typeof EngineeringValidationGate
-  >[0]
-
-type MissingInputProps =
-  Parameters<
-    typeof MissingInputAssistant
-  >[0]
-
-type ResultTool =
+type ResultToolId =
   | 'missing'
   | 'convert'
   | 'trace'
   | 'assumptions'
   | 'validation'
+
+type ResultTool =
+  | ResultToolId
+  | null
+
+const loadAssumptionReviewPanel =
+  () =>
+    import(
+      './AssumptionReviewPanel'
+    )
+
+const loadCalculationTracePanel =
+  () =>
+    import(
+      './CalculationTracePanel'
+    )
+
+const loadEngineeringValidationGate =
+  () =>
+    import(
+      './EngineeringValidationGate'
+    )
+
+const loadMissingInputAssistant =
+  () =>
+    import(
+      './MissingInputAssistant'
+    )
+
+const loadResultUnitConverterPanel =
+  () =>
+    import(
+      './ResultUnitConverterPanel'
+    )
+
+const AssumptionReviewPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadAssumptionReviewPanel()
+
+      return {
+        default:
+          module
+            .AssumptionReviewPanel,
+      }
+    },
+  )
+
+const CalculationTracePanel =
+  lazy(
+    async () => {
+      const module =
+        await loadCalculationTracePanel()
+
+      return {
+        default:
+          module
+            .CalculationTracePanel,
+      }
+    },
+  )
+
+const EngineeringValidationGate =
+  lazy(
+    async () => {
+      const module =
+        await loadEngineeringValidationGate()
+
+      return {
+        default:
+          module
+            .EngineeringValidationGate,
+      }
+    },
+  )
+
+const MissingInputAssistant =
+  lazy(
+    async () => {
+      const module =
+        await loadMissingInputAssistant()
+
+      return {
+        default:
+          module
+            .MissingInputAssistant,
+      }
+    },
+  )
+
+const ResultUnitConverterPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadResultUnitConverterPanel()
+
+      return {
+        default:
+          module
+            .ResultUnitConverterPanel,
+      }
+    },
+  )
+
+const RESULT_TOOL_PREFETCHERS:
+  Record<
+    ResultToolId,
+    () =>
+      Promise<unknown>
+  > = {
+    missing:
+      loadMissingInputAssistant,
+    convert:
+      loadResultUnitConverterPanel,
+    trace:
+      loadCalculationTracePanel,
+    assumptions:
+      loadAssumptionReviewPanel,
+    validation:
+      loadEngineeringValidationGate,
+  }
+
+type TraceProps =
+  ComponentProps<
+    typeof CalculationTracePanel
+  >
+
+type ValidationProps =
+  ComponentProps<
+    typeof EngineeringValidationGate
+  >
+
+type MissingInputProps =
+  ComponentProps<
+    typeof MissingInputAssistant
+  >
 
 interface SolverResultToolsProps {
   baseQuery: string
@@ -79,6 +188,27 @@ interface SolverResultToolsProps {
   onClose: () => void
 }
 
+function ResultToolLoading({
+  label,
+}: {
+  label: string
+}) {
+  return (
+    <div
+      className="solver-tool-chunk-loading"
+      role="status"
+    >
+      <span>
+        Loading selected result tool…
+      </span>
+
+      <strong>
+        {label}
+      </strong>
+    </div>
+  )
+}
+
 export function SolverResultTools({
   baseQuery,
   calculatorTitle,
@@ -101,17 +231,10 @@ export function SolverResultTools({
     setActiveTool,
   ] = useState<
     ResultTool
-  >(
-    missingVariables.length >
-    0
-      ? 'missing'
-      : quickSolution
-        ? 'convert'
-        : 'validation',
-  )
+  >(null)
 
   const options: Array<{
-    id: ResultTool
+    id: ResultToolId
     label: string
     disabled: boolean
   }> = [
@@ -162,6 +285,15 @@ export function SolverResultTools({
     },
   ]
 
+  function prefetchTool(
+    toolId:
+      ResultToolId,
+  ) {
+    void RESULT_TOOL_PREFETCHERS[
+      toolId
+    ]()
+  }
+
   return (
     <section
       className="solver-result-tools"
@@ -178,8 +310,9 @@ export function SolverResultTools({
           </h4>
 
           <p>
-            Only one detailed result tool is rendered at
-            a time.
+            Each result review tool has an independent
+            JavaScript chunk and remains unloaded until
+            selected.
           </p>
         </div>
 
@@ -219,6 +352,24 @@ export function SolverResultTools({
                   ? 'is-active'
                   : undefined
               }
+              onPointerEnter={() => {
+                if (
+                  !option.disabled
+                ) {
+                  prefetchTool(
+                    option.id,
+                  )
+                }
+              }}
+              onFocus={() => {
+                if (
+                  !option.disabled
+                ) {
+                  prefetchTool(
+                    option.id,
+                  )
+                }
+              }}
               onClick={() =>
                 setActiveTool(
                   option.id,
@@ -232,152 +383,196 @@ export function SolverResultTools({
       </div>
 
       {activeTool ===
+      null ? (
+        <div className="solver-result-tools-empty">
+          <strong>
+            Choose a result review tool
+          </strong>
+
+          <p>
+            Converter, trace, assumptions and validation
+            remain unloaded until you select one.
+          </p>
+        </div>
+      ) : null}
+
+      {activeTool ===
         'missing' &&
       missingVariables.length >
         0 ? (
-        <MissingInputAssistant
-          key={
-            missingVariables.join(
-              '|',
-            )
+        <Suspense
+          fallback={
+            <ResultToolLoading label="Complete inputs" />
           }
-          calculatorTitle={
-            calculatorTitle
-          }
-          targetName={
-            contextTargetName
-          }
-          baseQuery={
-            baseQuery
-          }
-          missingVariables={
-            missingVariables
-          }
-          onApplyProblem={(
-            completedProblem,
-          ) => {
-            onApplyProblem(
+        >
+          <MissingInputAssistant
+            key={
+              missingVariables.join(
+                '|',
+              )
+            }
+            calculatorTitle={
+              calculatorTitle
+            }
+            targetName={
+              contextTargetName
+            }
+            baseQuery={
+              baseQuery
+            }
+            missingVariables={
+              missingVariables
+            }
+            onApplyProblem={(
               completedProblem,
-            )
-          }}
-        />
+            ) => {
+              onApplyProblem(
+                completedProblem,
+              )
+            }}
+          />
+        </Suspense>
       ) : null}
 
       {activeTool ===
         'convert' &&
       quickSolution ? (
-        <ResultUnitConverterPanel
-          key={[
-            quickSolution
-              .resultLabel,
-            quickSolution
-              .numericValue,
-            quickSolution
-              .unit,
-          ].join('|')}
-          calculatorTitle={
-            calculatorTitle
+        <Suspense
+          fallback={
+            <ResultToolLoading label="Result unit converter" />
           }
-          resultLabel={
-            quickSolution
-              .resultLabel
-          }
-          numericValue={
-            quickSolution
-              .numericValue
-          }
-          sourceUnit={
-            quickSolution.unit
-          }
-        />
+        >
+          <ResultUnitConverterPanel
+            key={[
+              quickSolution
+                .resultLabel,
+              quickSolution
+                .numericValue,
+              quickSolution
+                .unit,
+            ].join('|')}
+            calculatorTitle={
+              calculatorTitle
+            }
+            resultLabel={
+              quickSolution
+                .resultLabel
+            }
+            numericValue={
+              quickSolution
+                .numericValue
+            }
+            sourceUnit={
+              quickSolution.unit
+            }
+          />
+        </Suspense>
       ) : null}
 
       {activeTool ===
         'trace' &&
       quickSolution ? (
-        <CalculationTracePanel
-          calculatorTitle={
-            calculatorTitle
+        <Suspense
+          fallback={
+            <ResultToolLoading label="Calculation trace" />
           }
-          equationLabel={
-            equationLabel
-          }
-          equation={
-            equation
-          }
-          targetName={
-            targetName
-          }
-          readinessPercent={
-            readinessPercent
-          }
-          assignments={
-            assignments
-          }
-          quickSolution={
-            quickSolution
-          }
-        />
+        >
+          <CalculationTracePanel
+            calculatorTitle={
+              calculatorTitle
+            }
+            equationLabel={
+              equationLabel
+            }
+            equation={
+              equation
+            }
+            targetName={
+              targetName
+            }
+            readinessPercent={
+              readinessPercent
+            }
+            assignments={
+              assignments
+            }
+            quickSolution={
+              quickSolution
+            }
+          />
+        </Suspense>
       ) : null}
 
       {activeTool ===
       'assumptions' ? (
-        <AssumptionReviewPanel
-          baseQuery={
-            baseQuery
+        <Suspense
+          fallback={
+            <ResultToolLoading label="Assumption review" />
           }
-          calculatorTitle={
-            calculatorTitle
-          }
-          equationLabel={
-            equationLabel
-          }
-          equation={
-            equation
-          }
-          targetName={
-            targetName
-          }
-          assignments={
-            assignments
-          }
-          quickSolution={
-            quickSolution
-          }
-        />
+        >
+          <AssumptionReviewPanel
+            baseQuery={
+              baseQuery
+            }
+            calculatorTitle={
+              calculatorTitle
+            }
+            equationLabel={
+              equationLabel
+            }
+            equation={
+              equation
+            }
+            targetName={
+              targetName
+            }
+            assignments={
+              assignments
+            }
+            quickSolution={
+              quickSolution
+            }
+          />
+        </Suspense>
       ) : null}
 
       {activeTool ===
       'validation' ? (
-        <EngineeringValidationGate
-          calculatorTitle={
-            calculatorTitle
+        <Suspense
+          fallback={
+            <ResultToolLoading label="Validation gate" />
           }
-          category={
-            category
-          }
-          targetName={
-            targetName
-          }
-          readinessPercent={
-            readinessPercent
-          }
-          status={
-            status
-          }
-          missingVariables={
-            missingVariables
-          }
-          diagnostics={
-            diagnostics
-          }
-          assignments={
-            assignments
-          }
-          quickSolution={
-            quickSolution
-          }
-        />
+        >
+          <EngineeringValidationGate
+            calculatorTitle={
+              calculatorTitle
+            }
+            category={
+              category
+            }
+            targetName={
+              targetName
+            }
+            readinessPercent={
+              readinessPercent
+            }
+            status={
+              status
+            }
+            missingVariables={
+              missingVariables
+            }
+            diagnostics={
+              diagnostics
+            }
+            assignments={
+              assignments
+            }
+            quickSolution={
+              quickSolution
+            }
+          />
+        </Suspense>
       ) : null}
     </section>
   )

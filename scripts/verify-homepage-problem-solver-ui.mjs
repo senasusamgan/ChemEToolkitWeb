@@ -1773,6 +1773,141 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'lazy(',
+    '<Suspense',
+    'TOOL_PREFETCHERS',
+    'Loading selected engineering tool',
+    'Each engineering tool loads in its own',
+    './GuidedProblemBuilder',
+    './UnitHarmonizerPanel',
+    './SensitivitySweepPanel',
+    './UncertaintyAnalysisPanel',
+    './TargetOperatingPointPanel',
+    './DesignEnvelopePanel',
+    './BatchProblemSolverPanel',
+  ]
+) {
+  if (
+    !advancedToolsComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver individual chunk contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const forbiddenImport
+  of [
+    'import {\n  GuidedProblemBuilder,',
+    'import {\n  UnitHarmonizerPanel,',
+    'import {\n  SensitivitySweepPanel,',
+    'import {\n  UncertaintyAnalysisPanel,',
+    'import {\n  TargetOperatingPointPanel,',
+    'import {\n  DesignEnvelopePanel,',
+    'import {\n  BatchProblemSolverPanel,',
+  ]
+) {
+  if (
+    advancedToolsComponent.includes(
+      forbiddenImport,
+    )
+  ) {
+    throw new Error(
+      `Advanced Solver tool remains eager: ${forbiddenImport}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'lazy(',
+    '<Suspense',
+    'RESULT_TOOL_PREFETCHERS',
+    'Loading selected result tool',
+    'Choose a result review tool',
+    './MissingInputAssistant',
+    './ResultUnitConverterPanel',
+    './CalculationTracePanel',
+    './AssumptionReviewPanel',
+    './EngineeringValidationGate',
+  ]
+) {
+  if (
+    !resultToolsComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Result Solver individual chunk contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const forbiddenImport
+  of [
+    'import {\n  MissingInputAssistant,',
+    'import {\n  ResultUnitConverterPanel,',
+    'import {\n  CalculationTracePanel,',
+    'import {\n  AssumptionReviewPanel,',
+    'import {\n  EngineeringValidationGate,',
+  ]
+) {
+  if (
+    resultToolsComponent.includes(
+      forbiddenImport,
+    )
+  ) {
+    throw new Error(
+      `Result Solver tool remains eager: ${forbiddenImport}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.solver-tool-chunk-loading',
+    '.solver-result-tools-empty',
+  ]
+) {
+  if (
+    !styles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver chunk-loading style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'splits every advanced Solver tool into an individual lazy chunk',
+    'splits every result review tool into an individual lazy chunk',
+    'shows a responsive loading state for separately downloaded tools',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver chunk test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )

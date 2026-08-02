@@ -1935,3 +1935,139 @@ test(
     }
   },
 )
+
+test(
+  'splits every advanced Solver tool into an individual lazy chunk',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/SolverAdvancedTools.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'lazy(',
+        '<Suspense',
+        'TOOL_PREFETCHERS',
+        'Loading selected engineering tool',
+        'Each engineering tool loads in its own',
+        "import(\n      './GuidedProblemBuilder'",
+        "import(\n      './UnitHarmonizerPanel'",
+        "import(\n      './SensitivitySweepPanel'",
+        "import(\n      './UncertaintyAnalysisPanel'",
+        "import(\n      './TargetOperatingPointPanel'",
+        "import(\n      './DesignEnvelopePanel'",
+        "import(\n      './BatchProblemSolverPanel'",
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing advanced chunk contract: ${contract}`,
+      )
+    }
+
+    for (
+      const eagerImport
+      of [
+        'import {\n  GuidedProblemBuilder,',
+        'import {\n  UnitHarmonizerPanel,',
+        'import {\n  SensitivitySweepPanel,',
+        'import {\n  UncertaintyAnalysisPanel,',
+        'import {\n  TargetOperatingPointPanel,',
+        'import {\n  DesignEnvelopePanel,',
+        'import {\n  BatchProblemSolverPanel,',
+      ]
+    ) {
+      assert.equal(
+        source.includes(
+          eagerImport,
+        ),
+        false,
+        `Advanced tool is still eagerly imported: ${eagerImport}`,
+      )
+    }
+  },
+)
+
+test(
+  'splits every result review tool into an individual lazy chunk',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/SolverResultTools.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'lazy(',
+        '<Suspense',
+        'RESULT_TOOL_PREFETCHERS',
+        'Loading selected result tool',
+        'Choose a result review tool',
+        "import(\n      './MissingInputAssistant'",
+        "import(\n      './ResultUnitConverterPanel'",
+        "import(\n      './CalculationTracePanel'",
+        "import(\n      './AssumptionReviewPanel'",
+        "import(\n      './EngineeringValidationGate'",
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing result chunk contract: ${contract}`,
+      )
+    }
+
+    for (
+      const eagerImport
+      of [
+        'import {\n  MissingInputAssistant,',
+        'import {\n  ResultUnitConverterPanel,',
+        'import {\n  CalculationTracePanel,',
+        'import {\n  AssumptionReviewPanel,',
+        'import {\n  EngineeringValidationGate,',
+      ]
+    ) {
+      assert.equal(
+        source.includes(
+          eagerImport,
+        ),
+        false,
+        `Result tool is still eagerly imported: ${eagerImport}`,
+      )
+    }
+  },
+)
+
+test(
+  'shows a responsive loading state for separately downloaded tools',
+  async () => {
+    const source =
+      await readFile(
+        stylePath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.solver-tool-chunk-loading',
+        '.solver-result-tools-empty',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing tool-chunk loading style: ${contract}`,
+      )
+    }
+  },
+)
