@@ -1418,6 +1418,76 @@ function confidenceForScore(
   return 'low'
 }
 
+interface ProblemSolverCalculatorIndex {
+  cleanTitle: string
+  cleanCategory: string
+  titleTokens:
+    Set<string>
+}
+
+interface ProblemSolverCandidate {
+  calculator:
+    ProblemSolverCalculator
+  score: number
+  reasons: string[]
+}
+
+export const
+  PROBLEM_SOLVER_RANKING_PIPELINE =
+    'two-stage-shortlist' as const
+
+const
+  PROBLEM_SOLVER_CALCULATOR_INDEX_CACHE =
+    new WeakMap<
+      ProblemSolverCalculator,
+      ProblemSolverCalculatorIndex
+    >()
+
+function indexProblemSolverCalculator(
+  calculator:
+    ProblemSolverCalculator,
+): ProblemSolverCalculatorIndex {
+  const cachedIndex =
+    PROBLEM_SOLVER_CALCULATOR_INDEX_CACHE.get(
+      calculator,
+    )
+
+  if (cachedIndex) {
+    return cachedIndex
+  }
+
+  const cleanTitle =
+    normalize(
+      calculator.title,
+    )
+
+  const index = {
+    cleanTitle,
+    cleanCategory:
+      normalize(
+        calculator.category,
+      ),
+    titleTokens:
+      new Set(
+        cleanTitle
+          .split(
+            ' ',
+          )
+          .filter(
+            (token) =>
+              token.length > 1,
+          ),
+      ),
+  }
+
+  PROBLEM_SOLVER_CALCULATOR_INDEX_CACHE.set(
+    calculator,
+    index,
+  )
+
+  return index
+}
+
 export function rankProblemSolvers(
   query: string,
   calculators:
@@ -1467,245 +1537,373 @@ export function rankProblemSolvers(
     return []
   }
 
+  const safeLimit =
+    Math.max(
+      1,
+      limit,
+    )
+
   const queryTokens =
     cleanQuery
-      .split(' ')
+      .split(
+        ' ',
+      )
       .filter(
         (token) =>
           token.length > 1,
       )
 
-  return calculators
-    .filter(
-      (calculator) =>
-        calculator.available,
+  const equationCalculatorIds =
+    new Set(
+      equationIntent
+        .suggestedCalculatorIds,
     )
-    .map((calculator) => {
-      const cleanTitle =
-        normalize(
-          calculator.title,
+
+  const equationCategories =
+    new Set(
+      equationIntent
+        .suggestedCategories,
+    )
+
+  const normalizedTargetName =
+    equationIntent.targetName
+      ? normalize(
+          equationIntent
+            .targetName,
         )
+      : ''
 
-      const cleanCategory =
-        normalize(
-          calculator.category,
-        )
-
-      const reasons =
-        new Set<string>()
-
-      let score = 0
-
-      if (
-        equationParse.assignments.length >
-        0
-      ) {
-        score +=
-          Math.min(
-            30,
-            equationParse.assignments.length *
-              5,
+  const equationAssignmentReason =
+    equationParse
+      .assignments
+      .length > 0
+      ? `Parsed symbolic inputs: ${equationParse.assignments
+          .map(
+            (assignment) =>
+              assignment.symbol,
           )
+          .join(', ')}`
+      : ''
 
-        reasons.add(
-          `Parsed symbolic inputs: ${equationParse.assignments
-              .map(
-                (assignment) =>
-                  assignment.symbol,
-              )
-              .join(', ')}`,
-        )
-      }
+  const matchedCategorySignals =
+    new Map<
+      string,
+      string[]
+    >()
 
-      const equationCalculatorMatches =
-        equationIntent
-          .suggestedCalculatorIds
-          .includes(
-            calculator.id,
-          )
-
-      const equationCategoryMatches =
-        equationIntent
-          .suggestedCategories
-          .includes(
-            calculator.category,
-          )
-
-      if (
-        equationIntent.equationId &&
-        (
-          equationCalculatorMatches ||
-          equationCategoryMatches
-        )
-      ) {
-        score +=
-          equationCalculatorMatches
-            ? 42
-            : 24
-
-        reasons.add(
-          `Recognized equation: ${equationIntent.equationLabel}`,
-        )
-      }
-
-      if (
-        equationIntent.targetName &&
-        cleanTitle.includes(
-          normalize(
-            equationIntent.targetName,
-          ),
-        )
-      ) {
-        score += 20
-
-        reasons.add(
-          `Requested unknown: ${equationIntent.targetName}`,
-        )
-      }
-
-      if (
-        equationContext.status ===
-          'ready' &&
-        (
-          equationCalculatorMatches ||
-          equationCategoryMatches
-        )
-      ) {
-        score += 18
-
-        reasons.add(
-          `Equation inputs ready: ${equationContext.readinessPercent}%`,
-        )
-      } else if (
-        equationContext.status ===
-          'needs-inputs' &&
-        (
-          equationCalculatorMatches ||
-          equationCategoryMatches
-        )
-      ) {
-        score += 6
-
-        reasons.add(
-          `Equation inputs missing: ${equationContext.missingVariableNames.join(', ')}`,
-        )
-      }
-
-      if (cleanTitle === cleanQuery) {
-        score += 180
-
-        reasons.add(
-          'Exact calculator-title match',
-        )
-      } else if (
-        cleanQuery.includes(
-          cleanTitle,
-        )
-      ) {
-        score += 110
-
-        reasons.add(
-          'Calculator title appears in the problem',
-        )
-      }
-
-      const titleTokens =
-        cleanTitle
-          .split(' ')
-          .filter(
-            (token) =>
-              token.length > 1,
-          )
-
-      for (
-        const token
-        of queryTokens
-      ) {
-        if (
-          titleTokens.includes(
-            token,
-          )
-        ) {
-          score += 18
-
-          reasons.add(
-            `Title term matched: ${token}`,
-          )
-        } else if (
-          cleanCategory.includes(
-            token,
-          )
-        ) {
-          score += 5
-        }
-      }
-
-      const categorySignals =
-        CATEGORY_SIGNALS[
-          calculator.category
-        ] ?? []
-
-      for (
-        const signal
-        of categorySignals
-      ) {
-        if (
+  for (
+    const [
+      category,
+      signals,
+    ]
+    of Object.entries(
+      CATEGORY_SIGNALS,
+    )
+  ) {
+    matchedCategorySignals.set(
+      category,
+      signals.filter(
+        (signal) =>
           phraseMatches(
             cleanQuery,
             signal,
-          )
-        ) {
-          score += 24
+          ),
+      ),
+    )
+  }
 
-          reasons.add(
-            `Discipline signal matched: ${signal}`,
-          )
-        }
-      }
+  const matchedIntentProfiles =
+    INTENT_PROFILES.filter(
+      (profile) =>
+        profile.signals.some(
+          (signal) =>
+            phraseMatches(
+              cleanQuery,
+              signal,
+            ),
+        ),
+    )
 
-      for (
-        const profile
-        of INTENT_PROFILES
-      ) {
-        const signalMatched =
-          profile.signals.some(
-            (signal) =>
-              phraseMatches(
-                cleanQuery,
-                signal,
+  /*
+   * Stage 1:
+   * Score every available calculator using only
+   * inexpensive title, category, equation and intent
+   * signals. No diagnostics, Quick Solve, report or
+   * assumption generation is performed here.
+   */
+  const rankedCandidates:
+    ProblemSolverCandidate[] =
+    calculators
+      .filter(
+        (calculator) =>
+          calculator.available,
+      )
+      .map(
+        (
+          calculator,
+        ):
+          ProblemSolverCandidate => {
+          const calculatorIndex =
+            indexProblemSolverCalculator(
+              calculator,
+            )
+
+          const {
+            cleanTitle,
+            cleanCategory,
+            titleTokens,
+          } =
+            calculatorIndex
+
+          const reasons =
+            new Set<string>()
+
+          let score =
+            0
+
+          if (
+            equationParse
+              .assignments
+              .length > 0
+          ) {
+            score +=
+              Math.min(
+                30,
+                equationParse
+                  .assignments
+                  .length *
+                  5,
+              )
+
+            reasons.add(
+              equationAssignmentReason,
+            )
+          }
+
+          const equationCalculatorMatches =
+            equationCalculatorIds.has(
+              calculator.id,
+            )
+
+          const equationCategoryMatches =
+            equationCategories.has(
+              calculator.category,
+            )
+
+          if (
+            equationIntent.equationId &&
+            (
+              equationCalculatorMatches ||
+              equationCategoryMatches
+            )
+          ) {
+            score +=
+              equationCalculatorMatches
+                ? 42
+                : 24
+
+            reasons.add(
+              `Recognized equation: ${equationIntent.equationLabel}`,
+            )
+          }
+
+          if (
+            normalizedTargetName &&
+            cleanTitle.includes(
+              normalizedTargetName,
+            )
+          ) {
+            score +=
+              20
+
+            reasons.add(
+              `Requested unknown: ${equationIntent.targetName}`,
+            )
+          }
+
+          if (
+            equationContext.status ===
+              'ready' &&
+            (
+              equationCalculatorMatches ||
+              equationCategoryMatches
+            )
+          ) {
+            score +=
+              18
+
+            reasons.add(
+              `Equation inputs ready: ${equationContext.readinessPercent}%`,
+            )
+          } else if (
+            equationContext.status ===
+              'needs-inputs' &&
+            (
+              equationCalculatorMatches ||
+              equationCategoryMatches
+            )
+          ) {
+            score +=
+              6
+
+            reasons.add(
+              `Equation inputs missing: ${equationContext.missingVariableNames.join(', ')}`,
+            )
+          }
+
+          if (
+            cleanTitle ===
+            cleanQuery
+          ) {
+            score +=
+              180
+
+            reasons.add(
+              'Exact calculator-title match',
+            )
+          } else if (
+            cleanQuery.includes(
+              cleanTitle,
+            )
+          ) {
+            score +=
+              110
+
+            reasons.add(
+              'Calculator title appears in the problem',
+            )
+          }
+
+          for (
+            const token
+            of queryTokens
+          ) {
+            if (
+              titleTokens.has(
+                token,
+              )
+            ) {
+              score +=
+                18
+
+              reasons.add(
+                `Title term matched: ${token}`,
+              )
+            } else if (
+              cleanCategory.includes(
+                token,
+              )
+            ) {
+              score +=
+                5
+            }
+          }
+
+          const categorySignals =
+            matchedCategorySignals.get(
+              calculator.category,
+            ) ?? []
+
+          for (
+            const signal
+            of categorySignals
+          ) {
+            score +=
+              24
+
+            reasons.add(
+              `Discipline signal matched: ${signal}`,
+            )
+          }
+
+          for (
+            const profile
+            of matchedIntentProfiles
+          ) {
+            if (
+              !profile
+                .categories
+                .includes(
+                  calculator.category,
+                )
+            ) {
+              continue
+            }
+
+            const titleMatched =
+              profile
+                .titleTerms
+                .every(
+                  (term) =>
+                    cleanTitle.includes(
+                      normalize(
+                        term,
+                      ),
+                    ),
+                )
+
+            if (!titleMatched) {
+              continue
+            }
+
+            score +=
+              profile.score
+
+            reasons.add(
+              profile.label,
+            )
+          }
+
+          return {
+            calculator,
+            score,
+            reasons:
+              Array.from(
+                reasons,
               ),
-          )
+          }
+        },
+      )
+      .filter(
+        (candidate) =>
+          candidate.score > 0,
+      )
+      .sort(
+        (
+          first,
+          second,
+        ) =>
+          second.score -
+            first.score ||
+          first
+            .calculator
+            .title
+            .localeCompare(
+              second
+                .calculator
+                .title,
+            ),
+      )
+      .slice(
+        0,
+        safeLimit,
+      )
 
-        if (!signalMatched) {
-          continue
-        }
-
-        if (
-          !profile.categories.includes(
-            calculator.category,
-          )
-        ) {
-          continue
-        }
-
-        const titleMatched =
-          profile.titleTerms.every(
-            (term) =>
-              cleanTitle.includes(
-                normalize(term),
-              ),
-          )
-
-        if (!titleMatched) {
-          continue
-        }
-
-        score += profile.score
-
-        reasons.add(
-          profile.label,
-        )
-      }
+  /*
+   * Stage 2:
+   * Run expensive engineering enrichment only for
+   * candidates that will actually be returned.
+   */
+  return rankedCandidates.map(
+    (
+      candidate,
+    ) => {
+      const {
+        calculator,
+        score,
+        reasons,
+      } =
+        candidate
 
       const guidance =
         buildProblemGuidance(
@@ -1726,13 +1924,17 @@ export function rankProblemSolvers(
         )
 
       const diagnosticReasons =
-        diagnostics.diagnostics.map(
-          (diagnostic) =>
-            `Input ${diagnostic.severity}: ${diagnostic.message}`,
-        )
+        diagnostics
+          .diagnostics
+          .map(
+            (diagnostic) =>
+              `Input ${diagnostic.severity}: ${diagnostic.message}`,
+          )
 
       const diagnosticGuidance =
-        diagnostics.diagnostics.length > 0
+        diagnostics
+          .diagnostics
+          .length > 0
           ? `${guidance.guidance} Input check: ${diagnostics.diagnostics
               .map(
                 (diagnostic) =>
@@ -1815,13 +2017,17 @@ export function rankProblemSolvers(
           category:
             calculator.category,
           readinessPercent:
-            readiness.readinessPercent,
+            readiness
+              .readinessPercent,
           detectedInputs:
-            readiness.detectedInputs,
+            readiness
+              .detectedInputs,
           missingInputs:
-            readiness.missingInputs,
+            readiness
+              .missingInputs,
           diagnostics:
-            diagnostics.diagnostics,
+            diagnostics
+              .diagnostics,
           solutionPlan,
           assumptions,
           verificationChecklist,
@@ -1835,11 +2041,15 @@ export function rankProblemSolvers(
         solutionPlan.length > 0
           ? `${diagnosticGuidance} Solution plan: ${solutionPlan
               .map(
-                (step, index) =>
+                (
+                  step,
+                  index,
+                ) =>
                   `${index + 1}. ${step}`,
               )
               .join(' ')}`
           : diagnosticGuidance
+
       const enrichedGuidance =
         [
           plannedGuidance,
@@ -1847,15 +2057,22 @@ export function rankProblemSolvers(
           assumptions.length > 0
             ? `Assumptions: ${assumptions
                 .map(
-                  (assumption, index) =>
+                  (
+                    assumption,
+                    index,
+                  ) =>
                     `${index + 1}. ${assumption}`,
                 )
                 .join(' ')}`
             : '',
-          verificationChecklist.length > 0
+          verificationChecklist
+            .length > 0
             ? `Verification checklist: ${verificationChecklist
                 .map(
-                  (check, index) =>
+                  (
+                    check,
+                    index,
+                  ) =>
                     `${index + 1}. ${check}`,
                 )
                 .join(' ')}`
@@ -1863,12 +2080,12 @@ export function rankProblemSolvers(
         ]
           .filter(
             (section) =>
-              section.length > 0,
+              section.length >
+              0,
           )
           .join(
             ' ',
           )
-
 
       return {
         calculatorId:
@@ -1884,9 +2101,7 @@ export function rankProblemSolvers(
           ),
         reasons:
           [
-            ...Array.from(
-              reasons,
-            ),
+            ...reasons,
             ...diagnosticReasons,
           ].slice(
             0,
@@ -1903,7 +2118,8 @@ export function rankProblemSolvers(
         missingInputs:
           readiness.missingInputs,
         readinessPercent:
-          readiness.readinessPercent,
+          readiness
+            .readinessPercent,
         diagnostics:
           diagnostics.diagnostics,
         solutionPlan,
@@ -1916,24 +2132,6 @@ export function rankProblemSolvers(
         equationContext,
         quickSolution,
       }
-    })
-    .filter(
-      (match) =>
-        match.score > 0,
-    )
-    .sort(
-      (first, second) =>
-        second.score -
-          first.score ||
-        first.title.localeCompare(
-          second.title,
-        ),
-    )
-    .slice(
-      0,
-      Math.max(
-        1,
-        limit,
-      ),
-    )
+    },
+  )
 }

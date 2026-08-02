@@ -223,6 +223,85 @@ if (
   )
 }
 
+for (
+  const contract
+  of [
+    'PROBLEM_SOLVER_RANKING_PIPELINE',
+    "'two-stage-shortlist'",
+    'PROBLEM_SOLVER_CALCULATOR_INDEX_CACHE',
+    'indexProblemSolverCalculator',
+    'matchedCategorySignals',
+    'matchedIntentProfiles',
+    'const rankedCandidates:',
+    '.slice(\n        0,\n        safeLimit,',
+    'return rankedCandidates.map',
+    'Stage 1:',
+    'Stage 2:',
+  ]
+) {
+  if (
+    !solverEngine.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Two-stage Problem Solver ranking contract missing: ${contract}`,
+    )
+  }
+}
+
+const shortlistIndex =
+  solverEngine.indexOf(
+    'const rankedCandidates:',
+  )
+
+const shortlistSliceIndex =
+  solverEngine.indexOf(
+    '.slice(\n        0,\n        safeLimit,',
+    shortlistIndex,
+  )
+
+const enrichmentMapIndex =
+  solverEngine.indexOf(
+    'return rankedCandidates.map',
+    shortlistIndex,
+  )
+
+const diagnosticsIndex =
+  solverEngine.indexOf(
+    'const diagnostics =',
+    enrichmentMapIndex,
+  )
+
+if (
+  shortlistIndex === -1 ||
+  shortlistSliceIndex === -1 ||
+  enrichmentMapIndex === -1 ||
+  diagnosticsIndex === -1 ||
+  !(
+    shortlistIndex <
+      shortlistSliceIndex &&
+    shortlistSliceIndex <
+      enrichmentMapIndex &&
+    enrichmentMapIndex <
+      diagnosticsIndex
+  )
+) {
+  throw new Error(
+    'Problem Solver enrichment is not safely positioned after candidate shortlisting.',
+  )
+}
+
+if (
+  !tests.includes(
+    'shortlists candidates before expensive engineering enrichment',
+  )
+) {
+  throw new Error(
+    'Two-stage Problem Solver ranking test is missing.',
+  )
+}
+
 console.log(
   'PASS: Problem Solver v5 equation parsing, intent and readiness verified.',
 )
