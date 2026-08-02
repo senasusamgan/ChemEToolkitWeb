@@ -13,14 +13,39 @@ const appPath =
 const stylePath =
   'src/styles/homepage-problem-solver.css'
 
+const advancedToolsPath =
+  'src/components/SolverAdvancedTools.tsx'
+
+const resultToolsPath =
+  'src/components/SolverResultTools.tsx'
+
+async function readSolverIntegrationSource() {
+  const sources =
+    await Promise.all([
+      readFile(
+        componentPath,
+        'utf8',
+      ),
+      readFile(
+        advancedToolsPath,
+        'utf8',
+      ),
+      readFile(
+        resultToolsPath,
+        'utf8',
+      ),
+    ])
+
+  return sources.join(
+    '\n',
+  )
+}
+
 test(
   'renders a visible homepage Problem Solver',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -51,10 +76,7 @@ test(
   'uses equation-aware Problem Solver data',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -142,10 +164,7 @@ test(
   'provides copy download and clear result actions',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -205,10 +224,7 @@ test(
   'saves and restores recent engineering solutions',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -272,10 +288,7 @@ test(
   'creates shareable Problem Solver links',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -334,10 +347,7 @@ test(
   'compares two engineering scenarios',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -438,10 +448,7 @@ test(
   'integrates guided inputs with the homepage solver',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -533,10 +540,7 @@ test(
   'integrates sensitivity analysis with the homepage solver',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -629,10 +633,7 @@ test(
   'integrates validation with the live solver result',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -728,10 +729,7 @@ test(
   'integrates uncertainty analysis with the homepage solver',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -857,10 +855,7 @@ test(
   'integrates Unit Harmonizer with the homepage solver',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -980,10 +975,7 @@ test(
   'integrates batch cases with the main Problem Solver',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -1103,10 +1095,7 @@ test(
   'integrates the Design Envelope with the main Solver',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -1225,10 +1214,7 @@ test(
   'integrates Target Finder with the main Solver',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -1347,10 +1333,7 @@ test(
   'integrates missing-input completion with Quick Solve',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -1473,10 +1456,7 @@ test(
   'integrates Calculation Trace with Quick Solve',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -1600,10 +1580,7 @@ test(
   'integrates Assumption Review with the homepage solver',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -1730,10 +1707,7 @@ test(
   'integrates the Result Unit Converter with Quick Solve',
   async () => {
     const source =
-      await readFile(
-        componentPath,
-        'utf8',
-      )
+      await readSolverIntegrationSource()
 
     for (
       const contract
@@ -1780,6 +1754,183 @@ test(
           contract,
         ),
         `Missing Result Unit Converter style: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'debounces homepage solver matching and lazy loads secondary workspaces',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/HomepageProblemSolverPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'lazy(',
+        '<Suspense',
+        'SolverAdvancedTools',
+        'SolverResultTools',
+        'analysisQuery',
+        'isAnalysisPending',
+        'window.setTimeout',
+        '350',
+        'Advanced tools load on demand',
+        'Loading result review tools',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing performance contract: ${contract}`,
+      )
+    }
+
+    for (
+      const eagerImport
+      of [
+        "from './TargetOperatingPointPanel'",
+        "from './DesignEnvelopePanel'",
+        "from './BatchProblemSolverPanel'",
+        "from './UncertaintyAnalysisPanel'",
+        "from './SensitivitySweepPanel'",
+        "from './CalculationTracePanel'",
+        "from './AssumptionReviewPanel'",
+        "from './ResultUnitConverterPanel'",
+      ]
+    ) {
+      assert.equal(
+        source.includes(
+          eagerImport,
+        ),
+        false,
+        `Homepage still eagerly imports: ${eagerImport}`,
+      )
+    }
+  },
+)
+
+test(
+  'mounts only the selected advanced and result tool',
+  async () => {
+    const [
+      advancedSource,
+      resultSource,
+    ] =
+      await Promise.all([
+        readFile(
+          'src/components/SolverAdvancedTools.tsx',
+          'utf8',
+        ),
+        readFile(
+          'src/components/SolverResultTools.tsx',
+          'utf8',
+        ),
+      ])
+
+    for (
+      const contract
+      of [
+        'Advanced solver tools',
+        'activeTool ===',
+        'Choose an engineering analysis tool',
+        'initiallyOpen',
+        'Close advanced tools',
+      ]
+    ) {
+      assert.ok(
+        advancedSource.includes(
+          contract,
+        ),
+        `Missing advanced workspace contract: ${contract}`,
+      )
+    }
+
+    for (
+      const contract
+      of [
+        'Result review tools',
+        'activeTool ===',
+        'Complete inputs',
+        'Calculation trace',
+        'Assumption review',
+        'Validation gate',
+      ]
+    ) {
+      assert.ok(
+        resultSource.includes(
+          contract,
+        ),
+        `Missing result workspace contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'supports immediate opening for lazily mounted study panels',
+  async () => {
+    for (
+      const componentPath
+      of [
+        'src/components/TargetOperatingPointPanel.tsx',
+        'src/components/DesignEnvelopePanel.tsx',
+        'src/components/BatchProblemSolverPanel.tsx',
+      ]
+    ) {
+      const source =
+        await readFile(
+          componentPath,
+          'utf8',
+        )
+
+      assert.ok(
+        source.includes(
+          'initiallyOpen?: boolean',
+        ),
+        `Missing initiallyOpen prop: ${componentPath}`,
+      )
+
+      assert.ok(
+        source.includes(
+          'useState(initiallyOpen)',
+        ),
+        `Missing controlled initial state: ${componentPath}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles lazy Solver workspaces responsively',
+  async () => {
+    const source =
+      await readFile(
+        stylePath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.homepage-problem-tool-loading',
+        '.solver-advanced-tools',
+        '.solver-advanced-tool-selector',
+        '.homepage-problem-lazy-tool-launcher',
+        '.solver-result-tools',
+        '.solver-result-tool-tabs',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing performance style: ${contract}`,
       )
     }
   },

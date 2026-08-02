@@ -13,6 +13,7 @@ import {
 import '../styles/target-operating-point-panel.css'
 
 interface TargetOperatingPointPanelProps {
+  initiallyOpen?: boolean
   baseQuery: string
   onApplyProblem: (
     problem: string,
@@ -443,12 +444,13 @@ async function copyText(
 
 export function TargetOperatingPointPanel({
   baseQuery,
+  initiallyOpen = false,
   onApplyProblem,
 }: TargetOperatingPointPanelProps) {
   const [
     isOpen,
     setIsOpen,
-  ] = useState(false)
+  ] = useState(initiallyOpen)
 
   const assignments =
     useMemo(

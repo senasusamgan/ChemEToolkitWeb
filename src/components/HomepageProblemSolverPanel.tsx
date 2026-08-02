@@ -1,4 +1,6 @@
 import {
+  lazy,
+  Suspense,
   useEffect,
   useMemo,
   useState,
@@ -8,42 +10,38 @@ import { calculators } from '../data/calculators'
 import {
   rankProblemSolvers,
 } from '../features/problem-solver/problemSolverEngine'
-import {
-  GuidedProblemBuilder,
-} from './GuidedProblemBuilder'
-import {
-  SensitivitySweepPanel,
-} from './SensitivitySweepPanel'
-import {
-  EngineeringValidationGate,
-} from './EngineeringValidationGate'
-import {
-  MissingInputAssistant,
-} from './MissingInputAssistant'
-import {
-  CalculationTracePanel,
-} from './CalculationTracePanel'
-import {
-  AssumptionReviewPanel,
-} from './AssumptionReviewPanel'
-import {
-  ResultUnitConverterPanel,
-} from './ResultUnitConverterPanel'
-import {
-  UncertaintyAnalysisPanel,
-} from './UncertaintyAnalysisPanel'
-import {
-  UnitHarmonizerPanel,
-} from './UnitHarmonizerPanel'
-import {
-  BatchProblemSolverPanel,
-} from './BatchProblemSolverPanel'
-import {
-  DesignEnvelopePanel,
-} from './DesignEnvelopePanel'
-import {
-  TargetOperatingPointPanel,
-} from './TargetOperatingPointPanel'
+
+const SolverAdvancedTools =
+  lazy(
+    async () => {
+      const module =
+        await import(
+          './SolverAdvancedTools'
+        )
+
+      return {
+        default:
+          module
+            .SolverAdvancedTools,
+      }
+    },
+  )
+
+const SolverResultTools =
+  lazy(
+    async () => {
+      const module =
+        await import(
+          './SolverResultTools'
+        )
+
+      return {
+        default:
+          module
+            .SolverResultTools,
+      }
+    },
+  )
 
 import '../styles/homepage-problem-solver.css'
 
@@ -369,23 +367,20 @@ export function HomepageProblemSolverPanel({
   ] = useState('')
 
   const [
-    isGuidedBuilderOpen,
-    setIsGuidedBuilderOpen,
+    analysisQuery,
+    setAnalysisQuery,
+  ] = useState<string>(
+    query,
+  )
+
+  const [
+    isAdvancedToolsOpen,
+    setIsAdvancedToolsOpen,
   ] = useState(false)
 
   const [
-    isSensitivitySweepOpen,
-    setIsSensitivitySweepOpen,
-  ] = useState(false)
-
-  const [
-    isUncertaintyAnalysisOpen,
-    setIsUncertaintyAnalysisOpen,
-  ] = useState(false)
-
-  const [
-    isUnitHarmonizerOpen,
-    setIsUnitHarmonizerOpen,
+    isResultToolsOpen,
+    setIsResultToolsOpen,
   ] = useState(false)
 
   const [
@@ -396,6 +391,11 @@ export function HomepageProblemSolverPanel({
   const [
     comparisonQuery,
     setComparisonQuery,
+  ] = useState<string>('')
+
+  const [
+    comparisonAnalysisQuery,
+    setComparisonAnalysisQuery,
   ] = useState<string>('')
 
   const [
@@ -450,38 +450,103 @@ export function HomepageProblemSolverPanel({
     ],
   )
 
+  useEffect(
+    () => {
+      const timeout =
+        window.setTimeout(
+          () => {
+            setAnalysisQuery(
+              query,
+            )
+          },
+          350,
+        )
+
+      return () =>
+        window.clearTimeout(
+          timeout,
+        )
+    },
+    [
+      query,
+    ],
+  )
+
+  useEffect(
+    () => {
+      const timeout =
+        window.setTimeout(
+          () => {
+            setComparisonAnalysisQuery(
+              comparisonQuery,
+            )
+          },
+          300,
+        )
+
+      return () =>
+        window.clearTimeout(
+          timeout,
+        )
+    },
+    [
+      comparisonQuery,
+    ],
+  )
+
+  useEffect(
+    () => {
+      setIsResultToolsOpen(
+        false,
+      )
+    },
+    [
+      analysisQuery,
+    ],
+  )
+
+  const isAnalysisPending =
+    query !==
+    analysisQuery
+
   const matches =
     useMemo(
       () =>
-        query.trim().length >=
-        3
-          ? rankProblemSolvers(
-              query,
-              calculators,
-              3,
-            )
-          : [],
-      [query],
-    )
-
-  const bestMatch =
-    matches[0]
-
-  const comparisonMatches =
-    useMemo(
-      () =>
-        comparisonQuery
+        analysisQuery
           .trim()
           .length >=
         3
           ? rankProblemSolvers(
-              comparisonQuery,
+              analysisQuery,
+              calculators,
+              3,
+            )
+          : [],
+      [
+        analysisQuery,
+      ],
+    )
+
+  const bestMatch =
+    isAnalysisPending
+      ? undefined
+      : matches[0]
+
+  const comparisonMatches =
+    useMemo(
+      () =>
+        comparisonAnalysisQuery
+          .trim()
+          .length >=
+        3
+          ? rankProblemSolvers(
+              comparisonAnalysisQuery,
               calculators,
               1,
             )
           : [],
       [
-        comparisonQuery,
+        comparisonAnalysisQuery,
       ],
     )
 
@@ -1251,208 +1316,56 @@ export function HomepageProblemSolverPanel({
           </div>
         </header>
 
-        <TargetOperatingPointPanel
-          baseQuery={
-            query
-          }
-          onApplyProblem={(
-            selectedProblem,
-          ) => {
-            setQuery(
-              selectedProblem,
-            )
+        {isAdvancedToolsOpen ? (
+          <Suspense
+            fallback={
+              <div className="homepage-problem-tool-loading">
+                Loading advanced engineering tools…
+              </div>
+            }
+          >
+            <SolverAdvancedTools
+              baseQuery={
+                analysisQuery
+              }
+              onClose={() =>
+                setIsAdvancedToolsOpen(
+                  false,
+                )
+              }
+              onApplyProblem={(
+                selectedProblem,
+                message,
+              ) => {
+                setQuery(
+                  selectedProblem,
+                )
 
-            setSharedProblemLoaded(
-              false,
-            )
+                setSharedProblemLoaded(
+                  false,
+                )
 
-            setActionMessage(
-              'Target operating point loaded.',
-            )
+                setIsAdvancedToolsOpen(
+                  false,
+                )
 
-            window.requestAnimationFrame(
-              () => {
-                document
-                  .getElementById(
-                    'homepage-problem-query',
-                  )
-                  ?.focus()
-              },
-            )
-          }}
-        />
+                setActionMessage(
+                  message,
+                )
 
-        <DesignEnvelopePanel
-          baseQuery={
-            query
-          }
-          onApplyProblem={(
-            selectedProblem,
-          ) => {
-            setQuery(
-              selectedProblem,
-            )
-
-            setSharedProblemLoaded(
-              false,
-            )
-
-            setActionMessage(
-              'Design-envelope operating point loaded.',
-            )
-
-            window.requestAnimationFrame(
-              () => {
-                document
-                  .getElementById(
-                    'homepage-problem-query',
-                  )
-                  ?.focus()
-              },
-            )
-          }}
-        />
-
-        <BatchProblemSolverPanel
-          onLoadCase={(
-            selectedProblem,
-          ) => {
-            setQuery(
-              selectedProblem,
-            )
-
-            setSharedProblemLoaded(
-              false,
-            )
-
-            setActionMessage(
-              'Batch engineering case loaded.',
-            )
-
-            window.requestAnimationFrame(
-              () => {
-                document
-                  .getElementById(
-                    'homepage-problem-query',
-                  )
-                  ?.focus()
-              },
-            )
-          }}
-        />
-
-        <UnitHarmonizerPanel
-          isOpen={
-            isUnitHarmonizerOpen
-          }
-          baseQuery={
-            query
-          }
-          onClose={() =>
-            setIsUnitHarmonizerOpen(
-              false,
-            )
-          }
-          onApplyProblem={(
-            normalizedProblem,
-          ) => {
-            setQuery(
-              normalizedProblem,
-            )
-
-            setSharedProblemLoaded(
-              false,
-            )
-
-            setActionMessage(
-              'SI-normalized problem loaded.',
-            )
-          }}
-        />
-
-        <UncertaintyAnalysisPanel
-          isOpen={
-            isUncertaintyAnalysisOpen
-          }
-          baseQuery={
-            query
-          }
-          onClose={() =>
-            setIsUncertaintyAnalysisOpen(
-              false,
-            )
-          }
-          onApplyProblem={(
-            generatedProblem,
-          ) => {
-            setQuery(
-              generatedProblem,
-            )
-
-            setSharedProblemLoaded(
-              false,
-            )
-
-            setActionMessage(
-              'Uncertainty operating case loaded.',
-            )
-          }}
-        />
-
-        <SensitivitySweepPanel
-          isOpen={
-            isSensitivitySweepOpen
-          }
-          baseQuery={
-            query
-          }
-          onClose={() =>
-            setIsSensitivitySweepOpen(
-              false,
-            )
-          }
-          onUseProblem={(
-            generatedProblem,
-          ) => {
-            setQuery(
-              generatedProblem,
-            )
-
-            setSharedProblemLoaded(
-              false,
-            )
-
-            setActionMessage(
-              'Sensitivity operating point loaded.',
-            )
-          }}
-        />
-
-        <GuidedProblemBuilder
-          isOpen={
-            isGuidedBuilderOpen
-          }
-          onClose={() =>
-            setIsGuidedBuilderOpen(
-              false,
-            )
-          }
-          onUseProblem={(
-            generatedProblem,
-          ) => {
-            setQuery(
-              generatedProblem,
-            )
-
-            setSharedProblemLoaded(
-              false,
-            )
-
-            setActionMessage(
-              'Guided engineering problem loaded.',
-            )
-          }}
-        />
+                window.requestAnimationFrame(
+                  () => {
+                    document
+                      .getElementById(
+                        'homepage-problem-query',
+                      )
+                      ?.focus()
+                  },
+                )
+              }}
+            />
+          </Suspense>
+        ) : null}
 
         <div className="homepage-problem-solver-layout">
           <div className="homepage-problem-solver-editor">
@@ -1537,26 +1450,23 @@ export function HomepageProblemSolverPanel({
               <div>
                 <button
                   type="button"
-                  className="is-compare"
+                  className={
+                    isAdvancedToolsOpen
+                      ? 'is-compare is-active'
+                      : 'is-compare'
+                  }
                   disabled={
                     query.trim().length ===
-                    0
+                      0 ||
+                    isAnalysisPending
+                  }
+                  aria-expanded={
+                    isAdvancedToolsOpen
                   }
                   onClick={() => {
-                    setIsUnitHarmonizerOpen(
-                      true,
-                    )
-
-                    setIsUncertaintyAnalysisOpen(
-                      false,
-                    )
-
-                    setIsSensitivitySweepOpen(
-                      false,
-                    )
-
-                    setIsGuidedBuilderOpen(
-                      false,
+                    setIsAdvancedToolsOpen(
+                      (current) =>
+                        !current,
                     )
 
                     setIsComparisonOpen(
@@ -1564,7 +1474,7 @@ export function HomepageProblemSolverPanel({
                     )
                   }}
                 >
-                  Unit harmonizer
+                  Advanced tools
                 </button>
 
                 <button
@@ -1572,106 +1482,11 @@ export function HomepageProblemSolverPanel({
                   className="is-compare"
                   disabled={
                     query.trim().length ===
-                    0
+                      0 ||
+                    isAnalysisPending
                   }
                   onClick={() => {
-                    setIsUncertaintyAnalysisOpen(
-                      true,
-                    )
-
-                    setIsUnitHarmonizerOpen(
-                      false,
-                    )
-
-                    setIsSensitivitySweepOpen(
-                      false,
-                    )
-
-                    setIsGuidedBuilderOpen(
-                      false,
-                    )
-
-                    setIsComparisonOpen(
-                      false,
-                    )
-                  }}
-                >
-                  Uncertainty analysis
-                </button>
-
-                <button
-                  type="button"
-                  className="is-compare"
-                  disabled={
-                    query.trim().length ===
-                    0
-                  }
-                  onClick={() => {
-                    setIsSensitivitySweepOpen(
-                      true,
-                    )
-
-                    setIsUnitHarmonizerOpen(
-                      false,
-                    )
-
-                    setIsUncertaintyAnalysisOpen(
-                      false,
-                    )
-
-                    setIsGuidedBuilderOpen(
-                      false,
-                    )
-                  }}
-                >
-                  Sensitivity sweep
-                </button>
-
-                <button
-                  type="button"
-                  className="is-compare"
-                  onClick={() => {
-                    setIsGuidedBuilderOpen(
-                      true,
-                    )
-
-                    setIsUnitHarmonizerOpen(
-                      false,
-                    )
-
-                    setIsSensitivitySweepOpen(
-                      false,
-                    )
-
-                    setIsUncertaintyAnalysisOpen(
-                      false,
-                    )
-                  }}
-                >
-                  Guided input
-                </button>
-
-                <button
-                  type="button"
-                  className="is-compare"
-                  disabled={
-                    query.trim().length ===
-                    0
-                  }
-                  onClick={() => {
-                    setIsUnitHarmonizerOpen(
-                      false,
-                    )
-
-                    setIsUncertaintyAnalysisOpen(
-                      false,
-                    )
-
-                    setIsSensitivitySweepOpen(
-                      false,
-                    )
-
-                    setIsGuidedBuilderOpen(
+                    setIsAdvancedToolsOpen(
                       false,
                     )
 
@@ -1683,17 +1498,25 @@ export function HomepageProblemSolverPanel({
 
                 <button
                   type="button"
-                  onClick={
-                    clearProblem
-                  }
+                  onClick={() => {
+                    setIsAdvancedToolsOpen(
+                      false,
+                    )
+
+                    setIsResultToolsOpen(
+                      false,
+                    )
+
+                    clearProblem()
+                  }}
                 >
                   Clear problem
                 </button>
               </div>
 
               <span>
-                Compare operating conditions or start a
-                new engineering case.
+                Advanced tools load on demand. Solver
+                matching waits 350 ms after typing.
               </span>
             </div>
           </div>
@@ -1960,223 +1783,174 @@ export function HomepageProblemSolverPanel({
                   </div>
                 ) : null}
 
-                <ResultUnitConverterPanel
-                  key={
-                    [
-                      bestMatch
-                        .quickSolution
-                        ?.resultLabel ??
-                        'pending',
-                      bestMatch
-                        .quickSolution
-                        ?.numericValue ??
-                        'none',
-                      bestMatch
-                        .quickSolution
-                        ?.unit ??
-                        'unitless',
-                    ].join('|')
-                  }
-                  calculatorTitle={
-                    bestMatch.title
-                  }
-                  resultLabel={
-                    bestMatch
-                      .quickSolution
-                      ?.resultLabel ??
-                    ''
-                  }
-                  numericValue={
-                    bestMatch
-                      .quickSolution
-                      ?.numericValue ??
-                    null
-                  }
-                  sourceUnit={
-                    bestMatch
-                      .quickSolution
-                      ?.unit ??
-                    ''
-                  }
-                />
+                <div className="homepage-problem-lazy-tool-launcher">
+                  <div>
+                    <span>
+                      On-demand engineering review
+                    </span>
 
-                <AssumptionReviewPanel
-                  baseQuery={
-                    query
-                  }
-                  calculatorTitle={
-                    bestMatch.title
-                  }
-                  equationLabel={
-                    bestMatch
-                      .equationIntent
-                      .equationLabel ??
-                    bestMatch
-                      .equationHint ??
-                    bestMatch.title
-                  }
-                  equation={
-                    bestMatch
-                      .equationIntent
-                      .equation ??
-                    bestMatch
-                      .equationHint ??
-                    bestMatch
-                      .quickSolution
-                      ?.equation ??
-                    ''
-                  }
-                  targetName={
-                    bestMatch
-                      .equationIntent
-                      .targetName ??
-                    bestMatch
-                      .equationContext
-                      .targetName ??
-                    null
-                  }
-                  assignments={
-                    bestMatch
-                      .equationAssignments
-                  }
-                  quickSolution={
-                    bestMatch
-                      .quickSolution ??
-                    null
-                  }
-                />
+                    <strong>
+                      {
+                        bestMatch
+                          .equationContext
+                          .missingVariableNames
+                          .length > 0
+                          ? `${bestMatch.equationContext.missingVariableNames.length} missing input(s) can be completed`
+                          : 'Detailed result tools are available'
+                      }
+                    </strong>
 
-                <CalculationTracePanel
-                  calculatorTitle={
-                    bestMatch.title
-                  }
-                  equationLabel={
-                    bestMatch
-                      .equationIntent
-                      .equationLabel ??
-                    bestMatch
-                      .equationHint ??
-                    bestMatch.title
-                  }
-                  equation={
-                    bestMatch
-                      .equationIntent
-                      .equation ??
-                    bestMatch
-                      .equationHint ??
-                    bestMatch
-                      .quickSolution
-                      ?.equation ??
-                    ''
-                  }
-                  targetName={
-                    bestMatch
-                      .equationIntent
-                      .targetName ??
-                    bestMatch
-                      .equationContext
-                      .targetName ??
-                    null
-                  }
-                  readinessPercent={
-                    bestMatch
-                      .equationContext
-                      .readinessPercent
-                  }
-                  assignments={
-                    bestMatch
-                      .equationAssignments
-                  }
-                  quickSolution={
-                    bestMatch
-                      .quickSolution ??
-                    null
-                  }
-                />
+                    <small>
+                      Converter, calculation trace,
+                      assumptions and validation remain
+                      unloaded until opened.
+                    </small>
+                  </div>
 
-                <MissingInputAssistant
-                  key={
-                    bestMatch
-                      .equationContext
-                      .missingVariableNames
-                      .join('|')
-                  }
-                  calculatorTitle={
-                    bestMatch.title
-                  }
-                  targetName={
-                    bestMatch
-                      .equationContext
-                      .targetName
-                  }
-                  baseQuery={
-                    query
-                  }
-                  missingVariables={
-                    bestMatch
-                      .equationContext
-                      .missingVariableNames
-                  }
-                  onApplyProblem={(
-                    completedProblem,
-                  ) => {
-                    setQuery(
-                      completedProblem,
-                    )
+                  <button
+                    type="button"
+                    aria-expanded={
+                      isResultToolsOpen
+                    }
+                    onClick={() =>
+                      setIsResultToolsOpen(
+                        (current) =>
+                          !current,
+                      )
+                    }
+                  >
+                    {
+                      isResultToolsOpen
+                        ? 'Close result tools'
+                        : bestMatch
+                            .equationContext
+                            .missingVariableNames
+                            .length > 0
+                          ? 'Complete inputs / review'
+                          : 'Open result tools'
+                    }
+                  </button>
+                </div>
 
-                    setSharedProblemLoaded(
-                      false,
-                    )
+                {isResultToolsOpen ? (
+                  <Suspense
+                    fallback={
+                      <div className="homepage-problem-tool-loading">
+                        Loading result review tools…
+                      </div>
+                    }
+                  >
+                    <SolverResultTools
+                      key={[
+                        bestMatch
+                          .calculatorId,
+                        bestMatch
+                          .quickSolution
+                          ?.resultValue ??
+                          'pending',
+                        bestMatch
+                          .equationContext
+                          .missingVariableNames
+                          .join('|'),
+                      ].join('::')}
+                      baseQuery={
+                        analysisQuery
+                      }
+                      calculatorTitle={
+                        bestMatch.title
+                      }
+                      category={
+                        bestMatch.category
+                      }
+                      equationLabel={
+                        bestMatch
+                          .equationIntent
+                          .equationLabel ??
+                        bestMatch
+                          .equationHint ??
+                        bestMatch.title
+                      }
+                      equation={
+                        bestMatch
+                          .equationIntent
+                          .equation ??
+                        bestMatch
+                          .equationHint ??
+                        bestMatch
+                          .quickSolution
+                          ?.equation ??
+                        ''
+                      }
+                      targetName={
+                        bestMatch
+                          .equationIntent
+                          .targetName ??
+                        bestMatch
+                          .equationContext
+                          .targetName ??
+                        null
+                      }
+                      contextTargetName={
+                        bestMatch
+                          .equationContext
+                          .targetName
+                      }
+                      readinessPercent={
+                        bestMatch
+                          .equationContext
+                          .readinessPercent
+                      }
+                      status={
+                        bestMatch
+                          .equationContext
+                          .status
+                      }
+                      missingVariables={
+                        bestMatch
+                          .equationContext
+                          .missingVariableNames
+                      }
+                      diagnostics={
+                        bestMatch
+                          .equationContext
+                          .diagnostics
+                      }
+                      assignments={
+                        bestMatch
+                          .equationAssignments
+                      }
+                      quickSolution={
+                        bestMatch
+                          .quickSolution ??
+                        null
+                      }
+                      onClose={() =>
+                        setIsResultToolsOpen(
+                          false,
+                        )
+                      }
+                      onApplyProblem={(
+                        completedProblem,
+                      ) => {
+                        setQuery(
+                          completedProblem,
+                        )
 
-                    setActionMessage(
-                      'Missing inputs added and problem recalculated.',
-                    )
-                  }}
-                />
+                        setSharedProblemLoaded(
+                          false,
+                        )
 
-                <EngineeringValidationGate
-                  calculatorTitle={
-                    bestMatch.title
-                  }
-                  category={
-                    bestMatch.category
-                  }
-                  targetName={
-                    bestMatch
-                      .equationIntent
-                      .targetName ??
-                    null
-                  }
-                  readinessPercent={
-                    bestMatch
-                      .equationContext
-                      .readinessPercent
-                  }
-                  status={
-                    bestMatch
-                      .equationContext
-                      .status
-                  }
-                  missingVariables={
-                    bestMatch
-                      .equationContext
-                      .missingVariableNames
-                  }
-                  diagnostics={
-                    bestMatch
-                      .equationContext
-                      .diagnostics
-                  }
-                  assignments={
-                    bestMatch
-                      .equationAssignments
-                  }
-                  quickSolution={
-                    bestMatch
-                      .quickSolution ??
-                    null
-                  }
-                />
+                        setIsResultToolsOpen(
+                          false,
+                        )
+
+                        setActionMessage(
+                          'Missing inputs added and problem recalculated.',
+                        )
+                      }}
+                    />
+                  </Suspense>
+                ) : null}
 
                 <footer className="homepage-problem-result-footer">
                   <div>
@@ -2315,13 +2089,19 @@ export function HomepageProblemSolverPanel({
             ) : (
               <div className="homepage-problem-empty">
                 <strong>
-                  Start typing an engineering problem
+                  {
+                    isAnalysisPending
+                      ? 'Analyzing engineering problem…'
+                      : 'Start typing an engineering problem'
+                  }
                 </strong>
 
                 <p>
-                  Add a calculator name, equation,
-                  known values and the requested
-                  unknown.
+                  {
+                    isAnalysisPending
+                      ? 'The Solver waits briefly after typing to avoid recalculating on every keystroke.'
+                      : 'Add a calculator name, equation, known values and the requested unknown.'
+                  }
                 </p>
               </div>
             )}

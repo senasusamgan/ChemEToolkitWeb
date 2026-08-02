@@ -3,7 +3,9 @@ import {
 } from 'node:fs/promises'
 
 const [
-  component,
+  homepageComponent,
+  advancedToolsComponent,
+  resultToolsComponent,
   app,
   styles,
   tests,
@@ -12,6 +14,14 @@ const [
   await Promise.all([
     readFile(
       'src/components/HomepageProblemSolverPanel.tsx',
+      'utf8',
+    ),
+    readFile(
+      'src/components/SolverAdvancedTools.tsx',
+      'utf8',
+    ),
+    readFile(
+      'src/components/SolverResultTools.tsx',
       'utf8',
     ),
     readFile(
@@ -31,6 +41,14 @@ const [
       'utf8',
     ),
   ])
+
+const component = [
+  homepageComponent,
+  advancedToolsComponent,
+  resultToolsComponent,
+].join(
+  '\n',
+)
 
 for (
   const contract
@@ -1618,6 +1636,139 @@ for (
   ) {
     throw new Error(
       `Homepage Result Unit Converter test missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'lazy(',
+    '<Suspense',
+    'SolverAdvancedTools',
+    'SolverResultTools',
+    'analysisQuery',
+    'isAnalysisPending',
+    'window.setTimeout',
+    '350',
+    'Advanced tools load on demand',
+  ]
+) {
+  if (
+    !homepageComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver performance contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const forbiddenImport
+  of [
+    "from './TargetOperatingPointPanel'",
+    "from './DesignEnvelopePanel'",
+    "from './BatchProblemSolverPanel'",
+    "from './UncertaintyAnalysisPanel'",
+    "from './SensitivitySweepPanel'",
+    "from './CalculationTracePanel'",
+    "from './AssumptionReviewPanel'",
+    "from './ResultUnitConverterPanel'",
+  ]
+) {
+  if (
+    homepageComponent.includes(
+      forbiddenImport,
+    )
+  ) {
+    throw new Error(
+      `Homepage Solver still eagerly imports: ${forbiddenImport}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'Advanced solver tools',
+    'Choose an engineering analysis tool',
+    'activeTool ===',
+    'initiallyOpen',
+  ]
+) {
+  if (
+    !advancedToolsComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Advanced Solver workspace missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'Result review tools',
+    'Complete inputs',
+    'Calculation trace',
+    'Assumption review',
+    'Validation gate',
+    'activeTool ===',
+  ]
+) {
+  if (
+    !resultToolsComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Result Solver workspace missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    '.homepage-problem-tool-loading',
+    '.solver-advanced-tools',
+    '.solver-advanced-tool-selector',
+    '.homepage-problem-lazy-tool-launcher',
+    '.solver-result-tools',
+    '.solver-result-tool-tabs',
+  ]
+) {
+  if (
+    !styles.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver performance style missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'debounces homepage solver matching and lazy loads secondary workspaces',
+    'mounts only the selected advanced and result tool',
+    'supports immediate opening for lazily mounted study panels',
+    'styles lazy Solver workspaces responsively',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver performance test missing: ${contract}`,
     )
   }
 }
