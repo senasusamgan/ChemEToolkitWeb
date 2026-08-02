@@ -16,6 +16,7 @@ type AdvancedToolId =
   | 'scaleup'
   | 'mixing'
   | 'pump'
+  | 'compressor'
   | 'target'
   | 'design'
   | 'constraint'
@@ -104,6 +105,12 @@ const loadPumpAffinitySystemPanel =
   () =>
     import(
       './PumpAffinitySystemPanel'
+    )
+
+const loadMultistageCompressorPanel =
+  () =>
+    import(
+      './MultistageCompressorPanel'
     )
 
 const loadTargetOperatingPointPanel =
@@ -284,6 +291,20 @@ const PumpAffinitySystemPanel =
     },
   )
 
+const MultistageCompressorPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadMultistageCompressorPanel()
+
+      return {
+        default:
+          module
+            .MultistageCompressorPanel,
+      }
+    },
+  )
+
 const TargetOperatingPointPanel =
   lazy(
     async () => {
@@ -444,6 +465,14 @@ const TOOL_OPTIONS:
         'Pump operating point',
       description:
         'Apply affinity laws and intersect pump and process-system curves.',
+    },
+    {
+      id:
+        'compressor',
+      label:
+        'Compressor staging',
+      description:
+        'Compare single and multistage compression with intercooling.',
     },
     {
       id:
@@ -903,6 +932,32 @@ export function SolverAdvancedTools({
               applyProblem(
                 operatingProblem,
                 'Pump operating point loaded.',
+              )
+            }
+          />
+        </Suspense>
+      ) : null}
+
+      {activeTool ===
+      'compressor' ? (
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Compressor staging" />
+          }
+        >
+          <MultistageCompressorPanel
+            key={
+              baseQuery
+            }
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
+              dischargeProblem,
+            ) =>
+              applyProblem(
+                dischargeProblem,
+                'Compressor discharge state loaded.',
               )
             }
           />
