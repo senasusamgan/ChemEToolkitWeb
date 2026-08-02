@@ -11,6 +11,7 @@ type AdvancedToolId =
   | 'uncertainty'
   | 'robustness'
   | 'calibration'
+  | 'doe'
   | 'target'
   | 'design'
   | 'constraint'
@@ -69,6 +70,12 @@ const loadParameterCalibrationPanel =
   () =>
     import(
       './ParameterCalibrationPanel'
+    )
+
+const loadFullFactorialDoePanel =
+  () =>
+    import(
+      './FullFactorialDoePanel'
     )
 
 const loadTargetOperatingPointPanel =
@@ -175,6 +182,20 @@ const ParameterCalibrationPanel =
         default:
           module
             .ParameterCalibrationPanel,
+      }
+    },
+  )
+
+const FullFactorialDoePanel =
+  lazy(
+    async () => {
+      const module =
+        await loadFullFactorialDoePanel()
+
+      return {
+        default:
+          module
+            .FullFactorialDoePanel,
       }
     },
   )
@@ -299,6 +320,14 @@ const TOOL_OPTIONS:
         'Parameter calibration',
       description:
         'Fit a shared parameter to observed engineering data.',
+    },
+    {
+      id:
+        'doe',
+      label:
+        'Factorial DOE',
+      description:
+        'Measure factor and interaction effects across structured runs.',
     },
     {
       id:
@@ -628,6 +657,32 @@ export function SolverAdvancedTools({
               applyProblem(
                 calibratedProblem,
                 'Calibrated parameter loaded.',
+              )
+            }
+          />
+        </Suspense>
+      ) : null}
+
+      {activeTool ===
+      'doe' ? (
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Factorial DOE" />
+          }
+        >
+          <FullFactorialDoePanel
+            key={
+              baseQuery
+            }
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
+              experimentalProblem,
+            ) =>
+              applyProblem(
+                experimentalProblem,
+                'Selected factorial DOE run loaded.',
               )
             }
           />
