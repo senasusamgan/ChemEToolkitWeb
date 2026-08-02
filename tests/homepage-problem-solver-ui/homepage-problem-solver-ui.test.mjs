@@ -19,6 +19,16 @@ const advancedToolsPath =
 const resultToolsPath =
   'src/components/SolverResultTools.tsx'
 
+
+const workerPath =
+  'src/features/problem-solver/problemSolver.worker.ts'
+
+const workerClientPath =
+  'src/features/problem-solver/problemSolverWorkerClient.ts'
+
+const workerHookPath =
+  'src/features/problem-solver/useProblemSolverWorker.ts'
+
 async function readSolverIntegrationSource() {
   const sources =
     await Promise.all([
@@ -32,6 +42,18 @@ async function readSolverIntegrationSource() {
       ),
       readFile(
         resultToolsPath,
+        'utf8',
+      ),
+      readFile(
+        workerPath,
+        'utf8',
+      ),
+      readFile(
+        workerClientPath,
+        'utf8',
+      ),
+      readFile(
+        workerHookPath,
         'utf8',
       ),
     ])
@@ -2067,6 +2089,179 @@ test(
           contract,
         ),
         `Missing tool-chunk loading style: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'runs homepage Solver ranking in a background Web Worker',
+  async () => {
+    const source =
+      await readFile(
+        workerPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        "from '../../data/calculators'",
+        "from './problemSolverEngine'",
+        'rankProblemSolvers',
+        'performance.now',
+        'workerScope.onmessage',
+        'workerScope.postMessage',
+        'requestId',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Solver worker contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'shares, caches and safely falls back from the Solver worker',
+  async () => {
+    const source =
+      await readFile(
+        workerClientPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        "new Worker(",
+        "new URL(",
+        "'./problemSolver.worker.ts'",
+        'pendingRequests',
+        'inFlightRequests',
+        'resultCache',
+        'RESULT_CACHE_LIMIT',
+        'WORKER_TIMEOUT_MS',
+        'requestProblemSolverMatches',
+        "executionMode:\n      'fallback'",
+        "import(\n        '../../data/calculators'",
+        "import(\n        './problemSolverEngine'",
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing worker-client contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'prevents stale background Solver results from rendering',
+  async () => {
+    const source =
+      await readFile(
+        workerHookPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'useProblemSolverWorker',
+        'requestProblemSolverMatches',
+        'isCurrent',
+        'resolvedQuery',
+        'isStale',
+        'isLoading',
+        'executionMode',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing worker-hook contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'removes synchronous Solver engine imports from the homepage',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'useProblemSolverWorker',
+        'isWorkerAnalyzing',
+        'isComparisonWorkerAnalyzing',
+        'Background Solver worker',
+        'Model matching runs outside the main',
+        'homepage-problem-worker-status',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing homepage worker integration: ${contract}`,
+      )
+    }
+
+    for (
+      const forbidden
+      of [
+        "import { calculators }",
+        "from '../features/problem-solver/problemSolverEngine'",
+        'rankProblemSolvers(',
+      ]
+    ) {
+      assert.equal(
+        source.includes(
+          forbidden,
+        ),
+        false,
+        `Homepage still performs synchronous ranking: ${forbidden}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles the background Solver execution status',
+  async () => {
+    const source =
+      await readFile(
+        stylePath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.homepage-problem-worker-status',
+        'data-mode="cache"',
+        'data-mode="fallback"',
+        'data-mode="error"',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing worker-status style: ${contract}`,
       )
     }
   },

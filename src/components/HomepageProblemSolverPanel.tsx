@@ -6,10 +6,9 @@ import {
   useState,
 } from 'react'
 
-import { calculators } from '../data/calculators'
 import {
-  rankProblemSolvers,
-} from '../features/problem-solver/problemSolverEngine'
+  useProblemSolverWorker,
+} from '../features/problem-solver/useProblemSolverWorker'
 
 const SolverAdvancedTools =
   lazy(
@@ -505,53 +504,61 @@ export function HomepageProblemSolverPanel({
     ],
   )
 
-  const isAnalysisPending =
-    query !==
-    analysisQuery
-
-  const matches =
-    useMemo(
-      () =>
+  const {
+    matches,
+    isLoading:
+      isWorkerAnalyzing,
+    errorMessage:
+      solverWorkerError,
+    elapsedMs:
+      solverElapsedMs,
+    executionMode:
+      solverExecutionMode,
+  } =
+    useProblemSolverWorker({
+      query:
+        analysisQuery,
+      limit:
+        3,
+      enabled:
         analysisQuery
           .trim()
           .length >=
-        3
-          ? rankProblemSolvers(
-              analysisQuery,
-              calculators,
-              3,
-            )
-          : [],
-      [
-        analysisQuery,
-      ],
-    )
+        3,
+    })
+
+  const {
+    matches:
+      comparisonMatches,
+    isLoading:
+      isComparisonWorkerAnalyzing,
+  } =
+    useProblemSolverWorker({
+      query:
+        comparisonAnalysisQuery,
+      limit:
+        1,
+      enabled:
+        comparisonAnalysisQuery
+          .trim()
+          .length >=
+        3,
+    })
+
+  const isAnalysisPending =
+    query !==
+      analysisQuery ||
+    isWorkerAnalyzing
 
   const bestMatch =
     isAnalysisPending
       ? undefined
       : matches[0]
 
-  const comparisonMatches =
-    useMemo(
-      () =>
-        comparisonAnalysisQuery
-          .trim()
-          .length >=
-        3
-          ? rankProblemSolvers(
-              comparisonAnalysisQuery,
-              calculators,
-              1,
-            )
-          : [],
-      [
-        comparisonAnalysisQuery,
-      ],
-    )
-
   const comparisonBestMatch =
-    comparisonMatches[0]
+    isComparisonWorkerAnalyzing
+      ? undefined
+      : comparisonMatches[0]
 
   const scenarioDifference =
     useMemo(
@@ -1437,13 +1444,43 @@ export function HomepageProblemSolverPanel({
 
             <div className="homepage-problem-solver-privacy">
               <strong>
-                Local engineering analysis
+                Background Solver worker
               </strong>
 
               <span>
-                Your problem is processed inside this
-                browser.
+                Your problem stays inside this browser.
+                Model matching runs outside the main
+                interface thread.
               </span>
+
+              <small
+                className="homepage-problem-worker-status"
+                data-mode={
+                  solverWorkerError
+                    ? 'error'
+                    : solverExecutionMode ??
+                      'idle'
+                }
+              >
+                {
+                  isAnalysisPending
+                    ? 'Analyzing in background…'
+                    : solverWorkerError
+                      ? 'Background analysis unavailable'
+                      : solverElapsedMs !==
+                          null
+                        ? `${
+                            solverExecutionMode ===
+                            'cache'
+                              ? 'Cached'
+                              : solverExecutionMode ===
+                                  'fallback'
+                                ? 'Fallback'
+                                : 'Worker'
+                          } · ${solverElapsedMs.toFixed(1)} ms`
+                        : 'Background worker ready'
+                }
+              </small>
             </div>
 
             <div className="homepage-problem-editor-actions">

@@ -1884,3 +1884,55 @@ p {
   font-size: 0.5rem;
   line-height: 1.45;
 }
+
+/* Problem Solver Performance Rescue v3 */
+
+.homepage-problem-worker-status {
+  width: fit-content;
+  margin-top: 5px;
+  padding: 4px 7px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.27);
+  border-radius: 999px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font-size: 0.45rem;
+  font-weight: 850;
+  letter-spacing: 0.03em;
+}
+
+.homepage-problem-worker-status[
+  data-mode="cache"
+] {
+  color:
+    var(--ink, #0b3556);
+  border-color:
+    rgba(11, 53, 86, 0.22);
+  background:
+    rgba(11, 53, 86, 0.04);
+}
+
+.homepage-problem-worker-status[
+  data-mode="fallback"
+] {
+  color:
+    #875f19;
+  border-color:
+    rgba(194, 132, 32, 0.3);
+  background:
+    rgba(194, 132, 32, 0.05);
+}
+
+.homepage-problem-worker-status[
+  data-mode="error"
+] {
+  color:
+    #914535;
+  border-color:
+    rgba(187, 82, 65, 0.32);
+  background:
+    rgba(187, 82, 65, 0.05);
+}
