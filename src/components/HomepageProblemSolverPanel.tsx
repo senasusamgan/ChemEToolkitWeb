@@ -676,6 +676,8 @@ export function HomepageProblemSolverPanel({
       solverElapsedMs,
     executionMode:
       solverExecutionMode,
+    isStale:
+      isWorkerResultStale,
   } =
     useProblemSolverWorker({
       query:
@@ -715,9 +717,16 @@ export function HomepageProblemSolverPanel({
     isWorkerAnalyzing
 
   const bestMatch =
-    isAnalysisPending
-      ? undefined
-      : matches[0]
+    matches[0]
+
+  const isDisplayedResultStale =
+    Boolean(
+      bestMatch,
+    ) &&
+    (
+      isAnalysisPending ||
+      isWorkerResultStale
+    )
 
   const comparisonBestMatch =
     isComparisonWorkerAnalyzing
@@ -1732,16 +1741,43 @@ export function HomepageProblemSolverPanel({
                 Solver starts only near the viewport.
                 Only the best calculator match is fully
                 enriched after the 350 ms typing pause.
+                Previous confirmed result stays mounted
+                during the background refresh.
               </span>
             </div>
           </div>
 
           <div
             className="homepage-problem-solver-result"
+            data-stale={
+              isDisplayedResultStale
+                ? 'true'
+                : 'false'
+            }
+            aria-busy={
+              isAnalysisPending
+            }
             aria-live="polite"
           >
             {bestMatch ? (
               <>
+                {isDisplayedResultStale ? (
+                  <div
+                    className="homepage-problem-result-refreshing"
+                    role="status"
+                  >
+                    <strong>
+                      Updating engineering result
+                    </strong>
+
+                    <span>
+                      Previous result remains visible while
+                      the background Solver prepares the
+                      next confirmed result.
+                    </span>
+                  </div>
+                ) : null}
+
                 <header className="homepage-problem-result-header">
                   <div>
                     <span>

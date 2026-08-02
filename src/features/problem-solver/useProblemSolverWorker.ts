@@ -22,6 +22,7 @@ interface UseProblemSolverWorkerOptions {
 
 interface ProblemSolverWorkerHookState {
   resolvedQuery: string
+  resultQuery: string
   matches:
     ProblemSolverMatch[]
   isLoading: boolean
@@ -36,6 +37,7 @@ export interface UseProblemSolverWorkerResult {
   matches:
     ProblemSolverMatch[]
   isLoading: boolean
+  isStale: boolean
   errorMessage: string
   elapsedMs:
     number | null
@@ -46,6 +48,10 @@ export interface UseProblemSolverWorkerResult {
 export const
   PROBLEM_SOLVER_RESULT_RENDER_MODE =
     'deferred-worker-result-render-v5' as const
+
+export const
+  PROBLEM_SOLVER_STABLE_RESULT_MODE =
+    'keep-last-confirmed-result-v7' as const
 
 export function useProblemSolverWorker({
   query,
@@ -61,6 +67,8 @@ export function useProblemSolverWorker({
       ProblemSolverWorkerHookState
     >({
       resolvedQuery:
+        '',
+      resultQuery:
         '',
       matches: [],
       isLoading:
@@ -87,6 +95,8 @@ export function useProblemSolverWorker({
         setState({
           resolvedQuery:
             query,
+          resultQuery:
+            query,
           matches: [],
           isLoading:
             false,
@@ -104,19 +114,31 @@ export function useProblemSolverWorker({
       let isCurrent =
         true
 
-      setState({
-        resolvedQuery:
-          query,
-        matches: [],
-        isLoading:
-          true,
-        errorMessage:
-          '',
-        elapsedMs:
-          null,
-        executionMode:
-          null,
-      })
+      /*
+       * Preserve the previously confirmed result while
+       * the next worker request is running. Clearing the
+       * array here would unmount the entire result tree
+       * on every edit.
+       */
+      setState(
+        (
+          currentState,
+        ) => ({
+          ...currentState,
+          resolvedQuery:
+            query,
+          matches:
+            currentState.matches,
+          isLoading:
+            true,
+          errorMessage:
+            '',
+          elapsedMs:
+            null,
+          executionMode:
+            null,
+        }),
+      )
 
       void requestProblemSolverMatches(
         query,
@@ -134,6 +156,8 @@ export function useProblemSolverWorker({
               () => {
                 setState({
                   resolvedQuery:
+                    query,
+                  resultQuery:
                     query,
                   matches:
                     result.matches,
@@ -159,24 +183,35 @@ export function useProblemSolverWorker({
               return
             }
 
+            /*
+             * Keep the last confirmed result visible after
+             * a failed refresh. The error belongs to the
+             * new query, not to the previous valid result.
+             */
             startTransition(
               () => {
-                setState({
-                  resolvedQuery:
-                    query,
-                  matches: [],
-                  isLoading:
-                    false,
-                  errorMessage:
-                    error instanceof
-                    Error
-                      ? error.message
-                      : 'Background Solver analysis failed.',
-                  elapsedMs:
-                    null,
-                  executionMode:
-                    null,
-                })
+                setState(
+                  (
+                    currentState,
+                  ) => ({
+                    ...currentState,
+                    resolvedQuery:
+                      query,
+                    matches:
+                      currentState.matches,
+                    isLoading:
+                      false,
+                    errorMessage:
+                      error instanceof
+                      Error
+                        ? error.message
+                        : 'Background Solver analysis failed.',
+                    elapsedMs:
+                      null,
+                    executionMode:
+                      null,
+                  }),
+                )
               },
             )
           },
@@ -194,31 +229,41 @@ export function useProblemSolverWorker({
     ],
   )
 
-  const isStale =
+  const isRequestPending =
     isEligible &&
     state.resolvedQuery !==
       query
 
+  const isStale =
+    isEligible &&
+    state.matches.length >
+      0 &&
+    state.resultQuery !==
+      query
+
   return {
     matches:
-      isStale
-        ? []
-        : state.matches,
+      isEligible
+        ? state.matches
+        : [],
     isLoading:
       isEligible &&
       (
         state.isLoading ||
-        isStale
+        isRequestPending
       ),
+    isStale,
     errorMessage:
-      isStale
+      isRequestPending
         ? ''
         : state.errorMessage,
     elapsedMs:
+      isRequestPending ||
       isStale
         ? null
         : state.elapsedMs,
     executionMode:
+      isRequestPending ||
       isStale
         ? null
         : state.executionMode,

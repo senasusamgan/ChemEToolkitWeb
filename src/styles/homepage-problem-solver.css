@@ -1936,3 +1936,67 @@ p {
   background:
     rgba(187, 82, 65, 0.05);
 }
+
+/* Problem Solver Performance Rescue v7 */
+
+.homepage-problem-result-refreshing {
+  margin-bottom: 9px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.32);
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(7, 156, 153, 0.075),
+      rgba(255, 255, 255, 0.7)
+    );
+}
+
+.homepage-problem-result-refreshing
+strong {
+  flex: 0 0 auto;
+  font-size: 0.52rem;
+}
+
+.homepage-problem-result-refreshing
+span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.47rem;
+  line-height: 1.4;
+  text-align: right;
+}
+
+.homepage-problem-solver-result[
+  data-stale="true"
+] {
+  border-color:
+    rgba(7, 156, 153, 0.4);
+}
+
+.homepage-problem-solver-result[
+  data-stale="true"
+]
+.homepage-problem-result-actions
+button {
+  opacity: 0.68;
+}
+
+@media (max-width: 700px) {
+  .homepage-problem-result-refreshing {
+    display: grid;
+  }
+
+  .homepage-problem-result-refreshing
+  span {
+    text-align: left;
+  }
+}
