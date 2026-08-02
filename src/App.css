@@ -849,3 +849,93 @@ main {
 .brand-logo-bubble {
   fill: var(--teal-dark);
 }
+
+/* Problem Solver Performance Rescue v9 */
+
+.problem-solver-lazy-shell {
+  min-height: 430px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 980px;
+}
+
+.problem-solver-lazy-shell[
+  data-loaded="true"
+] {
+  min-height: 0;
+}
+
+.problem-solver-lazy-placeholder {
+  min-height: 430px;
+  padding: 32px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  border-top:
+    1px solid
+    rgba(7, 156, 153, 0.2);
+  border-bottom:
+    1px solid
+    rgba(7, 156, 153, 0.2);
+  color:
+    var(--ink, #0b3556);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(249, 246, 238, 0.94),
+      rgba(234, 248, 247, 0.7)
+    );
+  text-align: center;
+}
+
+.problem-solver-lazy-placeholder
+strong {
+  font-family:
+    Georgia,
+    serif;
+  font-size:
+    clamp(
+      1rem,
+      2vw,
+      1.35rem
+    );
+}
+
+.problem-solver-lazy-placeholder
+span {
+  max-width: 520px;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.problem-solver-lazy-placeholder
+button {
+  min-height: 40px;
+  margin-top: 4px;
+  padding: 0 14px;
+  border:
+    1px solid
+    var(--teal-dark, #007b78);
+  border-radius: 8px;
+  color: #ffffff;
+  background:
+    var(--teal-dark, #007b78);
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .problem-solver-lazy-shell,
+  .problem-solver-lazy-placeholder {
+    min-height: 360px;
+  }
+
+  .problem-solver-lazy-placeholder {
+    padding:
+      24px 18px;
+  }
+}

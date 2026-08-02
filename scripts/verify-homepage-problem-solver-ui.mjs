@@ -2455,6 +2455,60 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'const HomepageProblemSolverPanel =',
+    "import(\n      './components/HomepageProblemSolverPanel'",
+    'shouldLoadProblemSolver',
+    'setShouldLoadProblemSolver',
+    'problemSolverSectionRef',
+    'problem-solver-lazy-shell',
+    'Problem Solver loads on approach',
+    'Loading Problem Solver…',
+    "'320px 0px'",
+  ]
+) {
+  if (
+    !app.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Whole homepage Problem Solver lazy-loading contract missing: ${contract}`,
+    )
+  }
+}
+
+if (
+  app.includes(
+    "import { HomepageProblemSolverPanel } from './components/HomepageProblemSolverPanel'",
+  )
+) {
+  throw new Error(
+    'Homepage Problem Solver is still statically imported by App.tsx.',
+  )
+}
+
+for (
+  const contract
+  of [
+    'loads the complete homepage Problem Solver as an on-demand chunk',
+    'loads the Problem Solver immediately after an explicit navigation request',
+    'styles the deferred Problem Solver shell and loading placeholder',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Whole-Solver lazy-loading test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )

@@ -2737,3 +2737,120 @@ test(
     )
   },
 )
+
+test(
+  'loads the complete homepage Problem Solver as an on-demand chunk',
+  async () => {
+    const source =
+      await readFile(
+        appPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'const HomepageProblemSolverPanel =',
+        "import(\n      './components/HomepageProblemSolverPanel'",
+        'shouldLoadProblemSolver',
+        'setShouldLoadProblemSolver',
+        'problemSolverSectionRef',
+        'IntersectionObserver',
+        "'320px 0px'",
+        'problem-solver-lazy-shell',
+        'Problem Solver loads on approach',
+        'Loading Problem Solver…',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing whole-Solver lazy-loading contract: ${contract}`,
+      )
+    }
+
+    assert.equal(
+      source.includes(
+        "import { HomepageProblemSolverPanel } from './components/HomepageProblemSolverPanel'",
+      ),
+      false,
+      'Homepage Problem Solver is still statically imported.',
+    )
+  },
+)
+
+test(
+  'loads the Problem Solver immediately after an explicit navigation request',
+  async () => {
+    const source =
+      await readFile(
+        appPath,
+        'utf8',
+      )
+
+    const functionStart =
+      source.indexOf(
+        'function openProblemSolver()',
+      )
+
+    assert.notEqual(
+      functionStart,
+      -1,
+      'openProblemSolver function is missing.',
+    )
+
+    const functionSource =
+      source.slice(
+        functionStart,
+        functionStart +
+          1400,
+      )
+
+    for (
+      const contract
+      of [
+        'setShouldLoadProblemSolver',
+        'problemSolverSectionRef',
+        '.scrollIntoView({',
+      ]
+    ) {
+      assert.ok(
+        functionSource.includes(
+          contract,
+        ),
+        `Missing explicit Solver opening contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles the deferred Problem Solver shell and loading placeholder',
+  async () => {
+    const source =
+      await readFile(
+        'src/App.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.problem-solver-lazy-shell',
+        'content-visibility: auto',
+        'contain-intrinsic-size:',
+        '.problem-solver-lazy-placeholder',
+        'data-loaded="true"',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Solver shell style: ${contract}`,
+      )
+    }
+  },
+)

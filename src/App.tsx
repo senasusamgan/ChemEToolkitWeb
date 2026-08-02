@@ -13,7 +13,16 @@ import './styles/personal-toolkit.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
-import { HomepageProblemSolverPanel } from './components/HomepageProblemSolverPanel'
+const HomepageProblemSolverPanel =
+  lazy(() =>
+    import(
+      './components/HomepageProblemSolverPanel'
+    ).then((module) => ({
+      default:
+        module.HomepageProblemSolverPanel,
+    })),
+  )
+
 const EngineeringWorkspace =
   lazy(() =>
     import(
@@ -87,12 +96,22 @@ function App() {
   ] = useState(false)
 
   const [
+    shouldLoadProblemSolver,
+    setShouldLoadProblemSolver,
+  ] = useState(false)
+
+  const [
     problemSolverOpenRequest,
     setProblemSolverOpenRequest,
   ] = useState(0)
 
   const workspaceSectionRef =
     useRef<HTMLElement | null>(
+      null,
+    )
+
+  const problemSolverSectionRef =
+    useRef<HTMLDivElement | null>(
       null,
     )
 
@@ -201,6 +220,84 @@ function App() {
 
   useEffect(() => {
     const element =
+      problemSolverSectionRef.current
+
+    if (element === null) {
+      return
+    }
+
+    function loadProblemSolver() {
+      setShouldLoadProblemSolver(
+        true,
+      )
+    }
+
+    if (
+      window.location.hash ===
+      '#problem-solver'
+    ) {
+      loadProblemSolver()
+
+      window.requestAnimationFrame(
+        () => {
+          element.scrollIntoView({
+            block:
+              'start',
+          })
+        },
+      )
+
+      return
+    }
+
+    if (
+      !(
+        'IntersectionObserver'
+        in window
+      )
+    ) {
+      loadProblemSolver()
+
+      return
+    }
+
+    const observer =
+      new IntersectionObserver(
+        (
+          entries,
+        ) => {
+          const shouldLoad =
+            entries.some(
+              (
+                entry,
+              ) =>
+                entry.isIntersecting,
+            )
+
+          if (!shouldLoad) {
+            return
+          }
+
+          loadProblemSolver()
+          observer.disconnect()
+        },
+        {
+          rootMargin:
+            '320px 0px',
+        },
+      )
+
+    observer.observe(
+      element,
+    )
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    const element =
       workspaceSectionRef.current
 
     const fallbackTimer =
@@ -283,6 +380,10 @@ function App() {
   }, [search, selectedCategory])
 
   function openProblemSolver() {
+    setShouldLoadProblemSolver(
+      true,
+    )
+
     setShouldLoadWorkspace(
       true,
     )
@@ -294,10 +395,8 @@ function App() {
 
     window.requestAnimationFrame(
       () => {
-        document
-          .querySelector(
-            '#problem-solver',
-          )
+        problemSolverSectionRef
+          .current
           ?.scrollIntoView({
             behavior:
               'smooth',
@@ -561,11 +660,69 @@ function App() {
         </div>
       </section>
 
-      <HomepageProblemSolverPanel
-        onOpenCalculator={
-          openCalculator
+      <div
+        ref={
+          problemSolverSectionRef
         }
-      />
+        className="problem-solver-lazy-shell"
+        data-loaded={
+          shouldLoadProblemSolver
+            ? 'true'
+            : 'false'
+        }
+      >
+        {shouldLoadProblemSolver ? (
+          <Suspense
+            fallback={
+              <div
+                className="problem-solver-lazy-placeholder"
+                role="status"
+                aria-live="polite"
+              >
+                <strong>
+                  Loading Problem Solver…
+                </strong>
+
+                <span>
+                  Preparing the local equation engine and
+                  engineering result workspace.
+                </span>
+              </div>
+            }
+          >
+            <HomepageProblemSolverPanel
+              onOpenCalculator={
+                openCalculator
+              }
+            />
+          </Suspense>
+        ) : (
+          <div
+            className="problem-solver-lazy-placeholder"
+            role="status"
+            aria-live="polite"
+          >
+            <strong>
+              Problem Solver loads on approach
+            </strong>
+
+            <span>
+              The full Solver is kept out of the initial
+              application bundle until this section is
+              needed.
+            </span>
+
+            <button
+              type="button"
+              onClick={
+                openProblemSolver
+              }
+            >
+              Load Problem Solver
+            </button>
+          </div>
+        )}
+      </div>
 
 
       <section
