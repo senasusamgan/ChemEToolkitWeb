@@ -2266,3 +2266,152 @@ test(
     }
   },
 )
+
+test(
+  'debounces Solver draft persistence instead of writing on every keystroke',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'SOLVER_DRAFT_SAVE_DELAY_MS',
+        '500',
+        'window.localStorage.setItem',
+        'window.localStorage.removeItem',
+        'window.setTimeout',
+        'window.clearTimeout',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing draft-persistence contract: ${contract}`,
+      )
+    }
+
+    const storageIndex =
+      source.indexOf(
+        'window.localStorage.setItem',
+      )
+
+    const surroundingSource =
+      source.slice(
+        Math.max(
+          0,
+          storageIndex -
+            900,
+        ),
+        storageIndex +
+          900,
+      )
+
+    assert.ok(
+      surroundingSource.includes(
+        'SOLVER_DRAFT_SAVE_DELAY_MS',
+      ),
+      'Solver draft write is not inside the delayed persistence effect.',
+    )
+  },
+)
+
+test(
+  'prewarms the Solver worker only when the section approaches the viewport',
+  async () => {
+    const [
+      homepageSource,
+      clientSource,
+    ] =
+      await Promise.all([
+        readFile(
+          componentPath,
+          'utf8',
+        ),
+        readFile(
+          workerClientPath,
+          'utf8',
+        ),
+      ])
+
+    for (
+      const contract
+      of [
+        'prewarmProblemSolverWorker',
+        'IntersectionObserver',
+        'requestIdleCallback',
+        "'600px 0px'",
+        'warms only when this',
+      ]
+    ) {
+      assert.ok(
+        homepageSource.includes(
+          contract,
+        ),
+        `Missing viewport-prewarm integration: ${contract}`,
+      )
+    }
+
+    for (
+      const contract
+      of [
+        'PROBLEM_SOLVER_WORKER_PREWARM_MODE',
+        "'viewport-idle-prewarm-v5'",
+        'prewarmProblemSolverWorker',
+        'getSharedWorker()',
+      ]
+    ) {
+      assert.ok(
+        clientSource.includes(
+          contract,
+        ),
+        `Missing worker-prewarm client contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'defers large worker result commits with a React transition',
+  async () => {
+    const source =
+      await readFile(
+        workerHookPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'startTransition',
+        'PROBLEM_SOLVER_RESULT_RENDER_MODE',
+        "'deferred-worker-result-render-v5'",
+        'result.matches',
+        'result.elapsedMs',
+        'result.executionMode',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing deferred-render contract: ${contract}`,
+      )
+    }
+
+    assert.ok(
+      (
+        source.match(
+          /startTransition/g,
+        ) ??
+        []
+      ).length >=
+        3,
+      'Expected the import and both worker-result transitions.',
+    )
+  },
+)

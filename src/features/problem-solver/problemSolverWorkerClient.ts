@@ -279,6 +279,21 @@ function getSharedWorker():
   return worker
 }
 
+export const
+  PROBLEM_SOLVER_WORKER_PREWARM_MODE =
+    'viewport-idle-prewarm-v5' as const
+
+export function prewarmProblemSolverWorker():
+  boolean {
+  try {
+    getSharedWorker()
+
+    return true
+  } catch {
+    return false
+  }
+}
+
 function requestFromWorker(
   query: string,
   limit: number,

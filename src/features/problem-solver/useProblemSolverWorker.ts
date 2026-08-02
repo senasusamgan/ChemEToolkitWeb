@@ -1,4 +1,5 @@
 import {
+  startTransition,
   useEffect,
   useState,
 } from 'react'
@@ -41,6 +42,10 @@ export interface UseProblemSolverWorkerResult {
   executionMode:
     ProblemSolverWorkerExecutionMode | null
 }
+
+export const
+  PROBLEM_SOLVER_RESULT_RENDER_MODE =
+    'deferred-worker-result-render-v5' as const
 
 export function useProblemSolverWorker({
   query,
@@ -125,21 +130,24 @@ export function useProblemSolverWorker({
               return
             }
 
-            setState({
-              resolvedQuery:
-                query,
-              matches:
-                result.matches,
-              isLoading:
-                false,
-              errorMessage:
-                '',
-              elapsedMs:
-                result.elapsedMs,
-              executionMode:
-                result
-                  .executionMode,
-            })
+            startTransition(
+              () => {
+                setState({
+                  resolvedQuery:
+                    query,
+                  matches:
+                    result.matches,
+                  isLoading:
+                    false,
+                  errorMessage:
+                    '',
+                  elapsedMs:
+                    result.elapsedMs,
+                  executionMode:
+                    result.executionMode,
+                })
+              },
+            )
           },
         )
         .catch(
@@ -151,22 +159,26 @@ export function useProblemSolverWorker({
               return
             }
 
-            setState({
-              resolvedQuery:
-                query,
-              matches: [],
-              isLoading:
-                false,
-              errorMessage:
-                error instanceof
-                Error
-                  ? error.message
-                  : 'Background Solver analysis failed.',
-              elapsedMs:
-                null,
-              executionMode:
-                null,
-            })
+            startTransition(
+              () => {
+                setState({
+                  resolvedQuery:
+                    query,
+                  matches: [],
+                  isLoading:
+                    false,
+                  errorMessage:
+                    error instanceof
+                    Error
+                      ? error.message
+                      : 'Background Solver analysis failed.',
+                  elapsedMs:
+                    null,
+                  executionMode:
+                    null,
+                })
+              },
+            )
           },
         )
 

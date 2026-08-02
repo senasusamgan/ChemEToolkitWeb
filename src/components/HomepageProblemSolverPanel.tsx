@@ -7,6 +7,9 @@ import {
 } from 'react'
 
 import {
+  prewarmProblemSolverWorker,
+} from '../features/problem-solver/problemSolverWorkerClient'
+import {
   useProblemSolverWorker,
 } from '../features/problem-solver/useProblemSolverWorker'
 
@@ -196,6 +199,10 @@ const SHARED_PROBLEM_QUERY_PARAM =
 
 const SOLVER_DRAFT_KEY =
   'cheme-toolkit.homepage-problem-solver.draft.v1'
+
+const SOLVER_DRAFT_SAVE_DELAY_MS =
+  500
+
 
 function readSharedProblem():
   string | null {
@@ -426,27 +433,161 @@ export function HomepageProblemSolverPanel({
 
   useEffect(
     () => {
-      try {
-        if (
-          query.trim().length >
-          0
-        ) {
-          window.localStorage.setItem(
-            SOLVER_DRAFT_KEY,
-            query,
-          )
-        } else {
-          window.localStorage.removeItem(
-            SOLVER_DRAFT_KEY,
-          )
-        }
-      } catch {
-        // Storage can be unavailable.
-      }
+      const timeout =
+        window.setTimeout(
+          () => {
+            try {
+              if (
+                query.trim().length >
+                0
+              ) {
+                window.localStorage.setItem(
+                  SOLVER_DRAFT_KEY,
+                  query,
+                )
+              } else {
+                window.localStorage.removeItem(
+                  SOLVER_DRAFT_KEY,
+                )
+              }
+            } catch {
+              // Storage can be unavailable.
+            }
+          },
+          SOLVER_DRAFT_SAVE_DELAY_MS,
+        )
+
+      return () =>
+        window.clearTimeout(
+          timeout,
+        )
     },
     [
       query,
     ],
+  )
+
+  useEffect(
+    () => {
+      const solverSection =
+        document.getElementById(
+          'problem-solver',
+        )
+
+      if (
+        !solverSection ||
+        typeof IntersectionObserver ===
+          'undefined'
+      ) {
+        return
+      }
+
+      type SolverIdleWindow =
+        Window & {
+          requestIdleCallback?: (
+            callback:
+              () => void,
+            options?: {
+              timeout: number
+            },
+          ) => number
+          cancelIdleCallback?: (
+            handle: number,
+          ) => void
+        }
+
+      const idleWindow =
+        window as
+          SolverIdleWindow
+
+      let idleHandle:
+        number | null =
+          null
+
+      let timeoutHandle:
+        number | null =
+          null
+
+      const observer =
+        new IntersectionObserver(
+          (
+            entries,
+          ) => {
+            const isApproaching =
+              entries.some(
+                (entry) =>
+                  entry
+                    .isIntersecting,
+              )
+
+            if (!isApproaching) {
+              return
+            }
+
+            observer.disconnect()
+
+            const warmWorker =
+              () => {
+                prewarmProblemSolverWorker()
+              }
+
+            if (
+              idleWindow
+                .requestIdleCallback
+            ) {
+              idleHandle =
+                idleWindow
+                  .requestIdleCallback(
+                    warmWorker,
+                    {
+                      timeout:
+                        1000,
+                    },
+                  )
+            } else {
+              timeoutHandle =
+                window.setTimeout(
+                  warmWorker,
+                  120,
+                )
+            }
+          },
+          {
+            rootMargin:
+              '600px 0px',
+          },
+        )
+
+      observer.observe(
+        solverSection,
+      )
+
+      return () => {
+        observer.disconnect()
+
+        if (
+          idleHandle !==
+            null &&
+          idleWindow
+            .cancelIdleCallback
+        ) {
+          idleWindow
+            .cancelIdleCallback(
+              idleHandle,
+            )
+        }
+
+        if (
+          timeoutHandle !==
+          null
+        ) {
+          window.clearTimeout(
+            timeoutHandle,
+          )
+        }
+      }
+    },
+    [],
   )
 
   useEffect(
@@ -1450,7 +1591,8 @@ export function HomepageProblemSolverPanel({
               <span>
                 Your problem stays inside this browser.
                 Model matching runs outside the main
-                interface thread.
+                interface thread and warms only when this
+                section approaches the viewport.
               </span>
 
               <small
