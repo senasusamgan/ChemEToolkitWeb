@@ -2157,6 +2157,87 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'PROBLEM_SOLVER_PRIMARY_MATCH_LIMIT',
+    'PROBLEM_SOLVER_COMPARISON_MATCH_LIMIT',
+    'isSolverActive',
+    'setIsSolverActive',
+    'onFocus={() =>',
+    'isSolverActive &&',
+    'Solver starts only near the viewport',
+    'Only the best calculator match is fully',
+    'matches[0]',
+  ]
+) {
+  if (
+    !homepageComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver visibility-gating contract missing: ${contract}`,
+    )
+  }
+}
+
+if (
+  (
+    homepageComponent.match(
+      /isSolverActive &&/g,
+    ) ??
+    []
+  ).length !==
+  2
+) {
+  throw new Error(
+    'Primary and comparison Solver requests are not both visibility-gated.',
+  )
+}
+
+if (
+  homepageComponent.includes(
+    'limit:\n        3,',
+  )
+) {
+  throw new Error(
+    'Homepage Solver still requests three fully enriched matches.',
+  )
+}
+
+if (
+  (
+    homepageComponent.match(
+      /\bmatches\[/g,
+    ) ??
+    []
+  ).length !==
+  1
+) {
+  throw new Error(
+    'Homepage Solver consumes more than the single best primary match.',
+  )
+}
+
+for (
+  const contract
+  of [
+    'starts Solver analysis only near the viewport or after user interaction',
+    'fully enriches only the primary calculator match used by the UI',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver v6 performance test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )

@@ -2415,3 +2415,92 @@ test(
     )
   },
 )
+
+test(
+  'starts Solver analysis only near the viewport or after user interaction',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'isSolverActive',
+        'setIsSolverActive',
+        'IntersectionObserver',
+        'requestIdleCallback',
+        'onFocus={() =>',
+        'prewarmProblemSolverWorker',
+        'Solver starts only near the viewport',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing visibility-gated Solver contract: ${contract}`,
+      )
+    }
+
+    assert.equal(
+      (
+        source.match(
+          /isSolverActive &&/g,
+        ) ??
+        []
+      ).length,
+      2,
+      'Both Solver worker requests must be visibility-gated.',
+    )
+  },
+)
+
+test(
+  'fully enriches only the primary calculator match used by the UI',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'PROBLEM_SOLVER_PRIMARY_MATCH_LIMIT',
+        'PROBLEM_SOLVER_COMPARISON_MATCH_LIMIT',
+        'matches[0]',
+        'Only the best calculator match is fully',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing single-result enrichment contract: ${contract}`,
+      )
+    }
+
+    assert.equal(
+      source.includes(
+        'limit:\n        3,',
+      ),
+      false,
+      'Primary Solver still requests three fully enriched results.',
+    )
+
+    assert.equal(
+      (
+        source.match(
+          /\bmatches\[/g,
+        ) ??
+        []
+      ).length,
+      1,
+      'The homepage should consume only the best primary match.',
+    )
+  },
+)

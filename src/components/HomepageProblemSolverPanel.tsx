@@ -203,6 +203,12 @@ const SOLVER_DRAFT_KEY =
 const SOLVER_DRAFT_SAVE_DELAY_MS =
   500
 
+const PROBLEM_SOLVER_PRIMARY_MATCH_LIMIT =
+  1
+
+const PROBLEM_SOLVER_COMPARISON_MATCH_LIMIT =
+  1
+
 
 function readSharedProblem():
   string | null {
@@ -413,6 +419,11 @@ export function HomepageProblemSolverPanel({
     readSavedSolverCases,
   )
 
+  const [
+    isSolverActive,
+    setIsSolverActive,
+  ] = useState(false)
+
   useEffect(
     () => {
       try {
@@ -479,6 +490,12 @@ export function HomepageProblemSolverPanel({
         typeof IntersectionObserver ===
           'undefined'
       ) {
+        setIsSolverActive(
+          true,
+        )
+
+        prewarmProblemSolverWorker()
+
         return
       }
 
@@ -528,6 +545,10 @@ export function HomepageProblemSolverPanel({
 
             const warmWorker =
               () => {
+                setIsSolverActive(
+                  true,
+                )
+
                 prewarmProblemSolverWorker()
               }
 
@@ -660,8 +681,9 @@ export function HomepageProblemSolverPanel({
       query:
         analysisQuery,
       limit:
-        3,
+        PROBLEM_SOLVER_PRIMARY_MATCH_LIMIT,
       enabled:
+        isSolverActive &&
         analysisQuery
           .trim()
           .length >=
@@ -678,8 +700,9 @@ export function HomepageProblemSolverPanel({
       query:
         comparisonAnalysisQuery,
       limit:
-        1,
+        PROBLEM_SOLVER_COMPARISON_MATCH_LIMIT,
       enabled:
+        isSolverActive &&
         comparisonAnalysisQuery
           .trim()
           .length >=
@@ -1526,7 +1549,18 @@ export function HomepageProblemSolverPanel({
               value={query}
               rows={7}
               spellCheck={false}
+              onFocus={() => {
+                setIsSolverActive(
+                  true,
+                )
+
+                prewarmProblemSolverWorker()
+              }}
               onChange={(event) => {
+                setIsSolverActive(
+                  true,
+                )
+
                 setQuery(
                   event.target.value,
                 )
@@ -1694,8 +1728,10 @@ export function HomepageProblemSolverPanel({
               </div>
 
               <span>
-                Advanced tools load on demand. Solver
-                matching waits 350 ms after typing.
+                Advanced tools load on demand.
+                Solver starts only near the viewport.
+                Only the best calculator match is fully
+                enriched after the 350 ms typing pause.
               </span>
             </div>
           </div>
