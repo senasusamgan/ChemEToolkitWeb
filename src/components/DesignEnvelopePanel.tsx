@@ -14,6 +14,7 @@ import {
 import '../styles/design-envelope-panel.css'
 
 interface DesignEnvelopePanelProps {
+  initiallyOpen?: boolean
   baseQuery: string
   onApplyProblem: (
     problem: string,
@@ -351,12 +352,13 @@ async function copyText(
 
 export function DesignEnvelopePanel({
   baseQuery,
+  initiallyOpen = false,
   onApplyProblem,
 }: DesignEnvelopePanelProps) {
   const [
     isOpen,
     setIsOpen,
-  ] = useState(false)
+  ] = useState(initiallyOpen)
 
   const assignments =
     useMemo(

@@ -13,6 +13,7 @@ import {
 import '../styles/batch-problem-solver-panel.css'
 
 interface BatchProblemSolverPanelProps {
+  initiallyOpen?: boolean
   onLoadCase: (
     problem: string,
   ) => void
@@ -142,12 +143,13 @@ async function copyText(
 }
 
 export function BatchProblemSolverPanel({
+  initiallyOpen = false,
   onLoadCase,
 }: BatchProblemSolverPanelProps) {
   const [
     isOpen,
     setIsOpen,
-  ] = useState(false)
+  ] = useState(initiallyOpen)
 
   const [
     batchText,

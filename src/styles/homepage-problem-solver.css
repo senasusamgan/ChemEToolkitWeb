@@ -1478,3 +1478,336 @@ strong {
     display: grid;
   }
 }
+
+/* Problem Solver Performance Rescue v1 */
+
+.homepage-problem-tool-loading {
+  margin: 12px 0;
+  min-height: 88px;
+  padding: 14px;
+  display: grid;
+  place-items: center;
+  border:
+    1px dashed
+    rgba(7, 156, 153, 0.42);
+  border-radius: 10px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.045);
+  font-size: 0.55rem;
+  font-weight: 850;
+}
+
+.homepage-problem-editor-actions
+button.is-active {
+  color: #ffffff;
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.solver-advanced-tools,
+.solver-result-tools {
+  margin-top: 14px;
+  padding: 13px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.4);
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(234, 248, 247, 0.76)
+    );
+}
+
+.solver-advanced-tools-header,
+.solver-result-tools-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.solver-advanced-tools-header
+> div,
+.solver-result-tools-header
+> div {
+  display: grid;
+  gap: 4px;
+}
+
+.solver-advanced-tools-header
+span,
+.solver-result-tools-header
+span,
+.homepage-problem-lazy-tool-launcher
+span {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.49rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.solver-advanced-tools-header
+h3,
+.solver-result-tools-header
+h4 {
+  margin: 0;
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+}
+
+.solver-advanced-tools-header
+h3 {
+  font-size: 1rem;
+}
+
+.solver-result-tools-header
+h4 {
+  font-size: 0.92rem;
+}
+
+.solver-advanced-tools-header
+p,
+.solver-result-tools-header
+p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.51rem;
+  line-height: 1.45;
+}
+
+.solver-advanced-tools-header
+button,
+.solver-result-tools-header
+button,
+.homepage-problem-lazy-tool-launcher
+button {
+  min-height: 35px;
+  padding: 0 10px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.4);
+  border-radius: 7px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.055);
+  font: inherit;
+  font-size: 0.5rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.solver-advanced-tool-selector {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+  gap: 6px;
+}
+
+.solver-advanced-tool-selector
+button {
+  min-width: 0;
+  min-height: 70px;
+  padding: 8px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.25);
+  border-radius: 8px;
+  color:
+    var(--ink, #0b3556);
+  background:
+    rgba(255, 255, 255, 0.75);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.solver-advanced-tool-selector
+button:hover,
+.solver-advanced-tool-selector
+button.is-active {
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.07);
+}
+
+.solver-advanced-tool-selector
+strong {
+  font-size: 0.53rem;
+}
+
+.solver-advanced-tool-selector
+span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.46rem;
+  line-height: 1.4;
+}
+
+.solver-advanced-tools-empty {
+  min-height: 105px;
+  margin-top: 9px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 5px;
+  border:
+    1px dashed
+    rgba(217, 208, 189, 0.88);
+  border-radius: 9px;
+  text-align: center;
+}
+
+.solver-advanced-tools-empty
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-family:
+    Georgia,
+    serif;
+}
+
+.solver-advanced-tools-empty
+p {
+  margin: 0;
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.5rem;
+}
+
+.homepage-problem-lazy-tool-launcher {
+  margin-top: 9px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.28);
+  border-radius: 9px;
+  background:
+    rgba(7, 156, 153, 0.045);
+}
+
+.homepage-problem-lazy-tool-launcher
+> div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.homepage-problem-lazy-tool-launcher
+strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.55rem;
+}
+
+.homepage-problem-lazy-tool-launcher
+small {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.47rem;
+  line-height: 1.4;
+}
+
+.solver-result-tool-tabs {
+  margin-top: 9px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.solver-result-tool-tabs
+button {
+  min-height: 32px;
+  padding: 0 9px;
+  border:
+    1px solid
+    rgba(7, 123, 120, 0.28);
+  border-radius: 999px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(255, 255, 255, 0.78);
+  font: inherit;
+  font-size: 0.47rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.solver-result-tool-tabs
+button.is-active {
+  color: #ffffff;
+  border-color:
+    var(--teal-dark, #007b78);
+  background:
+    var(--teal-dark, #007b78);
+}
+
+.solver-result-tool-tabs
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .solver-advanced-tool-selector {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+@media (max-width: 700px) {
+  .solver-advanced-tools-header,
+  .solver-result-tools-header,
+  .homepage-problem-lazy-tool-launcher {
+    display: grid;
+  }
+
+  .solver-advanced-tools-header
+  button,
+  .solver-result-tools-header
+  button,
+  .homepage-problem-lazy-tool-launcher
+  button {
+    width: 100%;
+  }
+
+  .solver-advanced-tool-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .solver-result-tool-tabs {
+    display: grid;
+  }
+
+  .solver-result-tool-tabs
+  button {
+    width: 100%;
+  }
+}
