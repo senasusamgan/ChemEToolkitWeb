@@ -600,6 +600,7 @@ const toolSources = [
   'src/components/ScaleUpSimilarityPanel.tsx',
   'src/components/AgitatedVesselScaleUpPanel.tsx',
   'src/components/PumpAffinitySystemPanel.tsx',
+  'src/components/MultistageCompressorPanel.tsx',
   'src/components/TargetOperatingPointPanel.tsx',
   'src/components/DesignEnvelopePanel.tsx',
   'src/components/ConstraintOperatingWindowPanel.tsx',

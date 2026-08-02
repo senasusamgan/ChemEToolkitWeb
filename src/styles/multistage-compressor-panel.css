@@ -1,0 +1,472 @@
+.multistage-compressor-panel {
+  margin-top: 12px;
+  padding: 16px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.3);
+  border-radius: 12px;
+  background:
+    rgba(255, 253, 250, 0.95);
+}
+
+.multistage-compressor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.multistage-compressor-header span,
+.multistage-compressor-input-grid article > span,
+.multistage-compressor-summary span,
+.multistage-compressor-comparison span,
+.multistage-compressor-pressure-train span,
+.multistage-compressor-transfer span {
+  color:
+    var(--teal-dark, #007a79);
+  font-size: 0.47rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.multistage-compressor-header h3 {
+  margin:
+    4px 0 0;
+  color:
+    var(--ink, #0b3658);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 1rem;
+}
+
+.multistage-compressor-header p {
+  max-width: 660px;
+  margin:
+    7px 0 0;
+  color:
+    var(--muted, #557087);
+  font-size: 0.55rem;
+  line-height: 1.5;
+}
+
+.multistage-compressor-header > strong {
+  flex: 0 0 auto;
+  padding:
+    5px 8px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.25);
+  border-radius: 999px;
+  color:
+    var(--teal-dark, #007a79);
+  font-size: 0.47rem;
+}
+
+.multistage-compressor-empty {
+  margin-top: 12px;
+  padding: 20px;
+  border:
+    1px dashed
+    rgba(217, 208, 189, 0.9);
+  border-radius: 9px;
+  color:
+    var(--muted, #557087);
+  font-size: 0.54rem;
+  text-align: center;
+}
+
+.multistage-compressor-symbols {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 8px;
+}
+
+.multistage-compressor-symbols label,
+.multistage-compressor-input-grid label {
+  display: grid;
+  gap: 4px;
+  color:
+    var(--muted, #557087);
+  font-size: 0.48rem;
+  font-weight: 800;
+}
+
+.multistage-compressor-symbols select,
+.multistage-compressor-input-grid input,
+.multistage-compressor-input-grid select {
+  width: 100%;
+  min-height: 34px;
+  padding:
+    0 8px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.95);
+  border-radius: 6px;
+  color:
+    var(--ink, #0b3658);
+  background:
+    #ffffff;
+  font: inherit;
+  font-size: 0.54rem;
+}
+
+.multistage-compressor-input-grid input:disabled {
+  opacity: 0.48;
+}
+
+.multistage-compressor-input-grid {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 8px;
+}
+
+.multistage-compressor-input-grid article {
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.87);
+  border-radius: 9px;
+}
+
+.multistage-compressor-input-grid code {
+  padding: 7px;
+  border-radius: 6px;
+  color:
+    var(--teal-dark, #007a79);
+  background:
+    rgba(7, 156, 153, 0.05);
+  font-size: 0.48rem;
+  text-align: center;
+}
+
+.multistage-compressor-input-grid p {
+  margin: 0;
+  color:
+    var(--muted, #557087);
+  font-size: 0.47rem;
+  line-height: 1.45;
+}
+
+.multistage-compressor-assumption {
+  margin:
+    9px 0 0;
+  padding:
+    8px 9px;
+  border-left:
+    3px solid
+    rgba(7, 156, 153, 0.7);
+  color:
+    var(--muted, #557087);
+  background:
+    rgba(7, 156, 153, 0.04);
+  font-size: 0.48rem;
+  line-height: 1.45;
+}
+
+.multistage-compressor-actions {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+
+.multistage-compressor-actions button,
+.multistage-compressor-transfer button {
+  min-height: 34px;
+  padding:
+    0 10px;
+  border:
+    1px solid
+    var(--teal-dark, #007a79);
+  border-radius: 7px;
+  color: #ffffff;
+  background:
+    var(--teal-dark, #007a79);
+  font: inherit;
+  font-size: 0.51rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.multistage-compressor-actions button:nth-child(2) {
+  color:
+    var(--teal-dark, #007a79);
+  background:
+    transparent;
+}
+
+.multistage-compressor-actions span {
+  margin-left: auto;
+  color:
+    var(--muted, #557087);
+  font-size: 0.47rem;
+}
+
+.multistage-compressor-feedback {
+  margin:
+    9px 0 0;
+  padding:
+    7px 9px;
+  border-left:
+    3px solid
+    var(--teal, #079c99);
+  color:
+    var(--muted, #557087);
+  background:
+    rgba(7, 156, 153, 0.045);
+  font-size: 0.5rem;
+}
+
+.multistage-compressor-summary {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 7px;
+}
+
+.multistage-compressor-summary article,
+.multistage-compressor-comparison article {
+  padding: 10px;
+  border:
+    1px solid
+    rgba(217, 208, 189, 0.85);
+  border-radius: 8px;
+}
+
+.multistage-compressor-summary article[
+  data-state="strong"
+] {
+  border-color:
+    rgba(39, 150, 91, 0.42);
+  background:
+    rgba(39, 150, 91, 0.055);
+}
+
+.multistage-compressor-summary article[
+  data-state="positive"
+] {
+  border-color:
+    rgba(7, 156, 153, 0.36);
+  background:
+    rgba(7, 156, 153, 0.04);
+}
+
+.multistage-compressor-summary article[
+  data-state="none"
+] {
+  border-color:
+    rgba(202, 139, 31, 0.38);
+}
+
+.multistage-compressor-summary strong,
+.multistage-compressor-comparison strong {
+  display: block;
+  margin-top: 5px;
+  color:
+    var(--ink, #0b3658);
+  font-family:
+    Georgia,
+    serif;
+  font-size: 0.67rem;
+}
+
+.multistage-compressor-comparison {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 7px;
+}
+
+.multistage-compressor-comparison p {
+  margin:
+    4px 0 0;
+  color:
+    var(--muted, #557087);
+  font-size: 0.46rem;
+  line-height: 1.4;
+}
+
+.multistage-compressor-pressure-train {
+  margin-top: 8px;
+  padding: 10px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.25);
+  border-radius: 8px;
+  background:
+    rgba(7, 156, 153, 0.035);
+}
+
+.multistage-compressor-pressure-train header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.multistage-compressor-pressure-train strong {
+  display: block;
+  margin-top: 4px;
+  color:
+    var(--ink, #0b3658);
+  font-size: 0.6rem;
+}
+
+.multistage-compressor-pressure-train p {
+  max-width: 650px;
+  margin: 0;
+  color:
+    var(--muted, #557087);
+  font-size: 0.47rem;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.multistage-compressor-table-scroll {
+  margin-top: 9px;
+  overflow-x: auto;
+}
+
+.multistage-compressor-table {
+  width: 100%;
+  min-width: 940px;
+  border-collapse: collapse;
+}
+
+.multistage-compressor-table th,
+.multistage-compressor-table td {
+  padding: 8px;
+  border-bottom:
+    1px solid
+    rgba(217, 208, 189, 0.74);
+  color:
+    var(--muted, #557087);
+  font-size: 0.47rem;
+  text-align: left;
+}
+
+.multistage-compressor-table th {
+  color:
+    var(--ink, #0b3658);
+  font-weight: 900;
+}
+
+.multistage-compressor-table td strong {
+  display: block;
+  color:
+    var(--ink, #0b3658);
+}
+
+.multistage-compressor-table td small {
+  display: block;
+  margin-top: 3px;
+}
+
+.multistage-compressor-transfer {
+  margin-top: 9px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.28);
+  border-radius: 9px;
+  background:
+    rgba(7, 156, 153, 0.04);
+}
+
+.multistage-compressor-transfer strong {
+  display: block;
+  margin-top: 5px;
+  color:
+    var(--ink, #0b3658);
+  font-size: 0.62rem;
+}
+
+.multistage-compressor-transfer p {
+  max-width: 620px;
+  margin:
+    4px 0 0;
+  color:
+    var(--muted, #557087);
+  font-size: 0.48rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 1080px) {
+  .multistage-compressor-input-grid,
+  .multistage-compressor-summary,
+  .multistage-compressor-comparison {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+}
+
+@media (max-width: 720px) {
+  .multistage-compressor-header,
+  .multistage-compressor-transfer,
+  .multistage-compressor-pressure-train header {
+    display: grid;
+  }
+
+  .multistage-compressor-symbols,
+  .multistage-compressor-input-grid,
+  .multistage-compressor-summary,
+  .multistage-compressor-comparison {
+    grid-template-columns:
+      1fr;
+  }
+
+  .multistage-compressor-pressure-train p {
+    text-align: left;
+  }
+
+  .multistage-compressor-actions span {
+    width: 100%;
+    margin-left: 0;
+  }
+}
