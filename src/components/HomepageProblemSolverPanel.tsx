@@ -27,6 +27,9 @@ import {
   AssumptionReviewPanel,
 } from './AssumptionReviewPanel'
 import {
+  ResultUnitConverterPanel,
+} from './ResultUnitConverterPanel'
+import {
   UncertaintyAnalysisPanel,
 } from './UncertaintyAnalysisPanel'
 import {
@@ -1956,6 +1959,46 @@ export function HomepageProblemSolverPanel({
                     </ol>
                   </div>
                 ) : null}
+
+                <ResultUnitConverterPanel
+                  key={
+                    [
+                      bestMatch
+                        .quickSolution
+                        ?.resultLabel ??
+                        'pending',
+                      bestMatch
+                        .quickSolution
+                        ?.numericValue ??
+                        'none',
+                      bestMatch
+                        .quickSolution
+                        ?.unit ??
+                        'unitless',
+                    ].join('|')
+                  }
+                  calculatorTitle={
+                    bestMatch.title
+                  }
+                  resultLabel={
+                    bestMatch
+                      .quickSolution
+                      ?.resultLabel ??
+                    ''
+                  }
+                  numericValue={
+                    bestMatch
+                      .quickSolution
+                      ?.numericValue ??
+                    null
+                  }
+                  sourceUnit={
+                    bestMatch
+                      .quickSolution
+                      ?.unit ??
+                    ''
+                  }
+                />
 
                 <AssumptionReviewPanel
                   baseQuery={

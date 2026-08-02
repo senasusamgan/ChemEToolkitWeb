@@ -1657,3 +1657,130 @@ test(
     }
   },
 )
+
+test(
+  'provides a Quick Solve result unit converter',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/ResultUnitConverterPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'Result unit converter',
+        'UNIT_FAMILIES',
+        'resolveUnit',
+        'formatEngineering',
+        'formatScientific',
+        'Converted engineering result',
+        'Compatible result units',
+        'Copy converted result',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Result Unit Converter contract: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'supports core chemical engineering result units',
+  async () => {
+    const source =
+      await readFile(
+        'src/components/ResultUnitConverterPanel.tsx',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        "'pressure'",
+        "'temperature'",
+        "'volumetric-flow'",
+        "'mass-flow'",
+        "'molar-flow'",
+        "'energy'",
+        "'power'",
+        "'density'",
+        "'dynamic-viscosity'",
+        "'heat-transfer-coefficient'",
+        "'heat-flux'",
+        "'molar-flux'",
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing result-unit family: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'integrates the Result Unit Converter with Quick Solve',
+  async () => {
+    const source =
+      await readFile(
+        componentPath,
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        'ResultUnitConverterPanel',
+        '<ResultUnitConverterPanel',
+        'numericValue={',
+        'sourceUnit={',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Result Unit Converter integration: ${contract}`,
+      )
+    }
+  },
+)
+
+test(
+  'styles the Result Unit Converter responsively',
+  async () => {
+    const source =
+      await readFile(
+        'src/styles/result-unit-converter-panel.css',
+        'utf8',
+      )
+
+    for (
+      const contract
+      of [
+        '.result-unit-converter-panel',
+        '.result-unit-converter-controls',
+        '.result-unit-converter-comparison',
+        '.result-unit-converter-family',
+        '.result-unit-converter-options',
+        '.result-unit-converter-actions',
+        '@media (max-width: 700px)',
+      ]
+    ) {
+      assert.ok(
+        source.includes(
+          contract,
+        ),
+        `Missing Result Unit Converter style: ${contract}`,
+      )
+    }
+  },
+)
