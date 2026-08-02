@@ -2073,6 +2073,90 @@ for (
   }
 }
 
+for (
+  const contract
+  of [
+    'SOLVER_DRAFT_SAVE_DELAY_MS',
+    '500',
+    'prewarmProblemSolverWorker',
+    'IntersectionObserver',
+    'requestIdleCallback',
+    "'600px 0px'",
+    'warms only when this',
+  ]
+) {
+  if (
+    !homepageComponent.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver smoothness contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'PROBLEM_SOLVER_WORKER_PREWARM_MODE',
+    "'viewport-idle-prewarm-v5'",
+    'prewarmProblemSolverWorker',
+    'getSharedWorker()',
+  ]
+) {
+  if (
+    !workerClient.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver worker-prewarm contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'startTransition',
+    'PROBLEM_SOLVER_RESULT_RENDER_MODE',
+    "'deferred-worker-result-render-v5'",
+    'result.matches',
+    'result.elapsedMs',
+    'result.executionMode',
+  ]
+) {
+  if (
+    !workerHook.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver deferred-render contract missing: ${contract}`,
+    )
+  }
+}
+
+for (
+  const contract
+  of [
+    'debounces Solver draft persistence instead of writing on every keystroke',
+    'prewarms the Solver worker only when the section approaches the viewport',
+    'defers large worker result commits with a React transition',
+  ]
+) {
+  if (
+    !tests.includes(
+      contract,
+    )
+  ) {
+    throw new Error(
+      `Problem Solver smoothness test missing: ${contract}`,
+    )
+  }
+}
+
 console.log(
   'PASS: Standalone homepage Problem Solver verified.',
 )
