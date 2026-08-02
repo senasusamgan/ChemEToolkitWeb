@@ -15,6 +15,7 @@ type AdvancedToolId =
   | 'surface'
   | 'scaleup'
   | 'mixing'
+  | 'pump'
   | 'target'
   | 'design'
   | 'constraint'
@@ -97,6 +98,12 @@ const loadAgitatedVesselScaleUpPanel =
   () =>
     import(
       './AgitatedVesselScaleUpPanel'
+    )
+
+const loadPumpAffinitySystemPanel =
+  () =>
+    import(
+      './PumpAffinitySystemPanel'
     )
 
 const loadTargetOperatingPointPanel =
@@ -263,6 +270,20 @@ const AgitatedVesselScaleUpPanel =
     },
   )
 
+const PumpAffinitySystemPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadPumpAffinitySystemPanel()
+
+      return {
+        default:
+          module
+            .PumpAffinitySystemPanel,
+      }
+    },
+  )
+
 const TargetOperatingPointPanel =
   lazy(
     async () => {
@@ -415,6 +436,14 @@ const TOOL_OPTIONS:
         'Agitator scale-up',
       description:
         'Scale mixing speed by tip speed, P/V, Reynolds or Froude similarity.',
+    },
+    {
+      id:
+        'pump',
+      label:
+        'Pump operating point',
+      description:
+        'Apply affinity laws and intersect pump and process-system curves.',
     },
     {
       id:
@@ -848,6 +877,32 @@ export function SolverAdvancedTools({
               applyProblem(
                 scaledProblem,
                 'Scaled agitator case loaded.',
+              )
+            }
+          />
+        </Suspense>
+      ) : null}
+
+      {activeTool ===
+      'pump' ? (
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Pump operating point" />
+          }
+        >
+          <PumpAffinitySystemPanel
+            key={
+              baseQuery
+            }
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
+              operatingProblem,
+            ) =>
+              applyProblem(
+                operatingProblem,
+                'Pump operating point loaded.',
               )
             }
           />
