@@ -9,6 +9,7 @@ type AdvancedToolId =
   | 'unit'
   | 'sensitivity'
   | 'uncertainty'
+  | 'robustness'
   | 'target'
   | 'design'
   | 'constraint'
@@ -55,6 +56,12 @@ const loadUncertaintyAnalysisPanel =
   () =>
     import(
       './UncertaintyAnalysisPanel'
+    )
+
+const loadRobustnessCornerAnalysisPanel =
+  () =>
+    import(
+      './RobustnessCornerAnalysisPanel'
     )
 
 const loadTargetOperatingPointPanel =
@@ -133,6 +140,20 @@ const UncertaintyAnalysisPanel =
         default:
           module
             .UncertaintyAnalysisPanel,
+      }
+    },
+  )
+
+const RobustnessCornerAnalysisPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadRobustnessCornerAnalysisPanel()
+
+      return {
+        default:
+          module
+            .RobustnessCornerAnalysisPanel,
       }
     },
   )
@@ -241,6 +262,14 @@ const TOOL_OPTIONS:
         'Uncertainty analysis',
       description:
         'Evaluate output uncertainty from uncertain inputs.',
+    },
+    {
+      id:
+        'robustness',
+      label:
+        'Worst-case tolerance',
+      description:
+        'Evaluate deterministic low–high input corners.',
     },
     {
       id:
@@ -518,6 +547,32 @@ export function SolverAdvancedTools({
               applyProblem(
                 generatedProblem,
                 'Uncertainty operating case loaded.',
+              )
+            }
+          />
+        </Suspense>
+      ) : null}
+
+      {activeTool ===
+      'robustness' ? (
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Worst-case tolerance" />
+          }
+        >
+          <RobustnessCornerAnalysisPanel
+            key={
+              baseQuery
+            }
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
+              selectedProblem,
+            ) =>
+              applyProblem(
+                selectedProblem,
+                'Worst-case tolerance scenario loaded.',
               )
             }
           />
