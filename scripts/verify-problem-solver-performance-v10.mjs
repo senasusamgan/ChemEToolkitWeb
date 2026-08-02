@@ -597,6 +597,7 @@ const toolSources = [
   'src/components/ParameterCalibrationPanel.tsx',
   'src/components/FullFactorialDoePanel.tsx',
   'src/components/ResponseSurfacePanel.tsx',
+  'src/components/ScaleUpSimilarityPanel.tsx',
   'src/components/TargetOperatingPointPanel.tsx',
   'src/components/DesignEnvelopePanel.tsx',
   'src/components/ConstraintOperatingWindowPanel.tsx',

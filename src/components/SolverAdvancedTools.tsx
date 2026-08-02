@@ -13,6 +13,7 @@ type AdvancedToolId =
   | 'calibration'
   | 'doe'
   | 'surface'
+  | 'scaleup'
   | 'target'
   | 'design'
   | 'constraint'
@@ -83,6 +84,12 @@ const loadResponseSurfacePanel =
   () =>
     import(
       './ResponseSurfacePanel'
+    )
+
+const loadScaleUpSimilarityPanel =
+  () =>
+    import(
+      './ScaleUpSimilarityPanel'
     )
 
 const loadTargetOperatingPointPanel =
@@ -217,6 +224,20 @@ const ResponseSurfacePanel =
         default:
           module
             .ResponseSurfacePanel,
+      }
+    },
+  )
+
+const ScaleUpSimilarityPanel =
+  lazy(
+    async () => {
+      const module =
+        await loadScaleUpSimilarityPanel()
+
+      return {
+        default:
+          module
+            .ScaleUpSimilarityPanel,
       }
     },
   )
@@ -357,6 +378,14 @@ const TOOL_OPTIONS:
         'Response surface',
       description:
         'Fit a quadratic model and predict an optimum operating point.',
+    },
+    {
+      id:
+        'scaleup',
+      label:
+        'Scale-up similarity',
+      description:
+        'Preserve Reynolds, Froude or Weber similarity during scale-up.',
     },
     {
       id:
@@ -738,6 +767,32 @@ export function SolverAdvancedTools({
               applyProblem(
                 optimumProblem,
                 'Predicted response-surface optimum loaded.',
+              )
+            }
+          />
+        </Suspense>
+      ) : null}
+
+      {activeTool ===
+      'scaleup' ? (
+        <Suspense
+          fallback={
+            <ToolChunkLoading label="Scale-up similarity" />
+          }
+        >
+          <ScaleUpSimilarityPanel
+            key={
+              baseQuery
+            }
+            baseQuery={
+              baseQuery
+            }
+            onApplyProblem={(
+              scaledProblem,
+            ) =>
+              applyProblem(
+                scaledProblem,
+                'Scaled similarity case loaded.',
               )
             }
           />
