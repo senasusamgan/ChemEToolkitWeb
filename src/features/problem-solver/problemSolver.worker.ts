@@ -2,6 +2,7 @@ import {
   calculators,
 } from '../../data/calculators'
 import {
+  PROBLEM_SOLVER_RANKING_PIPELINE,
   rankProblemSolvers,
 } from './problemSolverEngine'
 import type {
@@ -63,6 +64,8 @@ workerScope.onmessage =
       workerScope.postMessage({
         requestId,
         matches,
+        rankingPipeline:
+          PROBLEM_SOLVER_RANKING_PIPELINE,
         elapsedMs:
           performance.now() -
           startedAt,
@@ -73,6 +76,8 @@ workerScope.onmessage =
       workerScope.postMessage({
         requestId,
         matches: [],
+        rankingPipeline:
+          PROBLEM_SOLVER_RANKING_PIPELINE,
         elapsedMs:
           performance.now() -
           startedAt,

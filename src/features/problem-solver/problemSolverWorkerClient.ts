@@ -12,6 +12,8 @@ export interface ProblemSolverWorkerResponse {
   requestId: number
   matches:
     ProblemSolverMatch[]
+  rankingPipeline:
+    'two-stage-shortlist'
   elapsedMs: number
   error?: string
 }

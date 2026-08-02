@@ -875,3 +875,82 @@ test(
     )
   },
 )
+
+test(
+  'shortlists candidates before expensive engineering enrichment',
+  () => {
+    const syntheticCalculators =
+      Array.from(
+        {
+          length:
+            800,
+        },
+        (
+          _,
+          index,
+        ) => ({
+          id:
+            `syntheticCalculator${index}`,
+          title:
+            `Synthetic Calculator ${index}`,
+          category:
+            'Engineering Fundamentals',
+          available:
+            true,
+        }),
+      )
+
+    const calculators = [
+      {
+        id:
+          'idealGas',
+        title:
+          'Ideal Gas Calculator',
+        category:
+          'Thermodynamics',
+        available:
+          true,
+      },
+      ...syntheticCalculators,
+    ]
+
+    const startedAt =
+      performance.now()
+
+    const matches =
+      rankProblemSolvers(
+        'PV=nRT; P=101325 Pa; n=1 mol; T=300 K; V=?',
+        calculators,
+        3,
+      )
+
+    const elapsedMs =
+      performance.now() -
+      startedAt
+
+    assert.equal(
+      matches.length,
+      3,
+    )
+
+    assert.equal(
+      matches[0]
+        .calculatorId,
+      'idealGas',
+    )
+
+    assert.ok(
+      matches.every(
+        (match) =>
+          match
+            .engineeringReport,
+      ),
+    )
+
+    assert.ok(
+      elapsedMs <
+        4000,
+      `Two-stage ranking exceeded its generous test budget: ${elapsedMs.toFixed(1)} ms`,
+    )
+  },
+)
