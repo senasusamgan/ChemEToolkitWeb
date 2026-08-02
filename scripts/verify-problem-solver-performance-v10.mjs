@@ -595,6 +595,7 @@ const toolSources = [
   'src/components/UncertaintyAnalysisPanel.tsx',
   'src/components/TargetOperatingPointPanel.tsx',
   'src/components/DesignEnvelopePanel.tsx',
+  'src/components/ConstraintOperatingWindowPanel.tsx',
   'src/components/BatchProblemSolverPanel.tsx',
   'src/components/MissingInputAssistant.tsx',
   'src/components/ResultUnitConverterPanel.tsx',
