@@ -28,6 +28,7 @@ import { CrosscurrentExtractionStagesCalculator } from '../features/separation-p
 import { CountercurrentExtractionStagesCalculator } from '../features/separation-processes/countercurrent-extraction-stages/CountercurrentExtractionStagesCalculator'
 import { GillilandStageEstimateCalculator } from '../features/separation-processes/gilliland-stage-estimate/GillilandStageEstimateCalculator'
 import { FenskeUnderwoodGillilandCalculator } from '../features/separation-processes/fenske-underwood-gilliland-shortcut/FenskeUnderwoodGillilandCalculator'
+import { SoudersBrownColumnDiameterCalculator } from '../features/separation-processes/souders-brown-column-diameter/SoudersBrownColumnDiameterCalculator'
 import { AbsorptionStrippingFactorsCalculator } from '../features/separation-processes/absorption-stripping-factors/AbsorptionStrippingFactorsCalculator'
 import { AdsorbentMassRequirementCalculator } from '../features/separation-processes/adsorbent-mass-requirement/AdsorbentMassRequirementCalculator'
 import { BetMonolayerCapacityCalculator } from '../features/separation-processes/bet-monolayer-capacity/BetMonolayerCapacityCalculator'
@@ -351,6 +352,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'fenskeUnderwoodGillilandShortcut') {
     return <FenskeUnderwoodGillilandCalculator />
+  }
+
+  if (calculatorId === 'soudersBrownColumnDiameter') {
+    return <SoudersBrownColumnDiameterCalculator />
   }
 
 if (calculatorId === 'absorptionStrippingFactors') {
