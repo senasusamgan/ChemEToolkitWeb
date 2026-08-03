@@ -340,6 +340,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "gasMembraneAreaRequirement", title: "Gas-Membrane Area Requirement", category: "Separation Processes", available: true },
   { id: "gillilandStageEstimate", title: "Gilliland Stage Estimate", category: "Separation Processes", available: true },
   { id: "fenskeUnderwoodGillilandShortcut", title: "Fenske–Underwood–Gilliland Shortcut Distillation", category: "Separation Processes", available: true },
+  { id: "soudersBrownColumnDiameter", title: "Souders–Brown Distillation Column Diameter", category: "Separation Processes", available: true },
   { id: "hydrocycloneSeparationNumber", title: "Hydrocyclone Separation Number", category: "Separation Processes", available: true },
   { id: "idealGasMembraneStageCut", title: "Ideal Gas-Membrane Stage Cut", category: "Separation Processes", available: true },
   { id: "kremserAbsorptionStages", title: "Kremser Absorption Stages", category: "Separation Processes", available: true },

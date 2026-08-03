@@ -133,21 +133,21 @@ if (
 
 if (
   !categories.includes(
-    'name: "Separation Processes", icon: "⋈", total: 41, live: 41',
+    'name: "Separation Processes", icon: "⋈", total: 42, live: 42',
   )
 ) {
   throw new Error(
-    'Separation Processes metadata is not 41/41.',
+    'Separation Processes metadata is not 42/42.',
   )
 }
 
 if (
   !catalogVerifier.includes(
-    "name: 'Separation Processes',\n    count: 41,",
+    "name: 'Separation Processes',\n    count: 42,",
   )
 ) {
   throw new Error(
-    'Catalog verifier does not expect 41 Separation calculators.',
+    'Catalog verifier does not expect 42 Separation calculators.',
   )
 }
 
@@ -159,7 +159,7 @@ for (
 ) {
   if (
     !source.includes(
-      'EXPECTED_CALCULATOR_COUNT = 381',
+      'EXPECTED_CALCULATOR_COUNT = 382',
     )
   ) {
     throw new Error(
@@ -201,7 +201,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  381
+  382
 ) {
   throw new Error(
     'Coverage baseline calculator count is not 381.',
