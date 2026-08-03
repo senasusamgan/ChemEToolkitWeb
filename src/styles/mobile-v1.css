@@ -991,3 +991,36 @@
     padding-top: 14px !important;
   }
 }
+
+/* MOBILE CALCULATOR PAPER SURFACE V1 */
+
+@media (max-width: 700px) {
+  /*
+   * Keep the mobile calculator visually connected to
+   * the Scientific Lab Notebook paper surface.
+   * Input fields remain white for contrast.
+   */
+
+  .calculator-stage,
+  .calculator-stage-body,
+  .calculator-stage .native-calculator,
+  .legacy-workbench,
+  .legacy-frame {
+    background:
+      var(--paper);
+  }
+
+  .calculator-stage-toolbar {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(251, 248, 239, 0.99),
+        rgba(243, 237, 224, 0.98)
+      );
+  }
+
+  .calculator-stage .native-actions {
+    background:
+      rgba(251, 248, 239, 0.98);
+  }
+}
