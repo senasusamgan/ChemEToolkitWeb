@@ -18,19 +18,19 @@ const [
 ] =
   await Promise.all([
     readFile(
-      'src/features/separation-processes/tray-downcomer-backup-residence/types.ts',
+      'src/features/separation-processes/packed-column-htu-ntu-height/types.ts',
       'utf8',
     ),
     readFile(
-      'src/features/separation-processes/tray-downcomer-backup-residence/engine.ts',
+      'src/features/separation-processes/packed-column-htu-ntu-height/engine.ts',
       'utf8',
     ),
     readFile(
-      'src/features/separation-processes/tray-downcomer-backup-residence/TrayDowncomerBackupCalculator.tsx',
+      'src/features/separation-processes/packed-column-htu-ntu-height/PackedColumnHtuNtuCalculator.tsx',
       'utf8',
     ),
     readFile(
-      'tests/tray-downcomer-backup/tray-downcomer-backup.test.ts',
+      'tests/packed-column-htu-ntu/packed-column-htu-ntu.test.ts',
       'utf8',
     ),
     readFile(
@@ -70,10 +70,9 @@ const [
 for (
   const marker
   of [
-    'TrayDowncomerStatus',
-    'TrayDowncomerInput',
-    'TrayDowncomerScenario',
-    'TrayDowncomerResult',
+    'PackedColumnInput',
+    'PackedColumnScenario',
+    'PackedColumnResult',
   ]
 ) {
   if (
@@ -82,7 +81,7 @@ for (
     )
   ) {
     throw new Error(
-      `Downcomer type marker missing: ${marker}`,
+      `Packed-column type marker missing: ${marker}`,
     )
   }
 }
@@ -90,12 +89,11 @@ for (
 for (
   const marker
   of [
-    'TRAY_DOWNCOMER_BACKUP_ENGINE_VERSION',
-    'calculateDowncomerWeirOverflowHeight',
-    'calculateTrayDowncomerScenario',
-    'calculateMaximumLiquidFlowByBackup',
-    'calculateTrayDowncomerBackup',
-    'createTrayDowncomerCsv',
+    'PACKED_COLUMN_HTU_NTU_ENGINE_VERSION',
+    'calculateLogarithmicMeanDrivingForce',
+    'calculatePackedColumnScenario',
+    'calculatePackedColumnHtuNtu',
+    'createPackedColumnHtuNtuCsv',
   ]
 ) {
   if (
@@ -104,7 +102,7 @@ for (
     )
   ) {
     throw new Error(
-      `Downcomer engine marker missing: ${marker}`,
+      `Packed-column engine marker missing: ${marker}`,
     )
   }
 }
@@ -112,12 +110,12 @@ for (
 for (
   const marker
   of [
-    'Tray Downcomer Backup & Residence Time',
-    'Check downcomer capacity',
-    'Liquid Residence Time',
-    'Total Backup Height',
-    'Maximum Flow by Backup',
-    'Liquid-load operating window',
+    'Packed Column HTU–NTU Height',
+    'Calculate packing height',
+    'Overall Gas-Phase NTU',
+    'Theoretical Packing Height',
+    'Log-Mean Driving Force',
+    'Outlet-target sensitivity',
     'Export calculation CSV',
   ]
 ) {
@@ -127,7 +125,7 @@ for (
     )
   ) {
     throw new Error(
-      `Downcomer UI marker missing: ${marker}`,
+      `Packed-column UI marker missing: ${marker}`,
     )
   }
 }
@@ -135,9 +133,9 @@ for (
 for (
   const marker
   of [
-    'TrayDowncomerBackupCalculator',
-    "calculatorId === 'trayDowncomerBackupResidence'",
-    'return <TrayDowncomerBackupCalculator />',
+    'PackedColumnHtuNtuCalculator',
+    "calculatorId === 'packedColumnHtuNtuHeight'",
+    'return <PackedColumnHtuNtuCalculator />',
   ]
 ) {
   if (
@@ -146,18 +144,18 @@ for (
     )
   ) {
     throw new Error(
-      `Downcomer route marker missing: ${marker}`,
+      `Packed-column route marker missing: ${marker}`,
     )
   }
 }
 
 if (
   !catalog.includes(
-    'id: "trayDowncomerBackupResidence"',
+    'id: "packedColumnHtuNtuHeight"',
   )
 ) {
   throw new Error(
-    'Downcomer calculator catalog entry is missing.',
+    'Packed-column calculator catalog entry is missing.',
   )
 }
 
@@ -194,7 +192,7 @@ for (
     )
   ) {
     throw new Error(
-      'A calculator verifier does not expect 384 calculators.',
+      'A calculator verifier does not expect 385 calculators.',
     )
   }
 }
@@ -202,13 +200,13 @@ for (
 for (
   const marker
   of [
-    'calculates column and downcomer areas',
-    'calculates weir overflow pressure head velocity head and backup height',
-    'calculates downcomer velocity residence time and hydraulic margins',
-    'solves maximum backup flow and identifies residence time as governing',
-    'detects marginal and short-residence operation at elevated liquid loads',
-    'rejects invalid geometry and unavailable hydraulic headroom',
-    'exports downcomer capacity and liquid-load scenarios as CSV',
+    'calculates overall gas phase transfer units',
+    'calculates theoretical and design packing height',
+    'calculates logarithmic mean mass transfer driving force',
+    'calculates removal and equilibrium approach',
+    'creates outlet target sensitivity scenarios',
+    'rejects invalid outlet and equilibrium targets',
+    'exports packed column design and target scenarios as CSV',
   ]
 ) {
   if (
@@ -217,7 +215,7 @@ for (
     )
   ) {
     throw new Error(
-      `Downcomer test marker missing: ${marker}`,
+      `Packed-column test marker missing: ${marker}`,
     )
   }
 }
@@ -225,8 +223,8 @@ for (
 for (
   const marker
   of [
-    'test:tray-downcomer-backup-v1',
-    'verify:tray-downcomer-backup-v1',
+    'test:packed-column-htu-ntu-v1',
+    'verify:packed-column-htu-ntu-v1',
   ]
 ) {
   if (
@@ -235,7 +233,7 @@ for (
     )
   ) {
     throw new Error(
-      `Downcomer package script missing: ${marker}`,
+      `Packed-column package script missing: ${marker}`,
     )
   }
 }
@@ -258,24 +256,24 @@ if (
   baseline
     .calculatorIdsWithoutDirectTestSignal
     .includes(
-      'trayDowncomerBackupResidence',
+      'packedColumnHtuNtuHeight',
     )
 ) {
   throw new Error(
-    'Downcomer calculator is listed as a direct-test gap.',
+    'Packed-column calculator is listed as a direct-test gap.',
   )
 }
 
 console.log(
-  'PASS: Downcomer backup-height calculation verified.',
+  'PASS: HTU–NTU packing-height calculation verified.',
 )
 
 console.log(
-  'PASS: Residence-time and hydraulic-capacity limits verified.',
+  'PASS: Driving-force and removal calculations verified.',
 )
 
 console.log(
-  'PASS: Liquid-load scenarios and CSV export verified.',
+  'PASS: Outlet-target scenarios and CSV export verified.',
 )
 
 console.log(
@@ -283,5 +281,5 @@ console.log(
 )
 
 console.log(
-  'PASS: CALCULATOR 384 — TRAY DOWNCOMER V1',
+  'PASS: CALCULATOR 385 — PACKED COLUMN HTU NTU V1',
 )
