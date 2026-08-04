@@ -343,6 +343,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "soudersBrownColumnDiameter", title: "Souders–Brown Distillation Column Diameter", category: "Separation Processes", available: true },
   { id: "trayHydraulicsWeepingCheck", title: "Tray Hydraulic Pressure Drop & Weeping Check", category: "Separation Processes", available: true },
   { id: "trayDowncomerBackupResidence", title: "Tray Downcomer Backup & Residence Time", category: "Separation Processes", available: true },
+  { id: "packedColumnHtuNtuHeight", title: "Packed Column HTU–NTU Height", category: "Separation Processes", available: true },
   { id: "hydrocycloneSeparationNumber", title: "Hydrocyclone Separation Number", category: "Separation Processes", available: true },
   { id: "idealGasMembraneStageCut", title: "Ideal Gas-Membrane Stage Cut", category: "Separation Processes", available: true },
   { id: "kremserAbsorptionStages", title: "Kremser Absorption Stages", category: "Separation Processes", available: true },

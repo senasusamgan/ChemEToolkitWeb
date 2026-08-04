@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogCalculatorCount": 384,
-  "directTestSignals": 242,
-  "withoutDirectTestSignal": 142,
+  "catalogCalculatorCount": 385,
+  "directTestSignals": 244,
+  "withoutDirectTestSignal": 141,
   "calculatorIdsWithoutDirectTestSignal": [
     "absorptionMinimumSolventRate",
     "activationEnergyTwoPoint",
@@ -102,7 +102,6 @@
     "openChannelFlow",
     "overallHeatTransferCoefficient",
     "overallMassTransferCoefficient",
-    "packedColumnHTUNTU",
     "packedColumnHTUNTUDesign",
     "particleSettling",
     "pfrSections",
