@@ -30,6 +30,7 @@ import { GillilandStageEstimateCalculator } from '../features/separation-process
 import { FenskeUnderwoodGillilandCalculator } from '../features/separation-processes/fenske-underwood-gilliland-shortcut/FenskeUnderwoodGillilandCalculator'
 import { SoudersBrownColumnDiameterCalculator } from '../features/separation-processes/souders-brown-column-diameter/SoudersBrownColumnDiameterCalculator'
 import { TrayHydraulicsWeepingCalculator } from '../features/separation-processes/tray-hydraulics-weeping-check/TrayHydraulicsWeepingCalculator'
+import { TrayDowncomerBackupCalculator } from '../features/separation-processes/tray-downcomer-backup-residence/TrayDowncomerBackupCalculator'
 import { AbsorptionStrippingFactorsCalculator } from '../features/separation-processes/absorption-stripping-factors/AbsorptionStrippingFactorsCalculator'
 import { AdsorbentMassRequirementCalculator } from '../features/separation-processes/adsorbent-mass-requirement/AdsorbentMassRequirementCalculator'
 import { BetMonolayerCapacityCalculator } from '../features/separation-processes/bet-monolayer-capacity/BetMonolayerCapacityCalculator'
@@ -362,6 +363,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'trayHydraulicsWeepingCheck') {
     return <TrayHydraulicsWeepingCalculator />
+  }
+
+  if (calculatorId === 'trayDowncomerBackupResidence') {
+    return <TrayDowncomerBackupCalculator />
   }
 
 if (calculatorId === 'absorptionStrippingFactors') {
