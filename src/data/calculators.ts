@@ -347,6 +347,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "packedColumnPressureDropFlooding", title: "Packed Column Pressure Drop & Flooding Check", category: "Separation Processes", available: true },
   { id: "packedColumnLiquidHoldupResidence", title: "Packed Column Liquid Holdup & Residence Time", category: "Separation Processes", available: true },
   { id: "packedColumnLiquidDistributorIrrigation", title: "Packed Column Liquid Distributor & Irrigation Density", category: "Separation Processes", available: true },
+  { id: "packedColumnGasLoadFFactor", title: "Packed Column Gas Load & F-Factor Operating Window", category: "Separation Processes", available: true },
   { id: "hydrocycloneSeparationNumber", title: "Hydrocyclone Separation Number", category: "Separation Processes", available: true },
   { id: "idealGasMembraneStageCut", title: "Ideal Gas-Membrane Stage Cut", category: "Separation Processes", available: true },
   { id: "kremserAbsorptionStages", title: "Kremser Absorption Stages", category: "Separation Processes", available: true },
