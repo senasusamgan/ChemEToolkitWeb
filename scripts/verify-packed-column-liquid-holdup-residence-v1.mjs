@@ -189,14 +189,14 @@ const separationCategoryLine49 =
 if (
   !separationCategoryLine49 ||
   !separationCategoryLine49.includes(
-    'total: 49',
+    'total: 50',
   ) ||
   !separationCategoryLine49.includes(
-    'live: 49',
+    'live: 50',
   )
 ) {
   throw new Error(
-    'Separation Processes metadata is not 49/49.',
+    'Separation Processes metadata is not 50/50.',
   )
 }
 
@@ -249,11 +249,11 @@ const legacy387CatalogWindow49 =
 
 if (
   !legacy387CatalogWindow49.includes(
-    'count: 49',
+    'count: 50',
   )
 ) {
   throw new Error(
-    'Catalog verifier does not expect 49 Separation calculators.',
+    'Catalog verifier does not expect 50 Separation calculators.',
   )
 }
 
@@ -266,7 +266,7 @@ for (
 ) {
   if (
     !source.match(
-      /EXPECTED_CALCULATOR_COUNT\s*=\s*389/,
+      /EXPECTED_CALCULATOR_COUNT\s*=\s*390/,
     )
   ) {
     throw new Error(
@@ -296,10 +296,10 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  389
+  390
 ) {
   throw new Error(
-    'Coverage baseline calculator count is not 389.',
+    'Coverage baseline calculator count is not 390.',
   )
 }
 

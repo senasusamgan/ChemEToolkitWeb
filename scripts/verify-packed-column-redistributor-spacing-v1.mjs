@@ -17,19 +17,19 @@ const [
   packageSource,
 ] = await Promise.all([
   readFile(
-    'src/features/separation-processes/packed-column-gas-load-f-factor/types.ts',
+    'src/features/separation-processes/packed-column-redistributor-spacing/types.ts',
     'utf8',
   ),
   readFile(
-    'src/features/separation-processes/packed-column-gas-load-f-factor/engine.ts',
+    'src/features/separation-processes/packed-column-redistributor-spacing/engine.ts',
     'utf8',
   ),
   readFile(
-    'src/features/separation-processes/packed-column-gas-load-f-factor/PackedColumnGasLoadCalculator.tsx',
+    'src/features/separation-processes/packed-column-redistributor-spacing/PackedColumnRedistributorCalculator.tsx',
     'utf8',
   ),
   readFile(
-    'tests/packed-column-gas-load-f-factor/packed-column-gas-load-f-factor.test.ts',
+    'tests/packed-column-redistributor-spacing/packed-column-redistributor-spacing.test.ts',
     'utf8',
   ),
   readFile(
@@ -73,17 +73,15 @@ function requireMarker(
 ) {
   if (!source.includes(marker)) {
     throw new Error(
-      `Calculator 389 ${label} missing: ${marker}`,
+      `Calculator 390 ${label} missing: ${marker}`,
     )
   }
 }
 
 for (
   const marker of [
-    'PackedColumnGasLoadStatus',
-    'PackedColumnGasLoadInput',
-    'PackedColumnGasLoadScenario',
-    'PackedColumnGasLoadResult',
+    'PackedColumnRedistributorInput',
+    'PackedColumnRedistributorResult',
   ]
 ) {
   requireMarker(
@@ -95,10 +93,10 @@ for (
 
 for (
   const marker of [
-    'PACKED_COLUMN_GAS_LOAD_F_FACTOR_ENGINE_VERSION',
-    'calculatePackedColumnGasLoadScenario',
-    'calculatePackedColumnGasLoad',
-    'createPackedColumnGasLoadCsv',
+    'PACKED_COLUMN_REDISTRIBUTOR_ENGINE_VERSION',
+    'PackedColumnRedistributorError',
+    'calculatePackedColumnRedistributorSpacing',
+    'createPackedColumnRedistributorCsv',
   ]
 ) {
   requireMarker(
@@ -110,12 +108,13 @@ for (
 
 for (
   const marker of [
-    'Packed Column Gas Load & F-Factor Operating Window',
-    'Gas F-factor',
-    'Superficial Gas Velocity',
-    'Gas Mass Flux',
-    'Margin to Maximum F-Factor',
-    'F-factor turndown screening',
+    'SP–50',
+    'Packed Column Redistributor Spacing & Count',
+    'Required redistributors',
+    'Required Bed Sections',
+    'Actual Section Height',
+    'Redistributor layout',
+    'Bed segmentation elevations',
     'Export calculation CSV',
   ]
 ) {
@@ -128,13 +127,13 @@ for (
 
 for (
   const marker of [
-    'packedColumnGasLoadFFactor',
-    'calculates packed-column gas-flow geometry',
-    'calculates gas load mass flux F-factor and kinetic pressure',
-    'calculates minimum and maximum gas-flow limits from F-factor',
-    'classifies gas-load operating scenarios',
-    'rejects an invalid F-factor operating window',
-    'exports packed-column gas-load scenarios as CSV',
+    'packedColumnRedistributorSpacing',
+    'calculates packed-column section geometry',
+    'calculates required bed sections and redistributors',
+    'calculates redistributor elevations',
+    'requires no redistributor for a short bed',
+    'rejects invalid maximum section height',
+    'exports redistributor layout as CSV',
   ]
 ) {
   requireMarker(
@@ -146,9 +145,9 @@ for (
 
 for (
   const marker of [
-    'PackedColumnGasLoadCalculator',
-    "calculatorId === 'packedColumnGasLoadFFactor'",
-    'return <PackedColumnGasLoadCalculator />',
+    'PackedColumnRedistributorCalculator',
+    "calculatorId === 'packedColumnRedistributorSpacing'",
+    'return <PackedColumnRedistributorCalculator />',
   ]
 ) {
   requireMarker(
@@ -160,17 +159,17 @@ for (
 
 requireMarker(
   catalog,
-  'id: "packedColumnGasLoadFFactor"',
+  'id: "packedColumnRedistributorSpacing"',
   'catalog ID',
 )
 
 requireMarker(
   catalog,
-  'title: "Packed Column Gas Load & F-Factor Operating Window"',
+  'title: "Packed Column Redistributor Spacing & Count"',
   'catalog title',
 )
 
-const categoryLine =
+const separationCategoryLine390 =
   categories
     .split('\n')
     .find(
@@ -181,11 +180,11 @@ const categoryLine =
     )
 
 if (
-  !categoryLine ||
-  !categoryLine.includes(
+  !separationCategoryLine390 ||
+  !separationCategoryLine390.includes(
     'total: 50',
   ) ||
-  !categoryLine.includes(
+  !separationCategoryLine390.includes(
     'live: 50',
   )
 ) {
@@ -194,12 +193,28 @@ if (
   )
 }
 
-if (
-  !catalogVerifier.includes(
+const catalogSeparationIndex390 =
+  catalogVerifier.indexOf(
     "name: 'Separation Processes'",
-  ) ||
-  !catalogVerifier.includes(
-    'count: 50,',
+  ) >= 0
+    ? catalogVerifier.indexOf(
+        "name: 'Separation Processes'",
+      )
+    : catalogVerifier.indexOf(
+        'name: "Separation Processes"',
+      )
+
+const catalogSeparationWindow390 =
+  catalogSeparationIndex390 >= 0
+    ? catalogVerifier.slice(
+        catalogSeparationIndex390,
+        catalogSeparationIndex390 + 500,
+      )
+    : ''
+
+if (
+  !catalogSeparationWindow390.includes(
+    'count: 50',
   )
 ) {
   throw new Error(
@@ -229,7 +244,7 @@ if (
   390
 ) {
   throw new Error(
-    `Calculator 389 expected global baseline count 389; found ${baseline.catalogCalculatorCount}.`,
+    `Expected baseline catalog count 390; found ${baseline.catalogCalculatorCount}.`,
   )
 }
 
@@ -238,7 +253,7 @@ if (
   249
 ) {
   throw new Error(
-    `Calculator 389 expected 248 direct test signals; found ${baseline.directTestSignals}.`,
+    `Expected 249 direct test signals; found ${baseline.directTestSignals}.`,
   )
 }
 
@@ -246,11 +261,11 @@ if (
   baseline
     .calculatorIdsWithoutDirectTestSignal
     .includes(
-      'packedColumnGasLoadFFactor',
+      'packedColumnRedistributorSpacing',
     )
 ) {
   throw new Error(
-    'Calculator 389 appears in direct-test coverage gap list.',
+    'Calculator 390 appears in the direct-test coverage gap list.',
   )
 }
 
@@ -261,21 +276,21 @@ const packageJson =
 
 if (
   !packageJson.scripts[
-    'test:packed-column-gas-load-f-factor-v1'
+    'test:packed-column-redistributor-spacing-v1'
   ]
 ) {
   throw new Error(
-    'Calculator 389 test package script missing.',
+    'Calculator 390 test package script missing.',
   )
 }
 
 if (
   !packageJson.scripts[
-    'verify:packed-column-gas-load-f-factor-v1'
+    'verify:packed-column-redistributor-spacing-v1'
   ]
 ) {
   throw new Error(
-    'Calculator 389 verifier package script missing.',
+    'Calculator 390 verifier package script missing.',
   )
 }
 
@@ -283,24 +298,24 @@ if (
   !packageJson.scripts[
     'verify:release'
   ].includes(
-    'verify:packed-column-gas-load-f-factor-v1',
+    'verify:packed-column-redistributor-spacing-v1',
   )
 ) {
   throw new Error(
-    'Calculator 389 verifier missing from verify:release.',
+    'Calculator 390 verifier missing from verify:release.',
   )
 }
 
 console.log(
-  'PASS: Calculator 389 verifier.',
+  'PASS: Calculator 390 verifier.',
 )
 
 console.log(
-  'Calculator count: 389',
+  'Calculator count: 390',
 )
 
 console.log(
-  'Separation Processes: 49',
+  'Separation Processes: 50',
 )
 
 console.log(

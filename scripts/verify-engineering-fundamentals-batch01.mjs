@@ -127,19 +127,19 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  389
+  390
 ) {
   throw new Error(
-    'Coverage baseline catalog count must remain 389.',
+    'Coverage baseline catalog count must remain 390.',
   )
 }
 
 if (
   baseline.directTestSignals !==
-  248
+  249
 ) {
   throw new Error(
-    `Expected 248 direct test signals; found ${baseline.directTestSignals}.`,
+    `Expected 249 direct test signals; found ${baseline.directTestSignals}.`,
   )
 }
 
@@ -178,7 +178,7 @@ console.log(
 )
 
 console.log(
-  'Direct test signals: 248',
+  'Direct test signals: 249',
 )
 
 console.log(
