@@ -162,22 +162,22 @@ if (
 }
 
 if (
-  !categories.includes(
-    'name: "Separation Processes", icon: "⋈", total: 47, live: 47',
+  !/name:\s*["']Separation Processes["']\s*,\s*icon:\s*["']⋈["']\s*,\s*total:\s*48\s*,\s*live:\s*48/.test(
+    categories,
   )
 ) {
   throw new Error(
-    'Separation Processes metadata is not 47/47.',
+    'Separation Processes metadata is not 48/48.',
   )
 }
 
 if (
-  !/name:\s*['"]Separation Processes['"]\s*,\s*count:\s*47\s*,/.test(
+  !/name:\s*['"]Separation Processes['"]\s*,\s*count:\s*48\s*,/.test(
     catalogVerifier,
   )
 ) {
   throw new Error(
-    'Catalog verifier does not expect 47 Separation calculators.',
+    'Catalog verifier does not expect 48 Separation calculators.',
   )
 }
 
@@ -190,7 +190,7 @@ for (
 ) {
   if (
     !source.includes(
-      'EXPECTED_CALCULATOR_COUNT = 387',
+      'EXPECTED_CALCULATOR_COUNT = 388',
     )
   ) {
     throw new Error(
@@ -247,10 +247,10 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  387
+  388
 ) {
   throw new Error(
-    'Coverage baseline count is not 387.',
+    'Coverage baseline count is not 388.',
   )
 }
 

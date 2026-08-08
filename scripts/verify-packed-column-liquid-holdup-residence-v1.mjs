@@ -168,23 +168,55 @@ if (
   )
 }
 
+const separationCategoryLine =
+  categories
+    .split('\n')
+    .find(
+      line =>
+        line.includes('Separation Processes'),
+    )
+
 if (
-  !categories.match(
-    /name:\s*"Separation Processes"[^}]*total:\s*47\s*,\s*live:\s*47/,
-  )
+  !separationCategoryLine ||
+  !separationCategoryLine.includes('total: 48') ||
+  !separationCategoryLine.includes('live: 48')
 ) {
   throw new Error(
-    'Separation Processes metadata is not 47/47.',
+    'Separation Processes metadata is not 48/48.',
   )
 }
 
+const separationCatalogLines =
+  catalogVerifier.split('\n')
+
+const separationCatalogIndex =
+  separationCatalogLines.findIndex(
+    line =>
+      line.includes(
+        "name: 'Separation Processes'",
+      ) ||
+      line.includes(
+        'name: "Separation Processes"',
+      ),
+  )
+
+const separationCatalogWindow =
+  separationCatalogIndex >= 0
+    ? separationCatalogLines
+        .slice(
+          separationCatalogIndex,
+          separationCatalogIndex + 6,
+        )
+        .join('\n')
+    : ''
+
 if (
-  !catalogVerifier.match(
-    /name:\s*['"]Separation Processes['"]\s*,\s*count:\s*47/,
+  !separationCatalogWindow.includes(
+    'count: 48,',
   )
 ) {
   throw new Error(
-    'Catalog verifier does not expect 47 Separation calculators.',
+    'Catalog verifier does not expect 48 Separation calculators.',
   )
 }
 
@@ -197,11 +229,11 @@ for (
 ) {
   if (
     !source.match(
-      /EXPECTED_CALCULATOR_COUNT\s*=\s*387/,
+      /EXPECTED_CALCULATOR_COUNT\s*=\s*388/,
     )
   ) {
     throw new Error(
-      'A global calculator verifier does not expect 387 calculators.',
+      'A global calculator verifier does not expect 388 calculators.',
     )
   }
 }
@@ -227,10 +259,10 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  387
+  388
 ) {
   throw new Error(
-    'Coverage baseline calculator count is not 387.',
+    'Coverage baseline calculator count is not 388.',
   )
 }
 

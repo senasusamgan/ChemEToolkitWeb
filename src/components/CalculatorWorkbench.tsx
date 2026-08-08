@@ -34,6 +34,7 @@ import { TrayDowncomerBackupCalculator } from '../features/separation-processes/
 import { PackedColumnHtuNtuCalculator } from '../features/separation-processes/packed-column-htu-ntu-height/PackedColumnHtuNtuCalculator'
 import { PackedColumnPressureDropCalculator } from '../features/separation-processes/packed-column-pressure-drop-flooding/PackedColumnPressureDropCalculator'
 import { PackedColumnLiquidHoldupCalculator } from '../features/separation-processes/packed-column-liquid-holdup-residence/PackedColumnLiquidHoldupCalculator'
+import { PackedColumnLiquidDistributorCalculator } from '../features/separation-processes/packed-column-liquid-distributor-irrigation/PackedColumnLiquidDistributorCalculator'
 import { AbsorptionStrippingFactorsCalculator } from '../features/separation-processes/absorption-stripping-factors/AbsorptionStrippingFactorsCalculator'
 import { AdsorbentMassRequirementCalculator } from '../features/separation-processes/adsorbent-mass-requirement/AdsorbentMassRequirementCalculator'
 import { BetMonolayerCapacityCalculator } from '../features/separation-processes/bet-monolayer-capacity/BetMonolayerCapacityCalculator'
@@ -382,6 +383,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'packedColumnLiquidHoldupResidence') {
     return <PackedColumnLiquidHoldupCalculator />
+  }
+
+  if (calculatorId === 'packedColumnLiquidDistributorIrrigation') {
+    return <PackedColumnLiquidDistributorCalculator />
   }
 
 if (calculatorId === 'absorptionStrippingFactors') {
