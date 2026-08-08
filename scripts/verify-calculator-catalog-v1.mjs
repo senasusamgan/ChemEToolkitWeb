@@ -57,7 +57,7 @@ const EXPECTED_CATEGORIES = [
   {
     number: 10,
     name: 'Separation Processes',
-    count: 49,
+    count: 50,
   },
   {
     number: 11,
