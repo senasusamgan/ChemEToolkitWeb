@@ -10,6 +10,6 @@ export const categories: CategoryDefinition[] = [
   { number: 7, name: "Process Control", icon: "⌇", total: 40, live: 40 },
   { number: 8, name: "Process Safety & Economics", icon: "◇", total: 40, live: 40 },
   { number: 9, name: "Reaction Engineering", icon: "⚗", total: 62, live: 62 },
-  { number: 10, name: "Separation Processes", icon: "⋈", total: 46, live: 46 },
+  { number: 10, name: "Separation Processes", icon: "⋈", total: 47, live: 47 },
   { number: 11, name: "Thermodynamics", icon: "ϑ", total: 25, live: 25 },
 ]
