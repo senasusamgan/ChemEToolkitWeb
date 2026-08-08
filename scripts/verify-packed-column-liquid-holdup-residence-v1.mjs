@@ -176,13 +176,27 @@ const separationCategoryLine =
         line.includes('Separation Processes'),
     )
 
+const separationCategoryLine49 =
+  categories
+    .split('\n')
+    .find(
+      line =>
+        line.includes(
+          'Separation Processes',
+        ),
+    )
+
 if (
-  !separationCategoryLine ||
-  !separationCategoryLine.includes('total: 48') ||
-  !separationCategoryLine.includes('live: 48')
+  !separationCategoryLine49 ||
+  !separationCategoryLine49.includes(
+    'total: 49',
+  ) ||
+  !separationCategoryLine49.includes(
+    'live: 49',
+  )
 ) {
   throw new Error(
-    'Separation Processes metadata is not 48/48.',
+    'Separation Processes metadata is not 49/49.',
   )
 }
 
@@ -210,13 +224,36 @@ const separationCatalogWindow =
         .join('\n')
     : ''
 
+const legacy387CatalogSingleQuoteIndex49 =
+  catalogVerifier.indexOf(
+    "name: 'Separation Processes'",
+  )
+
+const legacy387CatalogDoubleQuoteIndex49 =
+  catalogVerifier.indexOf(
+    'name: "Separation Processes"',
+  )
+
+const legacy387CatalogIndex49 =
+  legacy387CatalogSingleQuoteIndex49 >= 0
+    ? legacy387CatalogSingleQuoteIndex49
+    : legacy387CatalogDoubleQuoteIndex49
+
+const legacy387CatalogWindow49 =
+  legacy387CatalogIndex49 >= 0
+    ? catalogVerifier.slice(
+        legacy387CatalogIndex49,
+        legacy387CatalogIndex49 + 500,
+      )
+    : ''
+
 if (
-  !separationCatalogWindow.includes(
-    'count: 48,',
+  !legacy387CatalogWindow49.includes(
+    'count: 49',
   )
 ) {
   throw new Error(
-    'Catalog verifier does not expect 48 Separation calculators.',
+    'Catalog verifier does not expect 49 Separation calculators.',
   )
 }
 
@@ -229,11 +266,11 @@ for (
 ) {
   if (
     !source.match(
-      /EXPECTED_CALCULATOR_COUNT\s*=\s*388/,
+      /EXPECTED_CALCULATOR_COUNT\s*=\s*389/,
     )
   ) {
     throw new Error(
-      'A global calculator verifier does not expect 388 calculators.',
+      'A global calculator verifier does not expect 389 calculators.',
     )
   }
 }
@@ -259,10 +296,10 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  388
+  389
 ) {
   throw new Error(
-    'Coverage baseline calculator count is not 388.',
+    'Coverage baseline calculator count is not 389.',
   )
 }
 

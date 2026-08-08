@@ -140,22 +140,22 @@ if (
 }
 
 if (
-  !/name:\s*["']Separation Processes["']\s*,\s*icon:\s*["']⋈["']\s*,\s*total:\s*48\s*,\s*live:\s*48/.test(
+  !/name:\s*["']Separation Processes["']\s*,\s*icon:\s*["']⋈["']\s*,\s*total:\s*49\s*,\s*live:\s*49/.test(
     categories,
   )
 ) {
   throw new Error(
-    'Separation Processes metadata is not 48/48.',
+    'Separation Processes metadata is not 49/49.',
   )
 }
 
 if (
-  !/name:\s*['"]Separation Processes['"]\s*,\s*count:\s*48\s*,/.test(
+  !/name:\s*['"]Separation Processes['"]\s*,\s*count:\s*49\s*,/.test(
     catalogVerifier,
   )
 ) {
   throw new Error(
-    'Catalog verifier does not expect 48 Separation calculators.',
+    'Catalog verifier does not expect 49 Separation calculators.',
   )
 }
 
@@ -167,7 +167,7 @@ for (
 ) {
   if (
     !source.includes(
-      'EXPECTED_CALCULATOR_COUNT = 388',
+      'EXPECTED_CALCULATOR_COUNT = 389',
     )
   ) {
     throw new Error(
@@ -214,10 +214,10 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  388
+  389
 ) {
   throw new Error(
-    'Coverage baseline calculator count is not 388.',
+    'Coverage baseline calculator count is not 389.',
   )
 }
 
