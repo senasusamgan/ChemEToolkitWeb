@@ -148,6 +148,7 @@ import { VariableAreaRotameterFlowCalculator } from '../features/fluid-mechanics
 import { VortexSheddingFlowMeterCalculator } from '../features/fluid-mechanics/vortex-shedding-flow-meter/VortexSheddingFlowMeterCalculator'
 import { UltrasonicTransitTimeFlowMeterCalculator } from '../features/fluid-mechanics/ultrasonic-transit-time-flow-meter/UltrasonicTransitTimeFlowMeterCalculator'
 import { ElectromagneticFlowMeterCalculator } from '../features/fluid-mechanics/electromagnetic-flow-meter/ElectromagneticFlowMeterCalculator'
+import { PositiveDisplacementFlowMeterCalculator } from '../features/fluid-mechanics/positive-displacement-flow-meter/PositiveDisplacementFlowMeterCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -237,6 +238,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'electromagneticFlowMeter') {
     return <ElectromagneticFlowMeterCalculator />
+  }
+
+  if (calculatorId === 'positiveDisplacementFlowMeter') {
+    return <PositiveDisplacementFlowMeterCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
