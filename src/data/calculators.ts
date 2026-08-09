@@ -400,4 +400,5 @@ export const calculators: CalculatorDefinition[] = [
   { id: "evaporatorSteamRequirementEconomy", title: "Evaporator Steam Requirement & Economy", category: "Material & Energy Balances", available: true },
   { id: "multipleEffectEvaporatorSteamEconomy", title: "Multiple-Effect Evaporator Steam Economy", category: "Material & Energy Balances", available: true },
   { id: "evaporatorTargetSteamEconomyEffectCount", title: "Evaporator Effect Count for Target Steam Economy", category: "Material & Energy Balances", available: true },
+  { id: "evaporatorRequiredVaporReuseEfficiency", title: "Required Vapor-Reuse Efficiency for Target Steam Economy", category: "Material & Energy Balances", available: true },
 ]
