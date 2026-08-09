@@ -42,6 +42,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "maximumMinorLossCoefficient", title: "Maximum Minor-Loss Coefficient / Fittings Budget", category: "Fluid Mechanics", available: true },
   { id: "npshAvailableCavitationMargin", title: "NPSH Available & Cavitation Margin", category: "Fluid Mechanics", available: true },
   { id: "minimumSuctionPipeDiameterNpshMargin", title: "Minimum Suction Pipe Diameter for Required NPSH Margin", category: "Fluid Mechanics", available: true },
+  { id: "requiredStaticLiquidLevelNpshMargin", title: "Required Static Liquid Level / Maximum Suction Lift", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
