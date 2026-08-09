@@ -122,14 +122,14 @@ const categoryLine =
 if (
   !categoryLine ||
   !categoryLine.includes(
-    'total: 31',
+    'total: 32',
   ) ||
   !categoryLine.includes(
-    'live: 31',
+    'live: 32',
   )
 ) {
   throw new Error(
-    'Material & Energy Balances metadata is not 31/31.',
+    'Material & Energy Balances metadata is not 32/32.',
   )
 }
 
@@ -140,7 +140,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  398
+  399
 ) {
   throw new Error(
     `Expected Calculator 396 catalog state; found ${baseline.catalogCalculatorCount}.`,
@@ -196,7 +196,7 @@ console.log(
 )
 
 console.log(
-  'Material & Energy Balances: 31',
+  'Material & Energy Balances: 32',
 )
 
 console.log(

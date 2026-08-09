@@ -137,14 +137,14 @@ const categoryLine =
 if (
   !categoryLine ||
   !categoryLine.includes(
-    'total: 31',
+    'total: 32',
   ) ||
   !categoryLine.includes(
-    'live: 31',
+    'live: 32',
   )
 ) {
   throw new Error(
-    'Material & Energy Balances metadata is not 31/31.',
+    'Material & Energy Balances metadata is not 32/32.',
   )
 }
 
@@ -173,23 +173,23 @@ const window =
 
 if (
   !window.includes(
-    'count: 31',
+    'count: 32',
   )
 ) {
   throw new Error(
-    'Catalog verifier does not expect 31 Material & Energy Balances calculators.',
+    'Catalog verifier does not expect 32 Material & Energy Balances calculators.',
   )
 }
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 398',
+  'EXPECTED_CALCULATOR_COUNT = 399',
   'routing count',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 398',
+  'EXPECTED_CALCULATOR_COUNT = 399',
   'coverage count',
 )
 
@@ -200,7 +200,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  398
+  399
 ) {
   throw new Error(
     `Expected baseline 393; found ${baseline.catalogCalculatorCount}.`,
@@ -209,7 +209,7 @@ if (
 
 if (
   baseline.directTestSignals !==
-  258
+  259
 ) {
   throw new Error(
     `Expected 253 direct test signals; found ${baseline.directTestSignals}.`,
@@ -252,7 +252,7 @@ console.log(
 )
 
 console.log(
-  'Material & Energy Balances: 31',
+  'Material & Energy Balances: 32',
 )
 
 console.log(
