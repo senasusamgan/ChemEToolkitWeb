@@ -399,4 +399,5 @@ export const calculators: CalculatorDefinition[] = [
   { id: "fluidBedDryerAdiabaticDryAirRequirement", title: "Fluid Bed Dryer Adiabatic Dry-Air Requirement", category: "Material & Energy Balances", available: true },
   { id: "evaporatorSteamRequirementEconomy", title: "Evaporator Steam Requirement & Economy", category: "Material & Energy Balances", available: true },
   { id: "multipleEffectEvaporatorSteamEconomy", title: "Multiple-Effect Evaporator Steam Economy", category: "Material & Energy Balances", available: true },
+  { id: "evaporatorTargetSteamEconomyEffectCount", title: "Evaporator Effect Count for Target Steam Economy", category: "Material & Energy Balances", available: true },
 ]
