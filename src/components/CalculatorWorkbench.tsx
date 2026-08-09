@@ -127,6 +127,7 @@ import { LinearInterpolationCalculator } from '../features/engineering-fundament
 import { WeightedAveragePropertyCalculator } from '../features/engineering-fundamentals/weighted-average-property/WeightedAveragePropertyCalculator'
 import { FluidBedDryerMassBalanceCalculator } from '../features/material-energy-balances/fluid-bed-dryer-mass-balance/FluidBedDryerMassBalanceCalculator'
 import { FluidBedDryerEnergyBalanceCalculator } from '../features/material-energy-balances/fluid-bed-dryer-energy-balance/FluidBedDryerEnergyBalanceCalculator'
+import { FluidBedDryerAdiabaticInletTemperatureCalculator } from '../features/material-energy-balances/fluid-bed-dryer-adiabatic-inlet-temperature/FluidBedDryerAdiabaticInletTemperatureCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -138,6 +139,10 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
+    return <FluidBedDryerAdiabaticInletTemperatureCalculator />
+  }
+
   if (calculatorId === 'fluidBedDryerEnergyBalance') {
     return <FluidBedDryerEnergyBalanceCalculator />
   }
