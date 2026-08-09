@@ -393,4 +393,5 @@ export const calculators: CalculatorDefinition[] = [
   { id: "throttlingProcess", title: "Throttling Process", category: "Thermodynamics", available: true },
   { id: "turbineIsentropicEfficiency", title: "Turbine Isentropic Efficiency", category: "Thermodynamics", available: true },
   { id: "vaporQualityFromEnthalpy", title: "Vapor Quality from Enthalpy", category: "Thermodynamics", available: true },
+  { id: "fluidBedDryerMassBalance", title: "Fluid Bed Dryer Mass Balance", category: "Material & Energy Balances", available: true },
 ]

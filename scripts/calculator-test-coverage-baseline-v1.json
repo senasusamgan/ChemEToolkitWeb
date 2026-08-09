@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogCalculatorCount": 392,
-  "directTestSignals": 251,
-  "withoutDirectTestSignal": 141,
+  "catalogCalculatorCount": 393,
+  "directTestSignals": 253,
+  "withoutDirectTestSignal": 140,
   "calculatorIdsWithoutDirectTestSignal": [
     "absorptionMinimumSolventRate",
     "activationEnergyTwoPoint",
@@ -87,7 +87,6 @@
     "liquidLiquidExtractionBalance",
     "liquidPhaseDiffusivity",
     "lumpedCapacitance",
-    "massBalance",
     "massFractionCalculator",
     "membraneGasSeparation",
     "membraneSeparatorBalance",
