@@ -2,7 +2,7 @@ import type { CategoryDefinition } from '../types/calculator'
 
 export const categories: CategoryDefinition[] = [
   { number: 1, name: "Engineering Fundamentals", icon: "⌁", total: 18, live: 18 },
-  { number: 2, name: "Fluid Mechanics", icon: "≈", total: 26, live: 26 },
+  { number: 2, name: "Fluid Mechanics", icon: "≈", total: 27, live: 27 },
   { number: 3, name: "Heat Transfer", icon: "♨", total: 28, live: 28 },
   { number: 4, name: "Mass Transfer", icon: "⠿", total: 45, live: 45 },
   { number: 5, name: "Material & Energy Balances", icon: "⇄", total: 33, live: 33 },
