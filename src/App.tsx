@@ -596,7 +596,7 @@ function App() {
             calculated clearly<span>.</span>
           </h1>
           <p className="hero-deck">
-            406 verified calculators across 11 disciplines—built for study,
+            407 verified calculators across 11 disciplines—built for study,
             design checks and everyday engineering work.
           </p>
 

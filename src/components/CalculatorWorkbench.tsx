@@ -139,6 +139,7 @@ import { MaximumPipeLengthFromPressureDropCalculator } from '../features/fluid-m
 import { MaximumMinorLossCoefficientCalculator } from '../features/fluid-mechanics/maximum-minor-loss-coefficient/MaximumMinorLossCoefficientCalculator'
 import { NpshAvailableCavitationMarginCalculator } from '../features/fluid-mechanics/npsh-available-cavitation-margin/NpshAvailableCavitationMarginCalculator'
 import { MinimumSuctionPipeDiameterNpshMarginCalculator } from '../features/fluid-mechanics/minimum-suction-pipe-diameter-npsh-margin/MinimumSuctionPipeDiameterNpshMarginCalculator'
+import { RequiredStaticLiquidLevelNpshMarginCalculator } from '../features/fluid-mechanics/required-static-liquid-level-npsh-margin/RequiredStaticLiquidLevelNpshMarginCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -192,6 +193,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'minimumSuctionPipeDiameterNpshMargin') {
     return <MinimumSuctionPipeDiameterNpshMarginCalculator />
+  }
+
+  if (calculatorId === 'requiredStaticLiquidLevelNpshMargin') {
+    return <RequiredStaticLiquidLevelNpshMarginCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
