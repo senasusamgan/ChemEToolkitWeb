@@ -50,7 +50,7 @@ const categories = fs.readFileSync(
 )
 
 if (
-  !/name:\s*"Separation Processes"[^{}]*total:\s*40[^{}]*live:\s*40/s.test(
+  !/name:\s*"Separation Processes"[^{}]*total:\s*52[^{}]*live:\s*52/s.test(
     categories,
   )
 ) {

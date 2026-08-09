@@ -38,6 +38,7 @@ import { PackedColumnLiquidDistributorCalculator } from '../features/separation-
 import { PackedColumnGasLoadCalculator } from '../features/separation-processes/packed-column-gas-load-f-factor/PackedColumnGasLoadCalculator'
 import { PackedColumnRedistributorCalculator } from '../features/separation-processes/packed-column-redistributor-spacing/PackedColumnRedistributorCalculator'
 import { KremserAbsorptionCalculator } from '../features/separation-processes/kremser-absorption-factor-stages/KremserAbsorptionCalculator'
+import { AbsorberMinimumSolventRateCalculator } from '../features/separation-processes/absorber-minimum-solvent-rate/AbsorberMinimumSolventRateCalculator'
 import { AbsorptionStrippingFactorsCalculator } from '../features/separation-processes/absorption-stripping-factors/AbsorptionStrippingFactorsCalculator'
 import { AdsorbentMassRequirementCalculator } from '../features/separation-processes/adsorbent-mass-requirement/AdsorbentMassRequirementCalculator'
 import { BetMonolayerCapacityCalculator } from '../features/separation-processes/bet-monolayer-capacity/BetMonolayerCapacityCalculator'
@@ -402,6 +403,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'kremserAbsorptionFactorStages') {
     return <KremserAbsorptionCalculator />
+  }
+
+  if (calculatorId === 'absorberMinimumSolventRate') {
+    return <AbsorberMinimumSolventRateCalculator />
   }
 
 if (calculatorId === 'absorptionStrippingFactors') {

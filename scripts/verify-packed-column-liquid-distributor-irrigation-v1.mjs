@@ -171,34 +171,34 @@ requireMarker(
 )
 
 if (
-  !/name:\s*"Separation Processes"[\s\S]*?total:\s*51\s*,\s*live:\s*51/.test(
+  !/name:\s*"Separation Processes"[\s\S]*?total:\s*52\s*,\s*live:\s*52/.test(
     categories,
   )
 ) {
   throw new Error(
-    'Calculator 388 category metadata is not 48/48.',
+    'Calculator 388 category metadata is not 52/52.',
   )
 }
 
 if (
-  !/name:\s*['"]Separation Processes['"]\s*,\s*count:\s*51\s*,/.test(
+  !/name:\s*['"]Separation Processes['"]\s*,\s*count:\s*52\s*,/.test(
     catalogVerifier,
   )
 ) {
   throw new Error(
-    'Calculator catalog verifier does not expect 48 Separation calculators.',
+    'Calculator catalog verifier does not expect 52 Separation calculators.',
   )
 }
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 391',
+  'EXPECTED_CALCULATOR_COUNT = 392',
   'routing count contract',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 391',
+  'EXPECTED_CALCULATOR_COUNT = 392',
   'coverage count contract',
 )
 
@@ -209,7 +209,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  391
+  392
 ) {
   throw new Error(
     `Calculator 388 baseline catalog count is ${baseline.catalogCalculatorCount}; expected 388.`,
@@ -218,7 +218,7 @@ if (
 
 if (
   baseline.directTestSignals !==
-  250
+  251
 ) {
   throw new Error(
     `Calculator 388 expected 247 direct test signals; found ${baseline.directTestSignals}.`,
@@ -294,5 +294,5 @@ console.log(
   'Separation Processes: 48',
 )
 console.log(
-  'Direct test signals: 250',
+  'Direct test signals: 251',
 )
