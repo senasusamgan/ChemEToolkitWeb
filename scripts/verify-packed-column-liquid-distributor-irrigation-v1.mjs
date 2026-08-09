@@ -192,13 +192,13 @@ if (
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 396',
+  'EXPECTED_CALCULATOR_COUNT = 397',
   'routing count contract',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 396',
+  'EXPECTED_CALCULATOR_COUNT = 397',
   'coverage count contract',
 )
 
@@ -209,7 +209,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  396
+  397
 ) {
   throw new Error(
     `Calculator 388 baseline catalog count is ${baseline.catalogCalculatorCount}; expected 388.`,
@@ -218,7 +218,7 @@ if (
 
 if (
   baseline.directTestSignals !==
-  256
+  257
 ) {
   throw new Error(
     `Calculator 388 expected 247 direct test signals; found ${baseline.directTestSignals}.`,
@@ -288,11 +288,11 @@ console.log(
   'PASS: Calculator 388 verifier.',
 )
 console.log(
-  'Calculator count: 396',
+  'Calculator count: 397',
 )
 console.log(
   'Separation Processes: 48',
 )
 console.log(
-  'Direct test signals: 256',
+  'Direct test signals: 257',
 )

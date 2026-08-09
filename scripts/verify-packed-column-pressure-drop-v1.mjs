@@ -170,7 +170,7 @@ for (
 ) {
   if (
     !source.includes(
-      'EXPECTED_CALCULATOR_COUNT = 396',
+      'EXPECTED_CALCULATOR_COUNT = 397',
     )
   ) {
     throw new Error(
@@ -217,7 +217,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  396
+  397
 ) {
   throw new Error(
     'Coverage baseline count is not 390.',
