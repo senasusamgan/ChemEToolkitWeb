@@ -88,11 +88,11 @@ const categoryLine =
 
 if (
   !categoryLine ||
-  !categoryLine.includes('total: 27') ||
-  !categoryLine.includes('live: 27')
+  !categoryLine.includes('total: 28') ||
+  !categoryLine.includes('live: 28')
 ) {
   throw new Error(
-    'Material & Energy Balances metadata is not 27/27.',
+    'Material & Energy Balances metadata is not 28/28.',
   )
 }
 
@@ -119,7 +119,7 @@ const catalogWindow =
       )
     : ''
 
-if (!catalogWindow.includes('count: 27')) {
+if (!catalogWindow.includes('count: 28')) {
   throw new Error(
     'Catalog verifier does not expect 27 Material & Energy Balances calculators.',
   )
@@ -127,13 +127,13 @@ if (!catalogWindow.includes('count: 27')) {
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 394',
+  'EXPECTED_CALCULATOR_COUNT = 395',
   'routing count',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 394',
+  'EXPECTED_CALCULATOR_COUNT = 395',
   'coverage count',
 )
 
@@ -142,13 +142,13 @@ const baseline =
     baselineSource,
   )
 
-if (baseline.catalogCalculatorCount !== 394) {
+if (baseline.catalogCalculatorCount !== 395) {
   throw new Error(
     `Expected baseline 394; found ${baseline.catalogCalculatorCount}.`,
   )
 }
 
-if (baseline.directTestSignals !== 254) {
+if (baseline.directTestSignals !== 255) {
   throw new Error(
     `Expected 254 direct test signals; found ${baseline.directTestSignals}.`,
   )
