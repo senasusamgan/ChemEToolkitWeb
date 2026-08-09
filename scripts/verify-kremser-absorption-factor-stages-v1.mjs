@@ -17,19 +17,19 @@ const [
   packageSource,
 ] = await Promise.all([
   readFile(
-    'src/features/separation-processes/packed-column-redistributor-spacing/types.ts',
+    'src/features/separation-processes/kremser-absorption-factor-stages/types.ts',
     'utf8',
   ),
   readFile(
-    'src/features/separation-processes/packed-column-redistributor-spacing/engine.ts',
+    'src/features/separation-processes/kremser-absorption-factor-stages/engine.ts',
     'utf8',
   ),
   readFile(
-    'src/features/separation-processes/packed-column-redistributor-spacing/PackedColumnRedistributorCalculator.tsx',
+    'src/features/separation-processes/kremser-absorption-factor-stages/KremserAbsorptionCalculator.tsx',
     'utf8',
   ),
   readFile(
-    'tests/packed-column-redistributor-spacing/packed-column-redistributor-spacing.test.ts',
+    'tests/kremser-absorption-factor-stages/kremser-absorption-factor-stages.test.ts',
     'utf8',
   ),
   readFile(
@@ -73,15 +73,16 @@ function requireMarker(
 ) {
   if (!source.includes(marker)) {
     throw new Error(
-      `Calculator 390 ${label} missing: ${marker}`,
+      `Calculator 391 ${label} missing: ${marker}`,
     )
   }
 }
 
 for (
   const marker of [
-    'PackedColumnRedistributorInput',
-    'PackedColumnRedistributorResult',
+    'KremserAbsorptionInput',
+    'KremserAbsorptionRegime',
+    'KremserAbsorptionResult',
   ]
 ) {
   requireMarker(
@@ -93,10 +94,10 @@ for (
 
 for (
   const marker of [
-    'PACKED_COLUMN_REDISTRIBUTOR_ENGINE_VERSION',
-    'PackedColumnRedistributorError',
-    'calculatePackedColumnRedistributorSpacing',
-    'createPackedColumnRedistributorCsv',
+    'KREMSER_ABSORPTION_ENGINE_VERSION',
+    'KremserAbsorptionError',
+    'calculateKremserAbsorption',
+    'createKremserAbsorptionCsv',
   ]
 ) {
   requireMarker(
@@ -108,13 +109,12 @@ for (
 
 for (
   const marker of [
-    'SP–50',
-    'Packed Column Redistributor Spacing & Count',
-    'Required redistributors',
-    'Required Bed Sections',
-    'Actual Section Height',
-    'Redistributor layout',
-    'Bed segmentation elevations',
+    'SP–51',
+    'Kremser Absorption Factor & Ideal Stages',
+    'Required ideal stages',
+    'Exact Ideal Stage Requirement',
+    'Predicted Outlet Mole Fraction',
+    'Kremser stage screening',
     'Export calculation CSV',
   ]
 ) {
@@ -127,13 +127,12 @@ for (
 
 for (
   const marker of [
-    'packedColumnRedistributorSpacing',
-    'calculates packed-column section geometry',
-    'calculates required bed sections and redistributors',
-    'calculates redistributor elevations',
-    'requires no redistributor for a short bed',
-    'rejects invalid maximum section height',
-    'exports redistributor layout as CSV',
+    'kremserAbsorptionFactorStages',
+    'calculates Kremser continuous and integer ideal-stage requirement',
+    'predicts outlet composition after integer stage rounding',
+    'uses the unity absorption-factor limit',
+    'rejects an unattainable target when absorption factor is below unity',
+    'exports Kremser absorption results as CSV',
   ]
 ) {
   requireMarker(
@@ -143,33 +142,25 @@ for (
   )
 }
 
-for (
-  const marker of [
-    'PackedColumnRedistributorCalculator',
-    "calculatorId === 'packedColumnRedistributorSpacing'",
-    'return <PackedColumnRedistributorCalculator />',
-  ]
-) {
-  requireMarker(
-    workbench,
-    marker,
-    'route marker',
-  )
-}
+requireMarker(
+  workbench,
+  "calculatorId === 'kremserAbsorptionFactorStages'",
+  'route marker',
+)
+
+requireMarker(
+  workbench,
+  'return <KremserAbsorptionCalculator />',
+  'route component',
+)
 
 requireMarker(
   catalog,
-  'id: "packedColumnRedistributorSpacing"',
+  'id: "kremserAbsorptionFactorStages"',
   'catalog ID',
 )
 
-requireMarker(
-  catalog,
-  'title: "Packed Column Redistributor Spacing & Count"',
-  'catalog title',
-)
-
-const separationCategoryLine390 =
+const separationLine391 =
   categories
     .split('\n')
     .find(
@@ -180,11 +171,11 @@ const separationCategoryLine390 =
     )
 
 if (
-  !separationCategoryLine390 ||
-  !separationCategoryLine390.includes(
+  !separationLine391 ||
+  !separationLine391.includes(
     'total: 51',
   ) ||
-  !separationCategoryLine390.includes(
+  !separationLine391.includes(
     'live: 51',
   )
 ) {
@@ -193,27 +184,31 @@ if (
   )
 }
 
-const catalogSeparationIndex390 =
+const singleQuoteIndex391 =
   catalogVerifier.indexOf(
     "name: 'Separation Processes'",
-  ) >= 0
-    ? catalogVerifier.indexOf(
-        "name: 'Separation Processes'",
-      )
-    : catalogVerifier.indexOf(
-        'name: "Separation Processes"',
-      )
+  )
 
-const catalogSeparationWindow390 =
-  catalogSeparationIndex390 >= 0
+const doubleQuoteIndex391 =
+  catalogVerifier.indexOf(
+    'name: "Separation Processes"',
+  )
+
+const catalogIndex391 =
+  singleQuoteIndex391 >= 0
+    ? singleQuoteIndex391
+    : doubleQuoteIndex391
+
+const catalogWindow391 =
+  catalogIndex391 >= 0
     ? catalogVerifier.slice(
-        catalogSeparationIndex390,
-        catalogSeparationIndex390 + 500,
+        catalogIndex391,
+        catalogIndex391 + 500,
       )
     : ''
 
 if (
-  !catalogSeparationWindow390.includes(
+  !catalogWindow391.includes(
     'count: 51',
   )
 ) {
@@ -225,13 +220,13 @@ if (
 requireMarker(
   routingVerifier,
   'EXPECTED_CALCULATOR_COUNT = 391',
-  'routing global count',
+  'routing count',
 )
 
 requireMarker(
   coverageVerifier,
   'EXPECTED_CALCULATOR_COUNT = 391',
-  'coverage global count',
+  'coverage count',
 )
 
 const baseline =
@@ -244,7 +239,7 @@ if (
   391
 ) {
   throw new Error(
-    `Expected baseline catalog count 390; found ${baseline.catalogCalculatorCount}.`,
+    `Expected baseline count 391; found ${baseline.catalogCalculatorCount}.`,
   )
 }
 
@@ -261,11 +256,11 @@ if (
   baseline
     .calculatorIdsWithoutDirectTestSignal
     .includes(
-      'packedColumnRedistributorSpacing',
+      'kremserAbsorptionFactorStages',
     )
 ) {
   throw new Error(
-    'Calculator 390 appears in the direct-test coverage gap list.',
+    'Calculator 391 appears in direct-test gap list.',
   )
 }
 
@@ -276,21 +271,21 @@ const packageJson =
 
 if (
   !packageJson.scripts[
-    'test:packed-column-redistributor-spacing-v1'
+    'test:kremser-absorption-factor-stages-v1'
   ]
 ) {
   throw new Error(
-    'Calculator 390 test package script missing.',
+    'Calculator 391 test script missing.',
   )
 }
 
 if (
   !packageJson.scripts[
-    'verify:packed-column-redistributor-spacing-v1'
+    'verify:kremser-absorption-factor-stages-v1'
   ]
 ) {
   throw new Error(
-    'Calculator 390 verifier package script missing.',
+    'Calculator 391 verifier script missing.',
   )
 }
 
@@ -298,24 +293,24 @@ if (
   !packageJson.scripts[
     'verify:release'
   ].includes(
-    'verify:packed-column-redistributor-spacing-v1',
+    'verify:kremser-absorption-factor-stages-v1',
   )
 ) {
   throw new Error(
-    'Calculator 390 verifier missing from verify:release.',
+    'Calculator 391 verifier missing from verify:release.',
   )
 }
 
 console.log(
-  'PASS: Calculator 390 verifier.',
+  'PASS: Calculator 391 verifier.',
 )
 
 console.log(
-  'Calculator count: 390',
+  'Calculator count: 391',
 )
 
 console.log(
-  'Separation Processes: 50',
+  'Separation Processes: 51',
 )
 
 console.log(

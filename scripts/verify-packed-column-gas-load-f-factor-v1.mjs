@@ -183,14 +183,14 @@ const categoryLine =
 if (
   !categoryLine ||
   !categoryLine.includes(
-    'total: 50',
+    'total: 51',
   ) ||
   !categoryLine.includes(
-    'live: 50',
+    'live: 51',
   )
 ) {
   throw new Error(
-    'Separation Processes metadata is not 50/50.',
+    'Separation Processes metadata is not 51/51.',
   )
 }
 
@@ -199,23 +199,23 @@ if (
     "name: 'Separation Processes'",
   ) ||
   !catalogVerifier.includes(
-    'count: 50,',
+    'count: 51,',
   )
 ) {
   throw new Error(
-    'Catalog verifier does not expect 50 Separation calculators.',
+    'Catalog verifier does not expect 51 Separation calculators.',
   )
 }
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 390',
+  'EXPECTED_CALCULATOR_COUNT = 391',
   'routing global count',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 390',
+  'EXPECTED_CALCULATOR_COUNT = 391',
   'coverage global count',
 )
 
@@ -226,7 +226,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  390
+  391
 ) {
   throw new Error(
     `Calculator 389 expected global baseline count 389; found ${baseline.catalogCalculatorCount}.`,
@@ -235,7 +235,7 @@ if (
 
 if (
   baseline.directTestSignals !==
-  249
+  250
 ) {
   throw new Error(
     `Calculator 389 expected 248 direct test signals; found ${baseline.directTestSignals}.`,
@@ -304,5 +304,5 @@ console.log(
 )
 
 console.log(
-  'Direct test signals: 249',
+  'Direct test signals: 250',
 )
