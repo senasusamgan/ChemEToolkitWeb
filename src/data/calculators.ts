@@ -36,6 +36,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "uTubeManometer", title: "U-Tube Manometer", category: "Fluid Mechanics", available: true },
   { id: "venturiMeter", title: "Venturi Meter", category: "Fluid Mechanics", available: true },
   { id: "flowRate", title: "Volumetric & Mass Flow Rate", category: "Fluid Mechanics", available: true },
+  { id: "darcyWeisbachPipeDiameterSizing", title: "Darcy–Weisbach Pipe Diameter Sizing", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
