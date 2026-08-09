@@ -181,13 +181,13 @@ if (
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 414',
+  'EXPECTED_CALCULATOR_COUNT = 415',
   'routing count',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 414',
+  'EXPECTED_CALCULATOR_COUNT = 415',
   'coverage count',
 )
 
@@ -198,7 +198,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  414
+  415
 ) {
   throw new Error(
     `Expected baseline 393; found ${baseline.catalogCalculatorCount}.`,
@@ -207,7 +207,7 @@ if (
 
 if (
   baseline.directTestSignals !==
-  274
+  275
 ) {
   throw new Error(
     `Expected 252 direct test signals; found ${baseline.directTestSignals}.`,
