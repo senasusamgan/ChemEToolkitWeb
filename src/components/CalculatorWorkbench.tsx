@@ -130,6 +130,7 @@ import { FluidBedDryerEnergyBalanceCalculator } from '../features/material-energ
 import { FluidBedDryerAdiabaticInletTemperatureCalculator } from '../features/material-energy-balances/fluid-bed-dryer-adiabatic-inlet-temperature/FluidBedDryerAdiabaticInletTemperatureCalculator'
 import { FluidBedDryerAdiabaticDryAirRequirementCalculator } from '../features/material-energy-balances/fluid-bed-dryer-adiabatic-dry-air-requirement/FluidBedDryerAdiabaticDryAirRequirementCalculator'
 import { EvaporatorSteamRequirementEconomyCalculator } from '../features/material-energy-balances/evaporator-steam-requirement-economy/EvaporatorSteamRequirementEconomyCalculator'
+import { MultipleEffectEvaporatorSteamEconomyCalculator } from '../features/material-energy-balances/multiple-effect-evaporator-steam-economy/MultipleEffectEvaporatorSteamEconomyCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -147,6 +148,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'evaporatorSteamRequirementEconomy') {
     return <EvaporatorSteamRequirementEconomyCalculator />
+  }
+
+  if (calculatorId === 'multipleEffectEvaporatorSteamEconomy') {
+    return <MultipleEffectEvaporatorSteamEconomyCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
