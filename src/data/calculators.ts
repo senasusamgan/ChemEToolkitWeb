@@ -396,4 +396,5 @@ export const calculators: CalculatorDefinition[] = [
   { id: "fluidBedDryerMassBalance", title: "Fluid Bed Dryer Mass Balance", category: "Material & Energy Balances", available: true },
   { id: "fluidBedDryerEnergyBalance", title: "Fluid Bed Dryer Integrated Energy Balance", category: "Material & Energy Balances", available: true },
   { id: "fluidBedDryerAdiabaticInletTemperature", title: "Fluid Bed Dryer Adiabatic Inlet-Air Temperature", category: "Material & Energy Balances", available: true },
+  { id: "fluidBedDryerAdiabaticDryAirRequirement", title: "Fluid Bed Dryer Adiabatic Dry-Air Requirement", category: "Material & Energy Balances", available: true },
 ]

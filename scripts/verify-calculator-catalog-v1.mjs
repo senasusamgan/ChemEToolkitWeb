@@ -32,7 +32,7 @@ const EXPECTED_CATEGORIES = [
   {
     number: 5,
     name: 'Material & Energy Balances',
-    count: 28,
+    count: 29,
   },
   {
     number: 6,
