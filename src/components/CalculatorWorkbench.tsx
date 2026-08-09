@@ -146,6 +146,7 @@ import { PitotTubeVelocityFlowCalculator } from '../features/fluid-mechanics/pit
 import { FlowNozzleDifferentialPressureCalculator } from '../features/fluid-mechanics/flow-nozzle-differential-pressure/FlowNozzleDifferentialPressureCalculator'
 import { VariableAreaRotameterFlowCalculator } from '../features/fluid-mechanics/variable-area-rotameter-flow/VariableAreaRotameterFlowCalculator'
 import { VortexSheddingFlowMeterCalculator } from '../features/fluid-mechanics/vortex-shedding-flow-meter/VortexSheddingFlowMeterCalculator'
+import { UltrasonicTransitTimeFlowMeterCalculator } from '../features/fluid-mechanics/ultrasonic-transit-time-flow-meter/UltrasonicTransitTimeFlowMeterCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -227,6 +228,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'vortexSheddingFlowMeter') {
     return <VortexSheddingFlowMeterCalculator />
+  }
+
+  if (calculatorId === 'ultrasonicTransitTimeFlowMeter') {
+    return <UltrasonicTransitTimeFlowMeterCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
