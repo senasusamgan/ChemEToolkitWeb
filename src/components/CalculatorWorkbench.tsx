@@ -134,6 +134,7 @@ import { MultipleEffectEvaporatorSteamEconomyCalculator } from '../features/mate
 import { EvaporatorTargetSteamEconomyEffectCountCalculator } from '../features/material-energy-balances/evaporator-target-steam-economy-effect-count/EvaporatorTargetSteamEconomyEffectCountCalculator'
 import { EvaporatorRequiredVaporReuseEfficiencyCalculator } from '../features/material-energy-balances/evaporator-required-vapor-reuse-efficiency/EvaporatorRequiredVaporReuseEfficiencyCalculator'
 import { DarcyWeisbachPipeDiameterSizingCalculator } from '../features/fluid-mechanics/darcy-weisbach-pipe-diameter-sizing/DarcyWeisbachPipeDiameterSizingCalculator'
+import { PipeFlowRateFromPressureDropCalculator } from '../features/fluid-mechanics/pipe-flow-rate-from-pressure-drop/PipeFlowRateFromPressureDropCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -167,6 +168,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'darcyWeisbachPipeDiameterSizing') {
     return <DarcyWeisbachPipeDiameterSizingCalculator />
+  }
+
+  if (calculatorId === 'pipeFlowRateFromPressureDrop') {
+    return <PipeFlowRateFromPressureDropCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
