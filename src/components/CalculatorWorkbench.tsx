@@ -125,6 +125,7 @@ import { ReactionEngineeringBatch08Calculator } from '../features/reaction-engin
 import { ReactionEngineeringBatch09Calculator } from '../features/reaction-engineering/batch09/ReactionEngineeringBatch09Calculator'
 import { LinearInterpolationCalculator } from '../features/engineering-fundamentals/linear-interpolation/LinearInterpolationCalculator'
 import { WeightedAveragePropertyCalculator } from '../features/engineering-fundamentals/weighted-average-property/WeightedAveragePropertyCalculator'
+import { FluidBedDryerMassBalanceCalculator } from '../features/material-energy-balances/fluid-bed-dryer-mass-balance/FluidBedDryerMassBalanceCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -136,6 +137,10 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === 'fluidBedDryerMassBalance') {
+    return <FluidBedDryerMassBalanceCalculator />
+  }
+
   if (calculatorId === 'linearInterpolationCalculator') {
     return <LinearInterpolationCalculator />
   }

@@ -16,15 +16,15 @@ const [
   packageSource,
 ] = await Promise.all([
   readFile(
-    'src/features/separation-processes/absorber-minimum-solvent-rate/engine.ts',
+    'src/features/material-energy-balances/fluid-bed-dryer-mass-balance/engine.ts',
     'utf8',
   ),
   readFile(
-    'src/features/separation-processes/absorber-minimum-solvent-rate/AbsorberMinimumSolventRateCalculator.tsx',
+    'src/features/material-energy-balances/fluid-bed-dryer-mass-balance/FluidBedDryerMassBalanceCalculator.tsx',
     'utf8',
   ),
   readFile(
-    'tests/absorber-minimum-solvent-rate/absorber-minimum-solvent-rate.test.ts',
+    'tests/fluid-bed-dryer-mass-balance/fluid-bed-dryer-mass-balance.test.ts',
     'utf8',
   ),
   readFile(
@@ -66,18 +66,20 @@ function requireMarker(
   marker,
   label,
 ) {
-  if (!source.includes(marker)) {
+  if (
+    !source.includes(marker)
+  ) {
     throw new Error(
-      `Calculator 392 ${label} missing: ${marker}`,
+      `Calculator 393 ${label} missing: ${marker}`,
     )
   }
 }
 
 for (
   const marker of [
-    'ABSORBER_MINIMUM_SOLVENT_RATE_ENGINE_VERSION',
-    'calculateAbsorberMinimumSolventRate',
-    'createAbsorberMinimumSolventRateCsv',
+    'FLUID_BED_DRYER_MASS_BALANCE_ENGINE_VERSION',
+    'calculateFluidBedDryerMassBalance',
+    'createFluidBedDryerMassBalanceCsv',
   ]
 ) {
   requireMarker(
@@ -89,11 +91,11 @@ for (
 
 for (
   const marker of [
-    'SP–52',
-    'Absorber Minimum Solvent Rate & Operating Line',
-    'Minimum solvent flow',
-    'Design Solvent Flow',
-    'Bottom Driving Force',
+    'MEB–26',
+    'Fluid Bed Dryer Mass Balance',
+    'Evaporated water',
+    'Outlet Humidity Ratio',
+    'Mass-Balance Closure Error',
     'Export calculation CSV',
   ]
 ) {
@@ -106,19 +108,19 @@ for (
 
 requireMarker(
   tests,
-  'absorberMinimumSolventRate',
+  'fluidBedDryerMassBalance',
   'test ID',
 )
 
 requireMarker(
   workbench,
-  "calculatorId === 'absorberMinimumSolventRate'",
+  "calculatorId === 'fluidBedDryerMassBalance'",
   'route',
 )
 
 requireMarker(
   catalog,
-  'id: "absorberMinimumSolventRate"',
+  'id: "fluidBedDryerMassBalance"',
   'catalog ID',
 )
 
@@ -128,32 +130,32 @@ const categoryLine =
     .find(
       line =>
         line.includes(
-          'Separation Processes',
+          'Material & Energy Balances',
         ),
     )
 
 if (
   !categoryLine ||
   !categoryLine.includes(
-    'total: 52',
+    'total: 26',
   ) ||
   !categoryLine.includes(
-    'live: 52',
+    'live: 26',
   )
 ) {
   throw new Error(
-    'Separation Processes metadata is not 52/52.',
+    'Material & Energy Balances metadata is not 26/26.',
   )
 }
 
 const singleIndex =
   catalogVerifier.indexOf(
-    "name: 'Separation Processes'",
+    "name: 'Material & Energy Balances'",
   )
 
 const doubleIndex =
   catalogVerifier.indexOf(
-    'name: "Separation Processes"',
+    'name: "Material & Energy Balances"',
   )
 
 const index =
@@ -165,17 +167,17 @@ const window =
   index >= 0
     ? catalogVerifier.slice(
         index,
-        index + 700,
+        index + 500,
       )
     : ''
 
 if (
   !window.includes(
-    'count: 52',
+    'count: 26',
   )
 ) {
   throw new Error(
-    'Catalog verifier does not expect 52 Separation calculators.',
+    'Catalog verifier does not expect 26 Material & Energy Balances calculators.',
   )
 }
 
@@ -210,7 +212,7 @@ if (
   253
 ) {
   throw new Error(
-    `Expected 252 direct test signals; found ${baseline.directTestSignals}.`,
+    `Expected 253 direct test signals; found ${baseline.directTestSignals}.`,
   )
 }
 
@@ -218,11 +220,11 @@ if (
   baseline
     .calculatorIdsWithoutDirectTestSignal
     .includes(
-      'absorberMinimumSolventRate',
+      'fluidBedDryerMassBalance',
     )
 ) {
   throw new Error(
-    'Calculator 392 is in the direct-test gap list.',
+    'Calculator 393 is in the direct-test gap list.',
   )
 }
 
@@ -233,16 +235,16 @@ const pkg =
 
 if (
   !pkg.scripts[
-    'verify:absorber-minimum-solvent-rate-v1'
+    'verify:fluid-bed-dryer-mass-balance-v1'
   ]
 ) {
   throw new Error(
-    'Calculator 392 verify script missing.',
+    'Calculator 393 verify script missing.',
   )
 }
 
 console.log(
-  'PASS: Calculator 392 verifier.',
+  'PASS: Fluid Bed Dryer Mass Balance Calculator v1.',
 )
 
 console.log(
@@ -250,9 +252,9 @@ console.log(
 )
 
 console.log(
-  'Separation Processes: 52',
+  'Material & Energy Balances: 26',
 )
 
 console.log(
-  'Direct test signals: 252',
+  'Direct test signals: 253',
 )
