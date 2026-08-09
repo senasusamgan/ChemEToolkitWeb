@@ -144,6 +144,7 @@ import { MaximumSuctionFlowRateNpshMarginCalculator } from '../features/fluid-me
 import { MaximumSuctionLineLengthNpshMarginCalculator } from '../features/fluid-mechanics/maximum-suction-line-length-npsh-margin/MaximumSuctionLineLengthNpshMarginCalculator'
 import { PitotTubeVelocityFlowCalculator } from '../features/fluid-mechanics/pitot-tube-velocity-flow/PitotTubeVelocityFlowCalculator'
 import { FlowNozzleDifferentialPressureCalculator } from '../features/fluid-mechanics/flow-nozzle-differential-pressure/FlowNozzleDifferentialPressureCalculator'
+import { VariableAreaRotameterFlowCalculator } from '../features/fluid-mechanics/variable-area-rotameter-flow/VariableAreaRotameterFlowCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -217,6 +218,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'flowNozzleDifferentialPressure') {
     return <FlowNozzleDifferentialPressureCalculator />
+  }
+
+  if (calculatorId === 'variableAreaRotameterFlow') {
+    return <VariableAreaRotameterFlowCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {

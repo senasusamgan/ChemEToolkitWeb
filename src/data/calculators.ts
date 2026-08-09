@@ -47,6 +47,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "maximumSuctionLineLengthNpshMargin", title: "Maximum Suction-Line Length for Required NPSH Margin", category: "Fluid Mechanics", available: true },
   { id: "pitotTubeVelocityFlow", title: "Pitot Tube Velocity & Volumetric Flow", category: "Fluid Mechanics", available: true },
   { id: "flowNozzleDifferentialPressure", title: "Flow Nozzle Differential-Pressure Meter", category: "Fluid Mechanics", available: true },
+  { id: "variableAreaRotameterFlow", title: "Variable-Area Rotameter Flow Rate", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
