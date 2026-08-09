@@ -39,6 +39,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "darcyWeisbachPipeDiameterSizing", title: "Darcy–Weisbach Pipe Diameter Sizing", category: "Fluid Mechanics", available: true },
   { id: "pipeFlowRateFromPressureDrop", title: "Pipe Flow Rate from Available Pressure Drop", category: "Fluid Mechanics", available: true },
   { id: "maximumPipeLengthFromPressureDrop", title: "Maximum Pipe Length from Pressure-Drop Budget", category: "Fluid Mechanics", available: true },
+  { id: "maximumMinorLossCoefficient", title: "Maximum Minor-Loss Coefficient / Fittings Budget", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
