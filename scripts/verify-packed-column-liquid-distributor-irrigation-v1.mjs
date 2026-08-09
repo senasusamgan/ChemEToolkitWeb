@@ -171,7 +171,7 @@ requireMarker(
 )
 
 if (
-  !/name:\s*"Separation Processes"[\s\S]*?total:\s*50\s*,\s*live:\s*50/.test(
+  !/name:\s*"Separation Processes"[\s\S]*?total:\s*51\s*,\s*live:\s*51/.test(
     categories,
   )
 ) {
@@ -181,7 +181,7 @@ if (
 }
 
 if (
-  !/name:\s*['"]Separation Processes['"]\s*,\s*count:\s*50\s*,/.test(
+  !/name:\s*['"]Separation Processes['"]\s*,\s*count:\s*51\s*,/.test(
     catalogVerifier,
   )
 ) {
@@ -192,13 +192,13 @@ if (
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 390',
+  'EXPECTED_CALCULATOR_COUNT = 391',
   'routing count contract',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 390',
+  'EXPECTED_CALCULATOR_COUNT = 391',
   'coverage count contract',
 )
 
@@ -209,7 +209,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  390
+  391
 ) {
   throw new Error(
     `Calculator 388 baseline catalog count is ${baseline.catalogCalculatorCount}; expected 388.`,
@@ -218,7 +218,7 @@ if (
 
 if (
   baseline.directTestSignals !==
-  249
+  250
 ) {
   throw new Error(
     `Calculator 388 expected 247 direct test signals; found ${baseline.directTestSignals}.`,
@@ -294,5 +294,5 @@ console.log(
   'Separation Processes: 48',
 )
 console.log(
-  'Direct test signals: 249',
+  'Direct test signals: 250',
 )
