@@ -140,7 +140,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  404
+  405
 ) {
   throw new Error(
     `Expected Calculator 396 catalog state; found ${baseline.catalogCalculatorCount}.`,
