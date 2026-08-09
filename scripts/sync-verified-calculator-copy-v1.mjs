@@ -21,17 +21,15 @@ const calculatorCount =
   baseline.catalogCalculatorCount
 
 if (
-  !Number.isInteger(
-    calculatorCount,
-  ) ||
+  !Number.isInteger(calculatorCount) ||
   calculatorCount <= 0
 ) {
   throw new Error(
-    'Invalid catalog calculator count in coverage baseline.',
+    'Invalid catalog calculator count.',
   )
 }
 
-const allowedExtensions =
+const extensions =
   new Set([
     '.ts',
     '.tsx',
@@ -43,9 +41,7 @@ const allowedExtensions =
 
 const targets = []
 
-async function collectDirectory(
-  directory,
-) {
+async function walk(directory) {
   const entries =
     await readdir(
       directory,
@@ -61,26 +57,17 @@ async function collectDirectory(
         entry.name,
       )
 
-    if (
-      entry.isDirectory()
-    ) {
-      await collectDirectory(
-        path,
-      )
-
+    if (entry.isDirectory()) {
+      await walk(path)
       continue
     }
 
     if (
-      allowedExtensions.has(
-        extname(
-          entry.name,
-        ),
+      extensions.has(
+        extname(entry.name),
       )
     ) {
-      targets.push(
-        path,
-      )
+      targets.push(path)
     }
   }
 }
@@ -90,26 +77,23 @@ for (const directory of [
   'public',
 ]) {
   try {
-    await collectDirectory(
-      directory,
-    )
+    await walk(directory)
   } catch {
-    // Directory may not exist in all environments.
+    // Optional directory.
   }
 }
 
-targets.push(
-  'index.html',
-)
+targets.push('index.html')
 
-const pattern =
-  /\b\d+\+?(\s+)(verified\s+calculators)\b/gi
+const verifiedPattern =
+  /\b\d+\+?(\s+verified\s+calculators)\b/gi
 
-let changedFiles =
-  0
+const searchPattern =
+  /\b(Search\s+all\s+)\d+\+?(\s+calculators)\b/gi
 
-let updatedOccurrences =
-  0
+let changedFiles = 0
+let verifiedOccurrences = 0
+let searchOccurrences = 0
 
 for (const path of targets) {
   let source
@@ -124,47 +108,50 @@ for (const path of targets) {
     continue
   }
 
-  let fileOccurrences =
-    0
-
-  const updated =
+  let updated =
     source.replace(
-      pattern,
-      (
-        _match,
-        spacing,
-        phrase,
-      ) => {
-        fileOccurrences +=
-          1
+      verifiedPattern,
+      (_match, suffix) => {
+        verifiedOccurrences += 1
 
         return (
           `${calculatorCount}` +
-          spacing +
-          phrase
+          suffix
         )
       },
     )
 
-  if (
-    updated !== source
-  ) {
+  updated =
+    updated.replace(
+      searchPattern,
+      (
+        _match,
+        prefix,
+        suffix,
+      ) => {
+        searchOccurrences += 1
+
+        return (
+          prefix +
+          `${calculatorCount}` +
+          suffix
+        )
+      },
+    )
+
+  if (updated !== source) {
     await writeFile(
       path,
       updated,
       'utf8',
     )
 
-    changedFiles +=
-      1
-
-    updatedOccurrences +=
-      fileOccurrences
+    changedFiles += 1
   }
 }
 
 console.log(
-  `PASS: verified-calculator copy synchronized to ${calculatorCount}.`,
+  `PASS: visible calculator counts synchronized to ${calculatorCount}.`,
 )
 
 console.log(
@@ -172,5 +159,9 @@ console.log(
 )
 
 console.log(
-  `Updated occurrences: ${updatedOccurrences}`,
+  `Verified occurrences: ${verifiedOccurrences}`,
+)
+
+console.log(
+  `Search occurrences: ${searchOccurrences}`,
 )
