@@ -88,11 +88,11 @@ const categoryLine =
 
 if (
   !categoryLine ||
-  !categoryLine.includes('total: 28') ||
-  !categoryLine.includes('live: 28')
+  !categoryLine.includes('total: 29') ||
+  !categoryLine.includes('live: 29')
 ) {
   throw new Error(
-    'Material & Energy Balances metadata is not 28/28.',
+    'Material & Energy Balances metadata is not 29/29.',
   )
 }
 
@@ -119,21 +119,21 @@ const catalogWindow =
       )
     : ''
 
-if (!catalogWindow.includes('count: 28')) {
+if (!catalogWindow.includes('count: 29')) {
   throw new Error(
-    'Catalog verifier does not expect 27 Material & Energy Balances calculators.',
+    'Catalog verifier does not expect 29 Material & Energy Balances calculators.',
   )
 }
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 395',
+  'EXPECTED_CALCULATOR_COUNT = 396',
   'routing count',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 395',
+  'EXPECTED_CALCULATOR_COUNT = 396',
   'coverage count',
 )
 
@@ -142,13 +142,13 @@ const baseline =
     baselineSource,
   )
 
-if (baseline.catalogCalculatorCount !== 395) {
+if (baseline.catalogCalculatorCount !== 396) {
   throw new Error(
     `Expected baseline 394; found ${baseline.catalogCalculatorCount}.`,
   )
 }
 
-if (baseline.directTestSignals !== 255) {
+if (baseline.directTestSignals !== 256) {
   throw new Error(
     `Expected 254 direct test signals; found ${baseline.directTestSignals}.`,
   )
@@ -201,7 +201,7 @@ if (
 }
 
 console.log('PASS: Calculator 394 verifier.')
-console.log('Calculator count: 394')
-console.log('Material & Energy Balances: 27')
-console.log('Direct test signals: 254')
+console.log('Calculator count: 396')
+console.log('Material & Energy Balances: 29')
+console.log('Direct test signals: 256')
 console.log('Coverage gaps: 140')

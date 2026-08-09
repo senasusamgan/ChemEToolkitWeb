@@ -89,11 +89,11 @@ const categoryLine =
 
 if (
   !categoryLine ||
-  !categoryLine.includes('total: 28') ||
-  !categoryLine.includes('live: 28')
+  !categoryLine.includes('total: 29') ||
+  !categoryLine.includes('live: 29')
 ) {
   throw new Error(
-    'Material & Energy Balances metadata is not 28/28.',
+    'Material & Energy Balances metadata is not 29/29.',
   )
 }
 
@@ -102,7 +102,7 @@ const baseline =
     baselineSource,
   )
 
-if (baseline.catalogCalculatorCount !== 395) {
+if (baseline.catalogCalculatorCount !== 396) {
   throw new Error(
     `Expected baseline 395; found ${baseline.catalogCalculatorCount}.`,
   )
@@ -150,6 +150,6 @@ if (
 
 console.log('PASS: Calculator 395 verifier.')
 console.log(`Calculator count: ${baseline.catalogCalculatorCount}`)
-console.log('Material & Energy Balances: 28')
+console.log('Material & Energy Balances: 29')
 console.log(`Direct test signals: ${baseline.directTestSignals}`)
 console.log(`Coverage gaps: ${baseline.withoutDirectTestSignal}`)

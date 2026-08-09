@@ -5,7 +5,7 @@ export const categories: CategoryDefinition[] = [
   { number: 2, name: "Fluid Mechanics", icon: "≈", total: 17, live: 17 },
   { number: 3, name: "Heat Transfer", icon: "♨", total: 28, live: 28 },
   { number: 4, name: "Mass Transfer", icon: "⠿", total: 45, live: 45 },
-  { number: 5, name: "Material & Energy Balances", icon: "⇄", total: 28, live: 28 },
+  { number: 5, name: "Material & Energy Balances", icon: "⇄", total: 29, live: 29 },
   { number: 6, name: "Numerical Methods", icon: "ƒ", total: 40, live: 40 },
   { number: 7, name: "Process Control", icon: "⌇", total: 40, live: 40 },
   { number: 8, name: "Process Safety & Economics", icon: "◇", total: 40, live: 40 },
