@@ -16,10 +16,10 @@ const baseline =
     ),
   )
 
-const expectedCount =
+const expected =
   baseline.catalogCalculatorCount
 
-const allowedExtensions =
+const extensions =
   new Set([
     '.ts',
     '.tsx',
@@ -31,9 +31,7 @@ const allowedExtensions =
 
 const targets = []
 
-async function collectDirectory(
-  directory,
-) {
+async function walk(directory) {
   const entries =
     await readdir(
       directory,
@@ -49,26 +47,17 @@ async function collectDirectory(
         entry.name,
       )
 
-    if (
-      entry.isDirectory()
-    ) {
-      await collectDirectory(
-        path,
-      )
-
+    if (entry.isDirectory()) {
+      await walk(path)
       continue
     }
 
     if (
-      allowedExtensions.has(
-        extname(
-          entry.name,
-        ),
+      extensions.has(
+        extname(entry.name),
       )
     ) {
-      targets.push(
-        path,
-      )
+      targets.push(path)
     }
   }
 }
@@ -78,25 +67,24 @@ for (const directory of [
   'public',
 ]) {
   try {
-    await collectDirectory(
-      directory,
-    )
+    await walk(directory)
   } catch {
-    // Ignore absent directory.
+    // Optional directory.
   }
 }
 
-targets.push(
-  'index.html',
-)
+targets.push('index.html')
 
-const pattern =
+const verifiedPattern =
   /\b(\d+)\+?\s+verified\s+calculators\b/gi
+
+const searchPattern =
+  /\bSearch\s+all\s+(\d+)\+?\s+calculators\b/gi
 
 const stale = []
 
-let occurrenceCount =
-  0
+let verifiedOccurrences = 0
+let searchOccurrences = 0
 
 for (const path of targets) {
   let source
@@ -114,49 +102,57 @@ for (const path of targets) {
   for (
     const match of
     source.matchAll(
-      pattern,
+      verifiedPattern,
     )
   ) {
-    occurrenceCount +=
-      1
-
-    const actual =
-      Number(
-        match[1],
-      )
+    verifiedOccurrences += 1
 
     if (
-      actual !==
-      expectedCount
+      Number(match[1]) !==
+      expected
     ) {
-      stale.push({
-        path,
-        actual,
-      })
+      stale.push(
+        `${path}: ${match[0]}`,
+      )
+    }
+  }
+
+  for (
+    const match of
+    source.matchAll(
+      searchPattern,
+    )
+  ) {
+    searchOccurrences += 1
+
+    if (
+      Number(match[1]) !==
+      expected
+    ) {
+      stale.push(
+        `${path}: ${match[0]}`,
+      )
     }
   }
 }
 
-if (
-  stale.length > 0
-) {
+if (stale.length > 0) {
   throw new Error(
     [
-      `Stale verified-calculator copy detected. Expected ${expectedCount}.`,
-      ...stale.map(
-        item =>
-          `${item.path}: ${item.actual} verified calculators`,
-      ),
-    ].join(
-      '\n',
-    ),
+      `Expected all visible calculator counts to equal ${expected}.`,
+      ...stale,
+    ].join('\n'),
   )
 }
 
 console.log(
-  `PASS: all visible verified-calculator counts match ${expectedCount}.`,
+  `PASS: visible calculator counts match ${expected}.`,
 )
 
 console.log(
-  `Verified-copy occurrences checked: ${occurrenceCount}`,
+  `Verified occurrences checked: ${verifiedOccurrences}`,
+)
+
+console.log(
+  `Search occurrences checked: ${searchOccurrences}`,
 )
