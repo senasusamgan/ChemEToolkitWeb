@@ -152,6 +152,7 @@ import { PositiveDisplacementFlowMeterCalculator } from '../features/fluid-mecha
 import { TurbineFlowMeterCalculator } from '../features/fluid-mechanics/turbine-flow-meter/TurbineFlowMeterCalculator'
 import { SharpCrestedRectangularWeirCalculator } from '../features/fluid-mechanics/sharp-crested-rectangular-weir/SharpCrestedRectangularWeirCalculator'
 import { VNotchTriangularWeirCalculator } from '../features/fluid-mechanics/v-notch-triangular-weir/VNotchTriangularWeirCalculator'
+import { TrapezoidalChannelManningFlowCalculator } from '../features/fluid-mechanics/trapezoidal-channel-manning-flow/TrapezoidalChannelManningFlowCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -257,6 +258,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'vNotchTriangularWeir') {
     return <VNotchTriangularWeirCalculator />
+  }
+
+  if (calculatorId === 'trapezoidalChannelManningFlow') {
+    return <TrapezoidalChannelManningFlowCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
