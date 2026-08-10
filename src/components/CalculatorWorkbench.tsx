@@ -155,6 +155,7 @@ import { VNotchTriangularWeirCalculator } from '../features/fluid-mechanics/v-no
 import { TrapezoidalChannelManningFlowCalculator } from '../features/fluid-mechanics/trapezoidal-channel-manning-flow/TrapezoidalChannelManningFlowCalculator'
 import { TrapezoidalChannelNormalDepthCalculator } from '../features/fluid-mechanics/trapezoidal-channel-normal-depth/TrapezoidalChannelNormalDepthCalculator'
 import { RectangularHydraulicJumpCalculator } from '../features/fluid-mechanics/rectangular-hydraulic-jump/RectangularHydraulicJumpCalculator'
+import { TrapezoidalChannelCriticalDepthCalculator } from '../features/fluid-mechanics/trapezoidal-channel-critical-depth/TrapezoidalChannelCriticalDepthCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -272,6 +273,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'rectangularHydraulicJump') {
     return <RectangularHydraulicJumpCalculator />
+  }
+
+  if (calculatorId === 'trapezoidalChannelCriticalDepth') {
+    return <TrapezoidalChannelCriticalDepthCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {

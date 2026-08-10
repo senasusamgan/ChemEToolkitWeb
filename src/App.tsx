@@ -596,7 +596,7 @@ function App() {
             calculated clearly<span>.</span>
           </h1>
           <p className="hero-deck">
-            422 verified calculators across 11 disciplines—built for study,
+            423 verified calculators across 11 disciplines—built for study,
             design checks and everyday engineering work.
           </p>
 
@@ -968,7 +968,7 @@ function App() {
               <input
                 type="search"
                 aria-label="Search calculators"
-                placeholder="Search all 422 calculators"
+                placeholder="Search all 423 calculators"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
               />
