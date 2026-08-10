@@ -52,6 +52,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "ultrasonicTransitTimeFlowMeter", title: "Ultrasonic Transit-Time Flow Meter", category: "Fluid Mechanics", available: true },
   { id: "electromagneticFlowMeter", title: "Electromagnetic Flow Meter", category: "Fluid Mechanics", available: true },
   { id: "positiveDisplacementFlowMeter", title: "Positive-Displacement Flow Meter", category: "Fluid Mechanics", available: true },
+  { id: "turbineFlowMeter", title: "Turbine Flow Meter", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
