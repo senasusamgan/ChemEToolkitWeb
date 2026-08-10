@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "catalogCalculatorCount": 425,
-  "directTestSignals": 286,
+  "catalogCalculatorCount": 426,
+  "directTestSignals": 287,
   "withoutDirectTestSignal": 139,
   "calculatorIdsWithoutDirectTestSignal": [
     "absorptionMinimumSolventRate",
