@@ -63,6 +63,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "trapezoidalChannelCriticalSlope", title: "Trapezoidal Channel Critical Slope", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalHydraulicJump", title: "Trapezoidal Hydraulic Jump — Sequent Depth & Energy Loss", category: "Fluid Mechanics", available: true },
   { id: "broadCrestedWeirFlow", title: "Broad-Crested Weir Flow Rate", category: "Fluid Mechanics", available: true },
+  { id: "trapezoidalChannelAlternateDepth", title: "Trapezoidal Channel Alternate Depths", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
