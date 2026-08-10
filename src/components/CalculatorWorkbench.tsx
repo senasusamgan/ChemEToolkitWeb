@@ -151,6 +151,7 @@ import { ElectromagneticFlowMeterCalculator } from '../features/fluid-mechanics/
 import { PositiveDisplacementFlowMeterCalculator } from '../features/fluid-mechanics/positive-displacement-flow-meter/PositiveDisplacementFlowMeterCalculator'
 import { TurbineFlowMeterCalculator } from '../features/fluid-mechanics/turbine-flow-meter/TurbineFlowMeterCalculator'
 import { SharpCrestedRectangularWeirCalculator } from '../features/fluid-mechanics/sharp-crested-rectangular-weir/SharpCrestedRectangularWeirCalculator'
+import { VNotchTriangularWeirCalculator } from '../features/fluid-mechanics/v-notch-triangular-weir/VNotchTriangularWeirCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -252,6 +253,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'sharpCrestedRectangularWeir') {
     return <SharpCrestedRectangularWeirCalculator />
+  }
+
+  if (calculatorId === 'vNotchTriangularWeir') {
+    return <VNotchTriangularWeirCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
