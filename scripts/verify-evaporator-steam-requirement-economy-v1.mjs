@@ -158,7 +158,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  417
+  418
 ) {
   throw new Error(
     `Expected Calculator 397 catalog state; found ${baseline.catalogCalculatorCount}.`,
@@ -167,7 +167,7 @@ if (
 
 if (
   baseline.directTestSignals !==
-  277
+  278
 ) {
   throw new Error(
     `Expected 257 direct test signals; found ${baseline.directTestSignals}.`,
