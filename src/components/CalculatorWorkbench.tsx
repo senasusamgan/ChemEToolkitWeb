@@ -157,6 +157,7 @@ import { TrapezoidalChannelNormalDepthCalculator } from '../features/fluid-mecha
 import { RectangularHydraulicJumpCalculator } from '../features/fluid-mechanics/rectangular-hydraulic-jump/RectangularHydraulicJumpCalculator'
 import { TrapezoidalChannelCriticalDepthCalculator } from '../features/fluid-mechanics/trapezoidal-channel-critical-depth/TrapezoidalChannelCriticalDepthCalculator'
 import { RectangularChannelAlternateDepthCalculator } from '../features/fluid-mechanics/rectangular-channel-alternate-depth/RectangularChannelAlternateDepthCalculator'
+import { TrapezoidalChannelCriticalSlopeCalculator } from '../features/fluid-mechanics/trapezoidal-channel-critical-slope/TrapezoidalChannelCriticalSlopeCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -282,6 +283,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'rectangularChannelAlternateDepth') {
     return <RectangularChannelAlternateDepthCalculator />
+  }
+
+  if (calculatorId === 'trapezoidalChannelCriticalSlope') {
+    return <TrapezoidalChannelCriticalSlopeCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {

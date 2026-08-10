@@ -60,6 +60,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "rectangularHydraulicJump", title: "Rectangular Hydraulic Jump — Sequent Depth & Energy Loss", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalChannelCriticalDepth", title: "Trapezoidal Channel Critical Depth", category: "Fluid Mechanics", available: true },
   { id: "rectangularChannelAlternateDepth", title: "Rectangular Channel Alternate Depths", category: "Fluid Mechanics", available: true },
+  { id: "trapezoidalChannelCriticalSlope", title: "Trapezoidal Channel Critical Slope", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
