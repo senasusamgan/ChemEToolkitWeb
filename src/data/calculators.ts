@@ -56,6 +56,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "sharpCrestedRectangularWeir", title: "Sharp-Crested Rectangular Weir Flow Rate", category: "Fluid Mechanics", available: true },
   { id: "vNotchTriangularWeir", title: "V-Notch / Triangular Weir Flow Rate", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalChannelManningFlow", title: "Trapezoidal Open-Channel Flow — Manning Equation", category: "Fluid Mechanics", available: true },
+  { id: "trapezoidalChannelNormalDepth", title: "Trapezoidal Channel Normal Depth", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
