@@ -69,6 +69,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "trapezoidalChannelDirectStep", title: "Trapezoidal Channel Direct-Step Method — Gradually Varied Flow", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalChannelGvfSlope", title: "Trapezoidal Channel GVF Differential Slope", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalChannelGvfProfileRk4", title: "Trapezoidal Channel GVF Profile Integration — RK4", category: "Fluid Mechanics", available: true },
+  { id: "trapezoidalMaximumDischargeSpecificEnergy", title: "Maximum Trapezoidal Channel Discharge from Specific Energy", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
