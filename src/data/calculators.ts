@@ -67,6 +67,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "trapezoidalChannelChezyFlow", title: "Trapezoidal Channel Chezy Flow Rate", category: "Fluid Mechanics", available: true },
   { id: "mostEconomicalTrapezoidalChannelDesign", title: "Most Economical Trapezoidal Channel Design — Manning", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalChannelDirectStep", title: "Trapezoidal Channel Direct-Step Method — Gradually Varied Flow", category: "Fluid Mechanics", available: true },
+  { id: "trapezoidalChannelGvfSlope", title: "Trapezoidal Channel GVF Differential Slope", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
