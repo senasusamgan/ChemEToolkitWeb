@@ -65,6 +65,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "broadCrestedWeirFlow", title: "Broad-Crested Weir Flow Rate", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalChannelAlternateDepth", title: "Trapezoidal Channel Alternate Depths", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalChannelChezyFlow", title: "Trapezoidal Channel Chezy Flow Rate", category: "Fluid Mechanics", available: true },
+  { id: "mostEconomicalTrapezoidalChannelDesign", title: "Most Economical Trapezoidal Channel Design — Manning", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
