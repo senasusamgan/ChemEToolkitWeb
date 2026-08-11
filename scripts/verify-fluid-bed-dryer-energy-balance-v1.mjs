@@ -127,13 +127,13 @@ if (!catalogWindow.includes('count: 33')) {
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 429',
+  'EXPECTED_CALCULATOR_COUNT = 430',
   'routing count',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 429',
+  'EXPECTED_CALCULATOR_COUNT = 430',
   'coverage count',
 )
 
@@ -142,13 +142,13 @@ const baseline =
     baselineSource,
   )
 
-if (baseline.catalogCalculatorCount !== 429) {
+if (baseline.catalogCalculatorCount !== 430) {
   throw new Error(
     `Expected baseline 394; found ${baseline.catalogCalculatorCount}.`,
   )
 }
 
-if (baseline.directTestSignals !== 290) {
+if (baseline.directTestSignals !== 291) {
   throw new Error(
     `Expected 254 direct test signals; found ${baseline.directTestSignals}.`,
   )
