@@ -165,6 +165,7 @@ import { TrapezoidalChannelChezyFlowCalculator } from '../features/fluid-mechani
 import { MostEconomicalTrapezoidalChannelCalculator } from '../features/fluid-mechanics/most-economical-trapezoidal-channel/MostEconomicalTrapezoidalChannelCalculator'
 import { TrapezoidalChannelDirectStepCalculator } from '../features/fluid-mechanics/trapezoidal-channel-direct-step/TrapezoidalChannelDirectStepCalculator'
 import { TrapezoidalChannelGvfSlopeCalculator } from '../features/fluid-mechanics/trapezoidal-channel-gvf-slope/TrapezoidalChannelGvfSlopeCalculator'
+import { TrapezoidalChannelGvfProfileRk4Calculator } from '../features/fluid-mechanics/trapezoidal-channel-gvf-profile-rk4/TrapezoidalChannelGvfProfileRk4Calculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -322,6 +323,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'trapezoidalChannelGvfSlope') {
     return <TrapezoidalChannelGvfSlopeCalculator />
+  }
+
+  if (calculatorId === 'trapezoidalChannelGvfProfileRk4') {
+    return <TrapezoidalChannelGvfProfileRk4Calculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
