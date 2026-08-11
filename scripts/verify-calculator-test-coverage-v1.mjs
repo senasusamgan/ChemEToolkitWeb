@@ -21,7 +21,7 @@ const WORKBENCH_PATH =
 const PACKAGE_PATH =
   'package.json'
 
-const EXPECTED_CALCULATOR_COUNT = 430
+const EXPECTED_CALCULATOR_COUNT = 431
 
 const COVERAGE_BASELINE_PATH =
   'scripts/calculator-test-coverage-baseline-v1.json'
