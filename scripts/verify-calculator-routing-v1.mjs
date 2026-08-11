@@ -14,7 +14,7 @@ const LEGACY_WORKBENCH_PATH =
 const LEGACY_HTML_PATH =
   'public/legacy/index.html'
 
-const EXPECTED_CALCULATOR_COUNT = 433
+const EXPECTED_CALCULATOR_COUNT = 434
 
 const errors = []
 
