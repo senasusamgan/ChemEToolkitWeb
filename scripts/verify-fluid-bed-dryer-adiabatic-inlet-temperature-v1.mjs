@@ -102,7 +102,7 @@ const baseline =
     baselineSource,
   )
 
-if (baseline.catalogCalculatorCount !== 430) {
+if (baseline.catalogCalculatorCount !== 431) {
   throw new Error(
     `Expected baseline 395; found ${baseline.catalogCalculatorCount}.`,
   )
