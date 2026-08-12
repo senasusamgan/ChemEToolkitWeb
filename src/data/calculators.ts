@@ -71,6 +71,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "trapezoidalChannelGvfProfileRk4", title: "Trapezoidal Channel GVF Profile Integration — RK4", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalMaximumDischargeSpecificEnergy", title: "Maximum Trapezoidal Channel Discharge from Specific Energy", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalCriticalControlWidth", title: "Required Trapezoidal Critical-Control Bottom Width", category: "Fluid Mechanics", available: true },
+  { id: "trapezoidalMaximumBedRiseBeforeChoking", title: "Maximum Trapezoidal Channel Bed Rise Before Choking", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },

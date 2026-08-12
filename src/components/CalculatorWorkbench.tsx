@@ -168,6 +168,7 @@ import { TrapezoidalChannelGvfSlopeCalculator } from '../features/fluid-mechanic
 import { TrapezoidalChannelGvfProfileRk4Calculator } from '../features/fluid-mechanics/trapezoidal-channel-gvf-profile-rk4/TrapezoidalChannelGvfProfileRk4Calculator'
 import { TrapezoidalMaximumDischargeSpecificEnergyCalculator } from '../features/fluid-mechanics/trapezoidal-max-discharge-specific-energy/TrapezoidalMaximumDischargeSpecificEnergyCalculator'
 import { TrapezoidalCriticalControlWidthCalculator } from '../features/fluid-mechanics/trapezoidal-critical-control-width/TrapezoidalCriticalControlWidthCalculator'
+import { TrapezoidalMaximumBedRiseBeforeChokingCalculator } from '../features/fluid-mechanics/trapezoidal-max-bed-rise-choking/TrapezoidalMaximumBedRiseBeforeChokingCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -337,6 +338,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'trapezoidalCriticalControlWidth') {
     return <TrapezoidalCriticalControlWidthCalculator />
+  }
+
+  if (calculatorId === 'trapezoidalMaximumBedRiseBeforeChoking') {
+    return <TrapezoidalMaximumBedRiseBeforeChokingCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
