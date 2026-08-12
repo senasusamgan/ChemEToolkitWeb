@@ -77,6 +77,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "trapezoidalMinimumContractionWidth", title: "Minimum Trapezoidal Channel Contraction Width Before Choking", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalContractionThroatAnalysis", title: "Specified Trapezoidal Contraction Throat & Choking Analysis", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalContractionTransitionLoss", title: "Trapezoidal Contraction with Transition Loss", category: "Fluid Mechanics", available: true },
+  { id: "trapezoidalMaximumTransitionLossCoefficient", title: "Maximum Allowable Transition-Loss Coefficient Before Choking", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
