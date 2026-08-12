@@ -73,6 +73,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "trapezoidalCriticalControlWidth", title: "Required Trapezoidal Critical-Control Bottom Width", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalMaximumBedRiseBeforeChoking", title: "Maximum Trapezoidal Channel Bed Rise Before Choking", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalChannelBedRiseCrestDepth", title: "Trapezoidal Channel Flow over Specified Bed Rise", category: "Fluid Mechanics", available: true },
+  { id: "trapezoidalMinimumUpstreamDepthBedRise", title: "Minimum Upstream Depth for a Specified Bed Rise Before Choking", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
