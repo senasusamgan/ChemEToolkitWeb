@@ -173,6 +173,7 @@ import { TrapezoidalChannelBedRiseCrestDepthCalculator } from '../features/fluid
 import { TrapezoidalMinimumUpstreamDepthBedRiseCalculator } from '../features/fluid-mechanics/trapezoidal-min-upstream-depth-bed-rise/TrapezoidalMinimumUpstreamDepthBedRiseCalculator'
 import { TrapezoidalMinimumContractionWidthCalculator } from '../features/fluid-mechanics/trapezoidal-min-contraction-width/TrapezoidalMinimumContractionWidthCalculator'
 import { TrapezoidalContractionThroatAnalysisCalculator } from '../features/fluid-mechanics/trapezoidal-contraction-throat-analysis/TrapezoidalContractionThroatAnalysisCalculator'
+import { TrapezoidalContractionTransitionLossCalculator } from '../features/fluid-mechanics/trapezoidal-contraction-transition-loss/TrapezoidalContractionTransitionLossCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -362,6 +363,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'trapezoidalContractionThroatAnalysis') {
     return <TrapezoidalContractionThroatAnalysisCalculator />
+  }
+
+  if (calculatorId === 'trapezoidalContractionTransitionLoss') {
+    return <TrapezoidalContractionTransitionLossCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
