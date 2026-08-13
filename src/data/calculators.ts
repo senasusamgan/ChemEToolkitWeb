@@ -83,6 +83,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "trapezoidalMaximumBedRiseContractionLoss", title: "Maximum Bed Rise Through a Trapezoidal Contraction with Transition Loss", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalMinimumWidthBedRiseTransitionLoss", title: "Minimum Contracted Width for a Specified Bed Rise with Transition Loss", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalMaximumDischargeBedRiseTransitionLoss", title: "Maximum Discharge Through a Trapezoidal Contraction with Bed Rise and Transition Loss", category: "Fluid Mechanics", available: true },
+  { id: "trapezoidalMaximumTransitionLossCoefficientBedRise", title: "Maximum Allowable Transition-Loss Coefficient with Bed Rise Before Choking", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
