@@ -87,6 +87,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "trapezoidalMinimumUpstreamDepthBedRiseTransitionLoss", title: "Minimum Upstream Depth for a Trapezoidal Contraction with Bed Rise and Transition Loss", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalChannelStandardStep", title: "Trapezoidal Channel Standard-Step Method — GVF", category: "Fluid Mechanics", available: true },
   { id: "trapezoidalChannelStandardStepProfile", title: "Trapezoidal Channel Multi-Reach Standard-Step GVF Profile", category: "Fluid Mechanics", available: true },
+  { id: "trapezoidalChannelAdaptiveStandardStepProfile", title: "Adaptive Standard-Step GVF Profile for a Trapezoidal Channel", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
