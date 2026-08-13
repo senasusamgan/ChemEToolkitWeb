@@ -183,6 +183,7 @@ import { TrapezoidalMaximumDischargeBedRiseTransitionLossCalculator } from '../f
 import { TrapezoidalMaximumTransitionLossCoefficientBedRiseCalculator } from '../features/fluid-mechanics/trapezoidal-max-transition-loss-bed-rise/TrapezoidalMaximumTransitionLossCoefficientBedRiseCalculator'
 import { TrapezoidalMinimumUpstreamDepthBedRiseTransitionLossCalculator } from '../features/fluid-mechanics/trapezoidal-min-upstream-depth-bed-rise-transition-loss/TrapezoidalMinimumUpstreamDepthBedRiseTransitionLossCalculator'
 import { TrapezoidalChannelStandardStepCalculator } from '../features/fluid-mechanics/trapezoidal-channel-standard-step/TrapezoidalChannelStandardStepCalculator'
+import { TrapezoidalChannelStandardStepProfileCalculator } from '../features/fluid-mechanics/trapezoidal-channel-standard-step-profile/TrapezoidalChannelStandardStepProfileCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -412,6 +413,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'trapezoidalChannelStandardStep') {
     return <TrapezoidalChannelStandardStepCalculator />
+  }
+
+  if (calculatorId === 'trapezoidalChannelStandardStepProfile') {
+    return <TrapezoidalChannelStandardStepProfileCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
