@@ -186,6 +186,7 @@ import { TrapezoidalChannelStandardStepCalculator } from '../features/fluid-mech
 import { TrapezoidalChannelStandardStepProfileCalculator } from '../features/fluid-mechanics/trapezoidal-channel-standard-step-profile/TrapezoidalChannelStandardStepProfileCalculator'
 import { TrapezoidalChannelAdaptiveStandardStepProfileCalculator } from '../features/fluid-mechanics/trapezoidal-channel-adaptive-standard-step-profile/TrapezoidalChannelAdaptiveStandardStepProfileCalculator'
 import { TrapezoidalChannelUpstreamStandardStepProfileCalculator } from '../features/fluid-mechanics/trapezoidal-channel-upstream-standard-step-profile/TrapezoidalChannelUpstreamStandardStepProfileCalculator'
+import { TrapezoidalChannelAdaptiveUpstreamStandardStepProfileCalculator } from '../features/fluid-mechanics/trapezoidal-channel-adaptive-upstream-standard-step-profile/TrapezoidalChannelAdaptiveUpstreamStandardStepProfileCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -427,6 +428,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'trapezoidalChannelUpstreamStandardStepProfile') {
     return <TrapezoidalChannelUpstreamStandardStepProfileCalculator />
+  }
+
+  if (calculatorId === 'trapezoidalChannelAdaptiveUpstreamStandardStepProfile') {
+    return <TrapezoidalChannelAdaptiveUpstreamStandardStepProfileCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
