@@ -190,6 +190,7 @@ import { TrapezoidalChannelAdaptiveUpstreamStandardStepProfileCalculator } from 
 import { PartiallyFullCircularChannelManningFlowCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-manning-flow/PartiallyFullCircularChannelManningFlowCalculator'
 import { PartiallyFullCircularChannelNormalDepthCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-normal-depth/PartiallyFullCircularChannelNormalDepthCalculator'
 import { PartiallyFullCircularChannelCriticalDepthCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-critical-depth/PartiallyFullCircularChannelCriticalDepthCalculator'
+import { PartiallyFullCircularChannelAlternateDepthsCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-alternate-depths/PartiallyFullCircularChannelAlternateDepthsCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -447,6 +448,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'partiallyFullCircularChannelCriticalDepth') {
     return <PartiallyFullCircularChannelCriticalDepthCalculator />
+  }
+
+  if (calculatorId === 'partiallyFullCircularChannelAlternateDepths') {
+    return <PartiallyFullCircularChannelAlternateDepthsCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
