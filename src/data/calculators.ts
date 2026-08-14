@@ -92,6 +92,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "trapezoidalChannelAdaptiveUpstreamStandardStepProfile", title: "Adaptive Upstream Standard-Step GVF Profile from a Downstream Boundary", category: "Fluid Mechanics", available: true },
   { id: "partiallyFullCircularChannelManningFlow", title: "Partially Full Circular Channel Flow — Manning", category: "Fluid Mechanics", available: true },
   { id: "partiallyFullCircularChannelNormalDepth", title: "Partially Full Circular Channel Normal Depth — Manning", category: "Fluid Mechanics", available: true },
+  { id: "partiallyFullCircularChannelCriticalDepth", title: "Partially Full Circular Channel Critical Depth", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
