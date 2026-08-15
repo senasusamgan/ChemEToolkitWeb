@@ -100,6 +100,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "partiallyFullCircularChannelGvfSlope", title: "Partially Full Circular Channel GVF Differential Slope", category: "Fluid Mechanics", available: true },
   { id: "partiallyFullCircularChannelGvfProfile", title: "Partially Full Circular Channel GVF Profile — RK4", category: "Fluid Mechanics", available: true },
   { id: "partiallyFullCircularChannelAdaptiveGvfProfile", title: "Partially Full Circular Channel Adaptive GVF Profile — RK4", category: "Fluid Mechanics", available: true },
+  { id: "partiallyFullCircularChannelStandardStep", title: "Partially Full Circular Channel Standard-Step Method", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
