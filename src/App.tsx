@@ -15,6 +15,7 @@ import './styles/calculator-experience-v2.css'
 import './styles/calculator-discovery-v3.css'
 import './styles/homepage-quick-start-v4.css'
 import './styles/personal-toolkit-dashboard-v5.css'
+import './styles/engineering-trust-v6.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -1640,6 +1641,95 @@ function App() {
           </p>
         </div>
 
+        <div
+          className="reference-trust-strip"
+          aria-label="Engineering verification approach"
+        >
+          <article>
+            <span aria-hidden="true">
+              01
+            </span>
+
+            <div>
+              <strong>
+                Traceable basis
+              </strong>
+
+              <p>
+                Governing equations are grounded
+                in established chemical engineering
+                texts and standard engineering models.
+              </p>
+            </div>
+          </article>
+
+          <article>
+            <span aria-hidden="true">
+              02
+            </span>
+
+            <div>
+              <strong>
+                Verification pipeline
+              </strong>
+
+              <p>
+                Catalog, routing, calculator tests,
+                TypeScript and production builds are
+                checked before each release.
+              </p>
+            </div>
+          </article>
+
+          <article>
+            <span aria-hidden="true">
+              03
+            </span>
+
+            <div>
+              <strong>
+                Visible assumptions
+              </strong>
+
+              <p>
+                Units, governing relations,
+                model context and limitations remain
+                visible alongside the calculation.
+              </p>
+            </div>
+          </article>
+
+          <article>
+            <span aria-hidden="true">
+              04
+            </span>
+
+            <div>
+              <strong>
+                Engineering responsibility
+              </strong>
+
+              <p>
+                Final and safety-critical decisions
+                still require applicable standards,
+                validated data and qualified review.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <div className="reference-shelf-label">
+          <span>
+            Reference shelf
+          </span>
+
+          <p>
+            Core sources are grouped by discipline.
+            Calculator-specific assumptions and
+            references remain visible inside the tool.
+          </p>
+        </div>
+
         <div className="reference-grid">
           <article>
             <span>01</span>
@@ -1708,24 +1798,126 @@ function App() {
         </aside>
       </section>
 
-      <footer id="about">
-        <Brand />
-        <div className="footer-copy">
-          <p>
-            A growing chemical engineering calculation platform translated
-            from a verified macOS toolkit.
-          </p>
-          <nav aria-label="Footer navigation">
-            <a href="#calculators">Calculators</a>
-            <a href="#categories">Categories</a>
-            <a href="#method">Method</a>
-            <a href="#references">References</a>
-          </nav>
+      <footer
+        id="about"
+        className="site-footer-v6"
+      >
+        <div className="footer-v6-top">
+          <div className="footer-v6-brand">
+            <Brand />
+
+            <p>
+              A chemical engineering workspace
+              for transparent calculations,
+              engineering checks and structured
+              problem solving.
+            </p>
+
+            <div className="footer-v6-status">
+              <span>
+                <b aria-hidden="true" />
+                Release verified
+              </span>
+
+              <span>
+                {liveCalculatorCount} live tools
+              </span>
+            </div>
+          </div>
+
+          <div className="footer-v6-links">
+            <nav
+              aria-label="Toolkit footer navigation"
+            >
+              <strong>
+                Toolkit
+              </strong>
+
+              <a href="#calculators">
+                Calculators
+              </a>
+
+              <a href="#categories">
+                Disciplines
+              </a>
+
+              <a href="#your-toolkit">
+                Your Toolkit
+              </a>
+
+              <a href="#workbench">
+                Workbench
+              </a>
+            </nav>
+
+            <nav
+              aria-label="Engineering footer navigation"
+            >
+              <strong>
+                Engineering
+              </strong>
+
+              <a href="#method">
+                Method
+              </a>
+
+              <a href="#references">
+                References
+              </a>
+
+              <a
+                href="#problem-solver"
+                onClick={(event) => {
+                  event.preventDefault()
+                  openProblemSolver()
+                }}
+              >
+                Problem Solver
+              </a>
+            </nav>
+
+            <nav
+              aria-label="Page footer navigation"
+            >
+              <strong>
+                Page
+              </strong>
+
+              <a href="#top">
+                Back to top
+              </a>
+
+              <a href="#about">
+                About
+              </a>
+            </nav>
+          </div>
         </div>
-        <span>
-          {calculators.length} calculators · {liveCalculatorCount} live
-          engines · 11 disciplines · 1,208 source tests
-        </span>
+
+        <div className="footer-v6-bottom">
+          <p>
+            Chemical Engineering Toolkit
+          </p>
+
+          <div>
+            <span>
+              {calculators.length} calculators
+            </span>
+
+            <span>
+              {liveCalculatorCount} live engines
+            </span>
+
+            <span>
+              {categories.length} disciplines
+            </span>
+          </div>
+
+          <p>
+            Educational and preliminary
+            engineering use.
+          </p>
+        </div>
       </footer>
 
       <FeedbackPanel
