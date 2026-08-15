@@ -21,6 +21,7 @@ import './styles/responsive-accessibility-v8.css'
 import './styles/catalog-compact-pagination-v9.css'
 import './styles/category-cards-compact-v10.css'
 import './styles/category-cards-ultra-compact-v11.css'
+import './styles/category-executive-v12.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -1450,31 +1451,100 @@ function App() {
         </div>
       </section>
 
-      <section className="section categories-section" id="categories">
-        <div className="section-heading">
-          <p className="eyebrow">The complete curriculum</p>
-          <h2>Eleven disciplines. One coherent toolkit.</h2>
-          <p>
-            Category selection filters the catalog so only the chosen
-            discipline is shown.
-          </p>
+      <section
+        className="section categories-section categories-executive-v12"
+        id="categories"
+        aria-labelledby="disciplines-title"
+      >
+        <div className="category-executive-header">
+          <div className="category-executive-copy">
+            <p className="eyebrow">
+              Engineering disciplines
+            </p>
+
+            <h2 id="disciplines-title">
+              Explore by discipline.
+            </h2>
+
+            <p>
+              Move directly into the engineering
+              area you need and access its verified
+              calculation tools.
+            </p>
+          </div>
+
+          <div
+            className="category-executive-summary"
+            aria-label="Toolkit discipline summary"
+          >
+            <div>
+              <strong>
+                {categories.length}
+              </strong>
+
+              <span>
+                disciplines
+              </span>
+            </div>
+
+            <span
+              className="category-summary-divider"
+              aria-hidden="true"
+            />
+
+            <div>
+              <strong>
+                {liveCalculatorCount}
+              </strong>
+
+              <span>
+                verified calculators
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div className="category-grid">
+        <div className="category-grid category-executive-grid">
           {categories.map((category) => (
-            <article className="category-card" key={category.name}>
-              <span className="category-mark">{category.icon}</span>
-              <h3>{category.name}</h3>
-              <p>
-                {category.total} verified · {category.live} live
-              </p>
-              <button
-                type="button"
-                onClick={() => openCategory(category.name)}
+            <button
+              type="button"
+              className="category-card category-navigation-card"
+              key={category.name}
+              aria-label={`Explore ${category.name} calculators`}
+              onClick={() =>
+                openCategory(
+                  category.name,
+                )
+              }
+            >
+              <span
+                className="category-navigation-icon"
+                aria-hidden="true"
               >
-                Explore <span>↗</span>
-              </button>
-            </article>
+                {category.icon}
+              </span>
+
+              <span className="category-navigation-copy">
+                <strong>
+                  {category.name}
+                </strong>
+
+                <small>
+                  {category.live}{' '}
+                  verified calculator
+                  {category.live === 1
+                    ? ''
+                    : 's'}
+                </small>
+              </span>
+
+              <span
+                className="category-navigation-arrow"
+                aria-hidden="true"
+              >
+                ↗
+              </span>
+            </button>
           ))}
         </div>
       </section>
