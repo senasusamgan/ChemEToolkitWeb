@@ -46,7 +46,7 @@ for (
     '{liveCalculatorCount} verified calculators',
     'across {categories.length} engineering disciplines',
     'Search all ${calculators.length} calculators',
-    'Showing {filteredCalculators.length} of {calculators.length} calculators',
+    'className="result-count"',
     'Verified · ready to calculate',
   ]
 ) {

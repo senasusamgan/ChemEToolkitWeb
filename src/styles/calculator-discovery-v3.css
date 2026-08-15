@@ -1,0 +1,754 @@
+/*
+  ChemE Toolkit
+  Calculator Discovery V3
+*/
+
+
+/* ================================================
+   DIRECTORY TOP
+   ================================================ */
+
+.calculators-section {
+  position: relative;
+}
+
+
+.catalog-top {
+  margin-bottom: 18px;
+}
+
+
+.catalog-controls {
+  width: min(100%, 760px);
+
+  grid-template-columns:
+    minmax(280px, 1.6fr)
+    minmax(185px, 0.8fr)
+    auto;
+
+  gap: 9px;
+}
+
+
+.search-box {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+}
+
+
+.search-box > span {
+  padding-left: 14px;
+
+  color:
+    var(--teal-dark);
+
+  font-size: 1rem;
+}
+
+
+.search-box input {
+  min-width: 0;
+
+  height: 50px;
+
+  padding:
+    0
+    10px;
+
+  border: 0;
+
+  outline: 0;
+
+  color:
+    var(--ink);
+
+  background:
+    transparent;
+
+  font-size: 0.88rem;
+}
+
+
+.catalog-search-clear {
+  width: 34px;
+  height: 34px;
+
+  margin-right: 7px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  color:
+    var(--muted);
+
+  background:
+    rgba(11, 54, 88, 0.05);
+
+  font-size: 1.1rem;
+
+  cursor: pointer;
+}
+
+
+.catalog-search-clear:hover {
+  color:
+    var(--ink);
+
+  background:
+    rgba(11, 54, 88, 0.09);
+}
+
+
+.catalog-favorites-filter {
+  min-height: 52px;
+
+  padding:
+    0
+    13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  border:
+    1px solid
+    rgba(11, 54, 88, 0.13);
+
+  border-radius: 13px;
+
+  color:
+    var(--muted);
+
+  background:
+    white;
+
+  font-size: 0.75rem;
+
+  font-weight: 820;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+
+.catalog-favorites-filter b {
+  min-width: 22px;
+
+  height: 22px;
+
+  display: inline-grid;
+
+  place-items: center;
+
+  border-radius: 999px;
+
+  color:
+    var(--teal-dark);
+
+  background:
+    rgba(7, 156, 153, 0.09);
+
+  font-size: 0.65rem;
+}
+
+
+.catalog-favorites-filter[
+  data-active='true'
+] {
+  border-color:
+    #d6ad47;
+
+  color:
+    #76550c;
+
+  background:
+    #fff8e5;
+}
+
+
+/* ================================================
+   CATEGORY FILTER CHIPS
+   ================================================ */
+
+.catalog-filter-chips {
+  width: 100%;
+
+  margin:
+    0
+    0
+    18px;
+
+  padding:
+    1px
+    1px
+    8px;
+
+  display: flex;
+
+  gap: 7px;
+
+  overflow-x: auto;
+
+  overscroll-behavior-inline:
+    contain;
+
+  scrollbar-width: thin;
+}
+
+
+.catalog-filter-chips button {
+  min-height: 34px;
+
+  padding:
+    0
+    11px;
+
+  flex:
+    0
+    0
+    auto;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border:
+    1px solid
+    rgba(11, 54, 88, 0.11);
+
+  border-radius: 999px;
+
+  color:
+    var(--muted);
+
+  background:
+    rgba(255, 253, 250, 0.75);
+
+  font-size: 0.68rem;
+
+  font-weight: 780;
+
+  cursor: pointer;
+
+  transition:
+    border-color 140ms ease,
+    color 140ms ease,
+    background 140ms ease;
+}
+
+
+.catalog-filter-chips button:hover {
+  border-color:
+    rgba(7, 156, 153, 0.34);
+
+  color:
+    var(--teal-dark);
+}
+
+
+.catalog-filter-chips button[
+  data-active='true'
+] {
+  border-color:
+    var(--teal-dark);
+
+  color: white;
+
+  background:
+    var(--teal-dark);
+}
+
+
+/* ================================================
+   RECENT QUICK ACCESS
+   ================================================ */
+
+.catalog-recent-strip {
+  margin:
+    0
+    0
+    20px;
+
+  padding:
+    10px
+    12px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(0, 1fr);
+
+  gap: 12px;
+
+  align-items: center;
+
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.12);
+
+  border-radius: 12px;
+
+  background:
+    rgba(223, 243, 239, 0.22);
+}
+
+
+.catalog-recent-label {
+  color:
+    var(--teal-dark);
+
+  font-size: 0.61rem;
+
+  font-weight: 850;
+
+  letter-spacing: 0.10em;
+
+  text-transform: uppercase;
+}
+
+
+.catalog-recent-strip > div {
+  min-width: 0;
+
+  display: flex;
+
+  gap: 7px;
+
+  overflow-x: auto;
+
+  scrollbar-width: none;
+}
+
+
+.catalog-recent-strip
+> div::-webkit-scrollbar {
+  display: none;
+}
+
+
+.catalog-recent-strip button {
+  min-height: 32px;
+
+  max-width: 250px;
+
+  padding:
+    0
+    10px;
+
+  flex:
+    0
+    0
+    auto;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(11, 54, 88, 0.10);
+
+  border-radius: 8px;
+
+  color:
+    var(--ink);
+
+  background:
+    rgba(255, 255, 255, 0.82);
+
+  font-size: 0.67rem;
+
+  font-weight: 760;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+
+.catalog-recent-strip
+button span {
+  color:
+    var(--teal-dark);
+}
+
+
+/* ================================================
+   RESULT BAR
+   ================================================ */
+
+.catalog-result-bar {
+  min-height: 43px;
+
+  margin-bottom: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 16px;
+}
+
+
+.catalog-result-bar
+.result-count {
+  margin: 0;
+}
+
+
+.catalog-result-bar
+.result-count strong {
+  font-size: 0.8rem;
+}
+
+
+.catalog-result-bar
+.result-count span {
+  color:
+    var(--muted);
+}
+
+
+.catalog-reset-button {
+  padding:
+    7px
+    10px;
+
+  border:
+    1px solid
+    rgba(11, 54, 88, 0.11);
+
+  border-radius: 8px;
+
+  color:
+    var(--muted);
+
+  background:
+    transparent;
+
+  font-size: 0.67rem;
+
+  font-weight: 780;
+
+  cursor: pointer;
+}
+
+
+.catalog-reset-button:hover {
+  color:
+    var(--teal-dark);
+
+  border-color:
+    rgba(7, 156, 153, 0.34);
+}
+
+
+/* ================================================
+   LIST DISCOVERY DETAILS
+   ================================================ */
+
+.calculator-list article {
+  position: relative;
+}
+
+
+.calculator-list article::before {
+  content: '';
+
+  position: absolute;
+
+  top: 12px;
+  bottom: 12px;
+  left: 0;
+
+  width: 3px;
+
+  border-radius:
+    0
+    4px
+    4px
+    0;
+
+  background:
+    transparent;
+
+  transition:
+    background 140ms ease;
+}
+
+
+.calculator-list article:hover::before {
+  background:
+    var(--teal);
+}
+
+
+.calculator-list article
+> div:nth-child(2)
+> p {
+  margin:
+    0
+    0
+    3px;
+
+  color:
+    var(--teal-dark);
+
+  font-size: 0.63rem;
+
+  font-weight: 820;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+}
+
+
+/* ================================================
+   EMPTY STATE
+   ================================================ */
+
+.catalog-empty-state {
+  min-height: 230px;
+
+  padding: 34px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 15px;
+
+  border:
+    1px dashed
+    rgba(11, 54, 88, 0.20);
+
+  border-radius: 16px;
+
+  color:
+    var(--muted);
+
+  background:
+    rgba(251, 248, 239, 0.42);
+
+  text-align: center;
+}
+
+
+.catalog-empty-state
+> span {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  color:
+    var(--teal-dark);
+
+  background:
+    rgba(7, 156, 153, 0.09);
+
+  font-size: 1.35rem;
+}
+
+
+.catalog-empty-state h3 {
+  margin:
+    0
+    0
+    5px;
+
+  color:
+    var(--ink);
+
+  font-size: 1.25rem;
+}
+
+
+.catalog-empty-state p {
+  margin: 0;
+
+  font-size: 0.82rem;
+}
+
+
+.catalog-empty-state button {
+  min-height: 40px;
+
+  padding:
+    0
+    14px;
+
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.30);
+
+  border-radius: 9px;
+
+  color:
+    var(--teal-dark);
+
+  background:
+    rgba(223, 243, 239, 0.42);
+
+  font-size: 0.72rem;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+/* ================================================
+   PERSONAL TOOLKIT ANCHOR
+   ================================================ */
+
+#your-toolkit {
+  scroll-margin-top:
+    calc(
+      var(--site-header-height)
+      + 18px
+    );
+}
+
+
+/* ================================================
+   RESPONSIVE
+   ================================================ */
+
+@media (
+  max-width: 940px
+) {
+
+  .catalog-controls {
+    width: 100%;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(170px, 0.65fr);
+  }
+
+
+  .catalog-favorites-filter {
+    grid-column:
+      1 / -1;
+
+    width: fit-content;
+  }
+}
+
+
+@media (
+  max-width: 700px
+) {
+
+  .catalog-controls {
+    grid-template-columns:
+      1fr;
+
+    gap: 8px;
+  }
+
+
+  .catalog-favorites-filter {
+    width: 100%;
+  }
+
+
+  .catalog-filter-chips {
+    margin-right: -16px;
+    margin-left: -16px;
+
+    width: auto;
+
+    padding:
+      1px
+      16px
+      9px;
+
+    scrollbar-width: none;
+  }
+
+
+  .catalog-filter-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .catalog-recent-strip {
+    margin-right: 0;
+    margin-left: 0;
+
+    grid-template-columns:
+      1fr;
+
+    gap: 8px;
+  }
+
+
+  .catalog-result-bar {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 8px;
+  }
+
+
+  .catalog-empty-state {
+    min-height: 210px;
+
+    padding:
+      28px
+      18px;
+  }
+}
+
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .catalog-filter-chips button,
+  .calculator-list article::before {
+    transition: none;
+  }
+}
