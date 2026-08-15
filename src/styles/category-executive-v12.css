@@ -1,0 +1,695 @@
+/*
+  ChemE Toolkit
+  Executive Category Page V12
+
+  Objective:
+  category navigation should feel like
+  a production engineering platform,
+  not a dashboard prototype.
+*/
+
+
+/* ================================================
+   SECTION / ANCHOR
+   ================================================ */
+
+#categories {
+  scroll-margin-top:
+    132px !important;
+}
+
+
+.categories-executive-v12.section {
+  padding-top:
+    clamp(
+      42px,
+      4.2vw,
+      58px
+    ) !important;
+
+  padding-bottom:
+    clamp(
+      42px,
+      4.2vw,
+      58px
+    ) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8f4e9 0%,
+      #fbf8f0 100%
+    );
+}
+
+
+/*
+  Defense against stale deployments /
+  older markup.
+*/
+.categories-executive-v12
+.category-number,
+.categories-section
+.category-number {
+  display:
+    none !important;
+}
+
+
+/* ================================================
+   EXECUTIVE HEADER
+   ================================================ */
+
+.category-executive-header {
+  width: 100%;
+
+  margin-bottom: 24px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content:
+    space-between;
+
+  gap:
+    clamp(
+      28px,
+      5vw,
+      72px
+    );
+}
+
+
+.category-executive-copy {
+  max-width: 690px;
+}
+
+
+.category-executive-copy
+.eyebrow {
+  margin:
+    0
+    0
+    8px;
+}
+
+
+.category-executive-copy h2 {
+  margin:
+    0
+    0
+    9px;
+
+  color:
+    var(--ink);
+
+  font-family:
+    'Libre Caslon Display',
+    Georgia,
+    serif;
+
+  font-size:
+    clamp(
+      2.25rem,
+      3.5vw,
+      3.45rem
+    ) !important;
+
+  font-weight: 500;
+
+  line-height: 0.96;
+
+  letter-spacing:
+    -0.035em;
+}
+
+
+.category-executive-copy
+> p:last-child {
+  max-width: 620px;
+
+  margin: 0;
+
+  color:
+    var(--muted);
+
+  font-size: 0.82rem;
+
+  line-height: 1.55;
+}
+
+
+/* ================================================
+   EXECUTIVE SUMMARY
+   ================================================ */
+
+.category-executive-summary {
+  min-height: 48px;
+
+  padding:
+    8px
+    2px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 17px;
+
+  flex:
+    0
+    0
+    auto;
+}
+
+
+.category-executive-summary
+> div {
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 6px;
+}
+
+
+.category-executive-summary
+strong {
+  color:
+    var(--ink);
+
+  font-family:
+    'Libre Caslon Display',
+    Georgia,
+    serif;
+
+  font-size: 1.6rem;
+
+  font-weight: 500;
+
+  line-height: 1;
+}
+
+
+.category-executive-summary
+span {
+  color:
+    var(--muted);
+
+  font-size: 0.64rem;
+
+  font-weight: 720;
+
+  white-space: nowrap;
+}
+
+
+.category-summary-divider {
+  width: 1px;
+  height: 27px;
+
+  display: block;
+
+  background:
+    rgba(
+      11,
+      54,
+      88,
+      0.13
+    );
+}
+
+
+/* ================================================
+   GRID
+   ================================================ */
+
+.categories-executive-v12
+.category-executive-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 9px;
+
+  border: 0;
+
+  background: transparent;
+}
+
+
+/* ================================================
+   NAVIGATION CARD
+   ================================================ */
+
+.categories-executive-v12
+.category-navigation-card {
+  appearance: none;
+
+  width: 100%;
+
+  min-width: 0;
+
+  min-height:
+    94px !important;
+
+  padding:
+    13px
+    14px !important;
+
+  display: grid !important;
+
+  grid-template-columns:
+    40px
+    minmax(
+      0,
+      1fr
+    )
+    29px;
+
+  gap: 11px;
+
+  align-items: center;
+
+  border:
+    1px solid
+    rgba(
+      11,
+      54,
+      88,
+      0.11
+    ) !important;
+
+  border-radius:
+    12px !important;
+
+  color:
+    var(--ink);
+
+  background:
+    rgba(
+      255,
+      253,
+      250,
+      0.70
+    ) !important;
+
+  box-shadow: none !important;
+
+  font: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 140ms ease,
+    border-color 140ms ease,
+    background 140ms ease,
+    box-shadow 140ms ease;
+}
+
+
+.categories-executive-v12
+.category-navigation-card:hover {
+  transform:
+    translateY(-2px) !important;
+
+  border-color:
+    rgba(
+      7,
+      156,
+      153,
+      0.34
+    ) !important;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.96
+    ) !important;
+
+  box-shadow:
+    0 10px 25px
+    rgba(
+      11,
+      54,
+      88,
+      0.055
+    ) !important;
+}
+
+
+/* ================================================
+   ICON
+   ================================================ */
+
+.category-navigation-icon {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(
+      7,
+      156,
+      153,
+      0.12
+    );
+
+  border-radius: 10px;
+
+  color:
+    var(--teal-dark);
+
+  background:
+    rgba(
+      7,
+      156,
+      153,
+      0.065
+    );
+
+  font-size: 1.12rem;
+
+  line-height: 1;
+}
+
+
+/* ================================================
+   COPY
+   ================================================ */
+
+.category-navigation-copy {
+  min-width: 0;
+
+  display: block;
+}
+
+
+.category-navigation-copy
+strong {
+  display: block;
+
+  color:
+    var(--ink);
+
+  font-family:
+    'Libre Caslon Display',
+    Georgia,
+    serif;
+
+  font-size:
+    clamp(
+      1rem,
+      1.25vw,
+      1.18rem
+    );
+
+  font-weight: 500;
+
+  line-height: 1.08;
+
+  letter-spacing:
+    -0.018em;
+
+  overflow-wrap: anywhere;
+}
+
+
+.category-navigation-copy
+small {
+  display: block;
+
+  margin-top: 5px;
+
+  color:
+    var(--muted);
+
+  font-size: 0.62rem;
+
+  font-weight: 680;
+
+  line-height: 1.25;
+}
+
+
+/* ================================================
+   ARROW
+   ================================================ */
+
+.category-navigation-arrow {
+  width: 29px;
+  height: 29px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 8px;
+
+  color:
+    var(--teal-dark);
+
+  background:
+    rgba(
+      7,
+      156,
+      153,
+      0.07
+    );
+
+  font-size: 0.77rem;
+
+  transition:
+    transform 140ms ease,
+    background 140ms ease;
+}
+
+
+.category-navigation-card:hover
+.category-navigation-arrow {
+  transform:
+    translate(
+      2px,
+      -2px
+    );
+
+  background:
+    rgba(
+      7,
+      156,
+      153,
+      0.12
+    );
+}
+
+
+/* ================================================
+   KEYBOARD
+   ================================================ */
+
+.category-navigation-card:focus-visible {
+  outline:
+    3px solid
+    rgba(
+      7,
+      156,
+      153,
+      0.54
+    );
+
+  outline-offset: 3px;
+}
+
+
+/* ================================================
+   TABLET
+   ================================================ */
+
+@media (
+  max-width: 1050px
+) {
+
+  .category-executive-header {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    gap: 14px;
+  }
+
+
+  .categories-executive-v12
+  .category-executive-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .category-executive-summary {
+    padding: 0;
+  }
+}
+
+
+/* ================================================
+   MOBILE
+   ================================================ */
+
+@media (
+  max-width: 600px
+) {
+
+  #categories {
+    scroll-margin-top:
+      105px !important;
+  }
+
+
+  .categories-executive-v12.section {
+    padding-top:
+      34px !important;
+
+    padding-bottom:
+      34px !important;
+  }
+
+
+  .category-executive-header {
+    margin-bottom: 18px;
+  }
+
+
+  .category-executive-copy h2 {
+    font-size:
+      clamp(
+        2rem,
+        10vw,
+        2.65rem
+      ) !important;
+  }
+
+
+  .category-executive-summary {
+    width: 100%;
+
+    justify-content:
+      flex-start;
+
+    gap: 12px;
+  }
+
+
+  .category-executive-summary
+  strong {
+    font-size: 1.35rem;
+  }
+
+
+  .categories-executive-v12
+  .category-executive-grid {
+    grid-template-columns:
+      1fr;
+
+    gap: 6px;
+  }
+
+
+  .categories-executive-v12
+  .category-navigation-card {
+    min-height:
+      72px !important;
+
+    padding:
+      9px
+      10px !important;
+
+    grid-template-columns:
+      34px
+      minmax(
+        0,
+        1fr
+      )
+      27px;
+
+    gap: 9px;
+  }
+
+
+  .category-navigation-icon {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 8px;
+
+    font-size: 0.98rem;
+  }
+
+
+  .category-navigation-copy
+  strong {
+    font-size: 0.98rem;
+  }
+
+
+  .category-navigation-copy
+  small {
+    margin-top: 3px;
+
+    font-size: 0.59rem;
+  }
+
+
+  .category-navigation-arrow {
+    width: 27px;
+    height: 27px;
+  }
+}
+
+
+/* ================================================
+   REDUCED MOTION
+   ================================================ */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .category-navigation-card,
+  .category-navigation-arrow {
+    transition: none;
+  }
+
+
+  .category-navigation-card:hover,
+  .category-navigation-card:hover
+  .category-navigation-arrow {
+    transform: none !important;
+  }
+}
