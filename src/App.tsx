@@ -17,6 +17,7 @@ import './styles/homepage-quick-start-v4.css'
 import './styles/personal-toolkit-dashboard-v5.css'
 import './styles/engineering-trust-v6.css'
 import './styles/problem-solver-experience-v7.css'
+import './styles/responsive-accessibility-v8.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -504,7 +505,14 @@ function App() {
       >
         Skip to calculator directory
       </a>
-      <header
+            <a
+        className="skip-to-workbench"
+        href="#workbench"
+      >
+        Skip to calculator workspace
+      </a>
+
+<header
         className="site-header"
         data-menu-open={isMobileMenuOpen}
       >

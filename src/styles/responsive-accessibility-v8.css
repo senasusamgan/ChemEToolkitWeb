@@ -1,0 +1,714 @@
+/*
+  ChemE Toolkit
+  Responsive & Accessibility Finish V8
+
+  Final frontend polish layer:
+  - keyboard navigation
+  - visible focus
+  - coarse-pointer targets
+  - responsive overflow protection
+  - reduced motion
+  - forced-colors support
+  - print readability
+*/
+
+
+/* ================================================
+   DOCUMENT
+   ================================================ */
+
+html {
+  scroll-padding-top:
+    calc(
+      var(--site-header-height)
+      + 18px
+    );
+}
+
+
+body {
+  overflow-x: hidden;
+
+  text-rendering:
+    optimizeLegibility;
+
+  -webkit-font-smoothing:
+    antialiased;
+}
+
+
+@supports (
+  overflow-x: clip
+) {
+
+  body {
+    overflow-x: clip;
+  }
+}
+
+
+::selection {
+  color: var(--ink);
+
+  background:
+    rgba(
+      7,
+      156,
+      153,
+      0.20
+    );
+}
+
+
+/* ================================================
+   KEYBOARD SKIP LINK
+   ================================================ */
+
+.skip-to-workbench {
+  position: fixed;
+
+  top: 10px;
+  left: 12px;
+
+  z-index: 10000;
+
+  padding:
+    10px
+    14px;
+
+  border:
+    2px solid
+    var(--teal-dark);
+
+  border-radius: 9px;
+
+  color: white;
+
+  background:
+    var(--teal-dark);
+
+  font-size: 0.75rem;
+
+  font-weight: 850;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 12px 30px
+    rgba(
+      11,
+      54,
+      88,
+      0.22
+    );
+
+  transform:
+    translateY(
+      calc(
+        -100%
+        - 24px
+      )
+    );
+
+  transition:
+    transform 140ms ease;
+}
+
+
+.skip-to-workbench:focus {
+  transform:
+    translateY(0);
+}
+
+
+/* ================================================
+   FOCUS SYSTEM
+   ================================================ */
+
+:where(
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  summary,
+  [tabindex]
+):focus-visible {
+  outline:
+    3px solid
+    rgba(
+      7,
+      156,
+      153,
+      0.78
+    );
+
+  outline-offset: 3px;
+}
+
+
+:where(
+  input,
+  textarea,
+  select
+):focus-visible {
+  outline-width: 2px;
+
+  outline-offset: 1px;
+}
+
+
+:where(
+  button,
+  a
+):focus:not(
+  :focus-visible
+) {
+  outline: none;
+}
+
+
+/* ================================================
+   ANCHOR TARGETS
+   ================================================ */
+
+#workbench,
+#problem-solver,
+#categories,
+#calculators,
+#your-toolkit,
+#method,
+#references,
+#about {
+  scroll-margin-top:
+    calc(
+      var(--site-header-height)
+      + 20px
+    );
+}
+
+
+/* ================================================
+   MIN-WIDTH / OVERFLOW PROTECTION
+   ================================================ */
+
+.hero,
+.hero-copy,
+.hero-workbench,
+.calculator-stage,
+.calculator-stage-body,
+.native-calculator,
+.native-input-grid,
+.native-result-grid,
+.problem-solver-v7-section,
+.problem-solver-v7-header,
+.quick-start-inner,
+.quick-start-grid,
+.personal-toolkit-dashboard,
+.personal-toolkit-grid,
+.reference-grid,
+.catalog-controls,
+.calculator-list,
+.footer-v6-top,
+.footer-v6-links {
+  min-width: 0;
+}
+
+
+.native-formula,
+.problem-solver-v7-section pre {
+  max-width: 100%;
+
+  overflow-x: auto;
+
+  overscroll-behavior-inline:
+    contain;
+}
+
+
+.problem-solver-v7-section
+table {
+  max-width: 100%;
+}
+
+
+.calculator-list h3,
+.native-calculator-header h2,
+.quick-start-card strong,
+.toolkit-dashboard-primary-copy
+> strong {
+  overflow-wrap: anywhere;
+}
+
+
+/* ================================================
+   INTERACTIVE TARGET CONSISTENCY
+   ================================================ */
+
+button,
+a,
+select,
+input,
+textarea {
+  -webkit-tap-highlight-color:
+    rgba(
+      7,
+      156,
+      153,
+      0.12
+    );
+}
+
+
+button {
+  touch-action:
+    manipulation;
+}
+
+
+/* ================================================
+   TEXT BALANCE
+   ================================================ */
+
+@supports (
+  text-wrap: balance
+) {
+
+  .hero h1,
+  .section-heading h2,
+  .native-calculator-header h2,
+  .problem-solver-v7-heading h2,
+  .quick-start-intro h2 {
+    text-wrap: balance;
+  }
+}
+
+
+@supports (
+  text-wrap: pretty
+) {
+
+  .hero-deck,
+  .section-heading p,
+  .problem-solver-v7-heading
+  div > p:last-child,
+  .engineering-use-note p {
+    text-wrap: pretty;
+  }
+}
+
+
+/* ================================================
+   COARSE POINTER / TOUCH DEVICES
+   ================================================ */
+
+@media (
+  pointer: coarse
+) {
+
+  button,
+  select,
+  .button,
+  .category-pill,
+  .catalog-filter-chips button,
+  .catalog-reset-button,
+  .active-favorite-button,
+  .quick-start-card,
+  .toolkit-dashboard-actions
+  > a,
+  .footer-v6-links a {
+    min-height: 44px;
+  }
+
+
+  .footer-v6-links a {
+    display: inline-flex;
+
+    align-items: center;
+  }
+
+
+  .calculator-list-favorite {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+
+/* ================================================
+   TABLET
+   ================================================ */
+
+@media (
+  max-width: 900px
+) {
+
+  .section {
+    padding-right:
+      max(
+        18px,
+        5vw
+      );
+
+    padding-left:
+      max(
+        18px,
+        5vw
+      );
+  }
+
+
+  .catalog-top {
+    align-items:
+      flex-start;
+  }
+
+
+  .calculator-stage-toolbar {
+    gap: 10px;
+  }
+
+
+  .footer-v6-top,
+  .reference-trust-strip,
+  .personal-toolkit-dashboard {
+    min-width: 0;
+  }
+}
+
+
+/* ================================================
+   MOBILE
+   ================================================ */
+
+@media (
+  max-width: 620px
+) {
+
+  body {
+    font-size: 15px;
+  }
+
+
+  .site-header {
+    width: 100%;
+  }
+
+
+  .hero {
+    width: 100%;
+
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+
+  .hero h1 {
+    max-width: 100%;
+
+    font-size:
+      clamp(
+        3rem,
+        15vw,
+        4.5rem
+      );
+
+    overflow-wrap:
+      anywhere;
+  }
+
+
+  .hero-deck {
+    max-width: 100%;
+
+    font-size: 0.96rem;
+  }
+
+
+  .section-heading h2 {
+    overflow-wrap:
+      anywhere;
+  }
+
+
+  .calculator-stage {
+    width: 100%;
+  }
+
+
+  .calculator-stage-toolbar {
+    align-items:
+      stretch;
+
+    flex-direction:
+      column;
+  }
+
+
+  .calculator-stage-select {
+    width: 100%;
+  }
+
+
+  .calculator-stage-select
+  select {
+    width: 100%;
+  }
+
+
+  .native-calculator-header h2 {
+    max-width: 100%;
+
+    overflow-wrap:
+      anywhere;
+  }
+
+
+  .native-result-heading
+  strong {
+    overflow-wrap:
+      anywhere;
+  }
+
+
+  .catalog-recent-strip
+  button {
+    max-width:
+      min(
+        82vw,
+        300px
+      );
+  }
+
+
+  .reference-grid article,
+  .category-card,
+  .personal-toolkit-panel {
+    min-width: 0;
+  }
+
+
+  .footer-v6-status {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+}
+
+
+/* ================================================
+   VERY SMALL MOBILE
+   ================================================ */
+
+@media (
+  max-width: 360px
+) {
+
+  .hero h1 {
+    font-size: 2.85rem;
+  }
+
+
+  .hero-actions
+  .button {
+    width: 100%;
+
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+
+  .native-calculator-header {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  .native-icon {
+    margin-bottom: 3px;
+  }
+
+
+  .calculator-list article {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .calculator-list
+  .list-index {
+    display: none;
+  }
+
+
+  .calculator-list-item-actions {
+    grid-column: 1;
+  }
+
+
+  .toolkit-dashboard-stats {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+
+/* ================================================
+   REDUCED MOTION
+   ================================================ */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  html {
+    scroll-behavior: auto !important;
+  }
+
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior:
+      auto !important;
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+
+
+  .skip-to-workbench {
+    transition: none;
+  }
+}
+
+
+/* ================================================
+   WINDOWS HIGH CONTRAST / FORCED COLORS
+   ================================================ */
+
+@media (
+  forced-colors: active
+) {
+
+  .skip-to-workbench,
+  .button,
+  button,
+  input,
+  textarea,
+  select,
+  .calculator-stage,
+  .native-result-panel,
+  .category-card,
+  .calculator-list article,
+  .quick-start-card,
+  .personal-toolkit-panel {
+    border:
+      1px solid
+      CanvasText;
+  }
+
+
+  :where(
+    a,
+    button,
+    input,
+    textarea,
+    select,
+    [tabindex]
+  ):focus-visible {
+    outline:
+      3px solid
+      Highlight;
+  }
+
+
+  .footer-v6-status b {
+    background:
+      Highlight;
+  }
+}
+
+
+/* ================================================
+   PRINT
+   ================================================ */
+
+@media print {
+
+  .site-header,
+  .skip-to-workbench,
+  .hero-actions,
+  .category-ribbon,
+  .quick-start-section,
+  .catalog-controls,
+  .catalog-filter-chips,
+  .catalog-recent-strip,
+  .calculator-list-item-actions,
+  .active-calculator-tools,
+  .native-actions,
+  .problem-solver-v7-guide,
+  .personal-toolkit-section,
+  .site-footer-v6 {
+    display: none !important;
+  }
+
+
+  body {
+    color: #000;
+
+    background: #fff;
+  }
+
+
+  .hero {
+    min-height: 0;
+
+    display: block;
+
+    padding: 0;
+  }
+
+
+  .hero-copy {
+    display: none;
+  }
+
+
+  .hero-workbench,
+  .calculator-stage,
+  .calculator-stage-body {
+    width: 100%;
+    max-width: none;
+
+    border: 0;
+
+    box-shadow: none;
+  }
+
+
+  .native-calculator {
+    padding: 0 !important;
+  }
+
+
+  .native-result-panel {
+    break-inside: avoid;
+
+    box-shadow: none;
+  }
+
+
+  .native-result-grid {
+    break-inside: avoid;
+  }
+}
