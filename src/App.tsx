@@ -20,6 +20,7 @@ import './styles/problem-solver-experience-v7.css'
 import './styles/responsive-accessibility-v8.css'
 import './styles/catalog-compact-pagination-v9.css'
 import './styles/category-cards-compact-v10.css'
+import './styles/category-cards-ultra-compact-v11.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -1462,9 +1463,6 @@ function App() {
         <div className="category-grid">
           {categories.map((category) => (
             <article className="category-card" key={category.name}>
-              <div className="category-number">
-                {String(category.number).padStart(2, '0')}
-              </div>
               <span className="category-mark">{category.icon}</span>
               <h3>{category.name}</h3>
               <p>

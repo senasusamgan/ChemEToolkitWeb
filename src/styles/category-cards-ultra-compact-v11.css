@@ -1,0 +1,377 @@
+/*
+  ChemE Toolkit
+  Ultra Compact Category Cards V11
+
+  Category cards are navigation elements,
+  not showcase cards.
+*/
+
+
+/* ================================================
+   SECTION
+   ================================================ */
+
+.categories-section.section {
+  padding-top:
+    clamp(
+      38px,
+      4vw,
+      54px
+    );
+
+  padding-bottom:
+    clamp(
+      38px,
+      4vw,
+      54px
+    );
+}
+
+
+.categories-section
+.section-heading {
+  margin-bottom: 22px;
+}
+
+
+/* ================================================
+   GRID
+   ================================================ */
+
+.categories-section
+.category-grid {
+  gap: 8px;
+}
+
+
+/* ================================================
+   CARD
+   ================================================ */
+
+.categories-section
+.category-card {
+  min-height: 118px !important;
+
+  padding:
+    15px
+    15px
+    14px !important;
+
+  display: grid !important;
+
+  grid-template-columns:
+    34px
+    minmax(
+      0,
+      1fr
+    )
+    auto;
+
+  grid-template-rows:
+    auto
+    auto;
+
+  column-gap: 11px;
+
+  row-gap: 5px;
+
+  align-content: center;
+
+  align-items: center;
+
+  border-radius:
+    12px !important;
+}
+
+
+/* ================================================
+   NUMBER REMOVED
+   ================================================ */
+
+.categories-section
+.category-number {
+  display: none !important;
+}
+
+
+/* ================================================
+   ICON
+   ================================================ */
+
+.categories-section
+.category-mark {
+  grid-column: 1;
+
+  grid-row:
+    1 / 3;
+
+  min-height: 0 !important;
+
+  margin: 0 !important;
+
+  display: grid;
+
+  place-items: center;
+
+  align-self: center;
+
+  font-size:
+    1.25rem !important;
+
+  line-height: 1;
+}
+
+
+/* ================================================
+   TITLE
+   ================================================ */
+
+.categories-section
+.category-card h3 {
+  grid-column: 2;
+
+  grid-row: 1;
+
+  min-height: 0 !important;
+
+  margin: 0 !important;
+
+  align-self: end;
+
+  font-size:
+    clamp(
+      1.02rem,
+      1.25vw,
+      1.25rem
+    ) !important;
+
+  line-height:
+    1.05 !important;
+
+  letter-spacing:
+    -0.015em;
+}
+
+
+/* ================================================
+   COUNT
+   ================================================ */
+
+.categories-section
+.category-card p {
+  grid-column: 2;
+
+  grid-row: 2;
+
+  margin: 0 !important;
+
+  align-self: start;
+
+  color:
+    var(--muted);
+
+  font-size:
+    0.65rem !important;
+
+  line-height: 1.25;
+}
+
+
+/* ================================================
+   ACTION
+   ================================================ */
+
+.categories-section
+.category-card button {
+  grid-column: 3;
+
+  grid-row:
+    1 / 3;
+
+  align-self: center;
+
+  min-height: 36px !important;
+
+  margin: 0 !important;
+
+  padding:
+    0
+    9px !important;
+
+  border:
+    1px solid
+    rgba(
+      7,
+      156,
+      153,
+      0.16
+    ) !important;
+
+  border-radius:
+    8px;
+
+  color:
+    var(--teal-dark);
+
+  background:
+    rgba(
+      223,
+      243,
+      239,
+      0.30
+    ) !important;
+
+  font-size:
+    0.64rem !important;
+
+  font-weight: 820;
+
+  white-space: nowrap;
+}
+
+
+.categories-section
+.category-card button:hover {
+  border-color:
+    rgba(
+      7,
+      156,
+      153,
+      0.36
+    ) !important;
+
+  background:
+    rgba(
+      223,
+      243,
+      239,
+      0.65
+    ) !important;
+}
+
+
+/* ================================================
+   HOVER
+   ================================================ */
+
+.categories-section
+.category-card:hover {
+  transform:
+    translateY(-1px) !important;
+}
+
+
+/* ================================================
+   TABLET
+   ================================================ */
+
+@media (
+  max-width: 1000px
+) {
+
+  .categories-section
+  .category-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .categories-section
+  .category-card {
+    min-height:
+      108px !important;
+  }
+}
+
+
+/* ================================================
+   MOBILE
+   ================================================ */
+
+@media (
+  max-width: 580px
+) {
+
+  .categories-section.section {
+    padding-top: 32px;
+
+    padding-bottom: 32px;
+  }
+
+
+  .categories-section
+  .section-heading {
+    margin-bottom: 17px;
+  }
+
+
+  .categories-section
+  .category-grid {
+    grid-template-columns:
+      1fr;
+
+    gap: 6px;
+  }
+
+
+  .categories-section
+  .category-card {
+    min-height:
+      76px !important;
+
+    padding:
+      11px
+      12px !important;
+
+    grid-template-columns:
+      28px
+      minmax(
+        0,
+        1fr
+      )
+      auto;
+
+    column-gap: 9px;
+  }
+
+
+  .categories-section
+  .category-mark {
+    font-size:
+      1.05rem !important;
+  }
+
+
+  .categories-section
+  .category-card h3 {
+    font-size:
+      0.98rem !important;
+  }
+
+
+  .categories-section
+  .category-card p {
+    font-size:
+      0.6rem !important;
+  }
+
+
+  .categories-section
+  .category-card button {
+    min-height:
+      34px !important;
+
+    padding:
+      0
+      8px !important;
+
+    font-size:
+      0.6rem !important;
+  }
+}
