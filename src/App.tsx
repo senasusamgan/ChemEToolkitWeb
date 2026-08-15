@@ -10,6 +10,7 @@ import './App.css'
 import './styles/calculator-polish.css'
 import './styles/mobile-v1.css'
 import './styles/personal-toolkit.css'
+import './styles/frontend-polish-v1.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -80,8 +81,6 @@ function App() {
     (calculator) => calculator.available,
   ).length
 
-  const queuedCalculatorCount =
-    calculators.length - liveCalculatorCount
 
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All disciplines')
@@ -579,6 +578,9 @@ function App() {
               <button
                 type="button"
                 className="category-pill"
+                data-selected={
+                  selectedCategory === category.name
+                }
                 key={category.name}
                 onClick={() => openCategory(category.name)}
               >
@@ -596,8 +598,11 @@ function App() {
             calculated clearly<span>.</span>
           </h1>
           <p className="hero-deck">
-            460 verified calculators across 11 disciplines—built for study,
-            design checks and everyday engineering work.
+            <strong>
+              {liveCalculatorCount} verified calculators
+            </strong>{' '}
+            across {categories.length} engineering disciplines—built for
+            study, design checks and everyday engineering work.
           </p>
 
           <div className="hero-actions">
@@ -620,11 +625,24 @@ function App() {
             </a>
           </div>
 
-          <div className="status-strip">
-            <strong>{liveCalculatorCount}</strong>
-            <span>live calculators</span>
-            <strong>{queuedCalculatorCount}</strong>
-            <span>clean-source migrations queued</span>
+          <div
+            className="status-strip status-strip-v2"
+            aria-label="Toolkit overview"
+          >
+            <div>
+              <strong>{liveCalculatorCount}</strong>
+              <span>verified calculators</span>
+            </div>
+
+            <div>
+              <strong>{categories.length}</strong>
+              <span>engineering disciplines</span>
+            </div>
+
+            <div>
+              <strong>3</strong>
+              <span>ways to work: calculate, solve, explore</span>
+            </div>
           </div>
         </div>
 
@@ -968,7 +986,7 @@ function App() {
               <input
                 type="search"
                 aria-label="Search calculators"
-                placeholder="Search all 460 calculators"
+                placeholder={`Search all ${calculators.length} calculators`}
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
               />
@@ -993,7 +1011,7 @@ function App() {
           aria-live="polite"
           aria-atomic="true"
         >
-          {filteredCalculators.length} matching calculators
+          Showing {filteredCalculators.length} of {calculators.length} calculators
         </p>
 
         <div className="calculator-list">
@@ -1007,8 +1025,8 @@ function App() {
                 <h3>{calculator.title}</h3>
                 <span>
                   {calculator.available
-                    ? 'Live verified engine'
-                    : 'Verified source · clean web migration queued'}
+                    ? 'Verified · ready to calculate'
+                    : 'Catalogued · web migration pending'}
                 </span>
               </div>
 
