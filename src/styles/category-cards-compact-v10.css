@@ -1,0 +1,356 @@
+/*
+  ChemE Toolkit
+  Compact Category Cards V10
+*/
+
+
+.categories-section.section {
+  padding-top:
+    clamp(
+      46px,
+      5vw,
+      66px
+    );
+
+  padding-bottom:
+    clamp(
+      46px,
+      5vw,
+      66px
+    );
+}
+
+
+.categories-section
+.section-heading {
+  margin-bottom: 28px;
+}
+
+
+.categories-section
+.section-heading h2 {
+  max-width: 980px;
+
+  font-size:
+    clamp(
+      2.6rem,
+      4vw,
+      4rem
+    );
+}
+
+
+/* ================================================
+   GRID
+   ================================================ */
+
+.categories-section
+.category-grid {
+  gap: 10px;
+}
+
+
+/* ================================================
+   COMPACT CARD
+   ================================================ */
+
+.categories-section
+.category-card {
+  min-height: 176px;
+
+  padding:
+    16px
+    18px
+    15px;
+
+  border-radius: 14px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  justify-content: flex-start;
+}
+
+
+/* ================================================
+   INDEX
+   ================================================ */
+
+.categories-section
+.category-number {
+  margin-bottom: 13px;
+
+  font-size: 0.63rem;
+
+  line-height: 1;
+}
+
+
+/* ================================================
+   ICON
+   ================================================ */
+
+.categories-section
+.category-mark {
+  min-height: 25px;
+
+  margin-bottom: 8px;
+
+  display: flex;
+
+  align-items: center;
+
+  font-size: 1.45rem;
+
+  line-height: 1;
+}
+
+
+/* ================================================
+   TITLE
+   ================================================ */
+
+.categories-section
+.category-card h3 {
+  min-height: 0;
+
+  margin:
+    0
+    0
+    6px;
+
+  font-size:
+    clamp(
+      1.18rem,
+      1.55vw,
+      1.48rem
+    );
+
+  line-height: 1.05;
+
+  letter-spacing:
+    -0.018em;
+}
+
+
+/* ================================================
+   COUNT
+   ================================================ */
+
+.categories-section
+.category-card p {
+  margin: 0;
+
+  color:
+    var(--muted);
+
+  font-size: 0.72rem;
+
+  line-height: 1.3;
+}
+
+
+/* ================================================
+   EXPLORE
+   ================================================ */
+
+.categories-section
+.category-card button {
+  min-height: auto;
+
+  margin-top: auto;
+
+  padding:
+    9px
+    0
+    0;
+
+  border: 0;
+
+  color:
+    var(--teal-dark);
+
+  background: transparent;
+
+  font-size: 0.69rem;
+
+  font-weight: 820;
+}
+
+
+.categories-section
+.category-card button span {
+  margin-left: 3px;
+}
+
+
+.categories-section
+.category-card:hover {
+  transform:
+    translateY(-2px);
+}
+
+
+/* ================================================
+   LARGE DESKTOP
+   ================================================ */
+
+@media (
+  min-width: 1200px
+) {
+
+  .categories-section
+  .category-grid {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+}
+
+
+/* ================================================
+   TABLET
+   ================================================ */
+
+@media (
+  max-width: 950px
+) {
+
+  .categories-section
+  .category-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .categories-section
+  .category-card {
+    min-height: 164px;
+  }
+}
+
+
+/* ================================================
+   MOBILE
+   ================================================ */
+
+@media (
+  max-width: 580px
+) {
+
+  .categories-section.section {
+    padding-top: 38px;
+    padding-bottom: 38px;
+  }
+
+
+  .categories-section
+  .section-heading {
+    margin-bottom: 20px;
+  }
+
+
+  .categories-section
+  .category-grid {
+    grid-template-columns:
+      1fr;
+
+    gap: 7px;
+  }
+
+
+  .categories-section
+  .category-card {
+    min-height: 0;
+
+    padding:
+      14px
+      15px;
+
+    display: grid;
+
+    grid-template-columns:
+      30px
+      minmax(
+        0,
+        1fr
+      )
+      auto;
+
+    grid-template-rows:
+      auto
+      auto;
+
+    gap:
+      4px
+      10px;
+
+    align-items: center;
+  }
+
+
+  .categories-section
+  .category-number {
+    display: none;
+  }
+
+
+  .categories-section
+  .category-mark {
+    grid-column: 1;
+    grid-row: 1 / 3;
+
+    min-height: 0;
+
+    margin: 0;
+
+    font-size: 1.2rem;
+  }
+
+
+  .categories-section
+  .category-card h3 {
+    grid-column: 2;
+    grid-row: 1;
+
+    margin: 0;
+
+    font-size: 1.05rem;
+  }
+
+
+  .categories-section
+  .category-card p {
+    grid-column: 2;
+    grid-row: 2;
+
+    font-size: 0.64rem;
+  }
+
+
+  .categories-section
+  .category-card button {
+    grid-column: 3;
+    grid-row: 1 / 3;
+
+    margin: 0;
+
+    padding: 8px;
+
+    white-space: nowrap;
+  }
+}
