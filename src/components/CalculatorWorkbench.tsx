@@ -196,6 +196,7 @@ import { PartiallyFullCircularChannelHydraulicJumpCalculator } from '../features
 import { PartiallyFullCircularChannelDirectStepCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-direct-step/PartiallyFullCircularChannelDirectStepCalculator'
 import { PartiallyFullCircularChannelGvfSlopeCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-gvf-slope/PartiallyFullCircularChannelGvfSlopeCalculator'
 import { PartiallyFullCircularChannelGvfProfileCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-gvf-profile/PartiallyFullCircularChannelGvfProfileCalculator'
+import { PartiallyFullCircularChannelAdaptiveGvfProfileCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-adaptive-gvf-profile/PartiallyFullCircularChannelAdaptiveGvfProfileCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -477,6 +478,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'partiallyFullCircularChannelGvfProfile') {
     return <PartiallyFullCircularChannelGvfProfileCalculator />
+  }
+
+  if (calculatorId === 'partiallyFullCircularChannelAdaptiveGvfProfile') {
+    return <PartiallyFullCircularChannelAdaptiveGvfProfileCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
