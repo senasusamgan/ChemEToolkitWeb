@@ -17,7 +17,7 @@ const EXPECTED_CATEGORIES = [
   {
     number: 2,
     name: 'Fluid Mechanics',
-    count: 84,
+    count: 85,
   },
   {
     number: 3,
