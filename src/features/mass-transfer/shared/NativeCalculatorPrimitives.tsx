@@ -37,7 +37,7 @@ export function CalculatorHeader({
         {icon}
       </div>
       <div>
-        <p>Mass Transfer · {code}</p>
+        <p>Chemical Engineering · {code}</p>
         <h2>{title}</h2>
         <span>{subtitle}</span>
       </div>
