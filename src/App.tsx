@@ -13,6 +13,7 @@ import './styles/personal-toolkit.css'
 import './styles/frontend-polish-v1.css'
 import './styles/calculator-experience-v2.css'
 import './styles/calculator-discovery-v3.css'
+import './styles/homepage-quick-start-v4.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -716,6 +717,143 @@ function App() {
             )}
             onSelect={openCalculator}
           />
+        </div>
+      </section>
+
+      <section
+        className="quick-start-section"
+        aria-labelledby="quick-start-heading"
+      >
+        <div className="quick-start-inner">
+          <div className="quick-start-intro">
+            <p className="eyebrow">
+              Quick start
+            </p>
+
+            <h2 id="quick-start-heading">
+              Pick up where you left off.
+            </h2>
+
+            <p>
+              Continue with a recent calculation,
+              browse the full toolkit or move directly
+              into the engineering solver.
+            </p>
+          </div>
+
+          <div className="quick-start-grid">
+            <button
+              type="button"
+              className="quick-start-card quick-start-card-primary"
+              onClick={() =>
+                openCalculator(
+                  (
+                    recentCalculators[0] ??
+                    activeCalculator
+                  ).id,
+                )
+              }
+            >
+              <span
+                className="quick-start-card-icon"
+                aria-hidden="true"
+              >
+                ↗
+              </span>
+
+              <span className="quick-start-card-kicker">
+                Continue
+              </span>
+
+              <strong>
+                {recentCalculators[0]?.title ??
+                  activeCalculator.title}
+              </strong>
+
+              <small>
+                {recentCalculators.length > 0
+                  ? 'Most recently opened calculator'
+                  : 'Current calculator'}
+              </small>
+            </button>
+
+            <a
+              className="quick-start-card"
+              href="#calculators"
+            >
+              <span
+                className="quick-start-card-icon"
+                aria-hidden="true"
+              >
+                ▦
+              </span>
+
+              <span className="quick-start-card-kicker">
+                Browse
+              </span>
+
+              <strong>
+                Calculator directory
+              </strong>
+
+              <small>
+                {liveCalculatorCount} verified tools
+              </small>
+            </a>
+
+            <button
+              type="button"
+              className="quick-start-card"
+              onClick={openProblemSolver}
+            >
+              <span
+                className="quick-start-card-icon"
+                aria-hidden="true"
+              >
+                ◇
+              </span>
+
+              <span className="quick-start-card-kicker">
+                Solve
+              </span>
+
+              <strong>
+                Problem Solver
+              </strong>
+
+              <small>
+                Start from an engineering problem
+              </small>
+            </button>
+
+            <a
+              className="quick-start-card"
+              href="#your-toolkit"
+            >
+              <span
+                className="quick-start-card-icon"
+                aria-hidden="true"
+              >
+                ☆
+              </span>
+
+              <span className="quick-start-card-kicker">
+                Favorites
+              </span>
+
+              <strong>
+                Your Toolkit
+              </strong>
+
+              <small>
+                {favoriteCalculators.length}{' '}
+                saved calculator
+                {favoriteCalculators.length === 1
+                  ? ''
+                  : 's'}
+              </small>
+            </a>
+          </div>
         </div>
       </section>
 
