@@ -202,6 +202,7 @@ import { PartiallyFullCircularChannelStandardStepProfileCalculator } from '../fe
 import { PartiallyFullCircularChannelAdaptiveStandardStepProfileCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-adaptive-standard-step-profile/PartiallyFullCircularChannelAdaptiveStandardStepProfileCalculator'
 import { PartiallyFullCircularChannelUpstreamStandardStepProfileCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-upstream-standard-step-profile/PartiallyFullCircularChannelUpstreamStandardStepProfileCalculator'
 import { PartiallyFullCircularChannelAdaptiveUpstreamStandardStepProfileCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-adaptive-upstream-standard-step-profile/PartiallyFullCircularChannelAdaptiveUpstreamStandardStepProfileCalculator'
+import { PartiallyFullCircularChannelMaximumDischargeSpecificEnergyCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-maximum-discharge-specific-energy/PartiallyFullCircularChannelMaximumDischargeSpecificEnergyCalculator'
 import { LegacyWorkbench } from './LegacyWorkbench'
 
 interface CalculatorWorkbenchProps {
@@ -507,6 +508,10 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'partiallyFullCircularChannelAdaptiveUpstreamStandardStepProfile') {
     return <PartiallyFullCircularChannelAdaptiveUpstreamStandardStepProfileCalculator />
+  }
+
+  if (calculatorId === 'partiallyFullCircularChannelMaximumDischargeSpecificEnergy') {
+    return <PartiallyFullCircularChannelMaximumDischargeSpecificEnergyCalculator />
   }
 
   if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') {
