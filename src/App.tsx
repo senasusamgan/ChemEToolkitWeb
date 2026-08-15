@@ -14,6 +14,7 @@ import './styles/frontend-polish-v1.css'
 import './styles/calculator-experience-v2.css'
 import './styles/calculator-discovery-v3.css'
 import './styles/homepage-quick-start-v4.css'
+import './styles/personal-toolkit-dashboard-v5.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -988,6 +989,176 @@ function App() {
             <span>
               {recentCalculators.length} recent
             </span>
+          </div>
+        </div>
+
+        <div
+          className="personal-toolkit-dashboard"
+          aria-label="Personal toolkit overview"
+        >
+          <article className="toolkit-dashboard-primary">
+            <div className="toolkit-dashboard-primary-copy">
+              <span className="toolkit-dashboard-label">
+                Current workspace
+              </span>
+
+              <strong>
+                {activeCalculator.title}
+              </strong>
+
+              <p>
+                {activeCalculator.category}
+                {' · '}
+                {activeCalculator.available
+                  ? 'Verified calculator'
+                  : 'Catalogued calculator'}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              className="toolkit-dashboard-continue"
+              onClick={() =>
+                openCalculator(
+                  activeCalculator.id,
+                )
+              }
+            >
+              Continue working
+              <span aria-hidden="true">
+                ↗
+              </span>
+            </button>
+          </article>
+
+          <div className="toolkit-dashboard-stats">
+            <article>
+              <span aria-hidden="true">
+                ★
+              </span>
+
+              <strong>
+                {favoriteCalculators.length}
+              </strong>
+
+              <small>
+                Favorites
+              </small>
+            </article>
+
+            <article>
+              <span aria-hidden="true">
+                ↻
+              </span>
+
+              <strong>
+                {recentCalculators.length}
+              </strong>
+
+              <small>
+                Recent tools
+              </small>
+            </article>
+
+            <article>
+              <span aria-hidden="true">
+                ◫
+              </span>
+
+              <strong>
+                {
+                  new Set(
+                    favoriteCalculators.map(
+                      (calculator) =>
+                        calculator.category,
+                    ),
+                  ).size
+                }
+              </strong>
+
+              <small>
+                Favorite disciplines
+              </small>
+            </article>
+
+            <article>
+              <span aria-hidden="true">
+                ✓
+              </span>
+
+              <strong>
+                {liveCalculatorCount}
+              </strong>
+
+              <small>
+                Verified tools
+              </small>
+            </article>
+          </div>
+
+          <div className="toolkit-dashboard-actions">
+            <a href="#calculators">
+              <span aria-hidden="true">
+                ▦
+              </span>
+
+              <div>
+                <strong>
+                  Find a calculator
+                </strong>
+
+                <small>
+                  Search the full directory
+                </small>
+              </div>
+
+              <b aria-hidden="true">
+                →
+              </b>
+            </a>
+
+            <button
+              type="button"
+              onClick={openProblemSolver}
+            >
+              <span aria-hidden="true">
+                ◇
+              </span>
+
+              <div>
+                <strong>
+                  Solve a problem
+                </strong>
+
+                <small>
+                  Open the engineering solver
+                </small>
+              </div>
+
+              <b aria-hidden="true">
+                →
+              </b>
+            </button>
+
+            <a href="#workbench">
+              <span aria-hidden="true">
+                ∑
+              </span>
+
+              <div>
+                <strong>
+                  Open workbench
+                </strong>
+
+                <small>
+                  Return to active calculation
+                </small>
+              </div>
+
+              <b aria-hidden="true">
+                →
+              </b>
+            </a>
           </div>
         </div>
 
