@@ -16,6 +16,7 @@ import './styles/calculator-discovery-v3.css'
 import './styles/homepage-quick-start-v4.css'
 import './styles/personal-toolkit-dashboard-v5.css'
 import './styles/engineering-trust-v6.css'
+import './styles/problem-solver-experience-v7.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -863,13 +864,96 @@ function App() {
         ref={
           problemSolverSectionRef
         }
-        className="problem-solver-lazy-shell"
+        className="problem-solver-lazy-shell problem-solver-v7-section"
         data-loaded={
           shouldLoadProblemSolver
             ? 'true'
             : 'false'
         }
       >
+
+        <div className="problem-solver-v7-header">
+          <div className="problem-solver-v7-heading">
+            <div
+              className="problem-solver-v7-icon"
+              aria-hidden="true"
+            >
+              ◇
+            </div>
+
+            <div>
+              <p className="problem-solver-v7-kicker">
+                Engineering Problem Solver
+              </p>
+
+              <h2>
+                Start with the problem,
+                not the equation.
+              </h2>
+
+              <p>
+                Describe the engineering problem,
+                include the known values and units,
+                then review the selected method,
+                assumptions and result.
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="problem-solver-v7-guide"
+            aria-label="Problem statement guidance"
+          >
+            <article>
+              <span aria-hidden="true">
+                01
+              </span>
+
+              <div>
+                <strong>
+                  State the target
+                </strong>
+
+                <small>
+                  What should be calculated?
+                </small>
+              </div>
+            </article>
+
+            <article>
+              <span aria-hidden="true">
+                02
+              </span>
+
+              <div>
+                <strong>
+                  Include known values
+                </strong>
+
+                <small>
+                  Add numbers and units.
+                </small>
+              </div>
+            </article>
+
+            <article>
+              <span aria-hidden="true">
+                03
+              </span>
+
+              <div>
+                <strong>
+                  Review assumptions
+                </strong>
+
+                <small>
+                  Check the model before use.
+                </small>
+              </div>
+            </article>
+          </div>
+        </div>
+
         {shouldLoadProblemSolver ? (
           <Suspense
             fallback={
