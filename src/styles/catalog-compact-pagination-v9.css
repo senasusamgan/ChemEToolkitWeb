@@ -1,0 +1,792 @@
+/*
+  ChemE Toolkit
+  Compact Calculator Directory + Pagination V9
+
+  Fixes:
+  - oversized / broken catalog header composition
+  - detached recent strip
+  - duplicate desktop category controls
+  - excessive calculator-list page length
+*/
+
+
+/* ================================================
+   DIRECTORY SECTION
+   ================================================ */
+
+.calculators-section.section {
+  padding-top:
+    clamp(
+      52px,
+      5vw,
+      70px
+    );
+
+  padding-bottom:
+    clamp(
+      54px,
+      5vw,
+      74px
+    );
+}
+
+
+.calculators-section
+.catalog-top {
+  width: 100%;
+
+  margin:
+    0
+    0
+    14px;
+
+  display: block !important;
+}
+
+
+/* ================================================
+   COMPACT TITLE
+   ================================================ */
+
+.calculators-section
+.catalog-top
+.section-heading {
+  width: 100%;
+  max-width: none;
+
+  margin:
+    0
+    0
+    20px;
+
+  display: block;
+}
+
+
+.calculators-section
+.catalog-top
+.section-heading
+.eyebrow {
+  margin-bottom: 8px;
+}
+
+
+.calculators-section
+.catalog-top
+.section-heading h2 {
+  max-width: 900px;
+
+  margin: 0;
+
+  font-size:
+    clamp(
+      2.55rem,
+      4vw,
+      3.9rem
+    );
+
+  line-height: 0.96;
+
+  letter-spacing:
+    -0.035em;
+}
+
+
+/* ================================================
+   SEARCH TOOLBAR
+   ================================================ */
+
+.calculators-section
+.catalog-controls {
+  width: 100% !important;
+
+  margin:
+    0
+    0
+    11px !important;
+
+  padding: 9px;
+
+  display: grid !important;
+
+  grid-template-columns:
+    minmax(
+      320px,
+      1fr
+    )
+    auto;
+
+  gap: 8px;
+
+  border:
+    1px solid
+    rgba(
+      11,
+      54,
+      88,
+      0.10
+    );
+
+  border-radius: 16px;
+
+  background:
+    rgba(
+      251,
+      248,
+      239,
+      0.60
+    );
+}
+
+
+/*
+  Desktop already has discipline chips.
+  The select is therefore redundant.
+*/
+.calculators-section
+.catalog-controls
+> select {
+  display: none;
+}
+
+
+.calculators-section
+.search-box {
+  width: 100%;
+
+  min-height: 48px;
+
+  border-radius: 10px;
+}
+
+
+.calculators-section
+.search-box input {
+  height: 46px;
+}
+
+
+.calculators-section
+.catalog-favorites-filter {
+  min-height: 48px;
+
+  border-radius: 10px;
+}
+
+
+/* ================================================
+   CATEGORY CHIPS
+   ================================================ */
+
+.calculators-section
+.catalog-filter-chips {
+  width: 100%;
+
+  margin:
+    0
+    0
+    9px;
+
+  padding:
+    1px
+    0
+    3px;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  overflow: visible;
+}
+
+
+.calculators-section
+.catalog-filter-chips
+button {
+  min-height: 32px;
+
+  padding:
+    0
+    10px;
+
+  font-size: 0.64rem;
+}
+
+
+/* ================================================
+   RECENT — COMPACT ROW
+   ================================================ */
+
+.calculators-section
+.catalog-recent-strip {
+  width: 100%;
+
+  margin:
+    8px
+    0
+    15px;
+
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border: 0;
+
+  border-radius: 0;
+
+  background:
+    transparent;
+}
+
+
+.calculators-section
+.catalog-recent-label {
+  flex:
+    0
+    0
+    auto;
+
+  padding:
+    5px
+    8px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      7,
+      156,
+      153,
+      0.07
+    );
+}
+
+
+.calculators-section
+.catalog-recent-strip
+> div {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+.calculators-section
+.catalog-recent-strip
+button {
+  min-height: 30px;
+
+  border-radius: 7px;
+
+  background:
+    rgba(
+      251,
+      248,
+      239,
+      0.60
+    );
+}
+
+
+/* ================================================
+   RESULT BAR
+   ================================================ */
+
+.calculators-section
+.catalog-result-bar {
+  min-height: 38px;
+
+  margin:
+    0
+    0
+    10px;
+
+  padding-top: 9px;
+
+  border-top:
+    1px solid
+    rgba(
+      11,
+      54,
+      88,
+      0.08
+    );
+
+  scroll-margin-top:
+    calc(
+      var(--site-header-height)
+      + 18px
+    );
+}
+
+
+.calculators-section
+.result-count {
+  padding:
+    6px
+    10px;
+
+  font-size: 0.69rem;
+}
+
+
+/* ================================================
+   COMPACT ROWS
+   ================================================ */
+
+.calculators-section
+.calculator-list {
+  gap: 7px;
+}
+
+
+.calculators-section
+.calculator-list
+article {
+  min-height: 78px;
+
+  padding:
+    11px
+    14px;
+
+  grid-template-columns:
+    45px
+    minmax(
+      0,
+      1fr
+    )
+    auto;
+
+  gap: 14px;
+
+  border-radius: 12px;
+}
+
+
+.calculators-section
+.calculator-list h3 {
+  margin:
+    2px
+    0
+    4px;
+
+  font-size:
+    clamp(
+      1.02rem,
+      1.35vw,
+      1.2rem
+    );
+}
+
+
+.calculators-section
+.calculator-list
+article
+> div:nth-child(2)
+> p {
+  margin-bottom: 2px;
+
+  font-size: 0.58rem;
+}
+
+
+.calculators-section
+.calculator-list
+article
+> div:nth-child(2)
+> span {
+  font-size: 0.66rem;
+}
+
+
+/* ================================================
+   PAGINATION
+   ================================================ */
+
+.catalog-pagination {
+  grid-column:
+    1 / -1;
+
+  width: 100%;
+
+  margin-top: 7px;
+
+  padding:
+    13px
+    14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  border:
+    1px solid
+    rgba(
+      11,
+      54,
+      88,
+      0.10
+    );
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        251,
+        248,
+        239,
+        0.60
+      ),
+      rgba(
+        255,
+        253,
+        250,
+        0.90
+      )
+    );
+}
+
+
+.catalog-pagination
+> button {
+  min-height: 38px;
+
+  padding:
+    0
+    13px;
+
+  border:
+    1px solid
+    rgba(
+      7,
+      156,
+      153,
+      0.22
+    );
+
+  border-radius: 9px;
+
+  color:
+    var(--teal-dark);
+
+  background: white;
+
+  font: inherit;
+
+  font-size: 0.68rem;
+
+  font-weight: 820;
+
+  cursor: pointer;
+}
+
+
+.catalog-pagination
+> button:hover:not(:disabled) {
+  border-color:
+    var(--teal);
+
+  background:
+    rgba(
+      223,
+      243,
+      239,
+      0.42
+    );
+}
+
+
+.catalog-pagination
+> button:disabled {
+  color:
+    rgba(
+      11,
+      54,
+      88,
+      0.32
+    );
+
+  cursor: not-allowed;
+
+  background:
+    rgba(
+      11,
+      54,
+      88,
+      0.025
+    );
+}
+
+
+.catalog-page-select {
+  min-height: 38px;
+
+  padding:
+    0
+    9px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  border:
+    1px solid
+    rgba(
+      11,
+      54,
+      88,
+      0.09
+    );
+
+  border-radius: 9px;
+
+  color:
+    var(--muted);
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.74
+    );
+
+  font-size: 0.65rem;
+
+  font-weight: 750;
+}
+
+
+.catalog-page-select
+select {
+  min-height: 30px;
+
+  padding:
+    0
+    24px
+    0
+    8px;
+
+  border:
+    1px solid
+    rgba(
+      11,
+      54,
+      88,
+      0.12
+    );
+
+  border-radius: 7px;
+
+  color:
+    var(--ink);
+
+  background: white;
+
+  font: inherit;
+
+  font-weight: 820;
+}
+
+
+.catalog-page-select
+small {
+  font-size: 0.62rem;
+}
+
+
+/* ================================================
+   DESKTOP RESULT
+   ================================================ */
+
+@media (
+  min-width: 701px
+) {
+
+  /*
+    Keeps the title / toolbar compact.
+    No duplicate discipline dropdown.
+  */
+
+  .calculators-section
+  .catalog-controls {
+    max-width: none;
+  }
+}
+
+
+/* ================================================
+   MOBILE
+   ================================================ */
+
+@media (
+  max-width: 700px
+) {
+
+  .calculators-section.section {
+    padding-top: 42px;
+    padding-bottom: 50px;
+  }
+
+
+  .calculators-section
+  .catalog-top
+  .section-heading {
+    margin-bottom: 16px;
+  }
+
+
+  .calculators-section
+  .catalog-top
+  .section-heading h2 {
+    font-size:
+      clamp(
+        2.25rem,
+        11vw,
+        3.15rem
+      );
+  }
+
+
+  .calculators-section
+  .catalog-controls {
+    padding: 8px;
+
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /*
+    On mobile the select is more compact
+    than eleven discipline chips.
+  */
+  .calculators-section
+  .catalog-controls
+  > select {
+    display: block;
+
+    width: 100%;
+
+    min-height: 46px;
+  }
+
+
+  .calculators-section
+  .catalog-filter-chips {
+    display: none;
+  }
+
+
+  .calculators-section
+  .catalog-recent-strip {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    gap: 6px;
+  }
+
+
+  .calculators-section
+  .catalog-recent-strip
+  > div {
+    width: 100%;
+  }
+
+
+  .calculators-section
+  .calculator-list
+  article {
+    min-height: 92px;
+
+    grid-template-columns:
+      32px
+      minmax(
+        0,
+        1fr
+      );
+
+    gap: 10px;
+  }
+
+
+  .catalog-pagination {
+    padding: 10px;
+
+    display: grid;
+
+    grid-template-columns:
+      1fr
+      1fr;
+
+    gap: 8px;
+  }
+
+
+  .catalog-page-select {
+    grid-column:
+      1 / -1;
+
+    grid-row: 1;
+
+    justify-content:
+      center;
+  }
+
+
+  .catalog-pagination
+  > button {
+    width: 100%;
+  }
+}
+
+
+/* ================================================
+   VERY SMALL MOBILE
+   ================================================ */
+
+@media (
+  max-width: 390px
+) {
+
+  .catalog-page-select {
+    padding:
+      6px
+      8px;
+
+    flex-wrap: wrap;
+  }
+}
+
+
+/* ================================================
+   REDUCED MOTION
+   ================================================ */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .catalog-pagination
+  > button {
+    transition: none;
+  }
+}

@@ -18,6 +18,7 @@ import './styles/personal-toolkit-dashboard-v5.css'
 import './styles/engineering-trust-v6.css'
 import './styles/problem-solver-experience-v7.css'
 import './styles/responsive-accessibility-v8.css'
+import './styles/catalog-compact-pagination-v9.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -58,6 +59,9 @@ const RECENT_STORAGE_KEY =
 const PERSONAL_DATA_CHANGE_EVENT =
   'cheme-toolkit:personal-data-changed'
 
+const CATALOG_PAGE_SIZE =
+  20
+
 function readStoredIds(key: string): string[] {
   try {
     const storedValue =
@@ -92,6 +96,7 @@ function App() {
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All disciplines')
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const [catalogPage, setCatalogPage] = useState(1)
   const [activeCalculatorId, setActiveCalculatorId] = useState(
     defaultCalculator.id,
   )
@@ -411,6 +416,39 @@ function App() {
     favoriteCalculatorIds,
   ])
 
+  const catalogPageCount =
+    Math.max(
+      1,
+      Math.ceil(
+        filteredCalculators.length /
+        CATALOG_PAGE_SIZE,
+      ),
+    )
+
+  const safeCatalogPage =
+    Math.min(
+      catalogPage,
+      catalogPageCount,
+    )
+
+  const catalogStartIndex =
+    (
+      safeCatalogPage - 1
+    ) * CATALOG_PAGE_SIZE
+
+  const catalogEndIndex =
+    Math.min(
+      catalogStartIndex +
+      CATALOG_PAGE_SIZE,
+      filteredCalculators.length,
+    )
+
+  const visibleCalculators =
+    filteredCalculators.slice(
+      catalogStartIndex,
+      catalogEndIndex,
+    )
+
   function openProblemSolver() {
     setShouldLoadProblemSolver(
       true,
@@ -443,10 +481,43 @@ function App() {
     setSearch('')
     setSelectedCategory('All disciplines')
     setShowFavoritesOnly(false)
+    setCatalogPage(1)
+  }
+
+  function changeCatalogPage(
+    nextPage: number,
+  ) {
+    const clampedPage =
+      Math.min(
+        Math.max(
+          nextPage,
+          1,
+        ),
+        catalogPageCount,
+      )
+
+    setCatalogPage(
+      clampedPage,
+    )
+
+    window.requestAnimationFrame(
+      () => {
+        document
+          .querySelector(
+            '#catalog-list-start',
+          )
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+      },
+    )
   }
 
   function openCategory(category: string) {
     setSelectedCategory(category)
+    setCatalogPage(1)
+
     window.requestAnimationFrame(() => {
       document.querySelector('#calculators')?.scrollIntoView({
         behavior: 'smooth',
@@ -1432,9 +1503,12 @@ function App() {
                 aria-label="Search calculators"
                 placeholder={`Search all ${calculators.length} calculators`}
                 value={search}
-                onChange={(event) =>
-                  setSearch(event.target.value)
-                }
+                onChange={(event) => {
+                  setSearch(
+                    event.target.value,
+                  )
+                  setCatalogPage(1)
+                }}
               />
 
               {search ? (
@@ -1442,7 +1516,10 @@ function App() {
                   type="button"
                   className="catalog-search-clear"
                   aria-label="Clear calculator search"
-                  onClick={() => setSearch('')}
+                  onClick={() => {
+                    setSearch('')
+                    setCatalogPage(1)
+                  }}
                 >
                   ×
                 </button>
@@ -1452,11 +1529,12 @@ function App() {
             <select
               aria-label="Filter by discipline"
               value={selectedCategory}
-              onChange={(event) =>
+              onChange={(event) => {
                 setSelectedCategory(
                   event.target.value,
                 )
-              }
+                setCatalogPage(1)
+              }}
             >
               <option>All disciplines</option>
 
@@ -1472,11 +1550,12 @@ function App() {
               className="catalog-favorites-filter"
               data-active={showFavoritesOnly}
               aria-pressed={showFavoritesOnly}
-              onClick={() =>
+              onClick={() => {
                 setShowFavoritesOnly(
                   (current) => !current,
                 )
-              }
+                setCatalogPage(1)
+              }}
             >
               <span aria-hidden="true">
                 {showFavoritesOnly ? '★' : '☆'}
@@ -1497,11 +1576,12 @@ function App() {
                 selectedCategory ===
                 'All disciplines'
               }
-              onClick={() =>
+              onClick={() => {
                 setSelectedCategory(
                   'All disciplines',
                 )
-              }
+                setCatalogPage(1)
+              }}
             >
               All
             </button>
@@ -1514,11 +1594,12 @@ function App() {
                   selectedCategory ===
                   category.name
                 }
-                onClick={() =>
+                onClick={() => {
                   setSelectedCategory(
                     category.name,
                   )
-                }
+                  setCatalogPage(1)
+                }}
               >
                 <span aria-hidden="true">
                   {category.icon}
@@ -1562,17 +1643,36 @@ function App() {
           ) : null}
         </div>
 
-        <div className="catalog-result-bar">
+        <div
+          className="catalog-result-bar"
+          id="catalog-list-start"
+        >
           <p
             className="result-count"
             role="status"
             aria-live="polite"
             aria-atomic="true"
           >
-            <strong>
-              {filteredCalculators.length}
-            </strong>{' '}
-            calculators shown
+            {filteredCalculators.length > 0 ? (
+              <>
+                Showing{' '}
+                <strong>
+                  {catalogStartIndex + 1}
+                  {'–'}
+                  {catalogEndIndex}
+                </strong>
+                {' '}of{' '}
+                <strong>
+                  {filteredCalculators.length}
+                </strong>
+                {' '}calculators
+              </>
+            ) : (
+              <>
+                <strong>0</strong>
+                {' '}calculators shown
+              </>
+            )}
 
             {showFavoritesOnly ? (
               <span> · favorites only</span>
@@ -1602,10 +1702,10 @@ function App() {
 
         {filteredCalculators.length > 0 ? (
           <div className="calculator-list">
-            {filteredCalculators.map((calculator, index) => (
+            {visibleCalculators.map((calculator, index) => (
             <article key={calculator.id}>
               <span className="list-index">
-                {String(index + 1).padStart(3, '0')}
+                {String(catalogStartIndex + index + 1).padStart(3, '0')}
               </span>
               <div>
                 <p>{calculator.category}</p>
@@ -1664,6 +1764,88 @@ function App() {
               )}
             </article>
             ))}
+
+            {catalogPageCount > 1 ? (
+              <nav
+                className="catalog-pagination"
+                aria-label="Calculator directory pagination"
+              >
+                <button
+                  type="button"
+                  disabled={
+                    safeCatalogPage <= 1
+                  }
+                  onClick={() =>
+                    changeCatalogPage(
+                      safeCatalogPage - 1,
+                    )
+                  }
+                >
+                  ← Previous
+                </button>
+
+                <label className="catalog-page-select">
+                  <span>
+                    Page
+                  </span>
+
+                  <select
+                    aria-label="Calculator directory page"
+                    value={
+                      safeCatalogPage
+                    }
+                    onChange={(event) =>
+                      changeCatalogPage(
+                        Number(
+                          event.target.value,
+                        ),
+                      )
+                    }
+                  >
+                    {Array.from(
+                      {
+                        length:
+                          catalogPageCount,
+                      },
+                      (_, index) =>
+                        index + 1,
+                    ).map(
+                      (pageNumber) => (
+                        <option
+                          key={
+                            pageNumber
+                          }
+                          value={
+                            pageNumber
+                          }
+                        >
+                          {pageNumber}
+                        </option>
+                      ),
+                    )}
+                  </select>
+
+                  <small>
+                    of {catalogPageCount}
+                  </small>
+                </label>
+
+                <button
+                  type="button"
+                  disabled={
+                    safeCatalogPage >=
+                    catalogPageCount
+                  }
+                  onClick={() =>
+                    changeCatalogPage(
+                      safeCatalogPage + 1,
+                    )
+                  }
+                >
+                  Next →
+                </button>
+              </nav>
+            ) : null}
           </div>
         ) : (
           <div
