@@ -12,6 +12,7 @@ import './styles/mobile-v1.css'
 import './styles/personal-toolkit.css'
 import './styles/frontend-polish-v1.css'
 import './styles/calculator-experience-v2.css'
+import './styles/calculator-discovery-v3.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
@@ -85,6 +86,7 @@ function App() {
 
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All disciplines')
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
   const [activeCalculatorId, setActiveCalculatorId] = useState(
     defaultCalculator.id,
   )
@@ -363,21 +365,46 @@ function App() {
   }, [])
 
   const filteredCalculators = useMemo(() => {
-    const normalizedSearch = search.trim().toLocaleLowerCase()
+    const searchTerms =
+      search
+        .trim()
+        .toLocaleLowerCase()
+        .split(/\s+/)
+        .filter(Boolean)
 
     return calculators.filter((calculator) => {
       const categoryMatches =
         selectedCategory === 'All disciplines' ||
         calculator.category === selectedCategory
 
-      const searchMatches =
-        normalizedSearch.length === 0 ||
-        calculator.title.toLocaleLowerCase().includes(normalizedSearch) ||
-        calculator.category.toLocaleLowerCase().includes(normalizedSearch)
+      const searchHaystack =
+        `${calculator.title} ${calculator.category}`
+          .toLocaleLowerCase()
 
-      return categoryMatches && searchMatches
+      const searchMatches =
+        searchTerms.length === 0 ||
+        searchTerms.every((term) =>
+          searchHaystack.includes(term),
+        )
+
+      const favoriteMatches =
+        !showFavoritesOnly ||
+        favoriteCalculatorIds.includes(
+          calculator.id,
+        )
+
+      return (
+        categoryMatches &&
+        searchMatches &&
+        favoriteMatches
+      )
     })
-  }, [search, selectedCategory])
+  }, [
+    search,
+    selectedCategory,
+    showFavoritesOnly,
+    favoriteCalculatorIds,
+  ])
 
   function openProblemSolver() {
     setShouldLoadProblemSolver(
@@ -405,6 +432,12 @@ function App() {
           })
       },
     )
+  }
+
+  function clearCatalogFilters() {
+    setSearch('')
+    setSelectedCategory('All disciplines')
+    setShowFavoritesOnly(false)
   }
 
   function openCategory(category: string) {
@@ -478,6 +511,7 @@ function App() {
           aria-label="Primary navigation"
         >
           <a href="#calculators">Calculators</a>
+          <a href="#your-toolkit">Your Toolkit</a>
           <a
             href="#problem-solver"
             onClick={(event) => {
@@ -521,6 +555,12 @@ function App() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Calculators
+            </a>
+            <a
+              href="#your-toolkit"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Your Toolkit
             </a>
             <a
               href="#problem-solver"
@@ -982,41 +1022,185 @@ function App() {
           </div>
 
           <div className="catalog-controls">
-            <label className="search-box">
-              <span>⌕</span>
+            <div className="search-box">
+              <span aria-hidden="true">⌕</span>
+
               <input
                 type="search"
                 aria-label="Search calculators"
                 placeholder={`Search all ${calculators.length} calculators`}
                 value={search}
-                onChange={(event) => setSearch(event.target.value)}
+                onChange={(event) =>
+                  setSearch(event.target.value)
+                }
               />
-            </label>
+
+              {search ? (
+                <button
+                  type="button"
+                  className="catalog-search-clear"
+                  aria-label="Clear calculator search"
+                  onClick={() => setSearch('')}
+                >
+                  ×
+                </button>
+              ) : null}
+            </div>
 
             <select
               aria-label="Filter by discipline"
               value={selectedCategory}
-              onChange={(event) => setSelectedCategory(event.target.value)}
+              onChange={(event) =>
+                setSelectedCategory(
+                  event.target.value,
+                )
+              }
             >
               <option>All disciplines</option>
+
               {categories.map((category) => (
-                <option key={category.name}>{category.name}</option>
+                <option key={category.name}>
+                  {category.name}
+                </option>
               ))}
             </select>
+
+            <button
+              type="button"
+              className="catalog-favorites-filter"
+              data-active={showFavoritesOnly}
+              aria-pressed={showFavoritesOnly}
+              onClick={() =>
+                setShowFavoritesOnly(
+                  (current) => !current,
+                )
+              }
+            >
+              <span aria-hidden="true">
+                {showFavoritesOnly ? '★' : '☆'}
+              </span>
+
+              Favorites
+              <b>{favoriteCalculators.length}</b>
+            </button>
           </div>
+
+          <div
+            className="catalog-filter-chips"
+            aria-label="Calculator discipline filters"
+          >
+            <button
+              type="button"
+              data-active={
+                selectedCategory ===
+                'All disciplines'
+              }
+              onClick={() =>
+                setSelectedCategory(
+                  'All disciplines',
+                )
+              }
+            >
+              All
+            </button>
+
+            {categories.map((category) => (
+              <button
+                type="button"
+                key={category.name}
+                data-active={
+                  selectedCategory ===
+                  category.name
+                }
+                onClick={() =>
+                  setSelectedCategory(
+                    category.name,
+                  )
+                }
+              >
+                <span aria-hidden="true">
+                  {category.icon}
+                </span>
+
+                {category.name}
+              </button>
+            ))}
+          </div>
+
+          {recentCalculators.length > 0 ? (
+            <div
+              className="catalog-recent-strip"
+              aria-label="Recently opened calculators"
+            >
+              <span className="catalog-recent-label">
+                Recent
+              </span>
+
+              <div>
+                {recentCalculators
+                  .slice(0, 3)
+                  .map((calculator) => (
+                    <button
+                      type="button"
+                      key={calculator.id}
+                      onClick={() =>
+                        openCalculator(
+                          calculator.id,
+                        )
+                      }
+                    >
+                      {calculator.title}
+                      <span aria-hidden="true">
+                        ↗
+                      </span>
+                    </button>
+                  ))}
+              </div>
+            </div>
+          ) : null}
         </div>
 
-        <p
-          className="result-count"
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          Showing {filteredCalculators.length} of {calculators.length} calculators
-        </p>
+        <div className="catalog-result-bar">
+          <p
+            className="result-count"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <strong>
+              {filteredCalculators.length}
+            </strong>{' '}
+            calculators shown
 
-        <div className="calculator-list">
-          {filteredCalculators.map((calculator, index) => (
+            {showFavoritesOnly ? (
+              <span> · favorites only</span>
+            ) : null}
+
+            {selectedCategory !==
+            'All disciplines' ? (
+              <span>
+                {' '}· {selectedCategory}
+              </span>
+            ) : null}
+          </p>
+
+          {(search ||
+            selectedCategory !==
+              'All disciplines' ||
+            showFavoritesOnly) ? (
+            <button
+              type="button"
+              className="catalog-reset-button"
+              onClick={clearCatalogFilters}
+            >
+              Reset filters
+            </button>
+          ) : null}
+        </div>
+
+        {filteredCalculators.length > 0 ? (
+          <div className="calculator-list">
+            {filteredCalculators.map((calculator, index) => (
             <article key={calculator.id}>
               <span className="list-index">
                 {String(index + 1).padStart(3, '0')}
@@ -1077,8 +1261,34 @@ function App() {
                 <span className="queued-badge">Catalogued</span>
               )}
             </article>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            className="catalog-empty-state"
+            role="status"
+          >
+            <span aria-hidden="true">
+              ⌕
+            </span>
+
+            <div>
+              <h3>No calculators found.</h3>
+
+              <p>
+                Try another search term,
+                discipline or favorite filter.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={clearCatalogFilters}
+            >
+              Show all calculators
+            </button>
+          </div>
+        )}
       </section>
 
       <section className="method-section" id="method">
