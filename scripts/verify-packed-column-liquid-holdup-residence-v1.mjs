@@ -266,11 +266,11 @@ for (
 ) {
   if (
     !source.match(
-      /EXPECTED_CALCULATOR_COUNT\s*=\s*460/,
+      /EXPECTED_CALCULATOR_COUNT\s*=\s*461/,
     )
   ) {
     throw new Error(
-      'A global calculator verifier does not expect 389 calculators.',
+      'A global calculator verifier is out of sync with the current calculator catalog.',
     )
   }
 }
@@ -296,7 +296,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  460
+  461
 ) {
   throw new Error(
     'Coverage baseline calculator count is not 390.',
