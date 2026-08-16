@@ -318,26 +318,32 @@ function App() {
     const element =
       workspaceSectionRef.current
 
-    const fallbackTimer =
-      window.setTimeout(
-        () =>
-          setShouldLoadWorkspace(
-            true,
-          ),
-        2500,
-      )
+    if (element === null) {
+      return
+    }
 
+    function loadWorkspace() {
+      setShouldLoadWorkspace(
+        true,
+      )
+    }
+
+    /*
+     * Keep downstream hash navigation stable.
+     * Do not auto-expand this large lazy section
+     * after an arbitrary timeout, because doing so
+     * shifts #categories / #calculators / later
+     * anchors after the browser has already scrolled.
+     */
     if (
-      element === null ||
       !(
         'IntersectionObserver'
         in window
       )
     ) {
-      return () =>
-        window.clearTimeout(
-          fallbackTimer,
-        )
+      loadWorkspace()
+
+      return
     }
 
     const observer =
@@ -353,32 +359,22 @@ function App() {
             return
           }
 
-          window.clearTimeout(
-            fallbackTimer,
-          )
-
-          setShouldLoadWorkspace(
-            true,
-          )
-
+          loadWorkspace()
           observer.disconnect()
         },
         {
           rootMargin:
-            '160px 0px',
+            '320px 0px',
         },
       )
 
     observer.observe(element)
 
     return () => {
-      window.clearTimeout(
-        fallbackTimer,
-      )
-
       observer.disconnect()
     }
   }, [])
+
 
   const filteredCalculators = useMemo(() => {
     const searchTerms =
