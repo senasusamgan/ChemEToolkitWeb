@@ -486,6 +486,167 @@ export function LegacyWorkbench({
       )
     }
 
+    /*
+     * PHASE 2.3 — compact desktop calculator presentation.
+     * Presentation only: calculator logic and numerical behavior remain untouched.
+     */
+    const compactStyleId =
+      'cheme-phase-2-3-home-density'
+
+    let compactStyle =
+      document.getElementById(
+        compactStyleId,
+      ) as HTMLStyleElement | null
+
+    if (!compactStyle) {
+      compactStyle =
+        document.createElement('style')
+
+      compactStyle.id =
+        compactStyleId
+
+      compactStyle.textContent = `
+        @media (min-width: 701px) {
+          .native-calculator {
+            padding:
+              12px
+              18px
+              18px !important;
+          }
+
+          .native-calculator-header {
+            margin:
+              0 !important;
+            padding:
+              8px
+              2px
+              10px !important;
+          }
+
+          .native-calculator-header > * {
+            margin-top:
+              0 !important;
+            margin-bottom:
+              0 !important;
+          }
+
+          .native-reference {
+            margin:
+              0
+              0
+              10px !important;
+            padding:
+              8px
+              14px !important;
+          }
+
+          .native-reference > * {
+            margin-top:
+              0 !important;
+            margin-bottom:
+              0 !important;
+          }
+
+          .native-input-grid {
+            display:
+              grid !important;
+            grid-template-columns:
+              repeat(
+                2,
+                minmax(0, 1fr)
+              ) !important;
+            gap:
+              10px
+              14px !important;
+            width:
+              100% !important;
+            padding:
+              0 !important;
+            box-sizing:
+              border-box !important;
+          }
+
+          .native-input-grid label {
+            width:
+              auto !important;
+            min-width:
+              0 !important;
+            max-width:
+              none !important;
+            padding-left:
+              0 !important;
+            padding-right:
+              0 !important;
+            box-sizing:
+              border-box !important;
+          }
+
+          .native-input-grid
+          label > span:first-child {
+            margin-bottom:
+              4px !important;
+            padding:
+              0 !important;
+          }
+
+          .native-input-shell {
+            width:
+              100% !important;
+            max-width:
+              100% !important;
+          }
+
+          .native-input-shell input,
+          .native-input-shell select {
+            min-height:
+              38px !important;
+            height:
+              38px !important;
+          }
+
+          .native-actions {
+            width:
+              100% !important;
+            max-width:
+              100% !important;
+            margin:
+              10px
+              0
+              0 !important;
+          }
+
+          .native-result-panel {
+            width:
+              100% !important;
+            max-width:
+              100% !important;
+            margin:
+              10px
+              0
+              0 !important;
+            padding:
+              12px
+              14px !important;
+          }
+
+          .native-formula {
+            width:
+              100% !important;
+            max-width:
+              100% !important;
+            margin:
+              8px
+              0
+              0 !important;
+          }
+        }
+      `
+
+      document.head.appendChild(
+        compactStyle,
+      )
+    }
+
     const target =
       document.querySelector<HTMLElement>('.calculator-stage-body') ??
       document.querySelector<HTMLElement>('.calculator-stage') ??
@@ -524,6 +685,117 @@ export function LegacyWorkbench({
       fieldContainer.style.boxSizing =
         'border-box'
     })
+
+
+    /*
+     * PHASE 2.3
+     * Real legacy Reynolds layout.
+     *
+     * The bundled legacy calculator uses:
+     *   .input-grid
+     *   .input-shell
+     *
+     * Do not use the old .native-input-* selectors here.
+     */
+    const phase23ReynoldsStyleId =
+      'cheme-phase-2-3-real-reynolds-grid'
+
+    let phase23ReynoldsStyle =
+      document.getElementById(
+        phase23ReynoldsStyleId,
+      ) as HTMLStyleElement | null
+
+    if (!phase23ReynoldsStyle) {
+      phase23ReynoldsStyle =
+        document.createElement('style')
+
+      phase23ReynoldsStyle.id =
+        phase23ReynoldsStyleId
+
+      document.head.appendChild(
+        phase23ReynoldsStyle,
+      )
+    }
+
+    phase23ReynoldsStyle.textContent =
+      calculatorId === 'reynoldsNumber'
+        ? `
+          @media (min-width: 520px) {
+            .input-grid {
+              display: grid !important;
+              grid-template-columns:
+                repeat(
+                  2,
+                  minmax(0, 1fr)
+                ) !important;
+              gap: 14px 18px !important;
+
+              width: 100% !important;
+              max-width: 100% !important;
+
+              padding-right: 28px !important;
+              padding-left: 28px !important;
+
+              margin: 0 !important;
+              box-sizing: border-box !important;
+            }
+
+            .input-grid label {
+              display: grid !important;
+              grid-template-columns:
+                minmax(0, 1fr) !important;
+
+              gap: 6px !important;
+
+              width: 100% !important;
+              max-width: 100% !important;
+              min-width: 0 !important;
+
+              padding: 0 !important;
+              margin: 0 !important;
+
+              box-sizing: border-box !important;
+            }
+
+            .input-grid
+            label > span:first-child {
+              display: block !important;
+              width: 100% !important;
+              padding: 0 !important;
+              margin: 0 !important;
+
+              line-height: 1.25 !important;
+            }
+
+            .input-shell {
+              display: grid !important;
+
+              width: 100% !important;
+              max-width: 100% !important;
+              min-width: 0 !important;
+
+              box-sizing: border-box !important;
+            }
+
+            .input-shell input,
+            .input-shell select {
+              width: 100% !important;
+              min-width: 0 !important;
+              box-sizing: border-box !important;
+            }
+
+            .calculate-button {
+              width:
+                calc(100% - 56px) !important;
+
+              margin:
+                18px 28px !important;
+
+              box-sizing: border-box !important;
+            }
+          }
+        `
+        : ''
 
     const alignedSections =
       document.querySelectorAll<HTMLElement>(
