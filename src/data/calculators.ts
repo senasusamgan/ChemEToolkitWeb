@@ -107,6 +107,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "partiallyFullCircularChannelAdaptiveUpstreamStandardStepProfile", title: "Partially Full Circular Channel Adaptive Upstream Standard-Step GVF Profile", category: "Fluid Mechanics", available: true },
   { id: "partiallyFullCircularChannelMaximumDischargeSpecificEnergy", title: "Partially Full Circular Channel Maximum Discharge for Specified Specific Energy", category: "Fluid Mechanics", available: true },
   { id: "partiallyFullCircularChannelMinimumDiameterSpecificEnergy", title: "Partially Full Circular Channel Minimum Diameter for Required Discharge & Specific Energy", category: "Fluid Mechanics", available: true },
+  { id: "partiallyFullCircularChannelMinimumRequiredSpecificEnergy", title: "Partially Full Circular Channel Minimum Specific Energy for Required Discharge", category: "Fluid Mechanics", available: true },
   { id: "biotNumber", title: "Biot Number", category: "Heat Transfer", available: true },
   { id: "boilingHeatTransfer", title: "Boiling Heat Transfer", category: "Heat Transfer", available: true },
   { id: "combinedConvectionRadiation", title: "Combined Convection & Radiation", category: "Heat Transfer", available: true },
