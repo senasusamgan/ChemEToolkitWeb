@@ -966,3 +966,236 @@
   margin: 0;
   line-height: 1.4;
 }
+
+
+/* ============================================
+   PHASE 2.3 FINAL DENSITY PASS
+   No nested calculator scrolling.
+   Compact first viewport + Continue Working.
+   ============================================ */
+
+.home-dashboard .home-workspace-hero {
+  gap: 28px;
+  padding: 28px 0 36px;
+}
+
+.home-dashboard .home-workspace-content {
+  gap: 18px;
+}
+
+.home-dashboard .home-intro h1 {
+  font-size: clamp(2rem, 3.3vw, 2.65rem);
+  line-height: 1.08;
+  margin-bottom: 8px;
+}
+
+.home-dashboard .home-intro-deck {
+  font-size: clamp(0.98rem, 1.45vw, 1.08rem);
+  line-height: 1.4;
+}
+
+.home-dashboard .home-search-label {
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+}
+
+.home-dashboard .home-search-box {
+  padding: 10px 14px;
+  gap: 10px;
+  border-radius: 10px;
+}
+
+.home-dashboard .home-category-shortcuts {
+  gap: 6px;
+}
+
+.home-dashboard .home-category-shortcut,
+.home-dashboard .home-category-shortcut-all {
+  padding: 6px 10px;
+  font-size: 0.78rem;
+}
+
+/* Critical fix: remove the calculator's nested scroll container. */
+.home-dashboard .home-workspace-live {
+  max-height: none;
+  overflow: visible;
+  padding-bottom: 0;
+}
+
+.home-dashboard .home-workspace-live-body {
+  overflow: visible;
+  flex: 0 0 auto;
+  min-height: auto;
+}
+
+.home-dashboard .home-workspace-live-header {
+  padding: 9px 14px;
+}
+
+.home-dashboard .home-workspace-live-label {
+  font-size: 0.74rem;
+}
+
+.home-dashboard .home-workspace-favorite {
+  padding: 5px 10px;
+  font-size: 0.78rem;
+}
+
+/* Compact calculator chrome without touching calculator logic. */
+.home-dashboard .home-workspace-live .calculator-stage-toolbar {
+  min-height: 48px;
+  padding: 7px 12px;
+  gap: 10px;
+}
+
+.home-dashboard .home-workspace-live .calculator-stage-body {
+  overflow: visible;
+}
+
+.home-dashboard .home-workspace-live .engineering-workspace-header {
+  padding: 11px 14px 10px;
+  gap: 14px;
+}
+
+.home-dashboard .home-workspace-live .engineering-workspace-title h2 {
+  font-size: 1.18rem;
+  margin-top: 2px;
+}
+
+.home-dashboard .home-workspace-live .engineering-workspace-title p {
+  margin-top: 3px;
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.home-dashboard .home-workspace-live .engineering-workspace-context {
+  min-width: 170px;
+  padding: 8px 10px;
+}
+
+.home-dashboard .home-workspace-live .reference-basis-inline {
+  padding: 7px 14px;
+  gap: 9px;
+  font-size: 0.7rem;
+}
+
+.home-dashboard .home-workspace-live .calculator-input-field {
+  margin-bottom: 9px;
+}
+
+.home-dashboard .home-workspace-live .calculator-input-label {
+  margin-bottom: 4px;
+  font-size: 0.84rem;
+}
+
+.home-dashboard .home-workspace-live .calculator-input-control input,
+.home-dashboard .home-workspace-live .calculator-input-control select {
+  min-height: 38px;
+  padding: 8px 11px;
+}
+
+.home-dashboard .home-workspace-live .calculator-result {
+  padding: 10px 14px;
+}
+
+.home-dashboard .home-workspace-live .calculator-result-value {
+  font-size: 1.6rem;
+}
+
+.home-dashboard .home-workspace-live .calculator-action-button {
+  min-height: 40px;
+  padding: 9px 16px;
+  font-size: 0.86rem;
+}
+
+.home-dashboard .home-workspace-live .calculator-stage-footer {
+  min-height: 32px;
+  padding: 7px 12px;
+  font-size: 0.64rem;
+}
+
+/* Continue Working becomes a compact utility strip. */
+.home-dashboard section[aria-labelledby="home-recent-heading"] {
+  margin-bottom: 36px;
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-section-header--compact {
+  margin-bottom: 9px;
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-section-header h2 {
+  font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-section-view-toolkit {
+  font-size: 0.8rem;
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-dual-grid {
+  gap: 16px;
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-card-heading {
+  margin-bottom: 7px;
+  font-size: 0.84rem;
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-calculator-cards {
+  gap: 6px;
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-calculator-card {
+  padding: 7px 11px;
+  gap: 8px;
+  border-radius: 6px;
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-calculator-card-category {
+  margin-bottom: 1px;
+  font-size: 0.64rem;
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-calculator-card-title {
+  font-size: 0.82rem;
+  line-height: 1.22;
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-calculator-card-arrow {
+  font-size: 0.98rem;
+}
+
+.home-dashboard section[aria-labelledby="home-recent-heading"]
+.home-card-empty {
+  padding: 16px 14px;
+}
+
+@media (max-width: 900px) {
+  .home-dashboard .home-workspace-hero {
+    gap: 24px;
+    padding: 28px 0 34px;
+  }
+}
+
+@media (max-width: 600px) {
+  .home-dashboard .home-workspace-hero {
+    padding: 22px 0 30px;
+  }
+
+  .home-dashboard .home-workspace-content {
+    gap: 15px;
+  }
+
+  .home-dashboard section[aria-labelledby="home-recent-heading"] {
+    margin-bottom: 30px;
+  }
+}
