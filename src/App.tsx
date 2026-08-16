@@ -25,6 +25,8 @@ import './styles/category-executive-v12.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { CalculatorStage } from './components/CalculatorStage'
+import { AppShell } from './components/layout/AppShell'
+import { AppHeader } from './components/layout/AppHeader'
 const HomepageProblemSolverPanel =
   lazy(() =>
     import(
@@ -572,120 +574,126 @@ function App() {
 
 
   return (
-    <main id="top">
-      <a
-        className="skip-link"
-        href="#calculators"
-      >
-        Skip to calculator directory
-      </a>
-            <a
-        className="skip-to-workbench"
-        href="#workbench"
-      >
-        Skip to calculator workspace
-      </a>
-
-<header
-        className="site-header"
-        data-menu-open={isMobileMenuOpen}
-      >
-        <Brand />
-
-        <nav
-          className="desktop-nav"
-          aria-label="Primary navigation"
-        >
-          <a href="#calculators">Calculators</a>
-          <a href="#your-toolkit">Your Toolkit</a>
+    <AppShell
+      header={
+        <>
           <a
-            href="#problem-solver"
-            onClick={(event) => {
-              event.preventDefault()
-              openProblemSolver()
-            }}
+            className="skip-link"
+            href="#calculators"
           >
-            Problem Solver
+            Skip to calculator directory
           </a>
-          <a href="#categories">Categories</a>
-          <a href="#method">Method</a>
-          <a href="#references">References</a>
-          <a href="#about">About</a>
-        </nav>
-
-        <button
-          type="button"
-          className="mobile-menu-toggle"
-          aria-label={
-            isMobileMenuOpen
-              ? 'Close navigation menu'
-              : 'Open navigation menu'
-          }
-          aria-expanded={isMobileMenuOpen}
-          onClick={() =>
-            setIsMobileMenuOpen((current) => !current)
-          }
-        >
-          <span aria-hidden="true">
-            {isMobileMenuOpen ? '×' : '☰'}
-          </span>
-        </button>
-
-        {isMobileMenuOpen ? (
-          <nav
-            className="mobile-nav"
-            aria-label="Mobile navigation"
+          <a
+            className="skip-to-workbench"
+            href="#workbench"
           >
-            <a
-              href="#calculators"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Calculators
-            </a>
-            <a
-              href="#your-toolkit"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Your Toolkit
-            </a>
-            <a
-              href="#problem-solver"
-              onClick={(event) => {
-                event.preventDefault()
-                setIsMobileMenuOpen(false)
-                openProblemSolver()
-              }}
-            >
-              Problem Solver
-            </a>
+            Skip to calculator workspace
+          </a>
 
-            <a
-              href="#categories"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Categories
-            </a>
-            <a
-              href="#method"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Method
-            </a>
-            <a
-              href="#references"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              References
-            </a>
-            <a
-              href="#about"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              About
-            </a>
-          </nav>
-        ) : null}
-      </header>
+          <AppHeader
+            brand={<Brand />}
+            navigation={
+              <>
+                <nav
+                  className="desktop-nav"
+                  aria-label="Primary navigation"
+                >
+                  <a href="#calculators">Calculators</a>
+                  <a href="#your-toolkit">Your Toolkit</a>
+                  <a
+                    href="#problem-solver"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      openProblemSolver()
+                    }}
+                  >
+                    Problem Solver
+                  </a>
+                  <a href="#categories">Categories</a>
+                  <a href="#method">Method</a>
+                  <a href="#references">References</a>
+                  <a href="#about">About</a>
+                </nav>
+
+                <button
+                  type="button"
+                  className="mobile-menu-toggle"
+                  aria-label={
+                    isMobileMenuOpen
+                      ? 'Close navigation menu'
+                      : 'Open navigation menu'
+                  }
+                  aria-expanded={isMobileMenuOpen}
+                  onClick={() =>
+                    setIsMobileMenuOpen((current) => !current)
+                  }
+                >
+                  <span aria-hidden="true">
+                    {isMobileMenuOpen ? '×' : '☰'}
+                  </span>
+                </button>
+
+                {isMobileMenuOpen ? (
+                  <nav
+                    className="mobile-nav"
+                    aria-label="Mobile navigation"
+                  >
+                    <a
+                      href="#calculators"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Calculators
+                    </a>
+                    <a
+                      href="#your-toolkit"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Your Toolkit
+                    </a>
+                    <a
+                      href="#problem-solver"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        setIsMobileMenuOpen(false)
+                        openProblemSolver()
+                      }}
+                    >
+                      Problem Solver
+                    </a>
+
+                    <a
+                      href="#categories"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Categories
+                    </a>
+                    <a
+                      href="#method"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Method
+                    </a>
+                    <a
+                      href="#references"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      References
+                    </a>
+                    <a
+                      href="#about"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      About
+                    </a>
+                  </nav>
+                ) : null}
+              </>
+            }
+          />
+        </>
+      }
+    >
+      <div id="top"></div>
 
       <section className="hero notebook-grid">
         <div className="ruler" aria-hidden="true" />
@@ -2267,7 +2275,7 @@ function App() {
         calculatorTitle={activeCalculator.title}
         calculatorCategory={activeCalculator.category}
       />
-    </main>
+    </AppShell>
   )
 }
 

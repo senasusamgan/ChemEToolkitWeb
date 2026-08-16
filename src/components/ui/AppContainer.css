@@ -1,0 +1,22 @@
+.app-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--layout-gutter);
+  padding-right: var(--layout-gutter);
+}
+
+.app-container--full {
+  max-width: var(--layout-max-width);
+}
+
+.app-container--content {
+  max-width: var(--layout-content-width);
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding-left: var(--layout-gutter-sm);
+    padding-right: var(--layout-gutter-sm);
+  }
+}

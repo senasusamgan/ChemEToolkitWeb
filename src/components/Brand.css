@@ -1,0 +1,57 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-family-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.35rem);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.brand-logo {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.brand-logo-frame {
+  fill: none;
+  stroke: var(--color-border-strong);
+  stroke-width: 2;
+}
+
+.brand-logo-vessel {
+  fill: none;
+  stroke: var(--color-text-primary);
+  stroke-width: 2;
+}
+
+.brand-logo-process {
+  fill: none;
+  stroke: var(--color-text-primary);
+  stroke-width: 1.5;
+}
+
+.brand-logo-valve {
+  fill: var(--color-text-primary);
+}
+
+.brand-logo-gauge {
+  fill: none;
+  stroke: var(--color-text-primary);
+  stroke-width: 1.5;
+}
+
+.brand-logo-liquid {
+  fill: var(--color-accent);
+  opacity: 0.3;
+}
+
+.brand-logo-bubble {
+  fill: var(--color-accent);
+}
+
+.brand-wordmark {
+  color: var(--color-text-primary);
+}

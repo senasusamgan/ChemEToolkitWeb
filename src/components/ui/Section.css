@@ -1,0 +1,27 @@
+.section {
+  padding: var(--spacing-2xl) 0;
+}
+
+.section--sm {
+  padding: var(--spacing-lg) 0;
+}
+
+.section--lg {
+  padding: var(--spacing-3xl) 0;
+}
+
+.section__header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.section__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.section__description {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}

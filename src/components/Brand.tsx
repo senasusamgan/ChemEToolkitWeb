@@ -1,3 +1,5 @@
+import './Brand.css'
+
 export function Brand() {
   return (
     <a
