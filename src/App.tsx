@@ -22,11 +22,12 @@ import './styles/catalog-compact-pagination-v9.css'
 import './styles/category-cards-compact-v10.css'
 import './styles/category-cards-ultra-compact-v11.css'
 import './styles/category-executive-v12.css'
+import './styles/homepage-phase-2.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
-import { CalculatorStage } from './components/CalculatorStage'
 import { AppShell } from './components/layout/AppShell'
 import { AppHeader } from './components/layout/AppHeader'
+import { HomeDashboard } from './components/home/HomeDashboard'
 const HomepageProblemSolverPanel =
   lazy(() =>
     import(
@@ -695,260 +696,21 @@ function App() {
     >
       <div id="top"></div>
 
-      <section className="hero notebook-grid">
-        <div className="ruler" aria-hidden="true" />
-
-        <div className="category-ribbon">
-          {categories
-            .filter((category) =>
-              [
-                'Thermodynamics',
-                'Fluid Mechanics',
-                'Heat Transfer',
-                'Mass Transfer',
-                'Reaction Engineering',
-              ].includes(category.name),
-            )
-            .map((category) => (
-              <button
-                type="button"
-                className="category-pill"
-                data-selected={
-                  selectedCategory === category.name
-                }
-                key={category.name}
-                onClick={() => openCategory(category.name)}
-              >
-                <span>{category.icon}</span>
-                {category.name}
-              </button>
-            ))}
-        </div>
-
-        <div className="hero-copy">
-          <p className="eyebrow">A verified chemical engineering workspace</p>
-          <h1>
-            Chemical engineering,
-            <br />
-            calculated clearly<span>.</span>
-          </h1>
-          <p className="hero-deck">
-            <strong>
-              {liveCalculatorCount} verified calculators
-            </strong>{' '}
-            across {categories.length} engineering disciplines—built for
-            study, design checks and everyday engineering work.
-          </p>
-
-          <div className="hero-actions">
-            <a className="button button-primary" href="#calculators">
-              ▦ Explore calculators
-            </a>
-            <a className="button button-secondary" href="#categories">
-              □ Browse categories
-            </a>
-
-            <a
-              className="button button-secondary"
-              href="#problem-solver"
-              onClick={(event) => {
-                event.preventDefault()
-                openProblemSolver()
-              }}
-            >
-              ◇ Solve a problem
-            </a>
-          </div>
-
-          <div
-            className="status-strip status-strip-v2"
-            aria-label="Toolkit overview"
-          >
-            <div>
-              <strong>{liveCalculatorCount}</strong>
-              <span>verified calculators</span>
-            </div>
-
-            <div>
-              <strong>{categories.length}</strong>
-              <span>engineering disciplines</span>
-            </div>
-
-            <div>
-              <strong>3</strong>
-              <span>ways to work: calculate, solve, explore</span>
-            </div>
-          </div>
-        </div>
-
-        <div id="workbench" className="hero-workbench">
-          <div className="active-calculator-tools">
-            <button
-              type="button"
-              className="active-favorite-button"
-              data-favorite={activeCalculatorIsFavorite}
-              aria-pressed={activeCalculatorIsFavorite}
-              onClick={() =>
-                toggleFavorite(activeCalculator.id)
-              }
-            >
-              <span aria-hidden="true">
-                {activeCalculatorIsFavorite
-                  ? '★'
-                  : '☆'}
-              </span>
-              {activeCalculatorIsFavorite
-                ? 'Saved to favorites'
-                : 'Add to favorites'}
-            </button>
-          </div>
-
-          <CalculatorStage
-            activeCalculator={activeCalculator}
-            liveCalculators={calculators.filter(
-              (calculator) => calculator.available,
-            )}
-            onSelect={openCalculator}
-          />
-        </div>
-      </section>
-
-      <section
-        className="quick-start-section"
-        aria-labelledby="quick-start-heading"
-      >
-        <div className="quick-start-inner">
-          <div className="quick-start-intro">
-            <p className="eyebrow">
-              Quick start
-            </p>
-
-            <h2 id="quick-start-heading">
-              Pick up where you left off.
-            </h2>
-
-            <p>
-              Continue with a recent calculation,
-              browse the full toolkit or move directly
-              into the engineering solver.
-            </p>
-          </div>
-
-          <div className="quick-start-grid">
-            <button
-              type="button"
-              className="quick-start-card quick-start-card-primary"
-              onClick={() =>
-                openCalculator(
-                  (
-                    recentCalculators[0] ??
-                    activeCalculator
-                  ).id,
-                )
-              }
-            >
-              <span
-                className="quick-start-card-icon"
-                aria-hidden="true"
-              >
-                ↗
-              </span>
-
-              <span className="quick-start-card-kicker">
-                Continue
-              </span>
-
-              <strong>
-                {recentCalculators[0]?.title ??
-                  activeCalculator.title}
-              </strong>
-
-              <small>
-                {recentCalculators.length > 0
-                  ? 'Most recently opened calculator'
-                  : 'Current calculator'}
-              </small>
-            </button>
-
-            <a
-              className="quick-start-card"
-              href="#calculators"
-            >
-              <span
-                className="quick-start-card-icon"
-                aria-hidden="true"
-              >
-                ▦
-              </span>
-
-              <span className="quick-start-card-kicker">
-                Browse
-              </span>
-
-              <strong>
-                Calculator directory
-              </strong>
-
-              <small>
-                {liveCalculatorCount} verified tools
-              </small>
-            </a>
-
-            <button
-              type="button"
-              className="quick-start-card"
-              onClick={openProblemSolver}
-            >
-              <span
-                className="quick-start-card-icon"
-                aria-hidden="true"
-              >
-                ◇
-              </span>
-
-              <span className="quick-start-card-kicker">
-                Solve
-              </span>
-
-              <strong>
-                Problem Solver
-              </strong>
-
-              <small>
-                Start from an engineering problem
-              </small>
-            </button>
-
-            <a
-              className="quick-start-card"
-              href="#your-toolkit"
-            >
-              <span
-                className="quick-start-card-icon"
-                aria-hidden="true"
-              >
-                ☆
-              </span>
-
-              <span className="quick-start-card-kicker">
-                Favorites
-              </span>
-
-              <strong>
-                Your Toolkit
-              </strong>
-
-              <small>
-                {favoriteCalculators.length}{' '}
-                saved calculator
-                {favoriteCalculators.length === 1
-                  ? ''
-                  : 's'}
-              </small>
-            </a>
-          </div>
-        </div>
-      </section>
+      <HomeDashboard
+        calculators={calculators}
+        categories={categories}
+        recentCalculators={recentCalculators}
+        favoriteCalculators={favoriteCalculators}
+        activeCalculator={activeCalculator}
+        activeCalculatorIsFavorite={activeCalculatorIsFavorite}
+        onOpenCalculator={openCalculator}
+        onOpenCategory={openCategory}
+        onOpenProblemSolver={openProblemSolver}
+        onToggleFavorite={toggleFavorite}
+        liveCalculators={calculators.filter(
+          (calculator) => calculator.available,
+        )}
+      />
 
       <div
         ref={

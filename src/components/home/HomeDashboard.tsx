@@ -1,0 +1,164 @@
+/**
+ * HomeDashboard
+ * Phase 2: Engineering-first homepage dashboard
+ */
+
+import type { CalculatorDefinition } from '../../types/calculator'
+import { HomeSearch } from './HomeSearch'
+import { RecentCalculators } from './RecentCalculators'
+import { FavoriteCalculators } from './FavoriteCalculators'
+import { CategoryGrid } from './CategoryGrid'
+import { HomeProblemSolverEntry } from './HomeProblemSolverEntry'
+import { CalculatorStage } from '../CalculatorStage'
+
+interface HomeDashboardProps {
+  calculators: CalculatorDefinition[]
+  categories: Array<{ name: string; icon: string; live: number }>
+  recentCalculators: CalculatorDefinition[]
+  favoriteCalculators: CalculatorDefinition[]
+  activeCalculator: CalculatorDefinition
+  activeCalculatorIsFavorite: boolean
+  onOpenCalculator: (calculatorId: string) => void
+  onOpenCategory: (categoryName: string) => void
+  onOpenProblemSolver: () => void
+  onToggleFavorite: (calculatorId: string) => void
+  liveCalculators: CalculatorDefinition[]
+}
+
+export function HomeDashboard({
+  calculators,
+  categories,
+  recentCalculators,
+  favoriteCalculators,
+  activeCalculator,
+  activeCalculatorIsFavorite,
+  onOpenCalculator,
+  onOpenCategory,
+  onOpenProblemSolver,
+  onToggleFavorite,
+  liveCalculators,
+}: HomeDashboardProps) {
+  const liveCalculatorCount = calculators.filter(
+    (calculator) => calculator.available,
+  ).length
+
+  return (
+    <div className="home-dashboard">
+      <section className="home-workspace-hero">
+        <div className="home-workspace-content">
+          <div className="home-intro">
+            <h1>
+              Engineering calculations,
+              <br />
+              in one workspace<span className="home-intro-period">.</span>
+            </h1>
+            <p className="home-intro-deck">
+              {liveCalculatorCount} verified calculators across{' '}
+              {categories.length} engineering disciplines.
+            </p>
+          </div>
+
+          <HomeSearch
+            calculators={calculators}
+            onOpenCalculator={onOpenCalculator}
+          />
+
+          <div className="home-category-shortcuts">
+            {categories.slice(0, 5).map((category) => (
+              <button
+                key={category.name}
+                type="button"
+                className="home-category-shortcut"
+                onClick={() => onOpenCategory(category.name)}
+              >
+                <span aria-hidden="true">{category.icon}</span>
+                {category.name}
+              </button>
+            ))}
+            <a href="#categories" className="home-category-shortcut-all">
+              View all
+            </a>
+          </div>
+        </div>
+
+        <div className="home-workspace-live" id="workbench">
+          <div className="home-workspace-live-header">
+            <span className="home-workspace-live-label">Live workspace</span>
+            <button
+              type="button"
+              className="home-workspace-favorite"
+              data-favorite={activeCalculatorIsFavorite}
+              aria-pressed={activeCalculatorIsFavorite}
+              onClick={() => onToggleFavorite(activeCalculator.id)}
+            >
+              <span aria-hidden="true">
+                {activeCalculatorIsFavorite ? '★' : '☆'}
+              </span>
+              {activeCalculatorIsFavorite ? 'Saved' : 'Save'}
+            </button>
+          </div>
+
+          <div className="home-workspace-live-body">
+            <CalculatorStage
+              activeCalculator={activeCalculator}
+              liveCalculators={liveCalculators}
+              onSelect={onOpenCalculator}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="home-section" aria-labelledby="home-recent-heading">
+        <div className="home-section-header home-section-header--compact">
+          <h2 id="home-recent-heading">Continue working</h2>
+          <a href="#calculators" className="home-section-view-toolkit">
+            View toolkit →
+          </a>
+        </div>
+
+        <div className="home-dual-grid">
+          <RecentCalculators
+            recentCalculators={recentCalculators}
+            onOpenCalculator={onOpenCalculator}
+          />
+
+          <FavoriteCalculators
+            favoriteCalculators={favoriteCalculators}
+            onOpenCalculator={onOpenCalculator}
+          />
+        </div>
+      </section>
+
+      <section className="home-section" aria-labelledby="home-explore-heading">
+        <div className="home-section-header">
+          <h2 id="home-explore-heading">Explore engineering</h2>
+          <p>
+            Navigate by discipline or access the complete calculator directory.
+          </p>
+        </div>
+
+        <CategoryGrid
+          categories={categories}
+          onOpenCategory={onOpenCategory}
+        />
+
+        <div className="home-all-calculators">
+          <a href="#calculators" className="home-all-calculators-link">
+            <span className="home-all-calculators-icon" aria-hidden="true">
+              ▦
+            </span>
+            <div>
+              <strong>All calculators</strong>
+              <span>Browse the complete directory</span>
+            </div>
+            <span className="home-all-calculators-arrow" aria-hidden="true">
+              →
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <HomeProblemSolverEntry onOpenProblemSolver={onOpenProblemSolver} />
+    </div>
+  )
+}
