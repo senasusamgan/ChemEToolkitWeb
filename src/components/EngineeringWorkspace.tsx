@@ -232,6 +232,17 @@ export function EngineeringWorkspace({
     )
 
     window.setTimeout(() => {
+      if (
+        openToolRequest.targetId ===
+        'workspace-history'
+      ) {
+        window.dispatchEvent(
+          new Event(
+            'cheme-toolkit:expand-calculation-history',
+          ),
+        )
+      }
+
       const target =
         openToolRequest.targetId
           ? document.getElementById(
