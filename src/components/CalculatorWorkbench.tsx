@@ -1,3 +1,4 @@
+import { PhaseElevenNativeCalculator } from '../features/native-migrations/phase-eleven/PhaseElevenNativeCalculator'
 import { PhaseTenThermodynamicsCalculator } from '../features/native-migrations/phase-ten-thermodynamics/PhaseTenThermodynamicsCalculator'
 import { PhaseNineLegacyNativeCalculator } from '../features/native-migrations/phase-nine/PhaseNineLegacyNativeCalculator'
 import { PriorityTenLegacyNativeCalculator } from '../features/native-migrations/priority-ten-legacy/PriorityTenLegacyNativeCalculator'
@@ -222,6 +223,230 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === "adsorptionIsotherms") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "batchAdsorptionDesign") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "betIsotherm") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "chiltonColburnAnalogy") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "convectiveMassTransferCorrelations") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "countercurrentLiquidLiquidExtraction") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "crosscurrentLiquidLiquidExtraction") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "diffusionThroughMembrane") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "distributionCoefficientSelectivity") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "effectiveDiffusivity") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "equimolarCounterDiffusion") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "ficksFirstLaw") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "ficksSecondLaw") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "fixedBedAdsorptionBDST") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "gasAbsorptionStrippingFundamentals") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "gasPhaseDiffusivity") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "interphaseEquilibriumDrivingForces") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "kremserMethod") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "liquidPhaseDiffusivity") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "massTransferCoefficient") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "dimensionlessMassTransfer") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "membraneGasSeparation") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "overallMassTransferCoefficient") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "packedColumnHTUNTUDesign") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "reverseOsmosisPerformance") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "stagnantFilmDiffusion") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "steadyStateDiffusion") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "twoFilmTheory") {
+    return (
+      <PhaseElevenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
   if (calculatorId === "adiabaticIdealGasProcess") {
     return (
       <PhaseTenThermodynamicsCalculator
