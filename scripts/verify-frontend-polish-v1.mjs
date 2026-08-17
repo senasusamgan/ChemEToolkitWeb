@@ -4,11 +4,16 @@ import {
 
 const [
   app,
+  homeDashboard,
   style,
   packageSource,
 ] = await Promise.all([
   readFile(
     'src/App.tsx',
+    'utf8',
+  ),
+  readFile(
+    'src/components/home/HomeDashboard.tsx',
     'utf8',
   ),
   readFile(
@@ -40,20 +45,34 @@ function requireMarker(
 for (
   const marker of [
     "./styles/frontend-polish-v1.css",
-    'data-selected={',
-    'selectedCategory === category.name',
-    'className="status-strip status-strip-v2"',
-    '{liveCalculatorCount} verified calculators',
-    'across {categories.length} engineering disciplines',
-    'Search all ${calculators.length} calculators',
-    'className="result-count"',
-    'Verified · ready to calculate',
+    "selectedCategory === 'All disciplines'",
+    'const filteredCalculators = useMemo(',
+    'const visibleCalculators =',
+    '<HomeDashboard',
+    'liveCalculators={calculators.filter(',
   ]
 ) {
   requireMarker(
     app,
     marker,
     'App marker',
+  )
+}
+
+for (
+  const marker of [
+    'className="home-workspace-hero"',
+    '{liveCalculatorCount} verified calculators across',
+    '{categories.length} engineering disciplines.',
+    'className="home-workspace-live"',
+    '<CalculatorStage',
+    'Continue working',
+  ]
+) {
+  requireMarker(
+    homeDashboard,
+    marker,
+    'HomeDashboard marker',
   )
 }
 
