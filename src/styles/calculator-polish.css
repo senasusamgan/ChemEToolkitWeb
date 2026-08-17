@@ -452,3 +452,164 @@
   }
 }
 
+
+/* ============================================
+   PHASE 3.2D: VALIDATION AND FEEDBACK STATES
+   Presentation only — no calculation logic.
+   ============================================ */
+
+/* Invalid fields: only after user interaction or explicit aria state */
+.calculator-stage
+.native-input-shell:has(input:user-invalid),
+.calculator-stage
+.native-input-shell:has(
+  input[aria-invalid="true"]
+),
+.calculator-stage
+.native-input-shell[data-invalid="true"],
+.calculator-stage
+.native-input-shell.is-invalid {
+  border-color: #b94a48;
+  box-shadow:
+    0 0 0 3px rgba(185, 74, 72, 0.1);
+}
+
+/* Keep invalid state visible while focused */
+.calculator-stage
+.native-input-shell:has(
+  input[aria-invalid="true"]:focus
+),
+.calculator-stage
+.native-input-shell:has(
+  input:user-invalid:focus
+) {
+  border-color: #a63e3c;
+  box-shadow:
+    0 0 0 4px rgba(185, 74, 72, 0.13);
+}
+
+/* Field-level validation messages */
+.calculator-stage
+.native-field-error,
+.calculator-stage
+.native-validation-message {
+  display: block;
+  margin-top: 6px;
+  color: #9c3634;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* Calculator-level errors / assertive messages */
+.calculator-stage
+.native-calculator [role="alert"],
+.calculator-stage
+.native-calculator
+[aria-live="assertive"],
+.calculator-stage
+.native-error {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(185, 74, 72, 0.28);
+  border-left: 3px solid #b94a48;
+  border-radius: 8px;
+  background: rgba(185, 74, 72, 0.055);
+  color: #87312f;
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+/* Engineering warnings */
+.calculator-stage
+.native-warning,
+.calculator-stage
+[data-tone="warning"],
+.calculator-stage
+[data-status="warning"] {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(172, 121, 34, 0.28);
+  border-left: 3px solid #ad7922;
+  border-radius: 8px;
+  background: rgba(191, 143, 57, 0.07);
+  color: #75531b;
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+/* Disabled inputs */
+.calculator-stage
+.native-input-shell:has(input:disabled) {
+  border-color: rgba(181, 167, 142, 0.4);
+  background: rgba(243, 237, 224, 0.46);
+  box-shadow: none;
+}
+
+.calculator-stage
+.native-input-shell input:disabled {
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.78;
+}
+
+/* Disabled actions */
+.calculator-stage
+.native-actions button:disabled {
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Required field affordance if calculators expose it */
+.calculator-stage
+.native-input-grid
+label:has(input[required])
+> span:first-child::after {
+  content: " *";
+  color: #9c3634;
+}
+
+/* Accessible focus should remain stronger than decorative hover */
+.calculator-stage
+.native-actions button:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* Prevent long engineering validation text from breaking layout */
+.calculator-stage
+.native-field-error,
+.calculator-stage
+.native-validation-message,
+.calculator-stage
+.native-error,
+.calculator-stage
+.native-warning,
+.calculator-stage
+[role="alert"] {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+  .calculator-stage
+  .native-field-error,
+  .calculator-stage
+  .native-validation-message {
+    font-size: 0.7rem;
+  }
+
+  .calculator-stage
+  .native-calculator [role="alert"],
+  .calculator-stage
+  .native-error,
+  .calculator-stage
+  .native-warning {
+    padding: 9px 10px;
+    font-size: 0.75rem;
+  }
+}
+
