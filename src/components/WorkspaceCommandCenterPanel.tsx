@@ -908,17 +908,17 @@ export function WorkspaceCommandCenterPanel({
       <header className="workspace-command-header">
         <div>
           <span>
-            Engineering workspace control
+            Workspace overview
           </span>
 
           <h3>
-            Command Center
+            Your engineering workspace
           </h3>
 
           <p>
-            Continue recent work, open core
-            workspace tools and review important
-            data-health actions from one place.
+            Continue your latest work, open
+            essential tools and keep your
+            engineering data organized.
           </p>
         </div>
 
@@ -1020,7 +1020,7 @@ export function WorkspaceCommandCenterPanel({
         </article>
       </div>
 
-      <div className="workspace-command-grid">
+      <div className="workspace-command-grid workspace-command-grid--simplified">
         <section className="workspace-command-card workspace-command-continue">
           <header>
             <span>
@@ -1156,7 +1156,7 @@ export function WorkspaceCommandCenterPanel({
           </div>
         </section>
 
-        <section className="workspace-command-card workspace-command-pinned">
+        <section className="workspace-command-card workspace-command-pinned workspace-command-secondary">
           <header>
             <span>
               Favorite tools
@@ -1211,7 +1211,7 @@ export function WorkspaceCommandCenterPanel({
           )}
         </section>
 
-        <section className="workspace-command-card">
+        <section className="workspace-command-card workspace-command-recent workspace-command-secondary">
           <header>
             <span>
               Recent records
@@ -1276,7 +1276,7 @@ export function WorkspaceCommandCenterPanel({
           )}
         </section>
 
-        <section className="workspace-command-card">
+        <section className="workspace-command-card workspace-command-projects workspace-command-secondary">
           <header>
             <span>
               Project activity

@@ -693,3 +693,103 @@ strong {
     display: grid;
   }
 }
+
+
+/* PHASE 3.3B SIMPLIFIED COMMAND CENTER */
+
+.workspace-command-metrics,
+.workspace-command-secondary {
+  display: none;
+}
+
+.workspace-command-grid--simplified {
+  margin-top: 16px;
+  grid-template-columns:
+    minmax(0, 0.9fr)
+    minmax(0, 1.1fr);
+  gap: 14px;
+}
+
+.workspace-command-grid--simplified
+.workspace-command-continue,
+.workspace-command-grid--simplified
+.workspace-command-actions {
+  min-height: 100%;
+}
+
+.workspace-command-grid--simplified
+.workspace-command-health {
+  grid-column: 1 / -1;
+}
+
+.workspace-command-grid--simplified
+.workspace-command-card {
+  padding: 18px;
+  border-radius: 12px;
+}
+
+.workspace-command-grid--simplified
+.workspace-command-actions
+> div {
+  gap: 8px;
+}
+
+.workspace-command-grid--simplified
+.workspace-command-actions
+> div > button {
+  min-height: 62px;
+}
+
+.workspace-command-grid--simplified
+.workspace-command-actions
+button small {
+  white-space: normal;
+  line-height: 1.3;
+}
+
+.workspace-command-grid--simplified
+.workspace-command-primary-work,
+.workspace-command-grid--simplified
+.workspace-command-empty {
+  min-height: 160px;
+  align-content: center;
+}
+
+@media (max-width: 900px) {
+  .workspace-command-grid--simplified {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .workspace-command-grid--simplified
+  .workspace-command-health {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .workspace-command-grid--simplified
+  .workspace-command-card {
+    padding: 14px;
+  }
+
+  .workspace-command-grid--simplified
+  .workspace-command-actions
+  > div {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .workspace-command-grid--simplified
+  .workspace-command-actions
+  > div > button {
+    min-height: 54px;
+  }
+
+  .workspace-command-grid--simplified
+  .workspace-command-primary-work,
+  .workspace-command-grid--simplified
+  .workspace-command-empty {
+    min-height: auto;
+  }
+}
