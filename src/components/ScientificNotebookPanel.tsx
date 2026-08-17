@@ -31,6 +31,8 @@ interface SnapshotResult {
 interface CalculationSnapshot {
   id: string
   capturedAt: string
+  name?: string
+  favorite?: boolean
   inputs: SnapshotInput[]
   results: SnapshotResult[]
   formula: string
@@ -60,6 +62,7 @@ type Status =
   | 'saved'
   | 'captured'
   | 'restored'
+  | 'managed'
   | 'exported'
   | 'cleared'
   | 'error'
@@ -573,6 +576,67 @@ function formatSnapshotValue(
     .join(' ')
 }
 
+function escapeCsv(
+  value: string,
+): string {
+  if (
+    value.includes(',')
+    || value.includes('"')
+    || value.includes('\n')
+  ) {
+    return (
+      '"'
+      + value.replace(
+          /"/g,
+          '""',
+        )
+      + '"'
+    )
+  }
+
+  return value
+}
+
+function downloadText(
+  filename: string,
+  content: string,
+  type: string,
+) {
+  const blob =
+    new Blob(
+      [
+        content,
+      ],
+      {
+        type,
+      },
+    )
+
+  const url =
+    URL.createObjectURL(
+      blob,
+    )
+
+  const anchor =
+    document.createElement(
+      'a',
+    )
+
+  anchor.href = url
+  anchor.download = filename
+
+  document.body.appendChild(
+    anchor,
+  )
+
+  anchor.click()
+  anchor.remove()
+
+  URL.revokeObjectURL(
+    url,
+  )
+}
+
 function createSlug(
   value: string,
 ): string {
@@ -793,6 +857,364 @@ export function ScientificNotebookPanel({
         'error',
       )
     }
+  }
+
+  function persistSnapshots(
+    nextSnapshots:
+      CalculationSnapshot[],
+  ) {
+    const store =
+      readStore()
+
+    store[
+      calculatorId
+    ] = {
+      ...buildRecord(),
+      snapshots:
+        nextSnapshots,
+      updatedAt:
+        new Date()
+          .toISOString(),
+    }
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(
+        store,
+      ),
+    )
+
+    setSnapshots(
+      nextSnapshots,
+    )
+  }
+
+  function renameSnapshot(
+    snapshot: CalculationSnapshot,
+  ) {
+    const currentName =
+      snapshot.name
+      || `Snapshot ${
+        snapshots.findIndex(
+          (item) =>
+            item.id ===
+            snapshot.id,
+        ) + 1
+      }`
+
+    const nextName =
+      window.prompt(
+        'Snapshot name',
+        currentName,
+      )
+
+    if (
+      nextName === null
+    ) {
+      return
+    }
+
+    const normalized =
+      nextName.trim()
+
+    if (!normalized) {
+      return
+    }
+
+    try {
+      persistSnapshots(
+        snapshots.map(
+          (item) =>
+            item.id ===
+            snapshot.id
+              ? {
+                  ...item,
+                  name:
+                    normalized,
+                }
+              : item,
+        ),
+      )
+
+      setStatus(
+        'managed',
+      )
+    } catch {
+      setStatus(
+        'error',
+      )
+    }
+  }
+
+  function toggleSnapshotFavorite(
+    snapshotId: string,
+  ) {
+    try {
+      persistSnapshots(
+        snapshots.map(
+          (snapshot) =>
+            snapshot.id ===
+            snapshotId
+              ? {
+                  ...snapshot,
+                  favorite:
+                    !snapshot.favorite,
+                }
+              : snapshot,
+        ),
+      )
+
+      setStatus(
+        'managed',
+      )
+    } catch {
+      setStatus(
+        'error',
+      )
+    }
+  }
+
+  function deleteSnapshot(
+    snapshot: CalculationSnapshot,
+  ) {
+    if (
+      !window.confirm(
+        `Delete ${
+          snapshot.name
+          || 'this snapshot'
+        }?`,
+      )
+    ) {
+      return
+    }
+
+    try {
+      const nextSnapshots =
+        snapshots.filter(
+          (item) =>
+            item.id !==
+            snapshot.id,
+        )
+
+      persistSnapshots(
+        nextSnapshots,
+      )
+
+      setSelectedSnapshotIds(
+        (current) =>
+          current.filter(
+            (id) =>
+              id !==
+              snapshot.id,
+          ),
+      )
+
+      setStatus(
+        'managed',
+      )
+    } catch {
+      setStatus(
+        'error',
+      )
+    }
+  }
+
+  function exportSelectedSnapshots(
+    format:
+      | 'markdown'
+      | 'csv',
+  ) {
+    const selected =
+      selectedSnapshotIds
+        .map(
+          (id) =>
+            snapshots.find(
+              (snapshot) =>
+                snapshot.id ===
+                id,
+            ),
+        )
+        .filter(
+          (
+            snapshot,
+          ): snapshot is CalculationSnapshot =>
+            Boolean(snapshot),
+        )
+
+    if (
+      selected.length === 0
+    ) {
+      setStatus(
+        'error',
+      )
+      return
+    }
+
+    if (
+      format ===
+      'markdown'
+    ) {
+      const markdown =
+        selected.flatMap(
+          (
+            snapshot,
+            index,
+          ) => [
+            `# ${
+              snapshot.name
+              || `Snapshot ${index + 1}`
+            }`,
+            '',
+            `Captured: ${snapshot.capturedAt}`,
+            '',
+            snapshot.favorite
+              ? '**Favorite:** Yes'
+              : '**Favorite:** No',
+            '',
+            '## Inputs',
+            '',
+            ...(
+              snapshot.inputs.length
+                ? snapshot.inputs.map(
+                    (input) =>
+                      `- **${input.label}:** ${input.value}${input.unit ? ` ${input.unit}` : ''}`,
+                  )
+                : [
+                    '- No inputs.',
+                  ]
+            ),
+            '',
+            '## Results',
+            '',
+            ...(
+              snapshot.results.length
+                ? snapshot.results.map(
+                    (result) =>
+                      `- **${result.label}:** ${result.value}${result.unit ? ` ${result.unit}` : ''}`,
+                  )
+                : [
+                    '- No results.',
+                  ]
+            ),
+            '',
+            snapshot.formula
+              ? `**Formula:** ${snapshot.formula}`
+              : '',
+            '',
+            snapshot.reference
+              ? `**Reference:** ${snapshot.reference}`
+              : '',
+            '',
+            '---',
+            '',
+          ],
+        ).join(
+          '\n',
+        )
+
+      downloadText(
+        `${
+          createSlug(
+            calculatorTitle,
+          )
+          || calculatorId
+        }-selected-snapshots.md`,
+        markdown,
+        'text/markdown;charset=utf-8',
+      )
+
+      setStatus(
+        'exported',
+      )
+      return
+    }
+
+    const rows: string[][] =
+      [
+        [
+          'Snapshot',
+          'Captured At',
+          'Favorite',
+          'Type',
+          'Label',
+          'Value',
+          'Unit',
+        ],
+      ]
+
+    selected.forEach(
+      (
+        snapshot,
+        index,
+      ) => {
+        const snapshotName =
+          snapshot.name
+          || `Snapshot ${index + 1}`
+
+        snapshot.inputs.forEach(
+          (input) => {
+            rows.push(
+              [
+                snapshotName,
+                snapshot.capturedAt,
+                snapshot.favorite
+                  ? 'Yes'
+                  : 'No',
+                'Input',
+                input.label,
+                input.value,
+                input.unit,
+              ],
+            )
+          },
+        )
+
+        snapshot.results.forEach(
+          (result) => {
+            rows.push(
+              [
+                snapshotName,
+                snapshot.capturedAt,
+                snapshot.favorite
+                  ? 'Yes'
+                  : 'No',
+                'Result',
+                result.label,
+                result.value,
+                result.unit,
+              ],
+            )
+          },
+        )
+      },
+    )
+
+    const csv =
+      rows
+        .map(
+          (row) =>
+            row
+              .map(
+                escapeCsv,
+              )
+              .join(','),
+        )
+        .join('\n')
+
+    downloadText(
+      `${
+        createSlug(
+          calculatorTitle,
+        )
+        || calculatorId
+      }-selected-snapshots.csv`,
+      csv,
+      'text/csv;charset=utf-8',
+    )
+
+    setStatus(
+      'exported',
+    )
   }
 
   function toggleSnapshotComparison(
@@ -1064,6 +1486,8 @@ export function ScientificNotebookPanel({
         ? 'Current calculation captured.'
       : status === 'restored'
         ? 'Snapshot inputs restored. Recalculate to refresh results.'
+      : status === 'managed'
+        ? 'Snapshot library updated.'
       : status === 'exported'
         ? 'Markdown exported.'
         : status === 'cleared'
@@ -1242,7 +1666,11 @@ export function ScientificNotebookPanel({
                 >
                   <header>
                     <strong>
-                      Snapshot {index + 1}
+                      {snapshot.favorite
+                        ? '★ '
+                        : ''}
+                      {snapshot.name
+                        || `Snapshot ${index + 1}`}
                     </strong>
 
                     <time
@@ -1284,6 +1712,47 @@ export function ScientificNotebookPanel({
                       }
                     >
                       Restore inputs
+                    </button>
+
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        renameSnapshot(
+                          snapshot,
+                        )
+                      }
+                    >
+                      Rename
+                    </button>
+
+                    <button
+                      type="button"
+                      aria-pressed={
+                        Boolean(
+                          snapshot.favorite,
+                        )
+                      }
+                      onClick={() =>
+                        toggleSnapshotFavorite(
+                          snapshot.id,
+                        )
+                      }
+                    >
+                      {snapshot.favorite
+                        ? '★ Favorite'
+                        : '☆ Favorite'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        deleteSnapshot(
+                          snapshot,
+                        )
+                      }
+                    >
+                      Delete
                     </button>
                   </div>
 
@@ -1394,16 +1863,40 @@ export function ScientificNotebookPanel({
                 </strong>
               </div>
 
-              <button
-                type="button"
-                onClick={() =>
-                  setSelectedSnapshotIds(
-                    [],
-                  )
-                }
-              >
-                Clear comparison
-              </button>
+              <div className="scientific-notebook-comparison-actions">
+                <button
+                  type="button"
+                  onClick={() =>
+                    exportSelectedSnapshots(
+                      'markdown',
+                    )
+                  }
+                >
+                  Export selected .md
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    exportSelectedSnapshots(
+                      'csv',
+                    )
+                  }
+                >
+                  Export selected .csv
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSelectedSnapshotIds(
+                      [],
+                    )
+                  }
+                >
+                  Clear comparison
+                </button>
+              </div>
             </header>
 
             <div>

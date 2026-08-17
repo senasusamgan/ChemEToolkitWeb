@@ -404,3 +404,40 @@
     width: 100%;
   }
 }
+
+.scientific-notebook-snapshot-actions {
+  flex-wrap: wrap;
+}
+
+.scientific-notebook-snapshot-actions button[aria-pressed="true"] {
+  font-weight: 700;
+}
+
+.scientific-notebook-comparison-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.scientific-notebook-comparison-actions button {
+  min-height: 2rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .scientific-notebook-comparison-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .scientific-notebook-comparison-actions button {
+    width: 100%;
+  }
+}
