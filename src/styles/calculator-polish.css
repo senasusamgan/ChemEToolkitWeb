@@ -803,4 +803,51 @@ label:has(input[required])
   }
 }
 
+/* PHASE 5.2-5.4 CALCULATOR SESSION WORKFLOW */
+
+.calculator-stage-session-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.calculator-stage-session-actions button {
+  appearance: none;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.78rem;
+  line-height: 1;
+  padding: 0.48rem 0.72rem;
+  cursor: pointer;
+}
+
+.calculator-stage-session-actions button:hover {
+  opacity: 0.76;
+}
+
+.calculator-stage-session-actions button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+@media (max-width: 620px) {
+  .calculator-stage-footer {
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+
+  .calculator-stage-session-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .calculator-stage-session-actions button {
+    min-height: 36px;
+  }
+}
 

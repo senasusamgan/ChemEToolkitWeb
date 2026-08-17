@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { CalculatorDefinition } from '../types/calculator'
 import { CalculatorSearchCombobox } from './CalculatorSearchCombobox'
 import { CalculatorWorkbench } from './CalculatorWorkbench'
@@ -13,6 +14,39 @@ export function CalculatorStage({
   liveCalculators,
   onSelect,
 }: CalculatorStageProps) {
+  const [
+    sessionKey,
+    setSessionKey,
+  ] = useState(0)
+
+  function resetCalculatorSession() {
+    setSessionKey(
+      (current) =>
+        current + 1,
+    )
+  }
+
+  function duplicateCalculatorSession() {
+    const calculatorUrl =
+      new URL(
+        window.location.href,
+      )
+
+    calculatorUrl.searchParams.set(
+      'calculator',
+      activeCalculator.id,
+    )
+
+    calculatorUrl.hash =
+      'workbench'
+
+    window.open(
+      calculatorUrl.toString(),
+      '_blank',
+      'noopener,noreferrer',
+    )
+  }
+
   return (
     <section
       className="calculator-stage"
@@ -59,7 +93,7 @@ export function CalculatorStage({
       </header>
 
       <div
-        key={activeCalculator.id}
+        key={`${activeCalculator.id}:${sessionKey}`}
         className="calculator-stage-body"
       >
         <CalculatorWorkbench
@@ -70,9 +104,31 @@ export function CalculatorStage({
 
       <footer className="calculator-stage-footer">
         <span>Verified engineering engine</span>
-        <a href="#references">
-          Reference basis ↘
-        </a>
+
+        <div
+          className="calculator-stage-session-actions"
+          aria-label="Calculator session actions"
+        >
+          <button
+            type="button"
+            onClick={resetCalculatorSession}
+            title="Clear current calculator inputs and start again"
+          >
+            Reset
+          </button>
+
+          <button
+            type="button"
+            onClick={duplicateCalculatorSession}
+            title="Open this calculator in a separate tab"
+          >
+            Duplicate
+          </button>
+
+          <a href="#references">
+            Reference basis ↘
+          </a>
+        </div>
       </footer>
     </section>
   )
