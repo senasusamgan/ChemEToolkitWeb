@@ -16,6 +16,12 @@ const registry =
     'utf8',
   )
 
+const loaders =
+  readFileSync(
+    'src/components/NativeCalculatorCategoryLoaders.tsx',
+    'utf8',
+  )
+
 const catalogIds =
   [
     ...catalog.matchAll(
@@ -69,7 +75,7 @@ const unknown =
 
 const lazyImports =
   [
-    ...registry.matchAll(
+    ...loaders.matchAll(
       /\blazy\s*\(\s*\(\)\s*=>\s*import\s*\(/g,
     ),
   ].length

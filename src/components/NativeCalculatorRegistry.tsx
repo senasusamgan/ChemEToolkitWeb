@@ -1,11 +1,21 @@
-import {
-  lazy,
-} from 'react'
-
 import type {
   ComponentType,
   LazyExoticComponent,
 } from 'react'
+
+import {
+  LazyEngineeringFundamentalsCalculatorCategory,
+  LazyFluidMechanicsCalculatorCategory,
+  LazyHeatTransferCalculatorCategory,
+  LazyMassTransferCalculatorCategory,
+  LazyMaterialAndEnergyBalancesCalculatorCategory,
+  LazyNumericalMethodsCalculatorCategory,
+  LazyProcessControlCalculatorCategory,
+  LazyProcessSafetyAndEconomicsCalculatorCategory,
+  LazyReactionEngineeringCalculatorCategory,
+  LazySeparationProcessesCalculatorCategory,
+  LazyThermodynamicsCalculatorCategory,
+} from './NativeCalculatorCategoryLoaders'
 
 export interface NativeCalculatorCategoryProps {
   calculatorId: string
@@ -3234,84 +3244,6 @@ const CATEGORY_BY_CALCULATOR: Record<
   "tanksInSeriesRTD": "reaction-engineering",
   "arrheniusThreePointFit": "reaction-engineering",
 }
-
-const LazyEngineeringFundamentalsCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/EngineeringFundamentalsCalculatorCategory'
-      ),
-  )
-const LazyFluidMechanicsCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/FluidMechanicsCalculatorCategory'
-      ),
-  )
-const LazyHeatTransferCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/HeatTransferCalculatorCategory'
-      ),
-  )
-const LazyMassTransferCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/MassTransferCalculatorCategory'
-      ),
-  )
-const LazyMaterialAndEnergyBalancesCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/MaterialAndEnergyBalancesCalculatorCategory'
-      ),
-  )
-const LazyNumericalMethodsCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/NumericalMethodsCalculatorCategory'
-      ),
-  )
-const LazyProcessControlCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/ProcessControlCalculatorCategory'
-      ),
-  )
-const LazyProcessSafetyAndEconomicsCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/ProcessSafetyAndEconomicsCalculatorCategory'
-      ),
-  )
-const LazyReactionEngineeringCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/ReactionEngineeringCalculatorCategory'
-      ),
-  )
-const LazySeparationProcessesCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/SeparationProcessesCalculatorCategory'
-      ),
-  )
-const LazyThermodynamicsCalculatorCategory =
-  lazy(
-    () =>
-      import(
-        './native-calculator-categories/ThermodynamicsCalculatorCategory'
-      ),
-  )
 
 const CATEGORY_COMPONENTS: Record<
   CalculatorCategoryKey,
