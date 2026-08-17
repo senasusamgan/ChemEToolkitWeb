@@ -21,6 +21,10 @@ interface HomeDashboardProps {
   onOpenCalculator: (calculatorId: string) => void
   onOpenCategory: (categoryName: string) => void
   onOpenProblemSolver: () => void
+  onOpenWorkspaceTool: (
+    tabId: 'records' | 'compare' | 'command',
+    targetId?: string,
+  ) => void
   onToggleFavorite: (calculatorId: string) => void
   liveCalculators: CalculatorDefinition[]
 }
@@ -35,6 +39,7 @@ export function HomeDashboard({
   onOpenCalculator,
   onOpenCategory,
   onOpenProblemSolver,
+  onOpenWorkspaceTool,
   onToggleFavorite,
   liveCalculators,
 }: HomeDashboardProps) {
@@ -84,18 +89,78 @@ export function HomeDashboard({
         <div className="home-workspace-live" id="workbench">
           <div className="home-workspace-live-header">
             <span className="home-workspace-live-label">Live workspace</span>
-            <button
-              type="button"
-              className="home-workspace-favorite"
-              data-favorite={activeCalculatorIsFavorite}
-              aria-pressed={activeCalculatorIsFavorite}
-              onClick={() => onToggleFavorite(activeCalculator.id)}
+            <div
+              className="home-workspace-actions"
+              aria-label="Calculator actions"
             >
-              <span aria-hidden="true">
-                {activeCalculatorIsFavorite ? '★' : '☆'}
-              </span>
-              {activeCalculatorIsFavorite ? 'Saved' : 'Save'}
-            </button>
+              <button
+                type="button"
+                className="home-workspace-favorite"
+                data-favorite={activeCalculatorIsFavorite}
+                aria-pressed={activeCalculatorIsFavorite}
+                onClick={() =>
+                  onToggleFavorite(activeCalculator.id)
+                }
+              >
+                <span aria-hidden="true">
+                  {activeCalculatorIsFavorite ? '★' : '☆'}
+                </span>
+                {activeCalculatorIsFavorite ? 'Saved' : 'Save'}
+              </button>
+
+              <button
+                type="button"
+                className="home-workspace-action"
+                onClick={() =>
+                  onOpenWorkspaceTool(
+                    'records',
+                    'workspace-history',
+                  )
+                }
+              >
+                <span aria-hidden="true">↺</span>
+                History
+              </button>
+
+              <button
+                type="button"
+                className="home-workspace-action"
+                onClick={() =>
+                  onOpenWorkspaceTool(
+                    'compare',
+                    'workspace-compare',
+                  )
+                }
+              >
+                <span aria-hidden="true">⇄</span>
+                Compare
+              </button>
+
+              <button
+                type="button"
+                className="home-workspace-action"
+                onClick={() =>
+                  onOpenWorkspaceTool(
+                    'records',
+                    'workspace-export',
+                  )
+                }
+              >
+                <span aria-hidden="true">⇩</span>
+                Export
+              </button>
+
+              <button
+                type="button"
+                className="home-workspace-action"
+                onClick={() =>
+                  onOpenWorkspaceTool('command')
+                }
+              >
+                <span aria-hidden="true">•••</span>
+                More tools
+              </button>
+            </div>
           </div>
 
           <div className="home-workspace-live-body">

@@ -1199,3 +1199,83 @@
     margin-bottom: 30px;
   }
 }
+
+
+/* ============================================
+   PHASE 3.2B-1: CALCULATOR ESSENTIAL ACTIONS
+   ============================================ */
+
+.home-workspace-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.home-workspace-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 6px 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.home-workspace-action:hover,
+.home-workspace-action:focus-visible {
+  border-color: var(--teal);
+  background: var(--paper-deep);
+  color: var(--teal-dark);
+}
+
+.home-workspace-action:focus-visible,
+.home-workspace-favorite:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  .home-workspace-live-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .home-workspace-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-workspace-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-workspace-actions .home-workspace-favorite,
+  .home-workspace-action {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .home-workspace-action:last-child {
+    grid-column: 1 / -1;
+  }
+}

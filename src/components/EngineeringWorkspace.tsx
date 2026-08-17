@@ -167,6 +167,11 @@ interface EngineeringWorkspaceProps {
     calculatorId: string,
   ) => void
   openProblemSolverRequest: number
+  openToolRequest: {
+    tabId: 'records' | 'compare' | 'command'
+    targetId?: string
+    requestId: number
+  } | null
 }
 
 function readActiveTab():
@@ -195,6 +200,7 @@ export function EngineeringWorkspace({
   calculator,
   onOpenCalculator,
   openProblemSolverRequest,
+  openToolRequest,
 }: EngineeringWorkspaceProps) {
   const [
     activeTab,
@@ -215,6 +221,38 @@ export function EngineeringWorkspace({
       activeTab,
     )
   }, [activeTab])
+
+  useEffect(() => {
+    if (!openToolRequest) {
+      return
+    }
+
+    setActiveTab(
+      openToolRequest.tabId,
+    )
+
+    window.setTimeout(() => {
+      const target =
+        openToolRequest.targetId
+          ? document.getElementById(
+              openToolRequest.targetId,
+            )
+          : document.getElementById(
+              `workspace-tab-${openToolRequest.tabId}`,
+            )
+
+      target?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+
+      document
+        .getElementById(
+          `workspace-tab-${openToolRequest.tabId}`,
+        )
+        ?.focus()
+    }, 0)
+  }, [openToolRequest])
 
   useEffect(() => {
     if (
@@ -511,13 +549,19 @@ export function EngineeringWorkspace({
         aria-labelledby="workspace-tab-records"
         hidden={activeTab !== 'records'}
       >
-        <div className="engineering-workspace-module">
+        <div
+          id="workspace-export"
+          className="engineering-workspace-module"
+        >
           <CalculationExportPanel
             calculator={calculator}
           />
         </div>
 
-        <div className="engineering-workspace-module">
+        <div
+          id="workspace-history"
+          className="engineering-workspace-module"
+        >
           <CalculationHistoryPanel
             calculator={calculator}
             onOpenCalculator={
@@ -535,7 +579,10 @@ export function EngineeringWorkspace({
         aria-labelledby="workspace-tab-compare"
         hidden={activeTab !== 'compare'}
       >
-        <div className="engineering-workspace-module">
+        <div
+          id="workspace-compare"
+          className="engineering-workspace-module"
+        >
           <CalculationComparisonPanel
             calculator={calculator}
           />

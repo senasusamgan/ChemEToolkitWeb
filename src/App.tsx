@@ -123,6 +123,15 @@ function App() {
     setProblemSolverOpenRequest,
   ] = useState(0)
 
+  const [
+    workspaceToolRequest,
+    setWorkspaceToolRequest,
+  ] = useState<{
+    tabId: 'records' | 'compare' | 'command'
+    targetId?: string
+    requestId: number
+  } | null>(null)
+
   const workspaceSectionRef =
     useRef<HTMLElement | null>(
       null,
@@ -479,6 +488,31 @@ function App() {
     )
   }
 
+  function openWorkspaceTool(
+    tabId: 'records' | 'compare' | 'command',
+    targetId?: string,
+  ) {
+    setShouldLoadWorkspace(true)
+
+    setWorkspaceToolRequest(
+      (currentRequest) => ({
+        tabId,
+        targetId,
+        requestId:
+          (currentRequest?.requestId ?? 0) + 1,
+      }),
+    )
+
+    window.requestAnimationFrame(() => {
+      workspaceSectionRef
+        .current
+        ?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+    })
+  }
+
   function clearCatalogFilters() {
     setSearch('')
     setSelectedCategory('All disciplines')
@@ -702,6 +736,7 @@ function App() {
         onOpenCalculator={openCalculator}
         onOpenCategory={openCategory}
         onOpenProblemSolver={openProblemSolver}
+        onOpenWorkspaceTool={openWorkspaceTool}
         onToggleFavorite={toggleFavorite}
         liveCalculators={calculators.filter(
           (calculator) => calculator.available,
@@ -883,6 +918,9 @@ function App() {
                 }
                 openProblemSolverRequest={
                   problemSolverOpenRequest
+                }
+                openToolRequest={
+                  workspaceToolRequest
                 }
               />
             </Suspense>
