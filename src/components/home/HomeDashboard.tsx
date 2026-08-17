@@ -95,9 +95,19 @@ export function HomeDashboard({
             >
               <button
                 type="button"
-                className="home-workspace-favorite"
+                className="home-workspace-favorite home-workspace-favorite--icon"
                 data-favorite={activeCalculatorIsFavorite}
                 aria-pressed={activeCalculatorIsFavorite}
+                aria-label={
+                  activeCalculatorIsFavorite
+                    ? 'Remove calculator from favorites'
+                    : 'Add calculator to favorites'
+                }
+                title={
+                  activeCalculatorIsFavorite
+                    ? 'Remove from favorites'
+                    : 'Add to favorites'
+                }
                 onClick={() =>
                   onToggleFavorite(activeCalculator.id)
                 }
@@ -105,7 +115,20 @@ export function HomeDashboard({
                 <span aria-hidden="true">
                   {activeCalculatorIsFavorite ? '★' : '☆'}
                 </span>
-                {activeCalculatorIsFavorite ? 'Saved' : 'Save'}
+              </button>
+
+              <button
+                type="button"
+                className="home-workspace-action"
+                onClick={() =>
+                  onOpenWorkspaceTool(
+                    'records',
+                    'workspace-save-current',
+                  )
+                }
+              >
+                <span aria-hidden="true">＋</span>
+                Save
               </button>
 
               <button

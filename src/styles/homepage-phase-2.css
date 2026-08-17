@@ -1279,3 +1279,29 @@
     grid-column: 1 / -1;
   }
 }
+
+
+/* ============================================
+   PHASE 3.2B-2: ACTION SEMANTICS
+   Favorite is separate from Save calculation
+   ============================================ */
+
+.home-workspace-favorite--icon {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.home-workspace-favorite--icon span {
+  line-height: 1;
+}
+
+@media (max-width: 480px) {
+  .home-workspace-actions
+    .home-workspace-favorite--icon {
+    width: 100%;
+  }
+}

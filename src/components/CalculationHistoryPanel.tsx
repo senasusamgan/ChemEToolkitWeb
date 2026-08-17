@@ -1069,6 +1069,24 @@ export function CalculationHistoryPanel({
   }, [calculator.id])
 
   useEffect(() => {
+    function expandHistory() {
+      setIsExpanded(true)
+    }
+
+    window.addEventListener(
+      'cheme-toolkit:expand-calculation-history',
+      expandHistory,
+    )
+
+    return () => {
+      window.removeEventListener(
+        'cheme-toolkit:expand-calculation-history',
+        expandHistory,
+      )
+    }
+  }, [])
+
+  useEffect(() => {
     function handleWorkspaceTarget(
       event: Event,
     ) {
@@ -1471,7 +1489,10 @@ export function CalculationHistoryPanel({
         </button>
       </div>
 
-      <div className="calculation-save-row">
+      <div
+        id="workspace-save-current"
+        className="calculation-save-row"
+      >
         <label>
           <span>
             Calculation name
