@@ -2227,3 +2227,236 @@ button.is-primary {
     font-size: 0.51rem;
   }
 }
+
+
+/* PHASE 3.4B SOLVER ACTION HIERARCHY */
+
+.homepage-problem-editor-actions {
+  margin-top: 3px;
+  padding-top: 10px;
+  border-top:
+    1px solid
+    rgba(217, 208, 189, 0.55);
+}
+
+.homepage-problem-editor-actions
+> div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.homepage-problem-editor-actions
+button {
+  min-height: 34px;
+  padding: 0 10px;
+  border:
+    1px solid
+    rgba(181, 167, 142, 0.7);
+  border-radius: 7px;
+  color:
+    var(--muted, #647a8e);
+  background:
+    rgba(255, 255, 255, 0.76);
+  font-size: 0.56rem;
+  font-weight: 800;
+}
+
+.homepage-problem-editor-actions
+button.is-compare {
+  border-color:
+    rgba(7, 156, 153, 0.3);
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.045);
+}
+
+.homepage-problem-editor-actions
+button.is-active {
+  border-color:
+    rgba(7, 156, 153, 0.55);
+  background:
+    rgba(228, 243, 240, 0.78);
+}
+
+.homepage-problem-editor-actions
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.homepage-problem-editor-actions
+> span {
+  display: none;
+}
+
+.homepage-problem-lazy-tool-launcher {
+  margin-top: 9px;
+  padding: 10px 11px;
+  border:
+    1px dashed
+    rgba(181, 167, 142, 0.72);
+  border-radius: 8px;
+  background:
+    rgba(249, 246, 238, 0.42);
+}
+
+.homepage-problem-lazy-tool-launcher
+> div > span {
+  color:
+    var(--muted, #647a8e);
+}
+
+.homepage-problem-lazy-tool-launcher
+> div > strong {
+  font-size: 0.61rem;
+}
+
+.homepage-problem-lazy-tool-launcher
+> div > small {
+  font-size: 0.51rem;
+}
+
+.homepage-problem-lazy-tool-launcher
+> button {
+  min-height: 34px;
+  border-color:
+    rgba(181, 167, 142, 0.78);
+  color:
+    var(--teal-dark, #007b78);
+  background: #ffffff;
+}
+
+.homepage-problem-result-footer {
+  align-items: flex-end;
+}
+
+.homepage-problem-result-footer
+> div:first-child {
+  max-width: 250px;
+}
+
+.homepage-problem-result-actions
+button {
+  min-height: 34px;
+  padding: 0 10px;
+  font-size: 0.54rem;
+}
+
+.homepage-problem-result-actions
+button.is-secondary {
+  border-color:
+    rgba(181, 167, 142, 0.62);
+  color:
+    var(--muted, #647a8e);
+  background: transparent;
+  box-shadow: none;
+}
+
+.homepage-problem-result-actions
+button.is-secondary:hover {
+  border-color:
+    rgba(7, 156, 153, 0.42);
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(7, 156, 153, 0.04);
+}
+
+.homepage-problem-result-actions
+button.is-primary {
+  min-height: 42px;
+  padding:
+    0
+    17px;
+  border-color:
+    var(--teal-dark, #007b78);
+  color: #ffffff;
+  background:
+    var(--teal-dark, #007b78);
+  font-size: 0.62rem;
+  box-shadow:
+    0 7px 18px
+    rgba(7, 156, 153, 0.16);
+}
+
+.homepage-problem-result-actions
+button.is-primary:hover {
+  transform:
+    translateY(-1px);
+  box-shadow:
+    0 9px 21px
+    rgba(7, 156, 153, 0.2);
+}
+
+.homepage-problem-action-feedback {
+  margin:
+    8px
+    0
+    0;
+  padding:
+    7px
+    9px;
+  border-radius: 7px;
+  background:
+    rgba(228, 243, 240, 0.62);
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.54rem;
+  font-weight: 750;
+}
+
+@media (max-width: 760px) {
+  .homepage-problem-result-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .homepage-problem-result-footer
+  > div:first-child {
+    max-width: none;
+  }
+
+  .homepage-problem-result-actions {
+    width: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+  .homepage-problem-editor-actions
+  > div {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .homepage-problem-editor-actions
+  button {
+    width: 100%;
+  }
+
+  .homepage-problem-result-actions {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .homepage-problem-result-actions
+  button.is-primary {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .homepage-problem-editor-actions
+  > div,
+  .homepage-problem-result-actions {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .homepage-problem-result-actions
+  button.is-primary {
+    grid-column: auto;
+  }
+}
