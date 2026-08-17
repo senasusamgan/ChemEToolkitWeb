@@ -199,6 +199,74 @@ export function ScientificNotebookProjectSets({
       ],
     )
 
+  const portfolioMetrics =
+    useMemo(
+      () => {
+        let planned = 0
+        let active = 0
+        let blocked = 0
+        let complete = 0
+        let progressTotal = 0
+
+        for (
+          const projectSet
+          of projectSets
+        ) {
+          const projectStatus =
+            projectSet.status
+            ?? 'planned'
+
+          if (
+            projectStatus ===
+            'active'
+          ) {
+            active += 1
+          } else if (
+            projectStatus ===
+            'blocked'
+          ) {
+            blocked += 1
+          } else if (
+            projectStatus ===
+            'complete'
+          ) {
+            complete += 1
+          } else {
+            planned += 1
+          }
+
+          progressTotal +=
+            normalizeProjectProgress(
+              projectStatus ===
+                'complete'
+                ? 100
+                : projectSet.progress,
+            )
+        }
+
+        const averageProgress =
+          projectSets.length > 0
+            ? Math.round(
+                progressTotal
+                / projectSets.length,
+              )
+            : 0
+
+        return {
+          total:
+            projectSets.length,
+          planned,
+          active,
+          blocked,
+          complete,
+          averageProgress,
+        }
+      },
+      [
+        projectSets,
+      ],
+    )
+
   function persist(
     nextProjectSets:
       NotebookProjectSet[],
@@ -455,6 +523,139 @@ export function ScientificNotebookProjectSets({
           {status}
         </p>
       </header>
+
+      <section
+        className="scientific-notebook-project-portfolio"
+        aria-label="Project portfolio overview"
+      >
+        <div className="scientific-notebook-project-portfolio-metrics">
+          <button
+            type="button"
+            aria-pressed={
+              statusFilter ===
+              'all'
+            }
+            onClick={() =>
+              setStatusFilter(
+                'all',
+              )
+            }
+          >
+            <span>
+              All
+            </span>
+
+            <strong>
+              {portfolioMetrics.total}
+            </strong>
+          </button>
+
+          <button
+            type="button"
+            aria-pressed={
+              statusFilter ===
+              'planned'
+            }
+            onClick={() =>
+              setStatusFilter(
+                'planned',
+              )
+            }
+          >
+            <span>
+              Planned
+            </span>
+
+            <strong>
+              {portfolioMetrics.planned}
+            </strong>
+          </button>
+
+          <button
+            type="button"
+            aria-pressed={
+              statusFilter ===
+              'active'
+            }
+            onClick={() =>
+              setStatusFilter(
+                'active',
+              )
+            }
+          >
+            <span>
+              Active
+            </span>
+
+            <strong>
+              {portfolioMetrics.active}
+            </strong>
+          </button>
+
+          <button
+            type="button"
+            aria-pressed={
+              statusFilter ===
+              'blocked'
+            }
+            onClick={() =>
+              setStatusFilter(
+                'blocked',
+              )
+            }
+          >
+            <span>
+              Blocked
+            </span>
+
+            <strong>
+              {portfolioMetrics.blocked}
+            </strong>
+          </button>
+
+          <button
+            type="button"
+            aria-pressed={
+              statusFilter ===
+              'complete'
+            }
+            onClick={() =>
+              setStatusFilter(
+                'complete',
+              )
+            }
+          >
+            <span>
+              Complete
+            </span>
+
+            <strong>
+              {portfolioMetrics.complete}
+            </strong>
+          </button>
+        </div>
+
+        <div className="scientific-notebook-project-portfolio-progress">
+          <div>
+            <span>
+              Portfolio progress
+            </span>
+
+            <strong>
+              {portfolioMetrics.averageProgress}
+              %
+            </strong>
+          </div>
+
+          <progress
+            max={100}
+            value={
+              portfolioMetrics.averageProgress
+            }
+            aria-label="Average project portfolio progress"
+          />
+        </div>
+      </section>
 
       <div className="scientific-notebook-project-set-create">
         <label>
