@@ -18,6 +18,7 @@ interface ScientificNotebookPanelProps {
 interface SnapshotInput {
   label: string
   value: string
+  rawValue?: string
   unit: string
 }
 
@@ -58,6 +59,7 @@ type Status =
   | 'idle'
   | 'saved'
   | 'captured'
+  | 'restored'
   | 'exported'
   | 'cleared'
   | 'error'
@@ -270,6 +272,9 @@ function collectInputs(
               || 'Not entered'
             ),
 
+      rawValue:
+        control.value,
+
       unit:
         findInputUnit(
           control,
@@ -461,6 +466,113 @@ function captureCurrentCalculation():
   }
 }
 
+function setControlValue(
+  control:
+    | HTMLInputElement
+    | HTMLSelectElement
+    | HTMLTextAreaElement,
+  value: string,
+) {
+  const prototype =
+    control instanceof
+    HTMLInputElement
+      ? HTMLInputElement.prototype
+      : control instanceof
+          HTMLSelectElement
+        ? HTMLSelectElement.prototype
+        : HTMLTextAreaElement.prototype
+
+  const setter =
+    Object.getOwnPropertyDescriptor(
+      prototype,
+      'value',
+    )?.set
+
+  if (setter) {
+    setter.call(
+      control,
+      value,
+    )
+  } else {
+    control.value = value
+  }
+
+  control.dispatchEvent(
+    new Event(
+      'input',
+      {
+        bubbles: true,
+      },
+    ),
+  )
+
+  control.dispatchEvent(
+    new Event(
+      'change',
+      {
+        bubbles: true,
+      },
+    ),
+  )
+}
+
+function resolveRestoreValue(
+  control:
+    | HTMLInputElement
+    | HTMLSelectElement
+    | HTMLTextAreaElement,
+  input: SnapshotInput,
+): string {
+  if (
+    typeof input.rawValue ===
+    'string'
+  ) {
+    return input.rawValue
+  }
+
+  if (
+    control instanceof
+    HTMLSelectElement
+  ) {
+    const matchingOption =
+      Array.from(
+        control.options,
+      ).find(
+        (option) =>
+          normalizeText(
+            option.textContent,
+          ) === input.value,
+      )
+
+    if (matchingOption) {
+      return matchingOption.value
+    }
+  }
+
+  return input.value ===
+    'Not entered'
+    ? ''
+    : input.value
+}
+
+function formatSnapshotValue(
+  item:
+    | SnapshotInput
+    | SnapshotResult
+    | undefined,
+): string {
+  if (!item) {
+    return '—'
+  }
+
+  return [
+    item.value,
+    item.unit,
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
 function createSlug(
   value: string,
 ): string {
@@ -517,6 +629,13 @@ export function ScientificNotebookPanel({
   >([])
 
   const [
+    selectedSnapshotIds,
+    setSelectedSnapshotIds,
+  ] = useState<string[]>(
+    [],
+  )
+
+  const [
     status,
     setStatus,
   ] = useState<Status>(
@@ -551,6 +670,10 @@ export function ScientificNotebookPanel({
       )
         ? saved.snapshots
         : [],
+    )
+
+    setSelectedSnapshotIds(
+      [],
     )
 
     setStatus(
@@ -672,6 +795,94 @@ export function ScientificNotebookPanel({
     }
   }
 
+  function toggleSnapshotComparison(
+    snapshotId: string,
+  ) {
+    setSelectedSnapshotIds(
+      (current) => {
+        if (
+          current.includes(
+            snapshotId,
+          )
+        ) {
+          return current.filter(
+            (id) =>
+              id !== snapshotId,
+          )
+        }
+
+        if (
+          current.length < 2
+        ) {
+          return [
+            ...current,
+            snapshotId,
+          ]
+        }
+
+        return [
+          current[1],
+          snapshotId,
+        ]
+      },
+    )
+  }
+
+  function restoreSnapshotInputs(
+    snapshot: CalculationSnapshot,
+  ) {
+    const root =
+      getCalculatorRoot()
+
+    if (!root) {
+      setStatus(
+        'error',
+      )
+      return
+    }
+
+    const controls =
+      getControls(
+        root,
+      )
+
+    if (
+      controls.length === 0
+      || snapshot.inputs.length === 0
+    ) {
+      setStatus(
+        'error',
+      )
+      return
+    }
+
+    snapshot.inputs.forEach(
+      (
+        input,
+        index,
+      ) => {
+        const control =
+          controls[index]
+
+        if (!control) {
+          return
+        }
+
+        setControlValue(
+          control,
+          resolveRestoreValue(
+            control,
+            input,
+          ),
+        )
+      },
+    )
+
+    setStatus(
+      'restored',
+    )
+  }
+
   function clearNotebook() {
     if (
       hasContent
@@ -702,6 +913,7 @@ export function ScientificNotebookPanel({
       setObservations('')
       setConclusion('')
       setSnapshots([])
+      setSelectedSnapshotIds([])
 
       setStatus(
         'cleared',
@@ -850,6 +1062,8 @@ export function ScientificNotebookPanel({
       ? 'Notebook saved locally.'
       : status === 'captured'
         ? 'Current calculation captured.'
+      : status === 'restored'
+        ? 'Snapshot inputs restored. Recalculate to refresh results.'
       : status === 'exported'
         ? 'Markdown exported.'
         : status === 'cleared'
@@ -857,6 +1071,22 @@ export function ScientificNotebookPanel({
           : status === 'error'
             ? 'Notebook action failed.'
             : 'Stored locally on this device.'
+
+  const comparedSnapshots =
+    selectedSnapshotIds
+      .map(
+        (id) =>
+          snapshots.find(
+            (snapshot) =>
+              snapshot.id === id,
+          ),
+      )
+      .filter(
+        (
+          snapshot,
+        ): snapshot is CalculationSnapshot =>
+          Boolean(snapshot),
+      )
 
   return (
     <aside
@@ -1024,6 +1254,39 @@ export function ScientificNotebookPanel({
                     </time>
                   </header>
 
+                  <div className="scientific-notebook-snapshot-actions">
+                    <button
+                      type="button"
+                      aria-pressed={
+                        selectedSnapshotIds.includes(
+                          snapshot.id,
+                        )
+                      }
+                      onClick={() =>
+                        toggleSnapshotComparison(
+                          snapshot.id,
+                        )
+                      }
+                    >
+                      {selectedSnapshotIds.includes(
+                        snapshot.id,
+                      )
+                        ? 'Selected'
+                        : 'Compare'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        restoreSnapshotInputs(
+                          snapshot,
+                        )
+                      }
+                    >
+                      Restore inputs
+                    </button>
+                  </div>
+
                   <div>
                     <section>
                       <span>
@@ -1114,6 +1377,182 @@ export function ScientificNotebookPanel({
             Run a calculation, then capture its current inputs and results here.
           </p>
         )}
+
+        {comparedSnapshots.length === 2 ? (
+          <section
+            className="scientific-notebook-comparison"
+            aria-label="Snapshot comparison"
+          >
+            <header>
+              <div>
+                <span>
+                  Snapshot comparison
+                </span>
+
+                <strong>
+                  A ↔ B
+                </strong>
+              </div>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setSelectedSnapshotIds(
+                    [],
+                  )
+                }
+              >
+                Clear comparison
+              </button>
+            </header>
+
+            <div>
+              <section>
+                <h4>
+                  Inputs
+                </h4>
+
+                <div className="scientific-notebook-compare-table">
+                  <div className="scientific-notebook-compare-heading">
+                    <span>
+                      Parameter
+                    </span>
+                    <span>
+                      Snapshot A
+                    </span>
+                    <span>
+                      Snapshot B
+                    </span>
+                  </div>
+
+                  {Array.from(
+                    {
+                      length:
+                        Math.max(
+                          comparedSnapshots[0]
+                            .inputs.length,
+                          comparedSnapshots[1]
+                            .inputs.length,
+                        ),
+                    },
+                    (
+                      _,
+                      rowIndex,
+                    ) => {
+                      const left =
+                        comparedSnapshots[0]
+                          .inputs[
+                            rowIndex
+                          ]
+
+                      const right =
+                        comparedSnapshots[1]
+                          .inputs[
+                            rowIndex
+                          ]
+
+                      return (
+                        <div
+                          key={`input:${rowIndex}`}
+                        >
+                          <strong>
+                            {left?.label
+                              ?? right?.label
+                              ?? 'Input'}
+                          </strong>
+
+                          <span>
+                            {formatSnapshotValue(
+                              left,
+                            )}
+                          </span>
+
+                          <span>
+                            {formatSnapshotValue(
+                              right,
+                            )}
+                          </span>
+                        </div>
+                      )
+                    },
+                  )}
+                </div>
+              </section>
+
+              <section>
+                <h4>
+                  Results
+                </h4>
+
+                <div className="scientific-notebook-compare-table">
+                  <div className="scientific-notebook-compare-heading">
+                    <span>
+                      Result
+                    </span>
+                    <span>
+                      Snapshot A
+                    </span>
+                    <span>
+                      Snapshot B
+                    </span>
+                  </div>
+
+                  {Array.from(
+                    {
+                      length:
+                        Math.max(
+                          comparedSnapshots[0]
+                            .results.length,
+                          comparedSnapshots[1]
+                            .results.length,
+                        ),
+                    },
+                    (
+                      _,
+                      rowIndex,
+                    ) => {
+                      const left =
+                        comparedSnapshots[0]
+                          .results[
+                            rowIndex
+                          ]
+
+                      const right =
+                        comparedSnapshots[1]
+                          .results[
+                            rowIndex
+                          ]
+
+                      return (
+                        <div
+                          key={`result:${rowIndex}`}
+                        >
+                          <strong>
+                            {left?.label
+                              ?? right?.label
+                              ?? 'Result'}
+                          </strong>
+
+                          <span>
+                            {formatSnapshotValue(
+                              left,
+                            )}
+                          </span>
+
+                          <span>
+                            {formatSnapshotValue(
+                              right,
+                            )}
+                          </span>
+                        </div>
+                      )
+                    },
+                  )}
+                </div>
+              </section>
+            </div>
+          </section>
+        ) : null}
       </section>
 
       <footer className="scientific-notebook-footer">

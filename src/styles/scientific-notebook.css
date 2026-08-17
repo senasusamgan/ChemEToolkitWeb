@@ -290,3 +290,117 @@
     grid-template-columns: 1fr;
   }
 }
+
+.scientific-notebook-snapshot-actions {
+  display: flex !important;
+  justify-content: flex-end;
+  gap: 0.5rem !important;
+  margin-bottom: 0.75rem;
+}
+
+.scientific-notebook-snapshot-actions button {
+  min-height: 2rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.74rem;
+}
+
+.scientific-notebook-snapshot-actions button[aria-pressed="true"] {
+  font-weight: 700;
+  border-width: 2px;
+}
+
+.scientific-notebook-comparison {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line, #d7dde5);
+}
+
+.scientific-notebook-comparison > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.scientific-notebook-comparison > header > div {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.scientific-notebook-comparison > header span {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.scientific-notebook-comparison > header button {
+  min-height: 2rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.scientific-notebook-comparison > div {
+  display: grid;
+  gap: 1rem;
+}
+
+.scientific-notebook-comparison h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+}
+
+.scientific-notebook-compare-table {
+  overflow-x: auto;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 10px;
+}
+
+.scientific-notebook-compare-table > div {
+  display: grid;
+  grid-template-columns:
+    minmax(9rem, 1fr)
+    minmax(9rem, 1fr)
+    minmax(9rem, 1fr);
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  border-top: 1px solid var(--line, #d7dde5);
+  font-size: 0.76rem;
+}
+
+.scientific-notebook-compare-table > div:first-child {
+  border-top: 0;
+}
+
+.scientific-notebook-compare-heading {
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+@media (max-width: 760px) {
+  .scientific-notebook-snapshot-actions {
+    justify-content: stretch;
+  }
+
+  .scientific-notebook-snapshot-actions button {
+    flex: 1;
+  }
+
+  .scientific-notebook-comparison > header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .scientific-notebook-comparison > header button {
+    width: 100%;
+  }
+}
