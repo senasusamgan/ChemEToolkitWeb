@@ -37,6 +37,14 @@ export default defineConfig({
 
           if (
             normalized.includes(
+              '/src/features/fluid-mechanics/',
+            )
+          ) {
+            return undefined
+          }
+
+          if (
+            normalized.includes(
               '/src/features/',
             )
           ) {
