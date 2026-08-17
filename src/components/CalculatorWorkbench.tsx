@@ -1,3 +1,4 @@
+import { PhaseThirteenNativeCalculator } from '../features/native-migrations/phase-thirteen/PhaseThirteenNativeCalculator'
 import { PhaseTwelveNativeCalculator } from '../features/native-migrations/phase-twelve/PhaseTwelveNativeCalculator'
 import { PhaseElevenNativeCalculator } from '../features/native-migrations/phase-eleven/PhaseElevenNativeCalculator'
 import { PhaseTenThermodynamicsCalculator } from '../features/native-migrations/phase-ten-thermodynamics/PhaseTenThermodynamicsCalculator'
@@ -224,6 +225,390 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === "dragForce") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "minorLosses") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "orificeMeter") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "particleSettling") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "reynoldsNumber") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "tankDrainTime") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "uTubeManometer") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "venturiMeter") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "reactiveMaterialBalance") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "recyclePurgeInertBalance") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "solidsWashingBalance") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "soluteDilutionCalculator") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "streamSplitterBalance") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "twoStreamMixerBalance") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "adaptiveSimpsonIntegration") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "odeSolver") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "gaussLegendreQuadrature") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "goldenSectionOptimization") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "linearSystems") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "numericalDifferentiation") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "numericalIntegration") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "numericalInterpolation") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "rootFinding") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "rombergIntegration") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "firstOrderPlusDeadTimeProcess") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "firstOrderProcessResponse") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "imcControllerTuning") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "pidController") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "secondOrderProcessResponse") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "zieglerNicholsReactionCurveTuning") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "arrheniusRateConstant") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "constantVolumeStoichiometry") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "conversionYieldSelectivity") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "cstrsInSeries") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "pfrSections") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "reactionRateCalculator") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "reactorComparison") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "reactorDesign") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "spaceTimeSpaceVelocity") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "binaryIsothermalFlash") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "binaryMinimumReflux") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "binaryRelativeVolatilityVLE") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "cycloneCutDiameter") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "fenskeMinimumStages") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "absorptionMinimumSolventRate") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "murphreeTrayEfficiency") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "packedColumnHTUNTU") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "psychrometricAirEnthalpy") {
+    return (
+      <PhaseThirteenNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
   if (calculatorId === "averageMolecularWeight") {
     return (
       <PhaseTwelveNativeCalculator
