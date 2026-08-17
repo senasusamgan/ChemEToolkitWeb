@@ -68,6 +68,25 @@ const PERSONAL_DATA_CHANGE_EVENT =
 const CATALOG_PAGE_SIZE =
   20
 
+function readCalculatorIdFromLocation(): string {
+  const calculatorId =
+    new URLSearchParams(
+      window.location.search,
+    ).get('calculator')
+
+  const matchedCalculator =
+    calculators.find(
+      (calculator) =>
+        calculator.id === calculatorId &&
+        calculator.available,
+    )
+
+  return (
+    matchedCalculator?.id ??
+    defaultCalculator.id
+  )
+}
+
 function readStoredIds(key: string): string[] {
   try {
     const storedValue =
@@ -104,7 +123,7 @@ function App() {
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
   const [catalogPage, setCatalogPage] = useState(1)
   const [activeCalculatorId, setActiveCalculatorId] = useState(
-    defaultCalculator.id,
+    () => readCalculatorIdFromLocation(),
   )
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -200,6 +219,45 @@ function App() {
     favoriteCalculatorIds.includes(
       activeCalculator.id,
     )
+
+  useEffect(() => {
+    function syncCalculatorFromHistory() {
+      setActiveCalculatorId(
+        readCalculatorIdFromLocation(),
+      )
+    }
+
+    window.addEventListener(
+      'popstate',
+      syncCalculatorFromHistory,
+    )
+
+    return () => {
+      window.removeEventListener(
+        'popstate',
+        syncCalculatorFromHistory,
+      )
+    }
+  }, [])
+
+  useEffect(() => {
+    if (
+      window.location.hash !==
+      '#workbench'
+    ) {
+      return
+    }
+
+    window.requestAnimationFrame(
+      () => {
+        document
+          .querySelector('#workbench')
+          ?.scrollIntoView({
+            block: 'start',
+          })
+      },
+    )
+  }, [])
 
   useEffect(() => {
     window.localStorage.setItem(
@@ -564,6 +622,27 @@ function App() {
 
   function openCalculator(calculatorId: string) {
     setActiveCalculatorId(calculatorId)
+
+    const calculatorUrl =
+      new URL(
+        window.location.href,
+      )
+
+    calculatorUrl.searchParams.set(
+      'calculator',
+      calculatorId,
+    )
+
+    calculatorUrl.hash =
+      'workbench'
+
+    window.history.pushState(
+      {
+        calculatorId,
+      },
+      '',
+      calculatorUrl,
+    )
 
     setRecentCalculatorIds((currentIds) => [
       calculatorId,

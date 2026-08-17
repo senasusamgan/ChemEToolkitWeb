@@ -3,6 +3,7 @@
  * Phase 2: Engineering-first homepage dashboard
  */
 
+import { useState } from 'react'
 import type { CalculatorDefinition } from '../../types/calculator'
 import { HomeSearch } from './HomeSearch'
 import { RecentCalculators } from './RecentCalculators'
@@ -46,6 +47,39 @@ export function HomeDashboard({
   const liveCalculatorCount = calculators.filter(
     (calculator) => calculator.available,
   ).length
+
+  const [
+    linkCopied,
+    setLinkCopied,
+  ] = useState(false)
+
+  async function copyCalculatorLink() {
+    const calculatorUrl =
+      new URL(
+        window.location.href,
+      )
+
+    calculatorUrl.searchParams.set(
+      'calculator',
+      activeCalculator.id,
+    )
+
+    calculatorUrl.hash =
+      'workbench'
+
+    await navigator.clipboard.writeText(
+      calculatorUrl.toString(),
+    )
+
+    setLinkCopied(true)
+
+    window.setTimeout(
+      () => {
+        setLinkCopied(false)
+      },
+      1600,
+    )
+  }
 
   return (
     <div className="home-dashboard">
@@ -115,6 +149,18 @@ export function HomeDashboard({
                 <span aria-hidden="true">
                   {activeCalculatorIsFavorite ? '★' : '☆'}
                 </span>
+              </button>
+
+              <button
+                type="button"
+                className="home-workspace-action"
+                onClick={() => {
+                  void copyCalculatorLink()
+                }}
+                aria-live="polite"
+              >
+                <span aria-hidden="true">↗</span>
+                {linkCopied ? 'Copied' : 'Copy link'}
               </button>
 
               <button
