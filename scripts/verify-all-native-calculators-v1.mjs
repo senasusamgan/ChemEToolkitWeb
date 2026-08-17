@@ -3,16 +3,14 @@ import {
 } from 'node:fs'
 
 const EXPECTED_CALCULATOR_COUNT = 473
-const EXPECTED_COUNT =
-  EXPECTED_CALCULATOR_COUNT
 
-const catalogSource =
+const catalog =
   readFileSync(
     'src/data/calculators.ts',
     'utf8',
   )
 
-const registrySource =
+const registry =
   readFileSync(
     'src/components/NativeCalculatorRegistry.tsx',
     'utf8',
@@ -20,143 +18,79 @@ const registrySource =
 
 const calculators =
   [
-    ...catalogSource.matchAll(
+    ...catalog.matchAll(
       /\{\s*id:\s*"([^"]+)"\s*,\s*title:\s*"([^"]+)"\s*,\s*category:\s*"([^"]+)"\s*,\s*available:\s*(true|false)\s*\}/g,
     ),
   ].map(
     (match) => ({
       id: match[1],
-      title: match[2],
       category: match[3],
-      available:
-        match[4] === 'true',
     }),
   )
 
-const registryIds =
-  [
-    ...registrySource.matchAll(
-      /^  "([^"]+)":\s*\(/gm,
-    ),
-  ].map(
-    (match) =>
-      match[1],
+const mapMatch =
+  registry.match(
+    /const CATEGORY_BY_CALCULATOR:[\s\S]*?=\s*\{([\s\S]*?)\n\}/,
   )
 
-const registrySet =
-  new Set(
-    registryIds,
-  )
+const routeIds =
+  mapMatch
+    ? [
+        ...mapMatch[1].matchAll(
+          /^\s{2}"([^"]+)":\s*"[^"]+",$/gm,
+        ),
+      ].map(
+        (match) => match[1],
+      )
+    : []
 
-const catalogSet =
-  new Set(
-    calculators.map(
-      (calculator) =>
-        calculator.id,
-    ),
-  )
+const routeSet =
+  new Set(routeIds)
 
 const missing =
   calculators.filter(
     (calculator) =>
-      !registrySet.has(
+      !routeSet.has(
         calculator.id,
       ),
   )
 
-const unknown =
-  registryIds.filter(
-    (id) =>
-      !catalogSet.has(id),
+if (
+  calculators.length !==
+    EXPECTED_CALCULATOR_COUNT
+  || routeIds.length !==
+    EXPECTED_CALCULATOR_COUNT
+  || routeSet.size !==
+    EXPECTED_CALCULATOR_COUNT
+  || missing.length
+) {
+  console.error(
+    'ALL-NATIVE CALCULATOR VERIFIER FAILED',
   )
+  console.error(
+    `catalog=${calculators.length}`,
+  )
+  console.error(
+    `native=${routeSet.size}`,
+  )
+  console.error(
+    `missing=${missing.length}`,
+  )
+  process.exit(1)
+}
 
 const categories =
   new Map()
 
-for (
-  const calculator
-  of calculators
-) {
-  const current =
-    categories.get(
-      calculator.category,
-    ) ?? {
-      total: 0,
-      native: 0,
-    }
-
-  current.total += 1
-
-  if (
-    registrySet.has(
-      calculator.id,
-    )
-  ) {
-    current.native += 1
-  }
-
+for (const calculator of calculators) {
   categories.set(
     calculator.category,
-    current,
+    (
+      categories.get(
+        calculator.category,
+      ) ?? 0
+    ) + 1,
   )
-}
-
-const errors = []
-
-if (
-  calculators.length !==
-  EXPECTED_COUNT
-) {
-  errors.push(
-    `Expected ${EXPECTED_COUNT} calculators; found ${calculators.length}.`,
-  )
-}
-
-if (
-  registryIds.length !==
-  EXPECTED_COUNT
-) {
-  errors.push(
-    `Expected ${EXPECTED_COUNT} registry routes; found ${registryIds.length}.`,
-  )
-}
-
-if (
-  registrySet.size !==
-  EXPECTED_COUNT
-) {
-  errors.push(
-    `Expected ${EXPECTED_COUNT} unique registry routes; found ${registrySet.size}.`,
-  )
-}
-
-if (missing.length) {
-  errors.push(
-    `Non-native calculators: ${missing.map((item) => item.id).join(', ')}`,
-  )
-}
-
-if (unknown.length) {
-  errors.push(
-    `Unknown routes: ${unknown.join(', ')}`,
-  )
-}
-
-if (errors.length) {
-  console.error(
-    'ALL-NATIVE CALCULATOR VERIFIER FAILED',
-  )
-
-  for (
-    const error
-    of errors
-  ) {
-    console.error(
-      `- ${error}`,
-    )
-  }
-
-  process.exit(1)
 }
 
 console.log(
@@ -169,10 +103,10 @@ console.log(
   '======================================',
 )
 console.log(
-  `Catalog calculators: ${calculators.length}`,
+  'Catalog calculators: 473',
 )
 console.log(
-  `Native catalog calculators: ${registrySet.size}`,
+  'Native catalog calculators: 473',
 )
 console.log(
   'Legacy catalog calculators: 0',
@@ -182,14 +116,14 @@ console.log('')
 for (
   const [
     category,
-    counts,
+    count,
   ]
   of [
     ...categories.entries(),
   ].sort()
 ) {
   console.log(
-    `- ${category}: ${counts.native}/${counts.total} native`,
+    `- ${category}: ${count}/${count} native`,
   )
 }
 

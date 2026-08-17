@@ -1,5 +1,9 @@
 import {
-  renderNativeCalculator,
+  Suspense,
+} from 'react'
+
+import {
+  getNativeCalculatorComponent,
 } from './NativeCalculatorRegistry'
 
 interface CalculatorWorkbenchProps {
@@ -7,25 +11,35 @@ interface CalculatorWorkbenchProps {
   title: string
 }
 
-/*
-  Runtime calculator routing is delegated to NativeCalculatorRegistry.tsx.
-  Historical verifier markers live in scripts/calculator-routing-contract-v1.txt.
-*/
-
 export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
-  const calculator =
-    renderNativeCalculator(
+  const NativeCalculator =
+    getNativeCalculatorComponent(
       calculatorId,
-      title,
     )
 
-  if (
-    calculator !== null
-  ) {
-    return calculator
+  if (NativeCalculator) {
+    return (
+      <Suspense
+        fallback={
+          <section
+            className="native-calculator"
+            aria-busy="true"
+          >
+            <div className="native-error">
+              Loading calculator…
+            </div>
+          </section>
+        }
+      >
+        <NativeCalculator
+          calculatorId={calculatorId}
+          title={title}
+        />
+      </Suspense>
+    )
   }
 
   return (

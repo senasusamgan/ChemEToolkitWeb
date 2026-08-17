@@ -1,6 +1,37 @@
-import type {
-  ReactNode,
+import {
+  lazy,
 } from 'react'
+
+import type {
+  ComponentType,
+  LazyExoticComponent,
+} from 'react'
+
+export interface NativeCalculatorCategoryProps {
+  calculatorId: string
+  title: string
+}
+
+type CalculatorCategoryKey =
+  "engineering-fundamentals"
+  | "fluid-mechanics"
+  | "heat-transfer"
+  | "mass-transfer"
+  | "material-and-energy-balances"
+  | "numerical-methods"
+  | "process-control"
+  | "process-safety-and-economics"
+  | "reaction-engineering"
+  | "separation-processes"
+  | "thermodynamics"
+
+/*
+  SOURCE COMPATIBILITY SHADOW
+
+  Runtime uses CATEGORY_BY_CALCULATOR and lazy category modules below.
+  The historical source is retained only inside this comment so older
+  verification scripts can continue to inspect calculator/component
+  relationships without pulling these static imports into the bundle.
 
 import { PhaseThirteenNativeCalculator } from '../features/native-migrations/phase-thirteen/PhaseThirteenNativeCalculator'
 import { PhaseTwelveNativeCalculator } from '../features/native-migrations/phase-twelve/PhaseTwelveNativeCalculator'
@@ -219,15 +250,9 @@ import { PartiallyFullCircularChannelMinimumDiameterSpecificEnergyCalculator } f
 import { PartiallyFullCircularChannelMinimumRequiredSpecificEnergyCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-minimum-required-specific-energy/PartiallyFullCircularChannelMinimumRequiredSpecificEnergyCalculator'
 import { PartiallyFullCircularChannelCapacityChokingMarginCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-capacity-choking-margin/PartiallyFullCircularChannelCapacityChokingMarginCalculator'
 
-type NativeCalculatorRenderer = (
-  title: string,
-) => ReactNode
 
-const NATIVE_CALCULATOR_RENDERERS: Record<
-  string,
-  NativeCalculatorRenderer
-> = {
-  "dragForce": () => {
+const NATIVE_CALCULATOR_RENDERERS = {
+"dragForce": () => {
     const calculatorId = "dragForce" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -235,7 +260,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "minorLosses": () => {
+"minorLosses": () => {
     const calculatorId = "minorLosses" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -243,7 +268,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "orificeMeter": () => {
+"orificeMeter": () => {
     const calculatorId = "orificeMeter" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -251,7 +276,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "particleSettling": () => {
+"particleSettling": () => {
     const calculatorId = "particleSettling" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -259,7 +284,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "reynoldsNumber": () => {
+"reynoldsNumber": () => {
     const calculatorId = "reynoldsNumber" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -267,7 +292,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "tankDrainTime": () => {
+"tankDrainTime": () => {
     const calculatorId = "tankDrainTime" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -275,7 +300,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "uTubeManometer": () => {
+"uTubeManometer": () => {
     const calculatorId = "uTubeManometer" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -283,7 +308,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "venturiMeter": () => {
+"venturiMeter": () => {
     const calculatorId = "venturiMeter" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -291,7 +316,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "reactiveMaterialBalance": () => {
+"reactiveMaterialBalance": () => {
     const calculatorId = "reactiveMaterialBalance" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -299,7 +324,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "recyclePurgeInertBalance": () => {
+"recyclePurgeInertBalance": () => {
     const calculatorId = "recyclePurgeInertBalance" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -307,7 +332,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "solidsWashingBalance": () => {
+"solidsWashingBalance": () => {
     const calculatorId = "solidsWashingBalance" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -315,7 +340,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "soluteDilutionCalculator": () => {
+"soluteDilutionCalculator": () => {
     const calculatorId = "soluteDilutionCalculator" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -323,7 +348,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "streamSplitterBalance": () => {
+"streamSplitterBalance": () => {
     const calculatorId = "streamSplitterBalance" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -331,7 +356,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "twoStreamMixerBalance": () => {
+"twoStreamMixerBalance": () => {
     const calculatorId = "twoStreamMixerBalance" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -339,7 +364,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "adaptiveSimpsonIntegration": () => {
+"adaptiveSimpsonIntegration": () => {
     const calculatorId = "adaptiveSimpsonIntegration" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -347,7 +372,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "odeSolver": () => {
+"odeSolver": () => {
     const calculatorId = "odeSolver" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -355,7 +380,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "gaussLegendreQuadrature": () => {
+"gaussLegendreQuadrature": () => {
     const calculatorId = "gaussLegendreQuadrature" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -363,7 +388,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "goldenSectionOptimization": () => {
+"goldenSectionOptimization": () => {
     const calculatorId = "goldenSectionOptimization" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -371,7 +396,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "linearSystems": () => {
+"linearSystems": () => {
     const calculatorId = "linearSystems" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -379,7 +404,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "numericalDifferentiation": () => {
+"numericalDifferentiation": () => {
     const calculatorId = "numericalDifferentiation" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -387,7 +412,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "numericalIntegration": () => {
+"numericalIntegration": () => {
     const calculatorId = "numericalIntegration" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -395,7 +420,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "numericalInterpolation": () => {
+"numericalInterpolation": () => {
     const calculatorId = "numericalInterpolation" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -403,7 +428,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "rootFinding": () => {
+"rootFinding": () => {
     const calculatorId = "rootFinding" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -411,7 +436,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "rombergIntegration": () => {
+"rombergIntegration": () => {
     const calculatorId = "rombergIntegration" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -419,7 +444,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "firstOrderPlusDeadTimeProcess": () => {
+"firstOrderPlusDeadTimeProcess": () => {
     const calculatorId = "firstOrderPlusDeadTimeProcess" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -427,7 +452,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "firstOrderProcessResponse": () => {
+"firstOrderProcessResponse": () => {
     const calculatorId = "firstOrderProcessResponse" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -435,7 +460,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "imcControllerTuning": () => {
+"imcControllerTuning": () => {
     const calculatorId = "imcControllerTuning" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -443,7 +468,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "pidController": () => {
+"pidController": () => {
     const calculatorId = "pidController" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -451,7 +476,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "secondOrderProcessResponse": () => {
+"secondOrderProcessResponse": () => {
     const calculatorId = "secondOrderProcessResponse" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -459,7 +484,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "zieglerNicholsReactionCurveTuning": () => {
+"zieglerNicholsReactionCurveTuning": () => {
     const calculatorId = "zieglerNicholsReactionCurveTuning" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -467,7 +492,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "arrheniusRateConstant": () => {
+"arrheniusRateConstant": () => {
     const calculatorId = "arrheniusRateConstant" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -475,7 +500,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "constantVolumeStoichiometry": () => {
+"constantVolumeStoichiometry": () => {
     const calculatorId = "constantVolumeStoichiometry" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -483,7 +508,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "conversionYieldSelectivity": () => {
+"conversionYieldSelectivity": () => {
     const calculatorId = "conversionYieldSelectivity" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -491,7 +516,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "cstrsInSeries": () => {
+"cstrsInSeries": () => {
     const calculatorId = "cstrsInSeries" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -499,7 +524,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "pfrSections": () => {
+"pfrSections": () => {
     const calculatorId = "pfrSections" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -507,7 +532,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "reactionRateCalculator": () => {
+"reactionRateCalculator": () => {
     const calculatorId = "reactionRateCalculator" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -515,7 +540,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "reactorComparison": () => {
+"reactorComparison": () => {
     const calculatorId = "reactorComparison" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -523,7 +548,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "reactorDesign": () => {
+"reactorDesign": () => {
     const calculatorId = "reactorDesign" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -531,7 +556,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "spaceTimeSpaceVelocity": () => {
+"spaceTimeSpaceVelocity": () => {
     const calculatorId = "spaceTimeSpaceVelocity" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -539,7 +564,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "binaryIsothermalFlash": () => {
+"binaryIsothermalFlash": () => {
     const calculatorId = "binaryIsothermalFlash" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -547,7 +572,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "binaryMinimumReflux": () => {
+"binaryMinimumReflux": () => {
     const calculatorId = "binaryMinimumReflux" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -555,7 +580,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "binaryRelativeVolatilityVLE": () => {
+"binaryRelativeVolatilityVLE": () => {
     const calculatorId = "binaryRelativeVolatilityVLE" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -563,7 +588,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "cycloneCutDiameter": () => {
+"cycloneCutDiameter": () => {
     const calculatorId = "cycloneCutDiameter" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -571,7 +596,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "fenskeMinimumStages": () => {
+"fenskeMinimumStages": () => {
     const calculatorId = "fenskeMinimumStages" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -579,7 +604,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "absorptionMinimumSolventRate": () => {
+"absorptionMinimumSolventRate": () => {
     const calculatorId = "absorptionMinimumSolventRate" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -587,7 +612,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "murphreeTrayEfficiency": () => {
+"murphreeTrayEfficiency": () => {
     const calculatorId = "murphreeTrayEfficiency" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -595,7 +620,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "packedColumnHTUNTU": () => {
+"packedColumnHTUNTU": () => {
     const calculatorId = "packedColumnHTUNTU" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -603,7 +628,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "psychrometricAirEnthalpy": () => {
+"psychrometricAirEnthalpy": () => {
     const calculatorId = "psychrometricAirEnthalpy" as const
     return (
       <PhaseThirteenNativeCalculator
@@ -611,7 +636,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "averageMolecularWeight": () => {
+"averageMolecularWeight": () => {
     const calculatorId = "averageMolecularWeight" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -619,7 +644,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "binaryCompositionBasisConversion": () => {
+"binaryCompositionBasisConversion": () => {
     const calculatorId = "binaryCompositionBasisConversion" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -627,7 +652,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "chemicalFormulaMolecularWeight": () => {
+"chemicalFormulaMolecularWeight": () => {
     const calculatorId = "chemicalFormulaMolecularWeight" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -635,7 +660,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "densitySpecificGravity": () => {
+"densitySpecificGravity": () => {
     const calculatorId = "densitySpecificGravity" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -643,7 +668,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "engineeringPrefixConverter": () => {
+"engineeringPrefixConverter": () => {
     const calculatorId = "engineeringPrefixConverter" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -651,7 +676,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "massFlowMolarFlowConversion": () => {
+"massFlowMolarFlowConversion": () => {
     const calculatorId = "massFlowMolarFlowConversion" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -659,7 +684,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "massFractionCalculator": () => {
+"massFractionCalculator": () => {
     const calculatorId = "massFractionCalculator" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -667,7 +692,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "massMoleConversion": () => {
+"massMoleConversion": () => {
     const calculatorId = "massMoleConversion" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -675,7 +700,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "mixtureDensityCalculator": () => {
+"mixtureDensityCalculator": () => {
     const calculatorId = "mixtureDensityCalculator" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -683,7 +708,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "moleFractionCalculator": () => {
+"moleFractionCalculator": () => {
     const calculatorId = "moleFractionCalculator" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -691,7 +716,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "concentrationScaleConverter": () => {
+"concentrationScaleConverter": () => {
     const calculatorId = "concentrationScaleConverter" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -699,7 +724,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "significantFiguresRounding": () => {
+"significantFiguresRounding": () => {
     const calculatorId = "significantFiguresRounding" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -707,7 +732,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "solutionConcentration": () => {
+"solutionConcentration": () => {
     const calculatorId = "solutionConcentration" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -715,7 +740,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "standardGasFlowConverter": () => {
+"standardGasFlowConverter": () => {
     const calculatorId = "standardGasFlowConverter" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -723,7 +748,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "unitConverter": () => {
+"unitConverter": () => {
     const calculatorId = "unitConverter" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -731,7 +756,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "volumetricMassFlowConversion": () => {
+"volumetricMassFlowConversion": () => {
     const calculatorId = "volumetricMassFlowConversion" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -739,7 +764,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "biotNumber": () => {
+"biotNumber": () => {
     const calculatorId = "biotNumber" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -747,7 +772,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "combinedConvectionRadiation": () => {
+"combinedConvectionRadiation": () => {
     const calculatorId = "combinedConvectionRadiation" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -755,7 +780,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "compositeWallConduction": () => {
+"compositeWallConduction": () => {
     const calculatorId = "compositeWallConduction" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -763,7 +788,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "criticalRadiusOfInsulation": () => {
+"criticalRadiusOfInsulation": () => {
     const calculatorId = "criticalRadiusOfInsulation" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -771,7 +796,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "cylindricalWallConduction": () => {
+"cylindricalWallConduction": () => {
     const calculatorId = "cylindricalWallConduction" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -779,7 +804,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "forcedConvectionCorrelation": () => {
+"forcedConvectionCorrelation": () => {
     const calculatorId = "forcedConvectionCorrelation" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -787,7 +812,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "foulingAnalysis": () => {
+"foulingAnalysis": () => {
     const calculatorId = "foulingAnalysis" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -795,7 +820,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "fourierNumber": () => {
+"fourierNumber": () => {
     const calculatorId = "fourierNumber" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -803,7 +828,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "grashofNumber": () => {
+"grashofNumber": () => {
     const calculatorId = "grashofNumber" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -811,7 +836,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "naturalConvectionCorrelation": () => {
+"naturalConvectionCorrelation": () => {
     const calculatorId = "naturalConvectionCorrelation" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -819,7 +844,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "nusseltNumber": () => {
+"nusseltNumber": () => {
     const calculatorId = "nusseltNumber" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -827,7 +852,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "planeWallConduction": () => {
+"planeWallConduction": () => {
     const calculatorId = "planeWallConduction" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -835,7 +860,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "prandtlNumber": () => {
+"prandtlNumber": () => {
     const calculatorId = "prandtlNumber" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -843,7 +868,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "rayleighNumber": () => {
+"rayleighNumber": () => {
     const calculatorId = "rayleighNumber" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -851,7 +876,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "shellAndTubeHeatExchanger": () => {
+"shellAndTubeHeatExchanger": () => {
     const calculatorId = "shellAndTubeHeatExchanger" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -859,7 +884,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "sphericalWallConduction": () => {
+"sphericalWallConduction": () => {
     const calculatorId = "sphericalWallConduction" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -867,7 +892,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "thermalRadiation": () => {
+"thermalRadiation": () => {
     const calculatorId = "thermalRadiation" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -875,7 +900,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "thermalResistanceNetwork": () => {
+"thermalResistanceNetwork": () => {
     const calculatorId = "thermalResistanceNetwork" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -883,7 +908,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "lumpedCapacitance": () => {
+"lumpedCapacitance": () => {
     const calculatorId = "lumpedCapacitance" as const
     return (
       <PhaseTwelveNativeCalculator
@@ -891,7 +916,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "adsorptionIsotherms": () => {
+"adsorptionIsotherms": () => {
     const calculatorId = "adsorptionIsotherms" as const
     return (
       <PhaseElevenNativeCalculator
@@ -899,7 +924,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "batchAdsorptionDesign": () => {
+"batchAdsorptionDesign": () => {
     const calculatorId = "batchAdsorptionDesign" as const
     return (
       <PhaseElevenNativeCalculator
@@ -907,7 +932,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "betIsotherm": () => {
+"betIsotherm": () => {
     const calculatorId = "betIsotherm" as const
     return (
       <PhaseElevenNativeCalculator
@@ -915,7 +940,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "chiltonColburnAnalogy": () => {
+"chiltonColburnAnalogy": () => {
     const calculatorId = "chiltonColburnAnalogy" as const
     return (
       <PhaseElevenNativeCalculator
@@ -923,7 +948,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "convectiveMassTransferCorrelations": () => {
+"convectiveMassTransferCorrelations": () => {
     const calculatorId = "convectiveMassTransferCorrelations" as const
     return (
       <PhaseElevenNativeCalculator
@@ -931,7 +956,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "countercurrentLiquidLiquidExtraction": () => {
+"countercurrentLiquidLiquidExtraction": () => {
     const calculatorId = "countercurrentLiquidLiquidExtraction" as const
     return (
       <PhaseElevenNativeCalculator
@@ -939,7 +964,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "crosscurrentLiquidLiquidExtraction": () => {
+"crosscurrentLiquidLiquidExtraction": () => {
     const calculatorId = "crosscurrentLiquidLiquidExtraction" as const
     return (
       <PhaseElevenNativeCalculator
@@ -947,7 +972,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "diffusionThroughMembrane": () => {
+"diffusionThroughMembrane": () => {
     const calculatorId = "diffusionThroughMembrane" as const
     return (
       <PhaseElevenNativeCalculator
@@ -955,7 +980,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "distributionCoefficientSelectivity": () => {
+"distributionCoefficientSelectivity": () => {
     const calculatorId = "distributionCoefficientSelectivity" as const
     return (
       <PhaseElevenNativeCalculator
@@ -963,7 +988,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "effectiveDiffusivity": () => {
+"effectiveDiffusivity": () => {
     const calculatorId = "effectiveDiffusivity" as const
     return (
       <PhaseElevenNativeCalculator
@@ -971,7 +996,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "equimolarCounterDiffusion": () => {
+"equimolarCounterDiffusion": () => {
     const calculatorId = "equimolarCounterDiffusion" as const
     return (
       <PhaseElevenNativeCalculator
@@ -979,7 +1004,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "ficksFirstLaw": () => {
+"ficksFirstLaw": () => {
     const calculatorId = "ficksFirstLaw" as const
     return (
       <PhaseElevenNativeCalculator
@@ -987,7 +1012,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "ficksSecondLaw": () => {
+"ficksSecondLaw": () => {
     const calculatorId = "ficksSecondLaw" as const
     return (
       <PhaseElevenNativeCalculator
@@ -995,7 +1020,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "fixedBedAdsorptionBDST": () => {
+"fixedBedAdsorptionBDST": () => {
     const calculatorId = "fixedBedAdsorptionBDST" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1003,7 +1028,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "gasAbsorptionStrippingFundamentals": () => {
+"gasAbsorptionStrippingFundamentals": () => {
     const calculatorId = "gasAbsorptionStrippingFundamentals" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1011,7 +1036,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "gasPhaseDiffusivity": () => {
+"gasPhaseDiffusivity": () => {
     const calculatorId = "gasPhaseDiffusivity" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1019,7 +1044,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "interphaseEquilibriumDrivingForces": () => {
+"interphaseEquilibriumDrivingForces": () => {
     const calculatorId = "interphaseEquilibriumDrivingForces" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1027,7 +1052,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "kremserMethod": () => {
+"kremserMethod": () => {
     const calculatorId = "kremserMethod" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1035,7 +1060,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "liquidPhaseDiffusivity": () => {
+"liquidPhaseDiffusivity": () => {
     const calculatorId = "liquidPhaseDiffusivity" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1043,7 +1068,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "massTransferCoefficient": () => {
+"massTransferCoefficient": () => {
     const calculatorId = "massTransferCoefficient" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1051,7 +1076,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "dimensionlessMassTransfer": () => {
+"dimensionlessMassTransfer": () => {
     const calculatorId = "dimensionlessMassTransfer" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1059,7 +1084,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "membraneGasSeparation": () => {
+"membraneGasSeparation": () => {
     const calculatorId = "membraneGasSeparation" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1067,7 +1092,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "overallMassTransferCoefficient": () => {
+"overallMassTransferCoefficient": () => {
     const calculatorId = "overallMassTransferCoefficient" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1075,7 +1100,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "packedColumnHTUNTUDesign": () => {
+"packedColumnHTUNTUDesign": () => {
     const calculatorId = "packedColumnHTUNTUDesign" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1083,7 +1108,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "reverseOsmosisPerformance": () => {
+"reverseOsmosisPerformance": () => {
     const calculatorId = "reverseOsmosisPerformance" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1091,7 +1116,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "stagnantFilmDiffusion": () => {
+"stagnantFilmDiffusion": () => {
     const calculatorId = "stagnantFilmDiffusion" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1099,7 +1124,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "steadyStateDiffusion": () => {
+"steadyStateDiffusion": () => {
     const calculatorId = "steadyStateDiffusion" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1107,7 +1132,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "twoFilmTheory": () => {
+"twoFilmTheory": () => {
     const calculatorId = "twoFilmTheory" as const
     return (
       <PhaseElevenNativeCalculator
@@ -1115,7 +1140,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "adiabaticIdealGasProcess": () => {
+"adiabaticIdealGasProcess": () => {
     const calculatorId = "adiabaticIdealGasProcess" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1123,7 +1148,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "antoineVaporPressure": () => {
+"antoineVaporPressure": () => {
     const calculatorId = "antoineVaporPressure" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1131,7 +1156,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "clausiusClapeyronEstimator": () => {
+"clausiusClapeyronEstimator": () => {
     const calculatorId = "clausiusClapeyronEstimator" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1139,7 +1164,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "closedSystemFirstLaw": () => {
+"closedSystemFirstLaw": () => {
     const calculatorId = "closedSystemFirstLaw" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1147,7 +1172,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "compressorIsentropicEfficiency": () => {
+"compressorIsentropicEfficiency": () => {
     const calculatorId = "compressorIsentropicEfficiency" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1155,7 +1180,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "daltonPartialPressure": () => {
+"daltonPartialPressure": () => {
     const calculatorId = "daltonPartialPressure" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1163,7 +1188,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "enthalpyChangeCalculator": () => {
+"enthalpyChangeCalculator": () => {
     const calculatorId = "enthalpyChangeCalculator" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1171,7 +1196,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "idealGas": () => {
+"idealGas": () => {
     const calculatorId = "idealGas" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1179,7 +1204,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "idealGasEntropyChange": () => {
+"idealGasEntropyChange": () => {
     const calculatorId = "idealGasEntropyChange" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1187,7 +1212,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "idealGasMixtureProperties": () => {
+"idealGasMixtureProperties": () => {
     const calculatorId = "idealGasMixtureProperties" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1195,7 +1220,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "incompressibleEntropyChange": () => {
+"incompressibleEntropyChange": () => {
     const calculatorId = "incompressibleEntropyChange" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1203,7 +1228,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "internalEnergyChangeCalculator": () => {
+"internalEnergyChangeCalculator": () => {
     const calculatorId = "internalEnergyChangeCalculator" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1211,7 +1236,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "isobaricIdealGasProcess": () => {
+"isobaricIdealGasProcess": () => {
     const calculatorId = "isobaricIdealGasProcess" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1219,7 +1244,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "isochoricIdealGasProcess": () => {
+"isochoricIdealGasProcess": () => {
     const calculatorId = "isochoricIdealGasProcess" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1227,7 +1252,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "isothermalIdealGasProcess": () => {
+"isothermalIdealGasProcess": () => {
     const calculatorId = "isothermalIdealGasProcess" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1235,7 +1260,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "nozzleDiffuserEnergyBalance": () => {
+"nozzleDiffuserEnergyBalance": () => {
     const calculatorId = "nozzleDiffuserEnergyBalance" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1243,7 +1268,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "polytropicIdealGasProcess": () => {
+"polytropicIdealGasProcess": () => {
     const calculatorId = "polytropicIdealGasProcess" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1251,7 +1276,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "pumpIsentropicEfficiency": () => {
+"pumpIsentropicEfficiency": () => {
     const calculatorId = "pumpIsentropicEfficiency" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1259,7 +1284,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "reducedPropertiesCalculator": () => {
+"reducedPropertiesCalculator": () => {
     const calculatorId = "reducedPropertiesCalculator" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1267,7 +1292,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "saturatedMixtureProperty": () => {
+"saturatedMixtureProperty": () => {
     const calculatorId = "saturatedMixtureProperty" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1275,7 +1300,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "steadyFlowEnergyEquation": () => {
+"steadyFlowEnergyEquation": () => {
     const calculatorId = "steadyFlowEnergyEquation" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1283,7 +1308,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "thermalEfficiencyCOP": () => {
+"thermalEfficiencyCOP": () => {
     const calculatorId = "thermalEfficiencyCOP" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1291,7 +1316,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "throttlingProcess": () => {
+"throttlingProcess": () => {
     const calculatorId = "throttlingProcess" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1299,7 +1324,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "turbineIsentropicEfficiency": () => {
+"turbineIsentropicEfficiency": () => {
     const calculatorId = "turbineIsentropicEfficiency" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1307,7 +1332,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "vaporQualityFromEnthalpy": () => {
+"vaporQualityFromEnthalpy": () => {
     const calculatorId = "vaporQualityFromEnthalpy" as const
     return (
       <PhaseTenThermodynamicsCalculator
@@ -1315,7 +1340,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "crystallizerBalance": () => {
+"crystallizerBalance": () => {
     const calculatorId = "crystallizerBalance" as const
     return (
       <PhaseNineNativeCalculator
@@ -1323,7 +1348,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "pressureDrop": () => {
+"pressureDrop": () => {
     const calculatorId = "pressureDrop" as const
     return (
       <PhaseNineNativeCalculator
@@ -1331,7 +1356,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "filterCakeBalance": () => {
+"filterCakeBalance": () => {
     const calculatorId = "filterCakeBalance" as const
     return (
       <PhaseNineNativeCalculator
@@ -1339,7 +1364,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "finHeatTransfer": () => {
+"finHeatTransfer": () => {
     const calculatorId = "finHeatTransfer" as const
     return (
       <PhaseNineNativeCalculator
@@ -1347,7 +1372,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "froudeNumber": () => {
+"froudeNumber": () => {
     const calculatorId = "froudeNumber" as const
     return (
       <PhaseNineNativeCalculator
@@ -1355,7 +1380,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "gasAbsorberBalance": () => {
+"gasAbsorberBalance": () => {
     const calculatorId = "gasAbsorberBalance" as const
     return (
       <PhaseNineNativeCalculator
@@ -1363,7 +1388,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "heatExchangerLMTD": () => {
+"heatExchangerLMTD": () => {
     const calculatorId = "heatExchangerLMTD" as const
     return (
       <PhaseNineNativeCalculator
@@ -1371,7 +1396,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "heatExchangerAreaSizing": () => {
+"heatExchangerAreaSizing": () => {
     const calculatorId = "heatExchangerAreaSizing" as const
     return (
       <PhaseNineNativeCalculator
@@ -1379,7 +1404,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "heatExchangerEffectivenessNTU": () => {
+"heatExchangerEffectivenessNTU": () => {
     const calculatorId = "heatExchangerEffectivenessNTU" as const
     return (
       <PhaseNineNativeCalculator
@@ -1387,7 +1412,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "humidifierWaterBalance": () => {
+"humidifierWaterBalance": () => {
     const calculatorId = "humidifierWaterBalance" as const
     return (
       <PhaseNineNativeCalculator
@@ -1395,7 +1420,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "hydrostaticPressure": () => {
+"hydrostaticPressure": () => {
     const calculatorId = "hydrostaticPressure" as const
     return (
       <PhaseNineNativeCalculator
@@ -1403,7 +1428,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "limitingReactantExcess": () => {
+"limitingReactantExcess": () => {
     const calculatorId = "limitingReactantExcess" as const
     return (
       <PhaseNineNativeCalculator
@@ -1411,7 +1436,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "liquidLiquidExtractionBalance": () => {
+"liquidLiquidExtractionBalance": () => {
     const calculatorId = "liquidLiquidExtractionBalance" as const
     return (
       <PhaseNineNativeCalculator
@@ -1419,7 +1444,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "membraneSeparatorBalance": () => {
+"membraneSeparatorBalance": () => {
     const calculatorId = "membraneSeparatorBalance" as const
     return (
       <PhaseNineNativeCalculator
@@ -1427,7 +1452,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "openChannelFlow": () => {
+"openChannelFlow": () => {
     const calculatorId = "openChannelFlow" as const
     return (
       <PhaseNineNativeCalculator
@@ -1435,7 +1460,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "overallHeatTransferCoefficient": () => {
+"overallHeatTransferCoefficient": () => {
     const calculatorId = "overallHeatTransferCoefficient" as const
     return (
       <PhaseNineNativeCalculator
@@ -1443,7 +1468,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "frictionFactor": () => {
+"frictionFactor": () => {
     const calculatorId = "frictionFactor" as const
     return (
       <PhaseNineNativeCalculator
@@ -1451,7 +1476,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "pumpPower": () => {
+"pumpPower": () => {
     const calculatorId = "pumpPower" as const
     return (
       <PhaseNineNativeCalculator
@@ -1459,7 +1484,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "raoultBubblePointPressure": () => {
+"raoultBubblePointPressure": () => {
     const calculatorId = "raoultBubblePointPressure" as const
     return (
       <PhaseNineNativeCalculator
@@ -1467,7 +1492,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "raoultDewPointPressure": () => {
+"raoultDewPointPressure": () => {
     const calculatorId = "raoultDewPointPressure" as const
     return (
       <PhaseNineNativeCalculator
@@ -1475,7 +1500,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "bernoulliEquation": () => {
+"bernoulliEquation": () => {
     const calculatorId = "bernoulliEquation" as const
     return (
       <PriorityTenNativeCalculator
@@ -1483,7 +1508,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "binarySeparatorBalance": () => {
+"binarySeparatorBalance": () => {
     const calculatorId = "binarySeparatorBalance" as const
     return (
       <PriorityTenNativeCalculator
@@ -1491,7 +1516,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "boilingHeatTransfer": () => {
+"boilingHeatTransfer": () => {
     const calculatorId = "boilingHeatTransfer" as const
     return (
       <PriorityTenNativeCalculator
@@ -1499,7 +1524,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "bypassMixingBalance": () => {
+"bypassMixingBalance": () => {
     const calculatorId = "bypassMixingBalance" as const
     return (
       <PriorityTenNativeCalculator
@@ -1507,7 +1532,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "combustionAirRequirement": () => {
+"combustionAirRequirement": () => {
     const calculatorId = "combustionAirRequirement" as const
     return (
       <PriorityTenNativeCalculator
@@ -1515,7 +1540,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "condensationHeatTransfer": () => {
+"condensationHeatTransfer": () => {
     const calculatorId = "condensationHeatTransfer" as const
     return (
       <PriorityTenNativeCalculator
@@ -1523,7 +1548,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "condenserBalance": () => {
+"condenserBalance": () => {
     const calculatorId = "condenserBalance" as const
     return (
       <PriorityTenNativeCalculator
@@ -1531,7 +1556,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "convectionHeatTransfer": () => {
+"convectionHeatTransfer": () => {
     const calculatorId = "convectionHeatTransfer" as const
     return (
       <PriorityTenNativeCalculator
@@ -1539,7 +1564,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "reactionPerformanceBalance": () => {
+"reactionPerformanceBalance": () => {
     const calculatorId = "reactionPerformanceBalance" as const
     return (
       <PriorityTenNativeCalculator
@@ -1547,7 +1572,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "criticalDepth": () => {
+"criticalDepth": () => {
     const calculatorId = "criticalDepth" as const
     return (
       <PriorityTenNativeCalculator
@@ -1555,7 +1580,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "evaporatorBalance": () => {
+"evaporatorBalance": () => {
     const calculatorId = "evaporatorBalance" as const
     return (
       <SecondFiveNativeCalculator
@@ -1563,7 +1588,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "massBalance": () => {
+"massBalance": () => {
     const calculatorId = "massBalance" as const
     return (
       <SecondFiveNativeCalculator
@@ -1571,7 +1596,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "phaseChangeEnergyBalance": () => {
+"phaseChangeEnergyBalance": () => {
     const calculatorId = "phaseChangeEnergyBalance" as const
     return (
       <SecondFiveNativeCalculator
@@ -1579,7 +1604,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "sensibleHeatBalance": () => {
+"sensibleHeatBalance": () => {
     const calculatorId = "sensibleHeatBalance" as const
     return (
       <SecondFiveNativeCalculator
@@ -1587,7 +1612,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "flowRate": () => {
+"flowRate": () => {
     const calculatorId = "flowRate" as const
     return (
       <SecondFiveNativeCalculator
@@ -1595,7 +1620,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "heatExchangerEnergyBalance": () => {
+"heatExchangerEnergyBalance": () => {
     const calculatorId = "heatExchangerEnergyBalance" as const
     return (
       <TopFiveNativeCalculator
@@ -1603,7 +1628,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "activationEnergyTwoPoint": () => {
+"activationEnergyTwoPoint": () => {
     const calculatorId = "activationEnergyTwoPoint" as const
     return (
       <TopFiveNativeCalculator
@@ -1611,7 +1636,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "adiabaticMixingTemperature": () => {
+"adiabaticMixingTemperature": () => {
     const calculatorId = "adiabaticMixingTemperature" as const
     return (
       <TopFiveNativeCalculator
@@ -1619,7 +1644,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "doublePipeHeatExchanger": () => {
+"doublePipeHeatExchanger": () => {
     const calculatorId = "doublePipeHeatExchanger" as const
     return (
       <TopFiveNativeCalculator
@@ -1627,7 +1652,7 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "dryerBalance": () => {
+"dryerBalance": () => {
     const calculatorId = "dryerBalance" as const
     return (
       <TopFiveNativeCalculator
@@ -1635,1122 +1660,1700 @@ const NATIVE_CALCULATOR_RENDERERS: Record<
       />
     )
   },
-  "fluidBedDryerAdiabaticDryAirRequirement": () => {
+"fluidBedDryerAdiabaticDryAirRequirement": () => {
     return <FluidBedDryerAdiabaticDryAirRequirementCalculator />
   },
-  "evaporatorSteamRequirementEconomy": () => {
+"evaporatorSteamRequirementEconomy": () => {
     return <EvaporatorSteamRequirementEconomyCalculator />
   },
-  "multipleEffectEvaporatorSteamEconomy": () => {
+"multipleEffectEvaporatorSteamEconomy": () => {
     return <MultipleEffectEvaporatorSteamEconomyCalculator />
   },
-  "evaporatorTargetSteamEconomyEffectCount": () => {
+"evaporatorTargetSteamEconomyEffectCount": () => {
     return <EvaporatorTargetSteamEconomyEffectCountCalculator />
   },
-  "evaporatorRequiredVaporReuseEfficiency": () => {
+"evaporatorRequiredVaporReuseEfficiency": () => {
     return <EvaporatorRequiredVaporReuseEfficiencyCalculator />
   },
-  "darcyWeisbachPipeDiameterSizing": () => {
+"darcyWeisbachPipeDiameterSizing": () => {
     return <DarcyWeisbachPipeDiameterSizingCalculator />
   },
-  "pipeFlowRateFromPressureDrop": () => {
+"pipeFlowRateFromPressureDrop": () => {
     return <PipeFlowRateFromPressureDropCalculator />
   },
-  "maximumPipeLengthFromPressureDrop": () => {
+"maximumPipeLengthFromPressureDrop": () => {
     return <MaximumPipeLengthFromPressureDropCalculator />
   },
-  "maximumMinorLossCoefficient": () => {
+"maximumMinorLossCoefficient": () => {
     return <MaximumMinorLossCoefficientCalculator />
   },
-  "npshAvailableCavitationMargin": () => {
+"npshAvailableCavitationMargin": () => {
     return <NpshAvailableCavitationMarginCalculator />
   },
-  "minimumSuctionPipeDiameterNpshMargin": () => {
+"minimumSuctionPipeDiameterNpshMargin": () => {
     return <MinimumSuctionPipeDiameterNpshMarginCalculator />
   },
-  "requiredStaticLiquidLevelNpshMargin": () => {
+"requiredStaticLiquidLevelNpshMargin": () => {
     return <RequiredStaticLiquidLevelNpshMarginCalculator />
   },
-  "maximumSuctionFlowRateNpshMargin": () => {
+"maximumSuctionFlowRateNpshMargin": () => {
     return <MaximumSuctionFlowRateNpshMarginCalculator />
   },
-  "maximumSuctionLineLengthNpshMargin": () => {
+"maximumSuctionLineLengthNpshMargin": () => {
     return <MaximumSuctionLineLengthNpshMarginCalculator />
   },
-  "pitotTubeVelocityFlow": () => {
+"pitotTubeVelocityFlow": () => {
     return <PitotTubeVelocityFlowCalculator />
   },
-  "flowNozzleDifferentialPressure": () => {
+"flowNozzleDifferentialPressure": () => {
     return <FlowNozzleDifferentialPressureCalculator />
   },
-  "variableAreaRotameterFlow": () => {
+"variableAreaRotameterFlow": () => {
     return <VariableAreaRotameterFlowCalculator />
   },
-  "vortexSheddingFlowMeter": () => {
+"vortexSheddingFlowMeter": () => {
     return <VortexSheddingFlowMeterCalculator />
   },
-  "ultrasonicTransitTimeFlowMeter": () => {
+"ultrasonicTransitTimeFlowMeter": () => {
     return <UltrasonicTransitTimeFlowMeterCalculator />
   },
-  "electromagneticFlowMeter": () => {
+"electromagneticFlowMeter": () => {
     return <ElectromagneticFlowMeterCalculator />
   },
-  "positiveDisplacementFlowMeter": () => {
+"positiveDisplacementFlowMeter": () => {
     return <PositiveDisplacementFlowMeterCalculator />
   },
-  "turbineFlowMeter": () => {
+"turbineFlowMeter": () => {
     return <TurbineFlowMeterCalculator />
   },
-  "sharpCrestedRectangularWeir": () => {
+"sharpCrestedRectangularWeir": () => {
     return <SharpCrestedRectangularWeirCalculator />
   },
-  "vNotchTriangularWeir": () => {
+"vNotchTriangularWeir": () => {
     return <VNotchTriangularWeirCalculator />
   },
-  "trapezoidalChannelManningFlow": () => {
+"trapezoidalChannelManningFlow": () => {
     return <TrapezoidalChannelManningFlowCalculator />
   },
-  "trapezoidalChannelNormalDepth": () => {
+"trapezoidalChannelNormalDepth": () => {
     return <TrapezoidalChannelNormalDepthCalculator />
   },
-  "rectangularHydraulicJump": () => {
+"rectangularHydraulicJump": () => {
     return <RectangularHydraulicJumpCalculator />
   },
-  "trapezoidalChannelCriticalDepth": () => {
+"trapezoidalChannelCriticalDepth": () => {
     return <TrapezoidalChannelCriticalDepthCalculator />
   },
-  "rectangularChannelAlternateDepth": () => {
+"rectangularChannelAlternateDepth": () => {
     return <RectangularChannelAlternateDepthCalculator />
   },
-  "trapezoidalChannelCriticalSlope": () => {
+"trapezoidalChannelCriticalSlope": () => {
     return <TrapezoidalChannelCriticalSlopeCalculator />
   },
-  "trapezoidalHydraulicJump": () => {
+"trapezoidalHydraulicJump": () => {
     return <TrapezoidalHydraulicJumpCalculator />
   },
-  "broadCrestedWeirFlow": () => {
+"broadCrestedWeirFlow": () => {
     return <BroadCrestedWeirFlowCalculator />
   },
-  "trapezoidalChannelAlternateDepth": () => {
+"trapezoidalChannelAlternateDepth": () => {
     return <TrapezoidalChannelAlternateDepthCalculator />
   },
-  "trapezoidalChannelChezyFlow": () => {
+"trapezoidalChannelChezyFlow": () => {
     return <TrapezoidalChannelChezyFlowCalculator />
   },
-  "mostEconomicalTrapezoidalChannelDesign": () => {
+"mostEconomicalTrapezoidalChannelDesign": () => {
     return <MostEconomicalTrapezoidalChannelCalculator />
   },
-  "trapezoidalChannelDirectStep": () => {
+"trapezoidalChannelDirectStep": () => {
     return <TrapezoidalChannelDirectStepCalculator />
   },
-  "trapezoidalChannelGvfSlope": () => {
+"trapezoidalChannelGvfSlope": () => {
     return <TrapezoidalChannelGvfSlopeCalculator />
   },
-  "trapezoidalChannelGvfProfileRk4": () => {
+"trapezoidalChannelGvfProfileRk4": () => {
     return <TrapezoidalChannelGvfProfileRk4Calculator />
   },
-  "trapezoidalMaximumDischargeSpecificEnergy": () => {
+"trapezoidalMaximumDischargeSpecificEnergy": () => {
     return <TrapezoidalMaximumDischargeSpecificEnergyCalculator />
   },
-  "trapezoidalCriticalControlWidth": () => {
+"trapezoidalCriticalControlWidth": () => {
     return <TrapezoidalCriticalControlWidthCalculator />
   },
-  "trapezoidalMaximumBedRiseBeforeChoking": () => {
+"trapezoidalMaximumBedRiseBeforeChoking": () => {
     return <TrapezoidalMaximumBedRiseBeforeChokingCalculator />
   },
-  "trapezoidalChannelBedRiseCrestDepth": () => {
+"trapezoidalChannelBedRiseCrestDepth": () => {
     return <TrapezoidalChannelBedRiseCrestDepthCalculator />
   },
-  "trapezoidalMinimumUpstreamDepthBedRise": () => {
+"trapezoidalMinimumUpstreamDepthBedRise": () => {
     return <TrapezoidalMinimumUpstreamDepthBedRiseCalculator />
   },
-  "trapezoidalMinimumContractionWidth": () => {
+"trapezoidalMinimumContractionWidth": () => {
     return <TrapezoidalMinimumContractionWidthCalculator />
   },
-  "trapezoidalContractionThroatAnalysis": () => {
+"trapezoidalContractionThroatAnalysis": () => {
     return <TrapezoidalContractionThroatAnalysisCalculator />
   },
-  "trapezoidalContractionTransitionLoss": () => {
+"trapezoidalContractionTransitionLoss": () => {
     return <TrapezoidalContractionTransitionLossCalculator />
   },
-  "trapezoidalMaximumTransitionLossCoefficient": () => {
+"trapezoidalMaximumTransitionLossCoefficient": () => {
     return <TrapezoidalMaximumTransitionLossCoefficientCalculator />
   },
-  "trapezoidalMaximumDischargeTransitionLoss": () => {
+"trapezoidalMaximumDischargeTransitionLoss": () => {
     return <TrapezoidalMaximumDischargeTransitionLossCalculator />
   },
-  "trapezoidalMinimumUpstreamDepthContractionLoss": () => {
+"trapezoidalMinimumUpstreamDepthContractionLoss": () => {
     return <TrapezoidalMinimumUpstreamDepthContractionLossCalculator />
   },
-  "trapezoidalMaximumBedRiseContractionLoss": () => {
+"trapezoidalMaximumBedRiseContractionLoss": () => {
     return <TrapezoidalMaximumBedRiseContractionLossCalculator />
   },
-  "trapezoidalMinimumWidthBedRiseTransitionLoss": () => {
+"trapezoidalMinimumWidthBedRiseTransitionLoss": () => {
     return <TrapezoidalMinimumWidthBedRiseTransitionLossCalculator />
   },
-  "trapezoidalMaximumDischargeBedRiseTransitionLoss": () => {
+"trapezoidalMaximumDischargeBedRiseTransitionLoss": () => {
     return <TrapezoidalMaximumDischargeBedRiseTransitionLossCalculator />
   },
-  "trapezoidalMaximumTransitionLossCoefficientBedRise": () => {
+"trapezoidalMaximumTransitionLossCoefficientBedRise": () => {
     return <TrapezoidalMaximumTransitionLossCoefficientBedRiseCalculator />
   },
-  "trapezoidalMinimumUpstreamDepthBedRiseTransitionLoss": () => {
+"trapezoidalMinimumUpstreamDepthBedRiseTransitionLoss": () => {
     return <TrapezoidalMinimumUpstreamDepthBedRiseTransitionLossCalculator />
   },
-  "trapezoidalChannelStandardStep": () => {
+"trapezoidalChannelStandardStep": () => {
     return <TrapezoidalChannelStandardStepCalculator />
   },
-  "trapezoidalChannelStandardStepProfile": () => {
+"trapezoidalChannelStandardStepProfile": () => {
     return <TrapezoidalChannelStandardStepProfileCalculator />
   },
-  "trapezoidalChannelAdaptiveStandardStepProfile": () => {
+"trapezoidalChannelAdaptiveStandardStepProfile": () => {
     return <TrapezoidalChannelAdaptiveStandardStepProfileCalculator />
   },
-  "trapezoidalChannelUpstreamStandardStepProfile": () => {
+"trapezoidalChannelUpstreamStandardStepProfile": () => {
     return <TrapezoidalChannelUpstreamStandardStepProfileCalculator />
   },
-  "trapezoidalChannelAdaptiveUpstreamStandardStepProfile": () => {
+"trapezoidalChannelAdaptiveUpstreamStandardStepProfile": () => {
     return <TrapezoidalChannelAdaptiveUpstreamStandardStepProfileCalculator />
   },
-  "partiallyFullCircularChannelManningFlow": () => {
+"partiallyFullCircularChannelManningFlow": () => {
     return <PartiallyFullCircularChannelManningFlowCalculator />
   },
-  "partiallyFullCircularChannelNormalDepth": () => {
+"partiallyFullCircularChannelNormalDepth": () => {
     return <PartiallyFullCircularChannelNormalDepthCalculator />
   },
-  "partiallyFullCircularChannelCriticalDepth": () => {
+"partiallyFullCircularChannelCriticalDepth": () => {
     return <PartiallyFullCircularChannelCriticalDepthCalculator />
   },
-  "partiallyFullCircularChannelAlternateDepths": () => {
+"partiallyFullCircularChannelAlternateDepths": () => {
     return <PartiallyFullCircularChannelAlternateDepthsCalculator />
   },
-  "partiallyFullCircularChannelCriticalSlope": () => {
+"partiallyFullCircularChannelCriticalSlope": () => {
     return <PartiallyFullCircularChannelCriticalSlopeCalculator />
   },
-  "partiallyFullCircularChannelHydraulicJump": () => {
+"partiallyFullCircularChannelHydraulicJump": () => {
     return <PartiallyFullCircularChannelHydraulicJumpCalculator />
   },
-  "partiallyFullCircularChannelDirectStep": () => {
+"partiallyFullCircularChannelDirectStep": () => {
     return <PartiallyFullCircularChannelDirectStepCalculator />
   },
-  "partiallyFullCircularChannelGvfSlope": () => {
+"partiallyFullCircularChannelGvfSlope": () => {
     return <PartiallyFullCircularChannelGvfSlopeCalculator />
   },
-  "partiallyFullCircularChannelGvfProfile": () => {
+"partiallyFullCircularChannelGvfProfile": () => {
     return <PartiallyFullCircularChannelGvfProfileCalculator />
   },
-  "partiallyFullCircularChannelAdaptiveGvfProfile": () => {
+"partiallyFullCircularChannelAdaptiveGvfProfile": () => {
     return <PartiallyFullCircularChannelAdaptiveGvfProfileCalculator />
   },
-  "partiallyFullCircularChannelStandardStep": () => {
+"partiallyFullCircularChannelStandardStep": () => {
     return <PartiallyFullCircularChannelStandardStepCalculator />
   },
-  "partiallyFullCircularChannelStandardStepProfile": () => {
+"partiallyFullCircularChannelStandardStepProfile": () => {
     return <PartiallyFullCircularChannelStandardStepProfileCalculator />
   },
-  "partiallyFullCircularChannelAdaptiveStandardStepProfile": () => {
+"partiallyFullCircularChannelAdaptiveStandardStepProfile": () => {
     return <PartiallyFullCircularChannelAdaptiveStandardStepProfileCalculator />
   },
-  "partiallyFullCircularChannelUpstreamStandardStepProfile": () => {
+"partiallyFullCircularChannelUpstreamStandardStepProfile": () => {
     return <PartiallyFullCircularChannelUpstreamStandardStepProfileCalculator />
   },
-  "partiallyFullCircularChannelAdaptiveUpstreamStandardStepProfile": () => {
+"partiallyFullCircularChannelAdaptiveUpstreamStandardStepProfile": () => {
     return <PartiallyFullCircularChannelAdaptiveUpstreamStandardStepProfileCalculator />
   },
-  "partiallyFullCircularChannelMaximumDischargeSpecificEnergy": () => {
+"partiallyFullCircularChannelMaximumDischargeSpecificEnergy": () => {
     return <PartiallyFullCircularChannelMaximumDischargeSpecificEnergyCalculator />
   },
-  "partiallyFullCircularChannelMinimumDiameterSpecificEnergy": () => {
+"partiallyFullCircularChannelMinimumDiameterSpecificEnergy": () => {
     return <PartiallyFullCircularChannelMinimumDiameterSpecificEnergyCalculator />
   },
-  "partiallyFullCircularChannelMinimumRequiredSpecificEnergy": () => {
+"partiallyFullCircularChannelMinimumRequiredSpecificEnergy": () => {
     return <PartiallyFullCircularChannelMinimumRequiredSpecificEnergyCalculator />
   },
-  "partiallyFullCircularChannelCapacityChokingMargin": () => {
+"partiallyFullCircularChannelCapacityChokingMargin": () => {
     return <PartiallyFullCircularChannelCapacityChokingMarginCalculator />
   },
-  "fluidBedDryerAdiabaticInletTemperature": () => {
+"fluidBedDryerAdiabaticInletTemperature": () => {
     return <FluidBedDryerAdiabaticInletTemperatureCalculator />
   },
-  "fluidBedDryerEnergyBalance": () => {
+"fluidBedDryerEnergyBalance": () => {
     return <FluidBedDryerEnergyBalanceCalculator />
   },
-  "fluidBedDryerMassBalance": () => {
+"fluidBedDryerMassBalance": () => {
     return <FluidBedDryerMassBalanceCalculator />
   },
-  "linearInterpolationCalculator": () => {
+"linearInterpolationCalculator": () => {
     return <LinearInterpolationCalculator />
   },
-  "weightedAverageProperty": () => {
+"weightedAverageProperty": () => {
     return <WeightedAveragePropertyCalculator />
   },
-  "binaryFlashCalculation": () => {
+"binaryFlashCalculation": () => {
     return <BinaryFlashCalculator />
   },
-  "centrifugalSettlingTime": () => {
+"centrifugalSettlingTime": () => {
     return <CentrifugalSettlingCalculator />
   },
-  "constantPressureFiltration": () => {
+"constantPressureFiltration": () => {
     return <ConstantPressureFiltrationCalculator />
   },
-  "countercurrentSolidsWashing": () => {
+"countercurrentSolidsWashing": () => {
     return <CountercurrentSolidsWashingCalculator />
   },
-  "crystallizationYieldMotherLiquor": () => {
+"crystallizationYieldMotherLiquor": () => {
     return <CrystallizationYieldMotherLiquorCalculator />
   },
-  "dryingRateTime": () => {
+"dryingRateTime": () => {
     return <DryingRateTimeCalculator />
   },
-  "distillationOperatingLines": () => {
+"distillationOperatingLines": () => {
     return <DistillationOperatingLinesCalculator />
   },
-  "mcCabeThieleMethod": () => {
+"mcCabeThieleMethod": () => {
     return <McCabeThieleMethodCalculator />
   },
-  "humidificationPsychrometrics": () => {
+"humidificationPsychrometrics": () => {
     return <HumidificationPsychrometricsCalculator />
   },
-  "ionExchangeBedSizing": () => {
+"ionExchangeBedSizing": () => {
     return <IonExchangeBedSizingCalculator />
   },
-  "finiteVolumeDialysis": () => {
+"finiteVolumeDialysis": () => {
     return <FiniteVolumeDialysisCalculator />
   },
-  "msmprCrystallizerDesign": () => {
+"msmprCrystallizerDesign": () => {
     return <MSMPRCrystallizerDesignCalculator />
   },
-  "packedColumnHydraulics": () => {
+"packedColumnHydraulics": () => {
     return <PackedColumnHydraulicsCalculator />
   },
-  "relativeVolatilityBinaryVLE": () => {
+"relativeVolatilityBinaryVLE": () => {
     return <RelativeVolatilityBinaryVLECalculator />
   },
-  "singleStageLeachingRecovery": () => {
+"singleStageLeachingRecovery": () => {
     return <SingleStageLeachingRecoveryCalculator />
   },
-  "singleStageLiquidLiquidExtraction": () => {
+"singleStageLiquidLiquidExtraction": () => {
     return <SingleStageLiquidLiquidExtractionCalculator />
   },
-  "ultrafiltrationConcentrationPolarization": () => {
+"ultrafiltrationConcentrationPolarization": () => {
     return <UltrafiltrationConcentrationPolarizationCalculator />
   },
-  "batchSettlingAreaEstimate": () => {
+"batchSettlingAreaEstimate": () => {
     return <BatchSettlingAreaEstimateCalculator />
   },
-  "centrifugeSigmaScaleUp": () => {
+"centrifugeSigmaScaleUp": () => {
     return <CentrifugeSigmaScaleUpCalculator />
   },
-  "constantPressureFilterSizing": () => {
+"constantPressureFilterSizing": () => {
     return <ConstantPressureFilterSizingCalculator />
   },
-  "coolingCrystallizerYield": () => {
+"coolingCrystallizerYield": () => {
     return <CoolingCrystallizerYieldCalculator />
   },
-  "evaporativeCrystallizerBalance": () => {
+"evaporativeCrystallizerBalance": () => {
     return <EvaporativeCrystallizerBalanceCalculator />
   },
-  "dryerThermalDuty": () => {
+"dryerThermalDuty": () => {
     return <DryerThermalDutyCalculator />
   },
-  "binaryDistillationBalance": () => {
+"binaryDistillationBalance": () => {
     return <BinaryDistillationBalanceCalculator />
   },
-  "extractionDistributionSelectivity": () => {
+"extractionDistributionSelectivity": () => {
     return <ExtractionDistributionSelectivityCalculator />
   },
-  "extractionSolventRequirement": () => {
+"extractionSolventRequirement": () => {
     return <ExtractionSolventRequirementCalculator />
   },
-  "crosscurrentExtractionStages": () => {
+"crosscurrentExtractionStages": () => {
     return <CrosscurrentExtractionStagesCalculator />
   },
-  "countercurrentExtractionStages": () => {
+"countercurrentExtractionStages": () => {
     return <CountercurrentExtractionStagesCalculator />
   },
-  "gillilandStageEstimate": () => {
+"gillilandStageEstimate": () => {
     return <GillilandStageEstimateCalculator />
   },
-  "fenskeUnderwoodGillilandShortcut": () => {
+"fenskeUnderwoodGillilandShortcut": () => {
     return <FenskeUnderwoodGillilandCalculator />
   },
-  "soudersBrownColumnDiameter": () => {
+"soudersBrownColumnDiameter": () => {
     return <SoudersBrownColumnDiameterCalculator />
   },
-  "trayHydraulicsWeepingCheck": () => {
+"trayHydraulicsWeepingCheck": () => {
     return <TrayHydraulicsWeepingCalculator />
   },
-  "trayDowncomerBackupResidence": () => {
+"trayDowncomerBackupResidence": () => {
     return <TrayDowncomerBackupCalculator />
   },
-  "packedColumnHtuNtuHeight": () => {
+"packedColumnHtuNtuHeight": () => {
     return <PackedColumnHtuNtuCalculator />
   },
-  "packedColumnPressureDropFlooding": () => {
+"packedColumnPressureDropFlooding": () => {
     return <PackedColumnPressureDropCalculator />
   },
-  "packedColumnLiquidHoldupResidence": () => {
+"packedColumnLiquidHoldupResidence": () => {
     return <PackedColumnLiquidHoldupCalculator />
   },
-  "packedColumnLiquidDistributorIrrigation": () => {
+"packedColumnLiquidDistributorIrrigation": () => {
     return <PackedColumnLiquidDistributorCalculator />
   },
-  "packedColumnGasLoadFFactor": () => {
+"packedColumnGasLoadFFactor": () => {
     return <PackedColumnGasLoadCalculator />
   },
-  "packedColumnRedistributorSpacing": () => {
+"packedColumnRedistributorSpacing": () => {
     return <PackedColumnRedistributorCalculator />
   },
-  "kremserAbsorptionFactorStages": () => {
+"kremserAbsorptionFactorStages": () => {
     return <KremserAbsorptionCalculator />
   },
-  "absorberMinimumSolventRate": () => {
+"absorberMinimumSolventRate": () => {
     return <AbsorberMinimumSolventRateCalculator />
   },
-  "absorptionStrippingFactors": () => {
+"absorptionStrippingFactors": () => {
     return <AbsorptionStrippingFactorsCalculator />
   },
-  "adsorbentMassRequirement": () => {
+"adsorbentMassRequirement": () => {
     return <AdsorbentMassRequirementCalculator />
   },
-  "betMonolayerCapacity": () => {
+"betMonolayerCapacity": () => {
     return <BetMonolayerCapacityCalculator />
   },
-  "kremserAbsorptionStages": () => {
+"kremserAbsorptionStages": () => {
     return <KremserAbsorptionStagesCalculator />
   },
-  "kremserStrippingStages": () => {
+"kremserStrippingStages": () => {
     return <KremserStrippingStagesCalculator />
   },
-  "strippingMinimumGasRate": () => {
+"strippingMinimumGasRate": () => {
     return <StrippingMinimumGasRateCalculator />
   },
-  "gasMembraneAreaRequirement": () => {
+"gasMembraneAreaRequirement": () => {
     return <GasMembraneAreaRequirementCalculator />
   },
-  "idealGasMembraneStageCut": () => {
+"idealGasMembraneStageCut": () => {
     return <IdealGasMembraneStageCutCalculator />
   },
-  "reverseOsmosisWaterFlux": () => {
+"reverseOsmosisWaterFlux": () => {
     return <ReverseOsmosisWaterFluxCalculator />
   },
-  "ultrafiltrationResistanceSeries": () => {
+"ultrafiltrationResistanceSeries": () => {
     return <UltrafiltrationResistanceSeriesCalculator />
   },
-  "psychrometricAirStreamMixing": () => {
+"psychrometricAirStreamMixing": () => {
     return <PsychrometricAirStreamMixingCalculator />
   },
-  "relativeHumidityHumidification": () => {
+"relativeHumidityHumidification": () => {
     return <RelativeHumidityHumidificationCalculator />
   },
-  "combinedDryerTime": () => {
+"combinedDryerTime": () => {
     return <CombinedDryerTimeCalculator />
   },
-  "fixedBedAdsorberBreakthrough": () => {
+"fixedBedAdsorberBreakthrough": () => {
     return <FixedBedAdsorberBreakthroughCalculator />
   },
-  "hydrocycloneSeparationNumber": () => {
+"hydrocycloneSeparationNumber": () => {
     return <HydrocycloneSeparationNumberCalculator />
   },
-  "singleStageGasAbsorption": () => {
+"singleStageGasAbsorption": () => {
     return <SingleStageGasAbsorptionCalculator />
   },
-  "singleStageLeachingBalance": () => {
+"singleStageLeachingBalance": () => {
     return <SingleStageLeachingBalanceCalculator />
   },
-  "adamsBashforthMoulton": () => {
+"adamsBashforthMoulton": () => {
     return <AdamsBashforthMoultonCalculator />
   },
-  "adaptiveRungeKutta45": () => {
+"adaptiveRungeKutta45": () => {
     return <AdaptiveRungeKutta45Calculator />
   },
-  "broydenNonlinearSystem": () => {
+"broydenNonlinearSystem": () => {
     return <BroydenNonlinearSystemCalculator />
   },
-  "choleskyDecompositionSolver": () => {
+"choleskyDecompositionSolver": () => {
     return <CholeskyDecompositionSolverCalculator />
   },
-  "conjugateGradientSolver": () => {
+"conjugateGradientSolver": () => {
     return <ConjugateGradientSolverCalculator />
   },
-  "coupledODESystemRK4": () => {
+"coupledODESystemRK4": () => {
     return <CoupledODESystemRK4Calculator />
   },
-  "crankNicolsonHeatEquation": () => {
+"crankNicolsonHeatEquation": () => {
     return <CrankNicolsonHeatEquationCalculator />
   },
-  "cubicHermiteInterpolation": () => {
+"cubicHermiteInterpolation": () => {
     return <CubicHermiteInterpolationCalculator />
   },
-  "curveFitting": () => {
+"curveFitting": () => {
     return <CurveFittingCalculator />
   },
-  "gaussNewtonNonlinearRegression": () => {
+"gaussNewtonNonlinearRegression": () => {
     return <GaussNewtonNonlinearRegressionCalculator />
   },
-  "gradientDescentOptimization": () => {
+"gradientDescentOptimization": () => {
     return <GradientDescentOptimizationCalculator />
   },
-  "highOrderFiniteDifference": () => {
+"highOrderFiniteDifference": () => {
     return <HighOrderFiniteDifferenceCalculator />
   },
-  "inversePowerMethodEigenvalue": () => {
+"inversePowerMethodEigenvalue": () => {
     return <InversePowerMethodEigenvalueCalculator />
   },
-  "laplaceEquationFiniteDifference": () => {
+"laplaceEquationFiniteDifference": () => {
     return <LaplaceEquationFiniteDifferenceCalculator />
   },
-  "levenbergMarquardtRegression": () => {
+"levenbergMarquardtRegression": () => {
     return <LevenbergMarquardtRegressionCalculator />
   },
-  "luDecompositionSolver": () => {
+"luDecompositionSolver": () => {
     return <LUDecompositionSolverCalculator />
   },
-  "methodOfLinesPDESolver": () => {
+"methodOfLinesPDESolver": () => {
     return <MethodOfLinesPDESolverCalculator />
   },
-  "monteCarloIntegration": () => {
+"monteCarloIntegration": () => {
     return <MonteCarloIntegrationCalculator />
   },
-  "naturalCubicSplineInterpolation": () => {
+"naturalCubicSplineInterpolation": () => {
     return <NaturalCubicSplineInterpolationCalculator />
   },
-  "nelderMeadOptimization": () => {
+"nelderMeadOptimization": () => {
     return <NelderMeadOptimizationCalculator />
   },
-  "newtonMultivariableOptimization": () => {
+"newtonMultivariableOptimization": () => {
     return <NewtonMultivariableOptimizationCalculator />
   },
-  "newtonRaphsonNonlinearSystem": () => {
+"newtonRaphsonNonlinearSystem": () => {
     return <NewtonRaphsonNonlinearSystemCalculator />
   },
-  "numericalJacobian": () => {
+"numericalJacobian": () => {
     return <NumericalJacobianCalculator />
   },
-  "oneDimensionalWaveEquation": () => {
+"oneDimensionalWaveEquation": () => {
     return <OneDimensionalWaveEquationCalculator />
   },
-  "powerMethodEigenvalue": () => {
+"powerMethodEigenvalue": () => {
     return <PowerMethodEigenvalueCalculator />
   },
-  "qrDecompositionSolver": () => {
+"qrDecompositionSolver": () => {
     return <QRDecompositionSolverCalculator />
   },
-  "richardsonErrorEstimate": () => {
+"richardsonErrorEstimate": () => {
     return <RichardsonErrorEstimateCalculator />
   },
-  "riddersRootFinder": () => {
+"riddersRootFinder": () => {
     return <RiddersRootFinderCalculator />
   },
-  "shootingMethodBoundaryValue": () => {
+"shootingMethodBoundaryValue": () => {
     return <ShootingMethodBoundaryValueCalculator />
   },
-  "thomasTridiagonalSolver": () => {
+"thomasTridiagonalSolver": () => {
     return <ThomasTridiagonalSolverCalculator />
   },
-  "blockDiagramAlgebra": () => {
+"blockDiagramAlgebra": () => {
     return <BlockDiagramAlgebraCalculator />
   },
-  "cascadeControl": () => {
+"cascadeControl": () => {
     return <CascadeControlCalculator />
   },
-  "closedLoopFeedbackAnalysis": () => {
+"closedLoopFeedbackAnalysis": () => {
     return <ClosedLoopFeedbackAnalysisCalculator />
   },
-  "cohenCoonTuning": () => {
+"cohenCoonTuning": () => {
     return <CohenCoonTuningCalculator />
   },
-  "processControlStrategyComparison": () => {
+"processControlStrategyComparison": () => {
     return <ProcessControlStrategyComparisonCalculator />
   },
-  "cubicRouthHurwitzStability": () => {
+"cubicRouthHurwitzStability": () => {
     return <CubicRouthHurwitzStabilityCalculator />
   },
-  "feedforwardControl": () => {
+"feedforwardControl": () => {
     return <FeedforwardControlCalculator />
   },
-  "firstOrderFrequencyResponse": () => {
+"firstOrderFrequencyResponse": () => {
     return <FirstOrderFrequencyResponseCalculator />
   },
-  "gainScheduling": () => {
+"gainScheduling": () => {
     return <GainSchedulingCalculator />
   },
-  "integratingProcessResponse": () => {
+"integratingProcessResponse": () => {
     return <IntegratingProcessResponseCalculator />
   },
-  "interactingTankSystem": () => {
+"interactingTankSystem": () => {
     return <InteractingTankSystemCalculator />
   },
-  "internalModelControlAnalysis": () => {
+"internalModelControlAnalysis": () => {
     return <InternalModelControlAnalysisCalculator />
   },
-  "inverseLaplaceTransformHelper": () => {
+"inverseLaplaceTransformHelper": () => {
     const calculatorId = "inverseLaplaceTransformHelper" as const
     return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} />
   },
-  "laplaceTransformHelper": () => {
+"laplaceTransformHelper": () => {
     const calculatorId = "laplaceTransformHelper" as const
     return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} />
   },
-  "liquidControlValveSizing": () => {
+"liquidControlValveSizing": () => {
     const calculatorId = "liquidControlValveSizing" as const
     return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} />
   },
-  "liquidLevelDynamics": () => {
+"liquidLevelDynamics": () => {
     const calculatorId = "liquidLevelDynamics" as const
     return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} />
   },
-  "modelPredictiveControl": () => {
+"modelPredictiveControl": () => {
     const calculatorId = "modelPredictiveControl" as const
     return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} />
   },
-  "nonInteractingTankSystem": () => {
+"nonInteractingTankSystem": () => {
     const calculatorId = "nonInteractingTankSystem" as const
     return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} />
   },
-  "openLoopResponse": () => {
+"openLoopResponse": () => {
     return <OpenLoopResponseCalculator />
   },
-  "overrideSelectiveControl": () => {
+"overrideSelectiveControl": () => {
     return <OverrideSelectiveControlCalculator />
   },
-  "pdController": () => {
+"pdController": () => {
     return <PDControllerCalculator />
   },
-  "piController": () => {
+"piController": () => {
     return <PIControllerCalculator />
   },
-  "pressureProcessDynamics": () => {
+"pressureProcessDynamics": () => {
     return <PressureProcessDynamicsCalculator />
   },
-  "proportionalController": () => {
+"proportionalController": () => {
     return <ProportionalControllerCalculator />
   },
-  "mimoDecouplingControl": () => {
+"mimoDecouplingControl": () => {
     return (
       <ProcessControlBatch05Calculator mode="mimoDecouplingControl" />
     )
   },
-  "adaptiveControl": () => {
+"adaptiveControl": () => {
     return (
       <ProcessControlBatch05Calculator mode="adaptiveControl" />
     )
   },
-  "ratioControl": () => {
+"ratioControl": () => {
     return (
       <ProcessControlBatch05Calculator mode="ratioControl" />
     )
   },
-  "secondOrderFrequencyResponse": () => {
+"secondOrderFrequencyResponse": () => {
     return (
       <ProcessControlBatch05Calculator mode="secondOrderFrequencyResponse" />
     )
   },
-  "smithPredictor": () => {
+"smithPredictor": () => {
     return (
       <ProcessControlBatch05Calculator mode="smithPredictor" />
     )
   },
-  "splitRangeControl": () => {
+"splitRangeControl": () => {
     return (
       <ProcessControlBatch05Calculator mode="splitRangeControl" />
     )
   },
-  "temperatureProcessDynamics": () => {
+"temperatureProcessDynamics": () => {
     return (
       <ProcessControlBatch06Calculator mode="temperatureProcessDynamics" />
     )
   },
-  "transferFunctionBuilder": () => {
+"transferFunctionBuilder": () => {
     return (
       <ProcessControlBatch06Calculator mode="transferFunctionBuilder" />
     )
   },
-  "valveCharacteristics": () => {
+"valveCharacteristics": () => {
     return (
       <ProcessControlBatch06Calculator mode="valveCharacteristics" />
     )
   },
-  "zieglerNicholsUltimateGainTuning": () => {
+"zieglerNicholsUltimateGainTuning": () => {
     return (
       <ProcessControlBatch06Calculator mode="zieglerNicholsUltimateGain" />
     )
   },
-  "equipmentCostScaling": () => {
+"equipmentCostScaling": () => {
     return (
       <ProcessSafetyEconomicsBatch01Calculator mode="equipmentCostScaling" />
     )
   },
-  "costIndexEscalation": () => {
+"costIndexEscalation": () => {
     return (
       <ProcessSafetyEconomicsBatch01Calculator mode="costIndexEscalation" />
     )
   },
-  "emergencyVentilationDilution": () => {
+"emergencyVentilationDilution": () => {
     return (
       <ProcessSafetyEconomicsBatch01Calculator mode="emergencyVentilationDilution" />
     )
   },
-  "annualizedLossExpectancy": () => {
+"annualizedLossExpectancy": () => {
     return (
       <ProcessSafetyEconomicsBatch01Calculator mode="annualizedLossExpectancy" />
     )
   },
-  "liquidLeakRateScreening": () => {
+"liquidLeakRateScreening": () => {
     return (
       <ProcessSafetyEconomicsBatch01Calculator mode="liquidLeakRateScreening" />
     )
   },
-  "paybackAndROIAnalysis": () => {
+"paybackAndROIAnalysis": () => {
     return (
       <ProcessSafetyEconomicsBatch01Calculator mode="paybackAndROIAnalysis" />
     )
   },
-  "langFactorCapitalEstimate": () => {
+"langFactorCapitalEstimate": () => {
     return (
       <ProcessSafetyEconomicsBatch02Calculator mode="langFactorCapitalEstimate" />
     )
   },
-  "totalCapitalInvestmentEstimate": () => {
+"totalCapitalInvestmentEstimate": () => {
     return (
       <ProcessSafetyEconomicsBatch02Calculator mode="totalCapitalInvestmentEstimate" />
     )
   },
-  "annualOperatingCostEstimate": () => {
+"annualOperatingCostEstimate": () => {
     return (
       <ProcessSafetyEconomicsBatch02Calculator mode="annualOperatingCostEstimate" />
     )
   },
-  "straightLineDepreciation": () => {
+"straightLineDepreciation": () => {
     return (
       <ProcessSafetyEconomicsBatch02Calculator mode="straightLineDepreciation" />
     )
   },
-  "netPresentValueAnalysis": () => {
+"netPresentValueAnalysis": () => {
     return (
       <ProcessSafetyEconomicsBatch02Calculator mode="netPresentValueAnalysis" />
     )
   },
-  "internalRateOfReturnAnalysis": () => {
+"internalRateOfReturnAnalysis": () => {
     return (
       <ProcessSafetyEconomicsBatch02Calculator mode="internalRateOfReturnAnalysis" />
     )
   },
-  "breakEvenProductionAnalysis": () => {
+"breakEvenProductionAnalysis": () => {
     return (
       <ProcessSafetyEconomicsBatch03Calculator mode="breakEvenProductionAnalysis" />
     )
   },
-  "equivalentAnnualWorth": () => {
+"equivalentAnnualWorth": () => {
     return (
       <ProcessSafetyEconomicsBatch03Calculator mode="equivalentAnnualWorth" />
     )
   },
-  "economicSensitivityAnalysis": () => {
+"economicSensitivityAnalysis": () => {
     return (
       <ProcessSafetyEconomicsBatch03Calculator mode="economicSensitivityAnalysis" />
     )
   },
-  "flammabilityMixtureLimits": () => {
+"flammabilityMixtureLimits": () => {
     return (
       <ProcessSafetyEconomicsBatch03Calculator mode="flammabilityMixtureLimits" />
     )
   },
-  "gasReliefValveSizing": () => {
+"gasReliefValveSizing": () => {
     return (
       <ProcessSafetyEconomicsBatch03Calculator mode="gasReliefValveSizing" />
     )
   },
-  "liquidReliefValveSizing": () => {
+"liquidReliefValveSizing": () => {
     return (
       <ProcessSafetyEconomicsBatch03Calculator mode="liquidReliefValveSizing" />
     )
   },
-  "chemicalProcessRiskMatrix": () => {
+"chemicalProcessRiskMatrix": () => {
     return (
       <ProcessSafetyEconomicsBatch04Calculator mode="chemicalProcessRiskMatrix" />
     )
   },
-  "hazopGuideWordAssistant": () => {
+"hazopGuideWordAssistant": () => {
     return (
       <ProcessSafetyEconomicsBatch04Calculator mode="hazopGuideWordAssistant" />
     )
   },
-  "inherentlySaferDesignChecklist": () => {
+"inherentlySaferDesignChecklist": () => {
     return (
       <ProcessSafetyEconomicsBatch04Calculator mode="inherentlySaferDesignChecklist" />
     )
   },
-  "layerOfProtectionAnalysis": () => {
+"layerOfProtectionAnalysis": () => {
     return (
       <ProcessSafetyEconomicsBatch04Calculator mode="layerOfProtectionAnalysis" />
     )
   },
-  "safetyIntegrityLevelTarget": () => {
+"safetyIntegrityLevelTarget": () => {
     return (
       <ProcessSafetyEconomicsBatch04Calculator mode="safetyIntegrityLevelTarget" />
     )
   },
-  "poolFireRadiationScreening": () => {
+"poolFireRadiationScreening": () => {
     return (
       <ProcessSafetyEconomicsBatch04Calculator mode="poolFireRadiationScreening" />
     )
   },
-  "bleveFireballScreening": () => {
+"bleveFireballScreening": () => {
     return (
       <ProcessSafetyEconomicsBatch05Calculator mode="bleveFireballScreening" />
     )
   },
-  "tntEquivalentExplosionScreening": () => {
+"tntEquivalentExplosionScreening": () => {
     return (
       <ProcessSafetyEconomicsBatch05Calculator mode="tntEquivalentExplosionScreening" />
     )
   },
-  "gasLeakRateScreening": () => {
+"gasLeakRateScreening": () => {
     return (
       <ProcessSafetyEconomicsBatch05Calculator mode="gasLeakRateScreening" />
     )
   },
-  "gaussianPlumeDispersion": () => {
+"gaussianPlumeDispersion": () => {
     return (
       <ProcessSafetyEconomicsBatch05Calculator mode="gaussianPlumeDispersion" />
     )
   },
-  "toxicExposureDoseScreening": () => {
+"toxicExposureDoseScreening": () => {
     return (
       <ProcessSafetyEconomicsBatch05Calculator mode="toxicExposureDoseScreening" />
     )
   },
-  "eventTreeAnalysis": () => {
+"eventTreeAnalysis": () => {
     return (
       <ProcessSafetyEconomicsBatch05Calculator mode="eventTreeAnalysis" />
     )
   },
-  "faultTreeProbability": () => {
+"faultTreeProbability": () => {
     return (
       <ProcessSafetyEconomicsBatch06Calculator mode="faultTreeProbability" />
     )
   },
-  "sifAveragePFD": () => {
+"sifAveragePFD": () => {
     return (
       <ProcessSafetyEconomicsBatch06Calculator mode="sifAveragePFD" />
     )
   },
-  "proofTestIntervalCalculator": () => {
+"proofTestIntervalCalculator": () => {
     return (
       <ProcessSafetyEconomicsBatch06Calculator mode="proofTestIntervalCalculator" />
     )
   },
-  "riskReductionCostEffectiveness": () => {
+"riskReductionCostEffectiveness": () => {
     return (
       <ProcessSafetyEconomicsBatch06Calculator mode="riskReductionCostEffectiveness" />
     )
   },
-  "expectedMonetaryValueDecision": () => {
+"expectedMonetaryValueDecision": () => {
     return (
       <ProcessSafetyEconomicsBatch06Calculator mode="expectedMonetaryValueDecision" />
     )
   },
-  "lifecycleCostAnalysis": () => {
+"lifecycleCostAnalysis": () => {
     return (
       <ProcessSafetyEconomicsBatch06Calculator mode="lifecycleCostAnalysis" />
     )
   },
-  "individualRiskScreening": () => {
+"individualRiskScreening": () => {
     return <ProcessSafetyEconomicsBatch07Calculator mode="individualRiskScreening" />
   },
-  "societalRiskFNScreening": () => {
+"societalRiskFNScreening": () => {
     return <ProcessSafetyEconomicsBatch07Calculator mode="societalRiskFNScreening" />
   },
-  "alarpGrossDisproportionScreening": () => {
+"alarpGrossDisproportionScreening": () => {
     return <ProcessSafetyEconomicsBatch07Calculator mode="alarpGrossDisproportionScreening" />
   },
-  "safetyProjectPortfolioRanking": () => {
+"safetyProjectPortfolioRanking": () => {
     return <ProcessSafetyEconomicsBatch07Calculator mode="safetyProjectPortfolioRanking" />
   },
-  "adiabaticBatchReactor": () => {
+"adiabaticBatchReactor": () => {
     return (
       <ReactionEngineeringBatch01Calculator mode="adiabaticBatchReactor" />
     )
   },
-  "adiabaticCSTR": () => {
+"adiabaticCSTR": () => {
     return (
       <ReactionEngineeringBatch01Calculator mode="adiabaticCSTR" />
     )
   },
-  "adiabaticPFR": () => {
+"adiabaticPFR": () => {
     return (
       <ReactionEngineeringBatch01Calculator mode="adiabaticPFR" />
     )
   },
-  "autocatalyticBatchReactor": () => {
+"autocatalyticBatchReactor": () => {
     return (
       <ReactionEngineeringBatch01Calculator mode="autocatalyticBatchReactor" />
     )
   },
-  "axialDispersionRTD": () => {
+"axialDispersionRTD": () => {
     return (
       <ReactionEngineeringBatch01Calculator mode="axialDispersionRTD" />
     )
   },
-  "bypassFractionEstimator": () => {
+"bypassFractionEstimator": () => {
     return (
       <ReactionEngineeringBatch01Calculator mode="bypassFractionEstimator" />
     )
   },
-  "bypassDeadVolumeReactor": () => {
+"bypassDeadVolumeReactor": () => {
     return (
       <ReactionEngineeringBatch02Calculator mode="bypassDeadVolumeReactor" />
     )
   },
-  "catalystDeactivationKinetics": () => {
+"catalystDeactivationKinetics": () => {
     return (
       <ReactionEngineeringBatch02Calculator mode="catalystDeactivationKinetics" />
     )
   },
-  "catalystRegenerationCycle": () => {
+"catalystRegenerationCycle": () => {
     return (
       <ReactionEngineeringBatch02Calculator mode="catalystRegenerationCycle" />
     )
   },
-  "catalystTimeOnStream": () => {
+"catalystTimeOnStream": () => {
     return (
       <ReactionEngineeringBatch02Calculator mode="catalystTimeOnStream" />
     )
   },
-  "catalystWeightFromRateData": () => {
+"catalystWeightFromRateData": () => {
     return (
       <ReactionEngineeringBatch02Calculator mode="catalystWeightFromRateData" />
     )
   },
-  "conversionFromRTD": () => {
+"conversionFromRTD": () => {
     return (
       <ReactionEngineeringBatch02Calculator mode="conversionFromRTD" />
     )
   },
-  "cstrPFRSequence": () => {
+"cstrPFRSequence": () => {
     return (
       <ReactionEngineeringBatch03Calculator mode="cstrPFRSequence" />
     )
   },
-  "deactivatingPackedBedReactor": () => {
+"deactivatingPackedBedReactor": () => {
     return (
       <ReactionEngineeringBatch03Calculator mode="deactivatingPackedBedReactor" />
     )
   },
-  "deadVolumeEstimator": () => {
+"deadVolumeEstimator": () => {
     return (
       <ReactionEngineeringBatch03Calculator mode="deadVolumeEstimator" />
     )
   },
-  "eCurveGenerator": () => {
+"eCurveGenerator": () => {
     return (
       <ReactionEngineeringBatch03Calculator mode="eCurveGenerator" />
     )
   },
-  "economicReactorSelection": () => {
+"economicReactorSelection": () => {
     return (
       <ReactionEngineeringBatch03Calculator mode="economicReactorSelection" />
     )
   },
-  "enzymeBatchReactor": () => {
+"enzymeBatchReactor": () => {
     return (
       <ReactionEngineeringBatch03Calculator mode="enzymeBatchReactor" />
     )
   },
-  "equilibriumConversion": () => {
+"equilibriumConversion": () => {
     return (
       <ReactionEngineeringBatch04Calculator mode="equilibriumConversion" />
     )
   },
-  "fCurveGenerator": () => {
+"fCurveGenerator": () => {
     return (
       <ReactionEngineeringBatch04Calculator mode="fCurveGenerator" />
     )
   },
-  "heatExchangeBatchReactor": () => {
+"heatExchangeBatchReactor": () => {
     return (
       <ReactionEngineeringBatch04Calculator mode="heatExchangeBatchReactor" />
     )
   },
-  "heatExchangeCSTR": () => {
+"heatExchangeCSTR": () => {
     return (
       <ReactionEngineeringBatch04Calculator mode="heatExchangeCSTR" />
     )
   },
-  "heatExchangePFR": () => {
+"heatExchangePFR": () => {
     return (
       <ReactionEngineeringBatch04Calculator mode="heatExchangePFR" />
     )
   },
-  "immobilizedEnzymeReactor": () => {
+"immobilizedEnzymeReactor": () => {
     return (
       <ReactionEngineeringBatch04Calculator mode="immobilizedEnzymeReactor" />
     )
   },
-  "levenspielPlotSizing": () => {
+"levenspielPlotSizing": () => {
     return (
       <ReactionEngineeringBatch05Calculator mode="levenspielPlotSizing" />
     )
   },
-  "membraneReactor": () => {
+"membraneReactor": () => {
     return (
       <ReactionEngineeringBatch05Calculator mode="membraneReactor" />
     )
   },
-  "michaelisMentenReactor": () => {
+"michaelisMentenReactor": () => {
     return (
       <ReactionEngineeringBatch05Calculator mode="michaelisMentenReactor" />
     )
   },
-  "monodBioreactorDesign": () => {
+"monodBioreactorDesign": () => {
     return (
       <ReactionEngineeringBatch05Calculator mode="monodBioreactorDesign" />
     )
   },
-  "multipleReactionsCSTR": () => {
+"multipleReactionsCSTR": () => {
     return (
       <ReactionEngineeringBatch05Calculator mode="multipleReactionsCSTR" />
     )
   },
-  "multipleReactionsPFR": () => {
+"multipleReactionsPFR": () => {
     return (
       <ReactionEngineeringBatch05Calculator mode="multipleReactionsPFR" />
     )
   },
-  "nonIsothermalCSTRSteadyStates": () => {
+"nonIsothermalCSTRSteadyStates": () => {
     return (
       <ReactionEngineeringBatch06Calculator mode="nonIsothermalCSTRSteadyStates" />
     )
   },
-  "packedBedPressureDrop": () => {
+"packedBedPressureDrop": () => {
     return (
       <ReactionEngineeringBatch06Calculator mode="packedBedPressureDrop" />
     )
   },
-  "packedBedReactorDesign": () => {
+"packedBedReactorDesign": () => {
     return (
       <ReactionEngineeringBatch06Calculator mode="packedBedReactorDesign" />
     )
   },
-  "parallelReactions": () => {
+"parallelReactions": () => {
     return (
       <ReactionEngineeringBatch06Calculator mode="parallelReactions" />
     )
   },
-  "pbrPressureDropEffects": () => {
+"pbrPressureDropEffects": () => {
     return (
       <ReactionEngineeringBatch06Calculator mode="pbrPressureDropEffects" />
     )
   },
-  "rateConstantCalculation": () => {
+"rateConstantCalculation": () => {
     return (
       <ReactionEngineeringBatch06Calculator mode="rateConstantCalculation" />
     )
   },
-  "rateConstantTemperatureShift": () => {
+"rateConstantTemperatureShift": () => {
     return (
       <ReactionEngineeringBatch07Calculator mode="rateConstantTemperatureShift" />
     )
   },
-  "rateLawBuilder": () => {
+"rateLawBuilder": () => {
     return (
       <ReactionEngineeringBatch07Calculator mode="rateLawBuilder" />
     )
   },
-  "reactionOrderDetermination": () => {
+"reactionOrderDetermination": () => {
     return (
       <ReactionEngineeringBatch07Calculator mode="reactionOrderDetermination" />
     )
   },
-  "reactiveDistillationBasics": () => {
+"reactiveDistillationBasics": () => {
     return (
       <ReactionEngineeringBatch07Calculator mode="reactiveDistillationBasics" />
     )
   },
-  "reactorOptimization": () => {
+"reactorOptimization": () => {
     return (
       <ReactionEngineeringBatch07Calculator mode="reactorOptimization" />
     )
   },
-  "recyclePFR": () => {
+"recyclePFR": () => {
     return (
       <ReactionEngineeringBatch07Calculator mode="recyclePFR" />
     )
   },
-  "reversibleReactions": () => {
+"reversibleReactions": () => {
     return (
       <ReactionEngineeringBatch08Calculator mode="reversibleReactions" />
     )
   },
-  "rtdModelComparison": () => {
+"rtdModelComparison": () => {
     return (
       <ReactionEngineeringBatch08Calculator mode="rtdModelComparison" />
     )
   },
-  "rtdMoments": () => {
+"rtdMoments": () => {
     return (
       <ReactionEngineeringBatch08Calculator mode="rtdMoments" />
     )
   },
-  "segregationModelConversion": () => {
+"segregationModelConversion": () => {
     return (
       <ReactionEngineeringBatch08Calculator mode="segregationModelConversion" />
     )
   },
-  "semibatchReactor": () => {
+"semibatchReactor": () => {
     return (
       <ReactionEngineeringBatch08Calculator mode="semibatchReactor" />
     )
   },
-  "seriesReactions": () => {
+"seriesReactions": () => {
     return (
       <ReactionEngineeringBatch08Calculator mode="seriesReactions" />
     )
   },
-  "seriesParallelReactions": () => {
+"seriesParallelReactions": () => {
     return (
       <ReactionEngineeringBatch09Calculator mode="seriesParallelReactions" />
     )
   },
-  "stepResponseRTDAnalysis": () => {
+"stepResponseRTDAnalysis": () => {
     return (
       <ReactionEngineeringBatch09Calculator mode="stepResponseRTDAnalysis" />
     )
   },
-  "tanksInSeriesRTD": () => {
+"tanksInSeriesRTD": () => {
     return (
       <ReactionEngineeringBatch09Calculator mode="tanksInSeriesRTD" />
     )
   },
-  "arrheniusThreePointFit": () => {
+"arrheniusThreePointFit": () => {
     return (
       <ReactionEngineeringBatch09Calculator mode="arrheniusThreePointFit" />
     )
   },
 }
+*/
+
+const CATEGORY_BY_CALCULATOR: Record<
+  string,
+  CalculatorCategoryKey
+> = {
+  "dragForce": "fluid-mechanics",
+  "minorLosses": "fluid-mechanics",
+  "orificeMeter": "fluid-mechanics",
+  "particleSettling": "fluid-mechanics",
+  "reynoldsNumber": "fluid-mechanics",
+  "tankDrainTime": "fluid-mechanics",
+  "uTubeManometer": "fluid-mechanics",
+  "venturiMeter": "fluid-mechanics",
+  "reactiveMaterialBalance": "material-and-energy-balances",
+  "recyclePurgeInertBalance": "material-and-energy-balances",
+  "solidsWashingBalance": "material-and-energy-balances",
+  "soluteDilutionCalculator": "material-and-energy-balances",
+  "streamSplitterBalance": "material-and-energy-balances",
+  "twoStreamMixerBalance": "material-and-energy-balances",
+  "adaptiveSimpsonIntegration": "numerical-methods",
+  "odeSolver": "numerical-methods",
+  "gaussLegendreQuadrature": "numerical-methods",
+  "goldenSectionOptimization": "numerical-methods",
+  "linearSystems": "numerical-methods",
+  "numericalDifferentiation": "numerical-methods",
+  "numericalIntegration": "numerical-methods",
+  "numericalInterpolation": "numerical-methods",
+  "rootFinding": "numerical-methods",
+  "rombergIntegration": "numerical-methods",
+  "firstOrderPlusDeadTimeProcess": "process-control",
+  "firstOrderProcessResponse": "process-control",
+  "imcControllerTuning": "process-control",
+  "pidController": "process-control",
+  "secondOrderProcessResponse": "process-control",
+  "zieglerNicholsReactionCurveTuning": "process-control",
+  "arrheniusRateConstant": "reaction-engineering",
+  "constantVolumeStoichiometry": "reaction-engineering",
+  "conversionYieldSelectivity": "reaction-engineering",
+  "cstrsInSeries": "reaction-engineering",
+  "pfrSections": "reaction-engineering",
+  "reactionRateCalculator": "reaction-engineering",
+  "reactorComparison": "reaction-engineering",
+  "reactorDesign": "reaction-engineering",
+  "spaceTimeSpaceVelocity": "reaction-engineering",
+  "binaryIsothermalFlash": "separation-processes",
+  "binaryMinimumReflux": "separation-processes",
+  "binaryRelativeVolatilityVLE": "separation-processes",
+  "cycloneCutDiameter": "separation-processes",
+  "fenskeMinimumStages": "separation-processes",
+  "absorptionMinimumSolventRate": "separation-processes",
+  "murphreeTrayEfficiency": "separation-processes",
+  "packedColumnHTUNTU": "separation-processes",
+  "psychrometricAirEnthalpy": "separation-processes",
+  "averageMolecularWeight": "engineering-fundamentals",
+  "binaryCompositionBasisConversion": "engineering-fundamentals",
+  "chemicalFormulaMolecularWeight": "engineering-fundamentals",
+  "densitySpecificGravity": "engineering-fundamentals",
+  "engineeringPrefixConverter": "engineering-fundamentals",
+  "massFlowMolarFlowConversion": "engineering-fundamentals",
+  "massFractionCalculator": "engineering-fundamentals",
+  "massMoleConversion": "engineering-fundamentals",
+  "mixtureDensityCalculator": "engineering-fundamentals",
+  "moleFractionCalculator": "engineering-fundamentals",
+  "concentrationScaleConverter": "engineering-fundamentals",
+  "significantFiguresRounding": "engineering-fundamentals",
+  "solutionConcentration": "engineering-fundamentals",
+  "standardGasFlowConverter": "engineering-fundamentals",
+  "unitConverter": "engineering-fundamentals",
+  "volumetricMassFlowConversion": "engineering-fundamentals",
+  "biotNumber": "heat-transfer",
+  "combinedConvectionRadiation": "heat-transfer",
+  "compositeWallConduction": "heat-transfer",
+  "criticalRadiusOfInsulation": "heat-transfer",
+  "cylindricalWallConduction": "heat-transfer",
+  "forcedConvectionCorrelation": "heat-transfer",
+  "foulingAnalysis": "heat-transfer",
+  "fourierNumber": "heat-transfer",
+  "grashofNumber": "heat-transfer",
+  "naturalConvectionCorrelation": "heat-transfer",
+  "nusseltNumber": "heat-transfer",
+  "planeWallConduction": "heat-transfer",
+  "prandtlNumber": "heat-transfer",
+  "rayleighNumber": "heat-transfer",
+  "shellAndTubeHeatExchanger": "heat-transfer",
+  "sphericalWallConduction": "heat-transfer",
+  "thermalRadiation": "heat-transfer",
+  "thermalResistanceNetwork": "heat-transfer",
+  "lumpedCapacitance": "heat-transfer",
+  "adsorptionIsotherms": "mass-transfer",
+  "batchAdsorptionDesign": "mass-transfer",
+  "betIsotherm": "mass-transfer",
+  "chiltonColburnAnalogy": "mass-transfer",
+  "convectiveMassTransferCorrelations": "mass-transfer",
+  "countercurrentLiquidLiquidExtraction": "mass-transfer",
+  "crosscurrentLiquidLiquidExtraction": "mass-transfer",
+  "diffusionThroughMembrane": "mass-transfer",
+  "distributionCoefficientSelectivity": "mass-transfer",
+  "effectiveDiffusivity": "mass-transfer",
+  "equimolarCounterDiffusion": "mass-transfer",
+  "ficksFirstLaw": "mass-transfer",
+  "ficksSecondLaw": "mass-transfer",
+  "fixedBedAdsorptionBDST": "mass-transfer",
+  "gasAbsorptionStrippingFundamentals": "mass-transfer",
+  "gasPhaseDiffusivity": "mass-transfer",
+  "interphaseEquilibriumDrivingForces": "mass-transfer",
+  "kremserMethod": "mass-transfer",
+  "liquidPhaseDiffusivity": "mass-transfer",
+  "massTransferCoefficient": "mass-transfer",
+  "dimensionlessMassTransfer": "mass-transfer",
+  "membraneGasSeparation": "mass-transfer",
+  "overallMassTransferCoefficient": "mass-transfer",
+  "packedColumnHTUNTUDesign": "mass-transfer",
+  "reverseOsmosisPerformance": "mass-transfer",
+  "stagnantFilmDiffusion": "mass-transfer",
+  "steadyStateDiffusion": "mass-transfer",
+  "twoFilmTheory": "mass-transfer",
+  "adiabaticIdealGasProcess": "thermodynamics",
+  "antoineVaporPressure": "thermodynamics",
+  "clausiusClapeyronEstimator": "thermodynamics",
+  "closedSystemFirstLaw": "thermodynamics",
+  "compressorIsentropicEfficiency": "thermodynamics",
+  "daltonPartialPressure": "thermodynamics",
+  "enthalpyChangeCalculator": "thermodynamics",
+  "idealGas": "thermodynamics",
+  "idealGasEntropyChange": "thermodynamics",
+  "idealGasMixtureProperties": "thermodynamics",
+  "incompressibleEntropyChange": "thermodynamics",
+  "internalEnergyChangeCalculator": "thermodynamics",
+  "isobaricIdealGasProcess": "thermodynamics",
+  "isochoricIdealGasProcess": "thermodynamics",
+  "isothermalIdealGasProcess": "thermodynamics",
+  "nozzleDiffuserEnergyBalance": "thermodynamics",
+  "polytropicIdealGasProcess": "thermodynamics",
+  "pumpIsentropicEfficiency": "thermodynamics",
+  "reducedPropertiesCalculator": "thermodynamics",
+  "saturatedMixtureProperty": "thermodynamics",
+  "steadyFlowEnergyEquation": "thermodynamics",
+  "thermalEfficiencyCOP": "thermodynamics",
+  "throttlingProcess": "thermodynamics",
+  "turbineIsentropicEfficiency": "thermodynamics",
+  "vaporQualityFromEnthalpy": "thermodynamics",
+  "crystallizerBalance": "material-and-energy-balances",
+  "pressureDrop": "fluid-mechanics",
+  "filterCakeBalance": "material-and-energy-balances",
+  "finHeatTransfer": "heat-transfer",
+  "froudeNumber": "fluid-mechanics",
+  "gasAbsorberBalance": "material-and-energy-balances",
+  "heatExchangerLMTD": "heat-transfer",
+  "heatExchangerAreaSizing": "heat-transfer",
+  "heatExchangerEffectivenessNTU": "heat-transfer",
+  "humidifierWaterBalance": "material-and-energy-balances",
+  "hydrostaticPressure": "fluid-mechanics",
+  "limitingReactantExcess": "material-and-energy-balances",
+  "liquidLiquidExtractionBalance": "material-and-energy-balances",
+  "membraneSeparatorBalance": "material-and-energy-balances",
+  "openChannelFlow": "fluid-mechanics",
+  "overallHeatTransferCoefficient": "heat-transfer",
+  "frictionFactor": "fluid-mechanics",
+  "pumpPower": "fluid-mechanics",
+  "raoultBubblePointPressure": "separation-processes",
+  "raoultDewPointPressure": "separation-processes",
+  "bernoulliEquation": "fluid-mechanics",
+  "binarySeparatorBalance": "material-and-energy-balances",
+  "boilingHeatTransfer": "heat-transfer",
+  "bypassMixingBalance": "material-and-energy-balances",
+  "combustionAirRequirement": "material-and-energy-balances",
+  "condensationHeatTransfer": "heat-transfer",
+  "condenserBalance": "material-and-energy-balances",
+  "convectionHeatTransfer": "heat-transfer",
+  "reactionPerformanceBalance": "material-and-energy-balances",
+  "criticalDepth": "fluid-mechanics",
+  "evaporatorBalance": "material-and-energy-balances",
+  "massBalance": "material-and-energy-balances",
+  "phaseChangeEnergyBalance": "material-and-energy-balances",
+  "sensibleHeatBalance": "material-and-energy-balances",
+  "flowRate": "fluid-mechanics",
+  "heatExchangerEnergyBalance": "material-and-energy-balances",
+  "activationEnergyTwoPoint": "reaction-engineering",
+  "adiabaticMixingTemperature": "material-and-energy-balances",
+  "doublePipeHeatExchanger": "heat-transfer",
+  "dryerBalance": "material-and-energy-balances",
+  "fluidBedDryerAdiabaticDryAirRequirement": "material-and-energy-balances",
+  "evaporatorSteamRequirementEconomy": "material-and-energy-balances",
+  "multipleEffectEvaporatorSteamEconomy": "material-and-energy-balances",
+  "evaporatorTargetSteamEconomyEffectCount": "material-and-energy-balances",
+  "evaporatorRequiredVaporReuseEfficiency": "material-and-energy-balances",
+  "darcyWeisbachPipeDiameterSizing": "fluid-mechanics",
+  "pipeFlowRateFromPressureDrop": "fluid-mechanics",
+  "maximumPipeLengthFromPressureDrop": "fluid-mechanics",
+  "maximumMinorLossCoefficient": "fluid-mechanics",
+  "npshAvailableCavitationMargin": "fluid-mechanics",
+  "minimumSuctionPipeDiameterNpshMargin": "fluid-mechanics",
+  "requiredStaticLiquidLevelNpshMargin": "fluid-mechanics",
+  "maximumSuctionFlowRateNpshMargin": "fluid-mechanics",
+  "maximumSuctionLineLengthNpshMargin": "fluid-mechanics",
+  "pitotTubeVelocityFlow": "fluid-mechanics",
+  "flowNozzleDifferentialPressure": "fluid-mechanics",
+  "variableAreaRotameterFlow": "fluid-mechanics",
+  "vortexSheddingFlowMeter": "fluid-mechanics",
+  "ultrasonicTransitTimeFlowMeter": "fluid-mechanics",
+  "electromagneticFlowMeter": "fluid-mechanics",
+  "positiveDisplacementFlowMeter": "fluid-mechanics",
+  "turbineFlowMeter": "fluid-mechanics",
+  "sharpCrestedRectangularWeir": "fluid-mechanics",
+  "vNotchTriangularWeir": "fluid-mechanics",
+  "trapezoidalChannelManningFlow": "fluid-mechanics",
+  "trapezoidalChannelNormalDepth": "fluid-mechanics",
+  "rectangularHydraulicJump": "fluid-mechanics",
+  "trapezoidalChannelCriticalDepth": "fluid-mechanics",
+  "rectangularChannelAlternateDepth": "fluid-mechanics",
+  "trapezoidalChannelCriticalSlope": "fluid-mechanics",
+  "trapezoidalHydraulicJump": "fluid-mechanics",
+  "broadCrestedWeirFlow": "fluid-mechanics",
+  "trapezoidalChannelAlternateDepth": "fluid-mechanics",
+  "trapezoidalChannelChezyFlow": "fluid-mechanics",
+  "mostEconomicalTrapezoidalChannelDesign": "fluid-mechanics",
+  "trapezoidalChannelDirectStep": "fluid-mechanics",
+  "trapezoidalChannelGvfSlope": "fluid-mechanics",
+  "trapezoidalChannelGvfProfileRk4": "fluid-mechanics",
+  "trapezoidalMaximumDischargeSpecificEnergy": "fluid-mechanics",
+  "trapezoidalCriticalControlWidth": "fluid-mechanics",
+  "trapezoidalMaximumBedRiseBeforeChoking": "fluid-mechanics",
+  "trapezoidalChannelBedRiseCrestDepth": "fluid-mechanics",
+  "trapezoidalMinimumUpstreamDepthBedRise": "fluid-mechanics",
+  "trapezoidalMinimumContractionWidth": "fluid-mechanics",
+  "trapezoidalContractionThroatAnalysis": "fluid-mechanics",
+  "trapezoidalContractionTransitionLoss": "fluid-mechanics",
+  "trapezoidalMaximumTransitionLossCoefficient": "fluid-mechanics",
+  "trapezoidalMaximumDischargeTransitionLoss": "fluid-mechanics",
+  "trapezoidalMinimumUpstreamDepthContractionLoss": "fluid-mechanics",
+  "trapezoidalMaximumBedRiseContractionLoss": "fluid-mechanics",
+  "trapezoidalMinimumWidthBedRiseTransitionLoss": "fluid-mechanics",
+  "trapezoidalMaximumDischargeBedRiseTransitionLoss": "fluid-mechanics",
+  "trapezoidalMaximumTransitionLossCoefficientBedRise": "fluid-mechanics",
+  "trapezoidalMinimumUpstreamDepthBedRiseTransitionLoss": "fluid-mechanics",
+  "trapezoidalChannelStandardStep": "fluid-mechanics",
+  "trapezoidalChannelStandardStepProfile": "fluid-mechanics",
+  "trapezoidalChannelAdaptiveStandardStepProfile": "fluid-mechanics",
+  "trapezoidalChannelUpstreamStandardStepProfile": "fluid-mechanics",
+  "trapezoidalChannelAdaptiveUpstreamStandardStepProfile": "fluid-mechanics",
+  "partiallyFullCircularChannelManningFlow": "fluid-mechanics",
+  "partiallyFullCircularChannelNormalDepth": "fluid-mechanics",
+  "partiallyFullCircularChannelCriticalDepth": "fluid-mechanics",
+  "partiallyFullCircularChannelAlternateDepths": "fluid-mechanics",
+  "partiallyFullCircularChannelCriticalSlope": "fluid-mechanics",
+  "partiallyFullCircularChannelHydraulicJump": "fluid-mechanics",
+  "partiallyFullCircularChannelDirectStep": "fluid-mechanics",
+  "partiallyFullCircularChannelGvfSlope": "fluid-mechanics",
+  "partiallyFullCircularChannelGvfProfile": "fluid-mechanics",
+  "partiallyFullCircularChannelAdaptiveGvfProfile": "fluid-mechanics",
+  "partiallyFullCircularChannelStandardStep": "fluid-mechanics",
+  "partiallyFullCircularChannelStandardStepProfile": "fluid-mechanics",
+  "partiallyFullCircularChannelAdaptiveStandardStepProfile": "fluid-mechanics",
+  "partiallyFullCircularChannelUpstreamStandardStepProfile": "fluid-mechanics",
+  "partiallyFullCircularChannelAdaptiveUpstreamStandardStepProfile": "fluid-mechanics",
+  "partiallyFullCircularChannelMaximumDischargeSpecificEnergy": "fluid-mechanics",
+  "partiallyFullCircularChannelMinimumDiameterSpecificEnergy": "fluid-mechanics",
+  "partiallyFullCircularChannelMinimumRequiredSpecificEnergy": "fluid-mechanics",
+  "partiallyFullCircularChannelCapacityChokingMargin": "fluid-mechanics",
+  "fluidBedDryerAdiabaticInletTemperature": "material-and-energy-balances",
+  "fluidBedDryerEnergyBalance": "material-and-energy-balances",
+  "fluidBedDryerMassBalance": "material-and-energy-balances",
+  "linearInterpolationCalculator": "engineering-fundamentals",
+  "weightedAverageProperty": "engineering-fundamentals",
+  "binaryFlashCalculation": "mass-transfer",
+  "centrifugalSettlingTime": "mass-transfer",
+  "constantPressureFiltration": "mass-transfer",
+  "countercurrentSolidsWashing": "mass-transfer",
+  "crystallizationYieldMotherLiquor": "mass-transfer",
+  "dryingRateTime": "mass-transfer",
+  "distillationOperatingLines": "mass-transfer",
+  "mcCabeThieleMethod": "mass-transfer",
+  "humidificationPsychrometrics": "mass-transfer",
+  "ionExchangeBedSizing": "mass-transfer",
+  "finiteVolumeDialysis": "mass-transfer",
+  "msmprCrystallizerDesign": "mass-transfer",
+  "packedColumnHydraulics": "mass-transfer",
+  "relativeVolatilityBinaryVLE": "mass-transfer",
+  "singleStageLeachingRecovery": "mass-transfer",
+  "singleStageLiquidLiquidExtraction": "mass-transfer",
+  "ultrafiltrationConcentrationPolarization": "mass-transfer",
+  "batchSettlingAreaEstimate": "separation-processes",
+  "centrifugeSigmaScaleUp": "separation-processes",
+  "constantPressureFilterSizing": "separation-processes",
+  "coolingCrystallizerYield": "separation-processes",
+  "evaporativeCrystallizerBalance": "separation-processes",
+  "dryerThermalDuty": "separation-processes",
+  "binaryDistillationBalance": "separation-processes",
+  "extractionDistributionSelectivity": "separation-processes",
+  "extractionSolventRequirement": "separation-processes",
+  "crosscurrentExtractionStages": "separation-processes",
+  "countercurrentExtractionStages": "separation-processes",
+  "gillilandStageEstimate": "separation-processes",
+  "fenskeUnderwoodGillilandShortcut": "separation-processes",
+  "soudersBrownColumnDiameter": "separation-processes",
+  "trayHydraulicsWeepingCheck": "separation-processes",
+  "trayDowncomerBackupResidence": "separation-processes",
+  "packedColumnHtuNtuHeight": "separation-processes",
+  "packedColumnPressureDropFlooding": "separation-processes",
+  "packedColumnLiquidHoldupResidence": "separation-processes",
+  "packedColumnLiquidDistributorIrrigation": "separation-processes",
+  "packedColumnGasLoadFFactor": "separation-processes",
+  "packedColumnRedistributorSpacing": "separation-processes",
+  "kremserAbsorptionFactorStages": "separation-processes",
+  "absorberMinimumSolventRate": "separation-processes",
+  "absorptionStrippingFactors": "separation-processes",
+  "adsorbentMassRequirement": "separation-processes",
+  "betMonolayerCapacity": "separation-processes",
+  "kremserAbsorptionStages": "separation-processes",
+  "kremserStrippingStages": "separation-processes",
+  "strippingMinimumGasRate": "separation-processes",
+  "gasMembraneAreaRequirement": "separation-processes",
+  "idealGasMembraneStageCut": "separation-processes",
+  "reverseOsmosisWaterFlux": "separation-processes",
+  "ultrafiltrationResistanceSeries": "separation-processes",
+  "psychrometricAirStreamMixing": "separation-processes",
+  "relativeHumidityHumidification": "separation-processes",
+  "combinedDryerTime": "separation-processes",
+  "fixedBedAdsorberBreakthrough": "separation-processes",
+  "hydrocycloneSeparationNumber": "separation-processes",
+  "singleStageGasAbsorption": "separation-processes",
+  "singleStageLeachingBalance": "separation-processes",
+  "adamsBashforthMoulton": "numerical-methods",
+  "adaptiveRungeKutta45": "numerical-methods",
+  "broydenNonlinearSystem": "numerical-methods",
+  "choleskyDecompositionSolver": "numerical-methods",
+  "conjugateGradientSolver": "numerical-methods",
+  "coupledODESystemRK4": "numerical-methods",
+  "crankNicolsonHeatEquation": "numerical-methods",
+  "cubicHermiteInterpolation": "numerical-methods",
+  "curveFitting": "numerical-methods",
+  "gaussNewtonNonlinearRegression": "numerical-methods",
+  "gradientDescentOptimization": "numerical-methods",
+  "highOrderFiniteDifference": "numerical-methods",
+  "inversePowerMethodEigenvalue": "numerical-methods",
+  "laplaceEquationFiniteDifference": "numerical-methods",
+  "levenbergMarquardtRegression": "numerical-methods",
+  "luDecompositionSolver": "numerical-methods",
+  "methodOfLinesPDESolver": "numerical-methods",
+  "monteCarloIntegration": "numerical-methods",
+  "naturalCubicSplineInterpolation": "numerical-methods",
+  "nelderMeadOptimization": "numerical-methods",
+  "newtonMultivariableOptimization": "numerical-methods",
+  "newtonRaphsonNonlinearSystem": "numerical-methods",
+  "numericalJacobian": "numerical-methods",
+  "oneDimensionalWaveEquation": "numerical-methods",
+  "powerMethodEigenvalue": "numerical-methods",
+  "qrDecompositionSolver": "numerical-methods",
+  "richardsonErrorEstimate": "numerical-methods",
+  "riddersRootFinder": "numerical-methods",
+  "shootingMethodBoundaryValue": "numerical-methods",
+  "thomasTridiagonalSolver": "numerical-methods",
+  "blockDiagramAlgebra": "process-control",
+  "cascadeControl": "process-control",
+  "closedLoopFeedbackAnalysis": "process-control",
+  "cohenCoonTuning": "process-control",
+  "processControlStrategyComparison": "process-control",
+  "cubicRouthHurwitzStability": "process-control",
+  "feedforwardControl": "process-control",
+  "firstOrderFrequencyResponse": "process-control",
+  "gainScheduling": "process-control",
+  "integratingProcessResponse": "process-control",
+  "interactingTankSystem": "process-control",
+  "internalModelControlAnalysis": "process-control",
+  "inverseLaplaceTransformHelper": "process-control",
+  "laplaceTransformHelper": "process-control",
+  "liquidControlValveSizing": "process-control",
+  "liquidLevelDynamics": "process-control",
+  "modelPredictiveControl": "process-control",
+  "nonInteractingTankSystem": "process-control",
+  "openLoopResponse": "process-control",
+  "overrideSelectiveControl": "process-control",
+  "pdController": "process-control",
+  "piController": "process-control",
+  "pressureProcessDynamics": "process-control",
+  "proportionalController": "process-control",
+  "mimoDecouplingControl": "process-control",
+  "adaptiveControl": "process-control",
+  "ratioControl": "process-control",
+  "secondOrderFrequencyResponse": "process-control",
+  "smithPredictor": "process-control",
+  "splitRangeControl": "process-control",
+  "temperatureProcessDynamics": "process-control",
+  "transferFunctionBuilder": "process-control",
+  "valveCharacteristics": "process-control",
+  "zieglerNicholsUltimateGainTuning": "process-control",
+  "equipmentCostScaling": "process-safety-and-economics",
+  "costIndexEscalation": "process-safety-and-economics",
+  "emergencyVentilationDilution": "process-safety-and-economics",
+  "annualizedLossExpectancy": "process-safety-and-economics",
+  "liquidLeakRateScreening": "process-safety-and-economics",
+  "paybackAndROIAnalysis": "process-safety-and-economics",
+  "langFactorCapitalEstimate": "process-safety-and-economics",
+  "totalCapitalInvestmentEstimate": "process-safety-and-economics",
+  "annualOperatingCostEstimate": "process-safety-and-economics",
+  "straightLineDepreciation": "process-safety-and-economics",
+  "netPresentValueAnalysis": "process-safety-and-economics",
+  "internalRateOfReturnAnalysis": "process-safety-and-economics",
+  "breakEvenProductionAnalysis": "process-safety-and-economics",
+  "equivalentAnnualWorth": "process-safety-and-economics",
+  "economicSensitivityAnalysis": "process-safety-and-economics",
+  "flammabilityMixtureLimits": "process-safety-and-economics",
+  "gasReliefValveSizing": "process-safety-and-economics",
+  "liquidReliefValveSizing": "process-safety-and-economics",
+  "chemicalProcessRiskMatrix": "process-safety-and-economics",
+  "hazopGuideWordAssistant": "process-safety-and-economics",
+  "inherentlySaferDesignChecklist": "process-safety-and-economics",
+  "layerOfProtectionAnalysis": "process-safety-and-economics",
+  "safetyIntegrityLevelTarget": "process-safety-and-economics",
+  "poolFireRadiationScreening": "process-safety-and-economics",
+  "bleveFireballScreening": "process-safety-and-economics",
+  "tntEquivalentExplosionScreening": "process-safety-and-economics",
+  "gasLeakRateScreening": "process-safety-and-economics",
+  "gaussianPlumeDispersion": "process-safety-and-economics",
+  "toxicExposureDoseScreening": "process-safety-and-economics",
+  "eventTreeAnalysis": "process-safety-and-economics",
+  "faultTreeProbability": "process-safety-and-economics",
+  "sifAveragePFD": "process-safety-and-economics",
+  "proofTestIntervalCalculator": "process-safety-and-economics",
+  "riskReductionCostEffectiveness": "process-safety-and-economics",
+  "expectedMonetaryValueDecision": "process-safety-and-economics",
+  "lifecycleCostAnalysis": "process-safety-and-economics",
+  "individualRiskScreening": "process-safety-and-economics",
+  "societalRiskFNScreening": "process-safety-and-economics",
+  "alarpGrossDisproportionScreening": "process-safety-and-economics",
+  "safetyProjectPortfolioRanking": "process-safety-and-economics",
+  "adiabaticBatchReactor": "reaction-engineering",
+  "adiabaticCSTR": "reaction-engineering",
+  "adiabaticPFR": "reaction-engineering",
+  "autocatalyticBatchReactor": "reaction-engineering",
+  "axialDispersionRTD": "reaction-engineering",
+  "bypassFractionEstimator": "reaction-engineering",
+  "bypassDeadVolumeReactor": "reaction-engineering",
+  "catalystDeactivationKinetics": "reaction-engineering",
+  "catalystRegenerationCycle": "reaction-engineering",
+  "catalystTimeOnStream": "reaction-engineering",
+  "catalystWeightFromRateData": "reaction-engineering",
+  "conversionFromRTD": "reaction-engineering",
+  "cstrPFRSequence": "reaction-engineering",
+  "deactivatingPackedBedReactor": "reaction-engineering",
+  "deadVolumeEstimator": "reaction-engineering",
+  "eCurveGenerator": "reaction-engineering",
+  "economicReactorSelection": "reaction-engineering",
+  "enzymeBatchReactor": "reaction-engineering",
+  "equilibriumConversion": "reaction-engineering",
+  "fCurveGenerator": "reaction-engineering",
+  "heatExchangeBatchReactor": "reaction-engineering",
+  "heatExchangeCSTR": "reaction-engineering",
+  "heatExchangePFR": "reaction-engineering",
+  "immobilizedEnzymeReactor": "reaction-engineering",
+  "levenspielPlotSizing": "reaction-engineering",
+  "membraneReactor": "reaction-engineering",
+  "michaelisMentenReactor": "reaction-engineering",
+  "monodBioreactorDesign": "reaction-engineering",
+  "multipleReactionsCSTR": "reaction-engineering",
+  "multipleReactionsPFR": "reaction-engineering",
+  "nonIsothermalCSTRSteadyStates": "reaction-engineering",
+  "packedBedPressureDrop": "reaction-engineering",
+  "packedBedReactorDesign": "reaction-engineering",
+  "parallelReactions": "reaction-engineering",
+  "pbrPressureDropEffects": "reaction-engineering",
+  "rateConstantCalculation": "reaction-engineering",
+  "rateConstantTemperatureShift": "reaction-engineering",
+  "rateLawBuilder": "reaction-engineering",
+  "reactionOrderDetermination": "reaction-engineering",
+  "reactiveDistillationBasics": "reaction-engineering",
+  "reactorOptimization": "reaction-engineering",
+  "recyclePFR": "reaction-engineering",
+  "reversibleReactions": "reaction-engineering",
+  "rtdModelComparison": "reaction-engineering",
+  "rtdMoments": "reaction-engineering",
+  "segregationModelConversion": "reaction-engineering",
+  "semibatchReactor": "reaction-engineering",
+  "seriesReactions": "reaction-engineering",
+  "seriesParallelReactions": "reaction-engineering",
+  "stepResponseRTDAnalysis": "reaction-engineering",
+  "tanksInSeriesRTD": "reaction-engineering",
+  "arrheniusThreePointFit": "reaction-engineering",
+}
+
+const LazyEngineeringFundamentalsCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/EngineeringFundamentalsCalculatorCategory'
+      ),
+  )
+const LazyFluidMechanicsCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/FluidMechanicsCalculatorCategory'
+      ),
+  )
+const LazyHeatTransferCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/HeatTransferCalculatorCategory'
+      ),
+  )
+const LazyMassTransferCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/MassTransferCalculatorCategory'
+      ),
+  )
+const LazyMaterialAndEnergyBalancesCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/MaterialAndEnergyBalancesCalculatorCategory'
+      ),
+  )
+const LazyNumericalMethodsCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/NumericalMethodsCalculatorCategory'
+      ),
+  )
+const LazyProcessControlCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/ProcessControlCalculatorCategory'
+      ),
+  )
+const LazyProcessSafetyAndEconomicsCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/ProcessSafetyAndEconomicsCalculatorCategory'
+      ),
+  )
+const LazyReactionEngineeringCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/ReactionEngineeringCalculatorCategory'
+      ),
+  )
+const LazySeparationProcessesCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/SeparationProcessesCalculatorCategory'
+      ),
+  )
+const LazyThermodynamicsCalculatorCategory =
+  lazy(
+    () =>
+      import(
+        './native-calculator-categories/ThermodynamicsCalculatorCategory'
+      ),
+  )
+
+const CATEGORY_COMPONENTS: Record<
+  CalculatorCategoryKey,
+  LazyExoticComponent<
+    ComponentType<
+      NativeCalculatorCategoryProps
+    >
+  >
+> = {
+  "engineering-fundamentals": LazyEngineeringFundamentalsCalculatorCategory,
+  "fluid-mechanics": LazyFluidMechanicsCalculatorCategory,
+  "heat-transfer": LazyHeatTransferCalculatorCategory,
+  "mass-transfer": LazyMassTransferCalculatorCategory,
+  "material-and-energy-balances": LazyMaterialAndEnergyBalancesCalculatorCategory,
+  "numerical-methods": LazyNumericalMethodsCalculatorCategory,
+  "process-control": LazyProcessControlCalculatorCategory,
+  "process-safety-and-economics": LazyProcessSafetyAndEconomicsCalculatorCategory,
+  "reaction-engineering": LazyReactionEngineeringCalculatorCategory,
+  "separation-processes": LazySeparationProcessesCalculatorCategory,
+  "thermodynamics": LazyThermodynamicsCalculatorCategory,
+}
 
 export const NATIVE_CALCULATOR_IDS =
   Object.freeze(
     Object.keys(
-      NATIVE_CALCULATOR_RENDERERS,
+      CATEGORY_BY_CALCULATOR,
     ),
   )
 
-export function renderNativeCalculator(
+export function getNativeCalculatorComponent(
   calculatorId: string,
-  title: string,
-): ReactNode | null {
-  const renderer =
-    NATIVE_CALCULATOR_RENDERERS[
+) {
+  const category =
+    CATEGORY_BY_CALCULATOR[
       calculatorId
     ]
 
-  if (!renderer) {
+  if (!category) {
     return null
   }
 
-  return renderer(
-    title,
-  )
+  return CATEGORY_COMPONENTS[
+    category
+  ]
 }

@@ -2,6 +2,8 @@ import {
   readFileSync,
 } from 'node:fs'
 
+const EXPECTED = 473
+
 const catalog =
   readFileSync(
     'src/data/calculators.ts',
@@ -14,41 +16,44 @@ const registry =
     'utf8',
   )
 
-const workbench =
-  readFileSync(
-    'src/components/CalculatorWorkbench.tsx',
-    'utf8',
-  )
-
 const catalogIds =
   [
     ...catalog.matchAll(
       /\{\s*id:\s*"([^"]+)"/g,
     ),
   ].map(
-    (match) =>
-      match[1],
+    (match) => match[1],
   )
+
+const mapMatch =
+  registry.match(
+    /const CATEGORY_BY_CALCULATOR:[\s\S]*?=\s*\{([\s\S]*?)\n\}/,
+  )
+
+if (!mapMatch) {
+  console.error(
+    'NATIVE CALCULATOR REGISTRY VERIFICATION FAILED',
+  )
+  console.error(
+    '- CATEGORY_BY_CALCULATOR not found',
+  )
+  process.exit(1)
+}
 
 const registryIds =
   [
-    ...registry.matchAll(
-      /^  "([^"]+)":\s*\(/gm,
+    ...mapMatch[1].matchAll(
+      /^\s{2}"([^"]+)":\s*"[^"]+",$/gm,
     ),
   ].map(
-    (match) =>
-      match[1],
+    (match) => match[1],
   )
 
 const catalogSet =
-  new Set(
-    catalogIds,
-  )
+  new Set(catalogIds)
 
 const registrySet =
-  new Set(
-    registryIds,
-  )
+  new Set(registryIds)
 
 const missing =
   catalogIds.filter(
@@ -62,10 +67,17 @@ const unknown =
       !catalogSet.has(id),
   )
 
+const lazyImports =
+  [
+    ...registry.matchAll(
+      /\blazy\s*\(\s*\(\)\s*=>\s*import\s*\(/g,
+    ),
+  ].length
+
 const errors = []
 
 if (
-  catalogIds.length !== 473
+  catalogIds.length !== EXPECTED
 ) {
   errors.push(
     `catalog=${catalogIds.length}`,
@@ -73,7 +85,7 @@ if (
 }
 
 if (
-  registryIds.length !== 473
+  registryIds.length !== EXPECTED
 ) {
   errors.push(
     `registry=${registryIds.length}`,
@@ -81,10 +93,18 @@ if (
 }
 
 if (
-  registrySet.size !== 473
+  registrySet.size !== EXPECTED
 ) {
   errors.push(
     `unique=${registrySet.size}`,
+  )
+}
+
+if (
+  lazyImports !== 11
+) {
+  errors.push(
+    `lazy category imports=${lazyImports}`,
   )
 }
 
@@ -100,38 +120,12 @@ if (unknown.length) {
   )
 }
 
-if (
-  !workbench.includes(
-    'renderNativeCalculator(',
-  )
-) {
-  errors.push(
-    'dispatcher missing',
-  )
-}
-
-if (
-  workbench.includes(
-    'LegacyWorkbench',
-  )
-  || workbench.includes(
-    '/legacy/',
-  )
-) {
-  errors.push(
-    'legacy reference detected',
-  )
-}
-
 if (errors.length) {
   console.error(
     'NATIVE CALCULATOR REGISTRY VERIFICATION FAILED',
   )
 
-  for (
-    const error
-    of errors
-  ) {
+  for (const error of errors) {
     console.error(
       `- ${error}`,
     )
@@ -144,7 +138,10 @@ console.log(
   'NATIVE CALCULATOR REGISTRY VERIFICATION PASSED',
 )
 console.log(
-  `Registry routes: ${registryIds.length}`,
+  'Registry routes: 473',
+)
+console.log(
+  'Lazy category modules: 11',
 )
 console.log(
   'Legacy routes: 0',

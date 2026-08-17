@@ -3,22 +3,20 @@ import {
 } from 'node:fs'
 
 const EXPECTED_CALCULATOR_COUNT = 473
-const EXPECTED_COUNT =
-  EXPECTED_CALCULATOR_COUNT
 
-const catalogSource =
+const catalog =
   readFileSync(
     'src/data/calculators.ts',
     'utf8',
   )
 
-const registrySource =
+const registry =
   readFileSync(
     'src/components/NativeCalculatorRegistry.tsx',
     'utf8',
   )
 
-const workbenchSource =
+const workbench =
   readFileSync(
     'src/components/CalculatorWorkbench.tsx',
     'utf8',
@@ -26,42 +24,43 @@ const workbenchSource =
 
 const catalogIds =
   [
-    ...catalogSource.matchAll(
+    ...catalog.matchAll(
       /\{\s*id:\s*"([^"]+)"/g,
     ),
   ].map(
-    (match) =>
-      match[1],
+    (match) => match[1],
   )
 
-const registryIds =
-  [
-    ...registrySource.matchAll(
-      /^  "([^"]+)":\s*\(/gm,
-    ),
-  ].map(
-    (match) =>
-      match[1],
+const mapMatch =
+  registry.match(
+    /const CATEGORY_BY_CALCULATOR:[\s\S]*?=\s*\{([\s\S]*?)\n\}/,
   )
+
+const routeIds =
+  mapMatch
+    ? [
+        ...mapMatch[1].matchAll(
+          /^\s{2}"([^"]+)":\s*"[^"]+",$/gm,
+        ),
+      ].map(
+        (match) => match[1],
+      )
+    : []
 
 const catalogSet =
-  new Set(
-    catalogIds,
-  )
+  new Set(catalogIds)
 
-const registrySet =
-  new Set(
-    registryIds,
-  )
+const routeSet =
+  new Set(routeIds)
 
 const missing =
   catalogIds.filter(
     (id) =>
-      !registrySet.has(id),
+      !routeSet.has(id),
   )
 
 const unknown =
-  registryIds.filter(
+  routeIds.filter(
     (id) =>
       !catalogSet.has(id),
   )
@@ -70,63 +69,73 @@ const errors = []
 
 if (
   catalogIds.length !==
-  EXPECTED_COUNT
+  EXPECTED_CALCULATOR_COUNT
 ) {
   errors.push(
-    `Expected ${EXPECTED_COUNT} catalog calculators; found ${catalogIds.length}.`,
+    `catalog=${catalogIds.length}`,
   )
 }
 
 if (
-  registryIds.length !==
-  EXPECTED_COUNT
+  routeIds.length !==
+  EXPECTED_CALCULATOR_COUNT
 ) {
   errors.push(
-    `Expected ${EXPECTED_COUNT} registry routes; found ${registryIds.length}.`,
+    `routes=${routeIds.length}`,
   )
 }
 
 if (
-  registrySet.size !==
-  EXPECTED_COUNT
+  routeSet.size !==
+  EXPECTED_CALCULATOR_COUNT
 ) {
   errors.push(
-    `Expected ${EXPECTED_COUNT} unique routes; found ${registrySet.size}.`,
+    `unique routes=${routeSet.size}`,
   )
 }
 
 if (missing.length) {
   errors.push(
-    `Missing native routes: ${missing.join(', ')}`,
+    `missing=${missing.join(',')}`,
   )
 }
 
 if (unknown.length) {
   errors.push(
-    `Unknown native routes: ${unknown.join(', ')}`,
+    `unknown=${unknown.join(',')}`,
   )
 }
 
 if (
-  !workbenchSource.includes(
-    'renderNativeCalculator(',
+  !workbench.includes(
+    'getNativeCalculatorComponent(',
   )
 ) {
   errors.push(
-    'CalculatorWorkbench is not delegated to the native registry.',
+    'Workbench lazy registry dispatcher missing',
   )
 }
 
 if (
-  workbenchSource.includes(
+  !workbench.includes(
+    '<Suspense',
+  )
+) {
+  errors.push(
+    'Workbench Suspense boundary missing',
+  )
+}
+
+if (
+  workbench.includes(
     'LegacyWorkbench',
   )
-  || workbenchSource.includes(
+  || workbench.includes(
     '/legacy/',
   )
 ) {
   errors.push(
-    'Legacy calculator runtime reference detected.',
+    'legacy runtime reference',
   )
 }
 
@@ -135,15 +144,9 @@ if (errors.length) {
     'CALCULATOR ROUTING VERIFICATION FAILED',
   )
 
-  for (
-    const [
-      index,
-      error,
-    ]
-    of errors.entries()
-  ) {
+  for (const error of errors) {
     console.error(
-      `${index + 1}. ${error}`,
+      `- ${error}`,
     )
   }
 
@@ -154,14 +157,14 @@ console.log(
   'CALCULATOR ROUTING VERIFICATION PASSED',
 )
 console.log(
-  `Catalog calculators: ${catalogIds.length}`,
+  'Catalog calculators: 473',
 )
 console.log(
-  `Native routes: ${registryIds.length}`,
+  'Native routes: 473',
 )
 console.log(
   'Legacy routes: 0',
 )
 console.log(
-  'Unrouted calculators: 0',
+  'Lazy category routes: enabled',
 )
