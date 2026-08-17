@@ -1471,18 +1471,17 @@ export function HomepageProblemSolverPanel({
         <header className="homepage-problem-solver-header">
           <div>
             <p className="eyebrow">
-              Equation-aware engineering
+              Local equation engine
             </p>
 
             <h2 id="homepage-problem-solver-title">
-              Solve an engineering problem
+              Problem → model → result
             </h2>
 
             <p>
-              Enter a written problem, equation or symbolic
-              variable set. ChemE Toolkit identifies the
-              governing model, checks the inputs and solves
-              supported cases locally.
+              Write the engineering problem once. The Solver
+              identifies the model, checks known and missing
+              variables, and prepares the result locally.
             </p>
           </div>
 
@@ -1550,6 +1549,20 @@ export function HomepageProblemSolverPanel({
 
         <div className="homepage-problem-solver-layout">
           <div className="homepage-problem-solver-editor">
+            <div className="homepage-problem-stage-label">
+              <span>01</span>
+
+              <div>
+                <strong>
+                  Problem statement
+                </strong>
+
+                <small>
+                  State the target, known values and units.
+                </small>
+              </div>
+            </div>
+
             <label htmlFor="homepage-problem-query">
               Describe your problem
             </label>
@@ -1762,6 +1775,20 @@ export function HomepageProblemSolverPanel({
             }
             aria-live="polite"
           >
+            <div className="homepage-problem-stage-label homepage-problem-stage-label--result">
+              <span>02</span>
+
+              <div>
+                <strong>
+                  Model & solution
+                </strong>
+
+                <small>
+                  Review the recognized equation, inputs and result.
+                </small>
+              </div>
+            </div>
+
             {bestMatch ? (
               <>
                 {isDisplayedResultStale ? (
@@ -2206,6 +2233,20 @@ export function HomepageProblemSolverPanel({
                   </Suspense>
                 ) : null}
 
+                <div className="homepage-problem-next-step">
+                  <span>03</span>
+
+                  <div>
+                    <strong>
+                      Verify & continue
+                    </strong>
+
+                    <small>
+                      Review the engineering basis, then continue in the matched calculator.
+                    </small>
+                  </div>
+                </div>
+
                 <footer className="homepage-problem-result-footer">
                   <div>
                     <strong>
@@ -2282,7 +2323,7 @@ export function HomepageProblemSolverPanel({
                         )
                       }
                     >
-                      Open calculator →
+                      Continue in calculator →
                     </button>
                   </div>
                 </footer>

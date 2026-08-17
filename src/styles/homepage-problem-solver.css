@@ -2000,3 +2000,230 @@ button {
     text-align: left;
   }
 }
+
+
+/* PHASE 3.4A CORE SOLVER WORKFLOW */
+
+.homepage-problem-solver-header {
+  padding-bottom: 16px;
+  border-bottom:
+    1px solid
+    rgba(217, 208, 189, 0.62);
+}
+
+.homepage-problem-solver-header h2 {
+  font-size:
+    clamp(1.45rem, 2.8vw, 2.15rem);
+}
+
+.homepage-problem-solver-header
+> div:first-child > p:last-child {
+  max-width: 680px;
+  margin-top: 8px;
+}
+
+.homepage-problem-solver-badge {
+  padding: 12px 14px;
+}
+
+.homepage-problem-solver-badge strong {
+  font-size: 1.45rem;
+}
+
+.homepage-problem-solver-layout {
+  margin-top: 18px;
+}
+
+.homepage-problem-stage-label {
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.homepage-problem-stage-label > span,
+.homepage-problem-next-step > span {
+  width: 29px;
+  height: 29px;
+  flex: 0 0 29px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color:
+    var(--teal-dark, #007b78);
+  background:
+    rgba(228, 243, 240, 0.92);
+  font-size: 0.59rem;
+  font-weight: 900;
+}
+
+.homepage-problem-stage-label > div {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.homepage-problem-stage-label strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.7rem;
+}
+
+.homepage-problem-stage-label small {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.54rem;
+  line-height: 1.35;
+}
+
+.homepage-problem-stage-label--result {
+  margin-bottom: 14px;
+  padding-bottom: 11px;
+  border-bottom:
+    1px solid
+    rgba(217, 208, 189, 0.62);
+}
+
+.homepage-problem-solver-editor {
+  gap: 9px;
+}
+
+.homepage-problem-solver-editor textarea {
+  min-height: 164px;
+}
+
+.homepage-problem-solver-result {
+  display: flex;
+  flex-direction: column;
+}
+
+.homepage-problem-quick-result {
+  border-color:
+    rgba(7, 156, 153, 0.34) !important;
+  background:
+    rgba(7, 156, 153, 0.075);
+}
+
+.homepage-problem-quick-result strong {
+  font-size: 0.72rem;
+}
+
+.homepage-problem-input-check {
+  background:
+    rgba(249, 246, 238, 0.52);
+}
+
+.homepage-problem-next-step {
+  margin-top: 12px;
+  padding: 10px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border-top:
+    1px solid
+    rgba(217, 208, 189, 0.62);
+}
+
+.homepage-problem-next-step > div {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.homepage-problem-next-step strong {
+  color:
+    var(--ink, #0b3556);
+  font-size: 0.67rem;
+}
+
+.homepage-problem-next-step small {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.53rem;
+  line-height: 1.35;
+}
+
+.homepage-problem-result-footer {
+  margin-top: 8px;
+  border-top: 0;
+}
+
+.homepage-problem-result-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.homepage-problem-result-actions
+button.is-secondary {
+  border-color:
+    rgba(181, 167, 142, 0.72);
+  color:
+    var(--muted, #647a8e);
+  background: #ffffff;
+}
+
+.homepage-problem-result-actions
+button.is-primary {
+  min-height: 40px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media (max-width: 900px) {
+  .homepage-problem-solver-header {
+    grid-template-columns:
+      minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .homepage-problem-solver-badge {
+    width: auto;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 620px) {
+  .homepage-problem-solver-layout {
+    gap: 10px;
+  }
+
+  .homepage-problem-solver-editor,
+  .homepage-problem-solver-result {
+    padding: 13px;
+  }
+
+  .homepage-problem-result-actions {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .homepage-problem-result-actions button {
+    width: 100%;
+  }
+
+  .homepage-problem-result-actions
+  button.is-primary {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .homepage-problem-result-actions {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .homepage-problem-result-actions
+  button.is-primary {
+    grid-column: auto;
+  }
+
+  .homepage-problem-stage-label small,
+  .homepage-problem-next-step small {
+    font-size: 0.51rem;
+  }
+}
