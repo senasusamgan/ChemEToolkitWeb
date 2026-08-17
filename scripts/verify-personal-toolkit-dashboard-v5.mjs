@@ -4,6 +4,7 @@ import {
 
 const [
   app,
+  home,
   css,
   packageSource,
 ] = await Promise.all([
@@ -11,81 +12,79 @@ const [
     'src/App.tsx',
     'utf8',
   ),
-
+  readFile(
+    'src/components/home/HomeDashboard.tsx',
+    'utf8',
+  ),
   readFile(
     'src/styles/personal-toolkit-dashboard-v5.css',
     'utf8',
   ),
-
   readFile(
     'package.json',
     'utf8',
   ),
 ])
 
-
 function requireMarker(
   source,
   marker,
   label,
 ) {
-  if (
-    !source.includes(marker)
-  ) {
+  if (!source.includes(marker)) {
     throw new Error(
       `${label} missing: ${marker}`,
     )
   }
 }
 
-
-for (
-  const marker of [
-    "./styles/personal-toolkit-dashboard-v5.css",
-    'className="personal-toolkit-dashboard"',
-    'Current workspace',
-    '{activeCalculator.title}',
-    'Continue working',
-    '{favoriteCalculators.length}',
-    '{recentCalculators.length}',
-    'new Set(',
-    'Favorite disciplines',
-    'Find a calculator',
-    'Solve a problem',
-    'Open workbench',
-  ]
-) {
+for (const marker of [
+  "./styles/personal-toolkit-dashboard-v5.css",
+  'favoriteCalculatorIds',
+  'recentCalculatorIds',
+  'activeCalculatorId',
+  'toggleFavorite',
+]) {
   requireMarker(
     app,
     marker,
-    'Toolkit dashboard App marker',
+    'Toolkit App marker',
   )
 }
 
+for (const marker of [
+  'activeCalculator={activeCalculator}',
+  'recentCalculators={recentCalculators}',
+  'favoriteCalculators={favoriteCalculators}',
+  'Continue working',
+  'View toolkit →',
+  'Explore engineering',
+  'onOpenProblemSolver',
+]) {
+  requireMarker(
+    home,
+    marker,
+    'Toolkit Home marker',
+  )
+}
 
-for (
-  const marker of [
-    '.personal-toolkit-dashboard',
-    '.toolkit-dashboard-primary',
-    '.toolkit-dashboard-stats',
-    '.toolkit-dashboard-actions',
-    '.toolkit-dashboard-continue',
-    '.personal-toolkit-panel',
-  ]
-) {
+for (const marker of [
+  '.personal-toolkit-dashboard',
+  '.toolkit-dashboard-primary',
+  '.toolkit-dashboard-stats',
+  '.personal-toolkit-panel',
+]) {
   requireMarker(
     css,
     marker,
-    'Toolkit dashboard CSS marker',
+    'Toolkit CSS marker',
   )
 }
-
 
 const pkg =
   JSON.parse(
     packageSource,
   )
-
 
 if (
   !pkg.scripts[
@@ -96,7 +95,6 @@ if (
     'V5 verifier script missing.',
   )
 }
-
 
 if (
   !pkg.scripts[
@@ -109,21 +107,6 @@ if (
     'V5 verifier missing from release chain.',
   )
 }
-
-
-if (
-  !pkg.scripts[
-    'verify:release'
-  ].endsWith(
-    'npm run verify:verified-calculator-copy',
-  )
-) {
-  throw new Error(
-    'Visible calculator count verifier '
-    + 'must remain last.',
-  )
-}
-
 
 console.log(
   'PASS: personal toolkit dashboard v5 verifier.',

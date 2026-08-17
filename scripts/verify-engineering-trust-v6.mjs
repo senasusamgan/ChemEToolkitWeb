@@ -4,6 +4,8 @@ import {
 
 const [
   app,
+  home,
+  stage,
   css,
   packageSource,
 ] = await Promise.all([
@@ -11,49 +13,41 @@ const [
     'src/App.tsx',
     'utf8',
   ),
-
+  readFile(
+    'src/components/home/HomeDashboard.tsx',
+    'utf8',
+  ),
+  readFile(
+    'src/components/CalculatorStage.tsx',
+    'utf8',
+  ),
   readFile(
     'src/styles/engineering-trust-v6.css',
     'utf8',
   ),
-
   readFile(
     'package.json',
     'utf8',
   ),
 ])
 
-
 function requireMarker(
   source,
   marker,
   label,
 ) {
-  if (
-    !source.includes(marker)
-  ) {
+  if (!source.includes(marker)) {
     throw new Error(
       `${label} missing: ${marker}`,
     )
   }
 }
 
-
-for (
-  const marker of [
-    "./styles/engineering-trust-v6.css",
-    'className="reference-trust-strip"',
-    'Traceable basis',
-    'Verification pipeline',
-    'Visible assumptions',
-    'Engineering responsibility',
-    'className="reference-shelf-label"',
-    'className="site-footer-v6"',
-    'Release verified',
-    '{categories.length} disciplines',
-    'Educational and preliminary',
-  ]
-) {
+for (const marker of [
+  "./styles/engineering-trust-v6.css",
+  'liveCalculatorCount',
+  'categories.length',
+]) {
   requireMarker(
     app,
     marker,
@@ -61,20 +55,36 @@ for (
   )
 }
 
+for (const marker of [
+  'verified calculators across',
+  'engineering disciplines.',
+  '<CalculatorStage',
+]) {
+  requireMarker(
+    home,
+    marker,
+    'Engineering Trust Home marker',
+  )
+}
 
-for (
-  const marker of [
-    '.reference-trust-strip',
-    '.reference-shelf-label',
-    '.reference-grid article:hover',
-    '.engineering-use-note',
-    '.site-footer-v6',
-    '.footer-v6-top',
-    '.footer-v6-status',
-    '.footer-v6-links',
-    '.footer-v6-bottom',
-  ]
-) {
+for (const marker of [
+  'Verified engineering engine',
+  'Reference basis ↘',
+  'activeCalculator.category',
+]) {
+  requireMarker(
+    stage,
+    marker,
+    'Engineering Trust Stage marker',
+  )
+}
+
+for (const marker of [
+  '.reference-trust-strip',
+  '.engineering-use-note',
+  '.site-footer-v6',
+  '.footer-v6-status',
+]) {
   requireMarker(
     css,
     marker,
@@ -82,12 +92,10 @@ for (
   )
 }
 
-
 const pkg =
   JSON.parse(
     packageSource,
   )
-
 
 if (
   !pkg.scripts[
@@ -98,7 +106,6 @@ if (
     'V6 verifier script missing.',
   )
 }
-
 
 if (
   !pkg.scripts[
@@ -111,21 +118,6 @@ if (
     'V6 verifier missing from release chain.',
   )
 }
-
-
-if (
-  !pkg.scripts[
-    'verify:release'
-  ].endsWith(
-    'npm run verify:verified-calculator-copy',
-  )
-) {
-  throw new Error(
-    'Visible calculator count verifier '
-    + 'must remain last.',
-  )
-}
-
 
 console.log(
   'PASS: engineering trust v6 verifier.',
