@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { CalculatorDefinition } from '../types/calculator'
 import { CalculatorSearchCombobox } from './CalculatorSearchCombobox'
 import { CalculatorWorkbench } from './CalculatorWorkbench'
+import { ScientificNotebookPanel } from './ScientificNotebookPanel'
 
 interface CalculatorStageProps {
   activeCalculator: CalculatorDefinition
@@ -18,6 +19,11 @@ export function CalculatorStage({
     sessionKey,
     setSessionKey,
   ] = useState(0)
+
+  const [
+    notebookOpen,
+    setNotebookOpen,
+  ] = useState(false)
 
   function resetCalculatorSession() {
     setSessionKey(
@@ -102,6 +108,17 @@ export function CalculatorStage({
         />
       </div>
 
+      {notebookOpen ? (
+        <ScientificNotebookPanel
+          calculatorId={activeCalculator.id}
+          calculatorTitle={activeCalculator.title}
+          category={activeCalculator.category}
+          onClose={() =>
+            setNotebookOpen(false)
+          }
+        />
+      ) : null}
+
       <footer className="calculator-stage-footer">
         <span>Verified engineering engine</span>
 
@@ -123,6 +140,19 @@ export function CalculatorStage({
             title="Open this calculator in a separate tab"
           >
             Duplicate
+          </button>
+
+          <button
+            type="button"
+            aria-expanded={notebookOpen}
+            aria-controls="scientific-notebook-panel"
+            onClick={() =>
+              setNotebookOpen(
+                (current) => !current,
+              )
+            }
+          >
+            Notebook
           </button>
 
           <a href="#references">
