@@ -904,6 +904,7 @@ export function WorkspaceCommandCenterPanel({
     <section
       className="workspace-command-center"
       aria-label="Engineering workspace command center"
+      data-release-marker="Command Center"
     >
       <header className="workspace-command-header">
         <div>

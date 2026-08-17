@@ -1466,6 +1466,7 @@ export function HomepageProblemSolverPanel({
       id="problem-solver"
       className="homepage-problem-solver notebook-grid"
       aria-labelledby="homepage-problem-solver-title"
+      data-release-title="Solve an engineering problem"
     >
       <div className="homepage-problem-solver-inner">
         <header className="homepage-problem-solver-header">
@@ -2333,6 +2334,7 @@ export function HomepageProblemSolverPanel({
                     <button
                       type="button"
                       className="is-primary"
+                      aria-label="Open calculator →"
                       onClick={() =>
                         onOpenCalculator(
                           bestMatch
