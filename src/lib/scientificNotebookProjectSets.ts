@@ -1,12 +1,20 @@
 export const PROJECT_SET_STORAGE_KEY =
   'cheme-toolkit.notebook-project-sets.v1'
 
+export type NotebookProjectStatus =
+  | 'planned'
+  | 'active'
+  | 'blocked'
+  | 'complete'
+
 export interface NotebookProjectSet {
   id: string
   name: string
   reportTitle: string
   description?: string
   tags?: string[]
+  status?: NotebookProjectStatus
+  progress?: number
   calculatorIds: string[]
   createdAt: string
   updatedAt: string
@@ -71,6 +79,48 @@ export function normalizeProjectSetTags(
   )
 }
 
+export function normalizeProjectProgress(
+  progress:
+    | number
+    | undefined,
+): number {
+  if (
+    typeof progress !==
+      'number'
+    || !Number.isFinite(
+      progress,
+    )
+  ) {
+    return 0
+  }
+
+  return Math.min(
+    100,
+    Math.max(
+      0,
+      Math.round(
+        progress,
+      ),
+    ),
+  )
+}
+
+export function normalizeProjectStatus(
+  status:
+    | NotebookProjectStatus
+    | undefined,
+): NotebookProjectStatus {
+  if (
+    status === 'active'
+    || status === 'blocked'
+    || status === 'complete'
+  ) {
+    return status
+  }
+
+  return 'planned'
+}
+
 export function isProjectSet(
   value: unknown,
 ): value is NotebookProjectSet {
@@ -105,12 +155,37 @@ export function isProjectSet(
       )
     )
 
+  const statusValid =
+    candidate.status ===
+      undefined
+    || candidate.status ===
+      'planned'
+    || candidate.status ===
+      'active'
+    || candidate.status ===
+      'blocked'
+    || candidate.status ===
+      'complete'
+
+  const progressValid =
+    candidate.progress ===
+      undefined
+    || (
+      typeof candidate.progress ===
+        'number'
+      && Number.isFinite(
+        candidate.progress,
+      )
+    )
+
   return (
     typeof candidate.id === 'string'
     && typeof candidate.name === 'string'
     && typeof candidate.reportTitle === 'string'
     && descriptionValid
     && tagsValid
+    && statusValid
+    && progressValid
     && Array.isArray(
       candidate.calculatorIds,
     )
@@ -121,6 +196,41 @@ export function isProjectSet(
     && typeof candidate.createdAt === 'string'
     && typeof candidate.updatedAt === 'string'
   )
+}
+
+function normalizeProjectSet(
+  projectSet:
+    NotebookProjectSet,
+): NotebookProjectSet {
+  const status =
+    normalizeProjectStatus(
+      projectSet.status,
+    )
+
+  const progress =
+    status === 'complete'
+      ? 100
+      : normalizeProjectProgress(
+          projectSet.progress,
+        )
+
+  return {
+    ...projectSet,
+
+    description:
+      projectSet.description
+        ?.trim()
+      || undefined,
+
+    tags:
+      normalizeProjectSetTags(
+        projectSet.tags
+        ?? [],
+      ),
+
+    status,
+    progress,
+  }
 }
 
 export function readNotebookProjectSets():
@@ -147,18 +257,7 @@ export function readNotebookProjectSets():
         isProjectSet,
       )
       .map(
-        (projectSet) => ({
-          ...projectSet,
-          description:
-            projectSet.description
-              ?.trim()
-            || undefined,
-          tags:
-            normalizeProjectSetTags(
-              projectSet.tags
-              ?? [],
-            ),
-        }),
+        normalizeProjectSet,
       )
       .sort(
         (
@@ -178,12 +277,15 @@ export function readNotebookProjectSets():
 }
 
 export function writeNotebookProjectSets(
-  projectSets: NotebookProjectSet[],
+  projectSets:
+    NotebookProjectSet[],
 ) {
   localStorage.setItem(
     PROJECT_SET_STORAGE_KEY,
     JSON.stringify(
-      projectSets,
+      projectSets.map(
+        normalizeProjectSet,
+      ),
     ),
   )
 }
@@ -203,18 +305,10 @@ export function mergeNotebookProjectSets(
       projectSet:
         NotebookProjectSet,
     ) => {
-      const normalized: NotebookProjectSet = {
-        ...projectSet,
-        description:
-          projectSet.description
-            ?.trim()
-          || undefined,
-        tags:
-          normalizeProjectSetTags(
-            projectSet.tags
-            ?? [],
-          ),
-      }
+      const normalized =
+        normalizeProjectSet(
+          projectSet,
+        )
 
       const existing =
         merged.get(
@@ -278,17 +372,26 @@ export function createNotebookProjectSet({
   reportTitle,
   description,
   tags,
+  status,
+  progress,
   calculatorIds,
 }: {
   name: string
   reportTitle: string
   description?: string
   tags?: string[]
+  status?: NotebookProjectStatus
+  progress?: number
   calculatorIds: string[]
 }): NotebookProjectSet {
   const now =
     new Date()
       .toISOString()
+
+  const normalizedStatus =
+    normalizeProjectStatus(
+      status,
+    )
 
   return {
     id:
@@ -311,6 +414,17 @@ export function createNotebookProjectSet({
         tags
         ?? [],
       ),
+
+    status:
+      normalizedStatus,
+
+    progress:
+      normalizedStatus ===
+        'complete'
+        ? 100
+        : normalizeProjectProgress(
+            progress,
+          ),
 
     calculatorIds:
       Array.from(

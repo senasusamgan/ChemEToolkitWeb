@@ -5,8 +5,10 @@ import {
 
 import {
   createNotebookProjectSet,
+  normalizeProjectProgress,
   normalizeProjectSetTags,
   type NotebookProjectSet,
+  type NotebookProjectStatus,
   writeNotebookProjectSets,
 } from '../lib/scientificNotebookProjectSets'
 
@@ -52,6 +54,21 @@ export function ScientificNotebookProjectSets({
     setTags,
   ] = useState('')
 
+
+  const [
+    projectStatus,
+    setProjectStatus,
+  ] = useState<
+    NotebookProjectStatus
+  >(
+    'planned',
+  )
+
+  const [
+    progress,
+    setProgress,
+  ] = useState(0)
+
   const [
     query,
     setQuery,
@@ -60,6 +77,12 @@ export function ScientificNotebookProjectSets({
   const [
     tagFilter,
     setTagFilter,
+  ] = useState('all')
+
+
+  const [
+    statusFilter,
+    setStatusFilter,
   ] = useState('all')
 
   const [
@@ -121,6 +144,19 @@ export function ScientificNotebookProjectSets({
               return false
             }
 
+
+            if (
+              statusFilter !==
+                'all'
+              && (
+                projectSet.status
+                ?? 'planned'
+              ) !==
+                statusFilter
+            ) {
+              return false
+            }
+
             if (
               !normalizedQuery
             ) {
@@ -159,6 +195,7 @@ export function ScientificNotebookProjectSets({
         projectSets,
         query,
         tagFilter,
+        statusFilter,
       ],
     )
 
@@ -179,6 +216,10 @@ export function ScientificNotebookProjectSets({
     setName('')
     setDescription('')
     setTags('')
+    setProjectStatus(
+      'planned',
+    )
+    setProgress(0)
   }
 
   function saveProjectSet() {
@@ -247,6 +288,17 @@ export function ScientificNotebookProjectSets({
           tags:
             normalizedTags,
 
+          status:
+            projectStatus,
+
+          progress:
+            projectStatus ===
+              'complete'
+              ? 100
+              : normalizeProjectProgress(
+                  progress,
+                ),
+
           calculatorIds:
             Array.from(
               new Set(
@@ -285,6 +337,15 @@ export function ScientificNotebookProjectSets({
 
           tags:
             normalizedTags,
+
+          status:
+            projectStatus,
+
+          progress:
+            projectStatus ===
+              'complete'
+              ? 100
+              : progress,
 
           calculatorIds:
             currentCalculatorIds,
@@ -352,6 +413,17 @@ export function ScientificNotebookProjectSets({
       ).join(', '),
     )
 
+    setProjectStatus(
+      projectSet.status
+      ?? 'planned',
+    )
+
+    setProgress(
+      normalizeProjectProgress(
+        projectSet.progress,
+      ),
+    )
+
     setStatus(
       `Editing "${projectSet.name}". Save current selection to update it.`,
     )
@@ -360,6 +432,7 @@ export function ScientificNotebookProjectSets({
   function clearFilters() {
     setQuery('')
     setTagFilter('all')
+    setStatusFilter('all')
   }
 
   return (
@@ -435,6 +508,89 @@ export function ScientificNotebookProjectSets({
           />
         </label>
 
+        <label>
+          <span>
+            Status
+          </span>
+
+          <select
+            value={
+              projectStatus
+            }
+            onChange={(event) => {
+              const nextStatus =
+                event.target.value as NotebookProjectStatus
+
+              setProjectStatus(
+                nextStatus,
+              )
+
+              if (
+                nextStatus ===
+                'complete'
+              ) {
+                setProgress(
+                  100,
+                )
+              }
+            }}
+          >
+            <option value="planned">
+              Planned
+            </option>
+
+            <option value="active">
+              Active
+            </option>
+
+            <option value="blocked">
+              Blocked
+            </option>
+
+            <option value="complete">
+              Complete
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <span>
+            Progress
+            {' '}
+            {projectStatus ===
+              'complete'
+              ? 100
+              : progress}
+            %
+          </span>
+
+          <input
+            type="range"
+            min="0"
+            max="100"
+            step="5"
+            value={
+              projectStatus ===
+                'complete'
+                ? 100
+                : progress
+            }
+            disabled={
+              projectStatus ===
+              'complete'
+            }
+            onChange={(event) =>
+              setProgress(
+                normalizeProjectProgress(
+                  Number(
+                    event.target.value,
+                  ),
+                ),
+              )
+            }
+          />
+        </label>
+
         <button
           type="button"
           onClick={
@@ -500,6 +656,43 @@ export function ScientificNotebookProjectSets({
           </select>
         </label>
 
+        <label>
+          <span>
+            Status
+          </span>
+
+          <select
+            value={
+              statusFilter
+            }
+            onChange={(event) =>
+              setStatusFilter(
+                event.target.value,
+              )
+            }
+          >
+            <option value="all">
+              All statuses
+            </option>
+
+            <option value="planned">
+              Planned
+            </option>
+
+            <option value="active">
+              Active
+            </option>
+
+            <option value="blocked">
+              Blocked
+            </option>
+
+            <option value="complete">
+              Complete
+            </option>
+          </select>
+        </label>
+
         <button
           type="button"
           onClick={
@@ -508,6 +701,8 @@ export function ScientificNotebookProjectSets({
           disabled={
             !query
             && tagFilter ===
+              'all'
+            && statusFilter ===
               'all'
           }
         >
@@ -544,6 +739,49 @@ export function ScientificNotebookProjectSets({
                   <small>
                     {projectSet.reportTitle}
                   </small>
+
+
+                  <div className="scientific-notebook-project-set-progress">
+                    <div>
+                      <span
+                        data-project-status={
+                          projectSet.status
+                          ?? 'planned'
+                        }
+                      >
+                        {(projectSet.status
+                          ?? 'planned')
+                          .replace(
+                            /^./,
+                            (value) =>
+                              value.toUpperCase(),
+                          )}
+                      </span>
+
+                      <strong>
+                        {normalizeProjectProgress(
+                          projectSet.status ===
+                            'complete'
+                            ? 100
+                            : projectSet.progress,
+                        )}
+                        %
+                      </strong>
+                    </div>
+
+                    <progress
+                      max={100}
+                      value={
+                        normalizeProjectProgress(
+                          projectSet.status ===
+                            'complete'
+                            ? 100
+                            : projectSet.progress,
+                        )
+                      }
+                      aria-label={`${projectSet.name} progress`}
+                    />
+                  </div>
 
                   {projectSet.description ? (
                     <p>
