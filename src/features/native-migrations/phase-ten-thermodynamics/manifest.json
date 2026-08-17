@@ -1,0 +1,135 @@
+{
+  "category": "Thermodynamics",
+  "catalogAvailableCount": 25,
+  "alreadyNativeBeforePhase10": 0,
+  "migratedCount": 25,
+  "calculatorIds": [
+    "adiabaticIdealGasProcess",
+    "antoineVaporPressure",
+    "clausiusClapeyronEstimator",
+    "closedSystemFirstLaw",
+    "compressorIsentropicEfficiency",
+    "daltonPartialPressure",
+    "enthalpyChangeCalculator",
+    "idealGas",
+    "idealGasEntropyChange",
+    "idealGasMixtureProperties",
+    "incompressibleEntropyChange",
+    "internalEnergyChangeCalculator",
+    "isobaricIdealGasProcess",
+    "isochoricIdealGasProcess",
+    "isothermalIdealGasProcess",
+    "nozzleDiffuserEnergyBalance",
+    "polytropicIdealGasProcess",
+    "pumpIsentropicEfficiency",
+    "reducedPropertiesCalculator",
+    "saturatedMixtureProperty",
+    "steadyFlowEnergyEquation",
+    "thermalEfficiencyCOP",
+    "throttlingProcess",
+    "turbineIsentropicEfficiency",
+    "vaporQualityFromEnthalpy"
+  ],
+  "sources": {
+    "adiabaticIdealGasProcess": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 569.9319
+    },
+    "antoineVaporPressure": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 569.9394
+    },
+    "clausiusClapeyronEstimator": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 589.9208
+    },
+    "closedSystemFirstLaw": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 523.9564
+    },
+    "compressorIsentropicEfficiency": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 546.9417
+    },
+    "daltonPartialPressure": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 523.9555
+    },
+    "enthalpyChangeCalculator": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 569.9387
+    },
+    "idealGas": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 546.9545
+    },
+    "idealGasEntropyChange": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 632.9188
+    },
+    "idealGasMixtureProperties": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 546.9403
+    },
+    "incompressibleEntropyChange": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 566.9382
+    },
+    "internalEnergyChangeCalculator": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 569.9335
+    },
+    "isobaricIdealGasProcess": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 546.9448
+    },
+    "isochoricIdealGasProcess": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 546.9449
+    },
+    "isothermalIdealGasProcess": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 589.9373
+    },
+    "nozzleDiffuserEnergyBalance": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 566.9398
+    },
+    "polytropicIdealGasProcess": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 569.9383
+    },
+    "pumpIsentropicEfficiency": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 546.9391
+    },
+    "reducedPropertiesCalculator": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 569.9369
+    },
+    "saturatedMixtureProperty": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 546.9414
+    },
+    "steadyFlowEnergyEquation": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 569.9382
+    },
+    "thermalEfficiencyCOP": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 523.9558
+    },
+    "throttlingProcess": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 546.9359
+    },
+    "turbineIsentropicEfficiency": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 546.9358
+    },
+    "vaporQualityFromEnthalpy": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 546.9417
+    }
+  }
+}

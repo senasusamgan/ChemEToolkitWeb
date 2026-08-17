@@ -1,3 +1,4 @@
+import { PhaseTenThermodynamicsCalculator } from '../features/native-migrations/phase-ten-thermodynamics/PhaseTenThermodynamicsCalculator'
 import { PhaseNineLegacyNativeCalculator } from '../features/native-migrations/phase-nine/PhaseNineLegacyNativeCalculator'
 import { PriorityTenLegacyNativeCalculator } from '../features/native-migrations/priority-ten-legacy/PriorityTenLegacyNativeCalculator'
 import { SecondFiveLegacyNativeCalculator } from '../features/native-migrations/second-five-legacy/SecondFiveLegacyNativeCalculator'
@@ -221,6 +222,206 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === "adiabaticIdealGasProcess") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "antoineVaporPressure") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "clausiusClapeyronEstimator") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "closedSystemFirstLaw") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "compressorIsentropicEfficiency") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "daltonPartialPressure") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "enthalpyChangeCalculator") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "idealGas") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "idealGasEntropyChange") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "idealGasMixtureProperties") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "incompressibleEntropyChange") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "internalEnergyChangeCalculator") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "isobaricIdealGasProcess") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "isochoricIdealGasProcess") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "isothermalIdealGasProcess") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "nozzleDiffuserEnergyBalance") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "polytropicIdealGasProcess") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "pumpIsentropicEfficiency") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "reducedPropertiesCalculator") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "saturatedMixtureProperty") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "steadyFlowEnergyEquation") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "thermalEfficiencyCOP") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "throttlingProcess") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "turbineIsentropicEfficiency") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "vaporQualityFromEnthalpy") {
+    return (
+      <PhaseTenThermodynamicsCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
   if (calculatorId === "crystallizerBalance") {
     return (
       <PhaseNineLegacyNativeCalculator
