@@ -45,6 +45,14 @@ export default defineConfig({
 
           if (
             normalized.includes(
+              '/src/features/separation-processes/',
+            )
+          ) {
+            return undefined
+          }
+
+          if (
+            normalized.includes(
               '/src/features/',
             )
           ) {
