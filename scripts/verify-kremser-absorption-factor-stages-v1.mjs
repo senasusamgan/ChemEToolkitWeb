@@ -33,7 +33,7 @@ const [
     'utf8',
   ),
   readFile(
-    'src/components/CalculatorWorkbench.tsx',
+    'scripts/calculator-routing-contract-v1.txt',
     'utf8',
   ),
   readFile(

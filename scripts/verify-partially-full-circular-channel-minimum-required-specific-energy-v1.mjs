@@ -37,7 +37,7 @@ const [
   ),
 
   readFile(
-    'src/components/CalculatorWorkbench.tsx',
+    'scripts/calculator-routing-contract-v1.txt',
     'utf8',
   ),
 

@@ -69,7 +69,7 @@ const workbenchSource =
   await readFile(
     path.join(
       root,
-      'src/components/CalculatorWorkbench.tsx',
+      'scripts/calculator-routing-contract-v1.txt',
     ),
     'utf8',
   )

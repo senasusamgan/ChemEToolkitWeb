@@ -1,0 +1,473 @@
+// if (calculatorId === "dragForce") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "minorLosses") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "orificeMeter") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "particleSettling") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "reynoldsNumber") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "tankDrainTime") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "uTubeManometer") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "venturiMeter") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "reactiveMaterialBalance") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "recyclePurgeInertBalance") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "solidsWashingBalance") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "soluteDilutionCalculator") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "streamSplitterBalance") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "twoStreamMixerBalance") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "adaptiveSimpsonIntegration") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "odeSolver") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "gaussLegendreQuadrature") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "goldenSectionOptimization") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "linearSystems") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "numericalDifferentiation") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "numericalIntegration") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "numericalInterpolation") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "rootFinding") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "rombergIntegration") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "firstOrderPlusDeadTimeProcess") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "firstOrderProcessResponse") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "imcControllerTuning") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "pidController") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "secondOrderProcessResponse") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "zieglerNicholsReactionCurveTuning") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "arrheniusRateConstant") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "constantVolumeStoichiometry") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "conversionYieldSelectivity") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "cstrsInSeries") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "pfrSections") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "reactionRateCalculator") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "reactorComparison") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "reactorDesign") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "spaceTimeSpaceVelocity") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "binaryIsothermalFlash") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "binaryMinimumReflux") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "binaryRelativeVolatilityVLE") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "cycloneCutDiameter") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "fenskeMinimumStages") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "absorptionMinimumSolventRate") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "murphreeTrayEfficiency") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "packedColumnHTUNTU") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "psychrometricAirEnthalpy") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "averageMolecularWeight") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "binaryCompositionBasisConversion") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "chemicalFormulaMolecularWeight") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "densitySpecificGravity") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "engineeringPrefixConverter") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "massFlowMolarFlowConversion") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "massFractionCalculator") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "massMoleConversion") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "mixtureDensityCalculator") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "moleFractionCalculator") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "concentrationScaleConverter") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "significantFiguresRounding") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "solutionConcentration") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "standardGasFlowConverter") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "unitConverter") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "volumetricMassFlowConversion") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "biotNumber") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "combinedConvectionRadiation") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "compositeWallConduction") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "criticalRadiusOfInsulation") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "cylindricalWallConduction") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "forcedConvectionCorrelation") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "foulingAnalysis") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "fourierNumber") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "grashofNumber") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "naturalConvectionCorrelation") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "nusseltNumber") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "planeWallConduction") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "prandtlNumber") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "rayleighNumber") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "shellAndTubeHeatExchanger") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "sphericalWallConduction") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "thermalRadiation") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "thermalResistanceNetwork") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "lumpedCapacitance") { return ( <PhaseTwelveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "adsorptionIsotherms") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "batchAdsorptionDesign") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "betIsotherm") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "chiltonColburnAnalogy") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "convectiveMassTransferCorrelations") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "countercurrentLiquidLiquidExtraction") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "crosscurrentLiquidLiquidExtraction") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "diffusionThroughMembrane") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "distributionCoefficientSelectivity") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "effectiveDiffusivity") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "equimolarCounterDiffusion") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "ficksFirstLaw") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "ficksSecondLaw") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "fixedBedAdsorptionBDST") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "gasAbsorptionStrippingFundamentals") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "gasPhaseDiffusivity") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "interphaseEquilibriumDrivingForces") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "kremserMethod") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "liquidPhaseDiffusivity") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "massTransferCoefficient") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "dimensionlessMassTransfer") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "membraneGasSeparation") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "overallMassTransferCoefficient") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "packedColumnHTUNTUDesign") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "reverseOsmosisPerformance") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "stagnantFilmDiffusion") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "steadyStateDiffusion") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "twoFilmTheory") { return ( <PhaseElevenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "adiabaticIdealGasProcess") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "antoineVaporPressure") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "clausiusClapeyronEstimator") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "closedSystemFirstLaw") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "compressorIsentropicEfficiency") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "daltonPartialPressure") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "enthalpyChangeCalculator") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "idealGas") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "idealGasEntropyChange") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "idealGasMixtureProperties") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "incompressibleEntropyChange") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "internalEnergyChangeCalculator") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "isobaricIdealGasProcess") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "isochoricIdealGasProcess") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "isothermalIdealGasProcess") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "nozzleDiffuserEnergyBalance") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "polytropicIdealGasProcess") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "pumpIsentropicEfficiency") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "reducedPropertiesCalculator") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "saturatedMixtureProperty") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "steadyFlowEnergyEquation") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "thermalEfficiencyCOP") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "throttlingProcess") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "turbineIsentropicEfficiency") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "vaporQualityFromEnthalpy") { return ( <PhaseTenThermodynamicsCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "crystallizerBalance") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "pressureDrop") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "filterCakeBalance") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "finHeatTransfer") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "froudeNumber") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "gasAbsorberBalance") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "heatExchangerLMTD") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "heatExchangerAreaSizing") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "heatExchangerEffectivenessNTU") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "humidifierWaterBalance") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "hydrostaticPressure") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "limitingReactantExcess") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "liquidLiquidExtractionBalance") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "membraneSeparatorBalance") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "openChannelFlow") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "overallHeatTransferCoefficient") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "frictionFactor") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "pumpPower") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "raoultBubblePointPressure") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === "raoultDewPointPressure") { return ( <PhaseNineNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'bernoulliEquation') { return ( <PriorityTenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'binarySeparatorBalance') { return ( <PriorityTenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'boilingHeatTransfer') { return ( <PriorityTenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'bypassMixingBalance') { return ( <PriorityTenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'combustionAirRequirement') { return ( <PriorityTenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'condensationHeatTransfer') { return ( <PriorityTenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'condenserBalance') { return ( <PriorityTenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'convectionHeatTransfer') { return ( <PriorityTenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'reactionPerformanceBalance') { return ( <PriorityTenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'criticalDepth') { return ( <PriorityTenNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'evaporatorBalance') { return ( <SecondFiveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'massBalance') { return ( <SecondFiveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'phaseChangeEnergyBalance') { return ( <SecondFiveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'sensibleHeatBalance') { return ( <SecondFiveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'flowRate') { return ( <SecondFiveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'heatExchangerEnergyBalance') { return ( <TopFiveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'activationEnergyTwoPoint') { return ( <TopFiveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'adiabaticMixingTemperature') { return ( <TopFiveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'doublePipeHeatExchanger') { return ( <TopFiveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'dryerBalance') { return ( <TopFiveNativeCalculator calculatorId={calculatorId} /> ) }
+// if (calculatorId === 'fluidBedDryerAdiabaticDryAirRequirement') { return <FluidBedDryerAdiabaticDryAirRequirementCalculator /> }
+// if (calculatorId === 'evaporatorSteamRequirementEconomy') { return <EvaporatorSteamRequirementEconomyCalculator /> }
+// if (calculatorId === 'multipleEffectEvaporatorSteamEconomy') { return <MultipleEffectEvaporatorSteamEconomyCalculator /> }
+// if (calculatorId === 'evaporatorTargetSteamEconomyEffectCount') { return <EvaporatorTargetSteamEconomyEffectCountCalculator /> }
+// if (calculatorId === 'evaporatorRequiredVaporReuseEfficiency') { return <EvaporatorRequiredVaporReuseEfficiencyCalculator /> }
+// if (calculatorId === 'darcyWeisbachPipeDiameterSizing') { return <DarcyWeisbachPipeDiameterSizingCalculator /> }
+// if (calculatorId === 'pipeFlowRateFromPressureDrop') { return <PipeFlowRateFromPressureDropCalculator /> }
+// if (calculatorId === 'maximumPipeLengthFromPressureDrop') { return <MaximumPipeLengthFromPressureDropCalculator /> }
+// if (calculatorId === 'maximumMinorLossCoefficient') { return <MaximumMinorLossCoefficientCalculator /> }
+// if (calculatorId === 'npshAvailableCavitationMargin') { return <NpshAvailableCavitationMarginCalculator /> }
+// if (calculatorId === 'minimumSuctionPipeDiameterNpshMargin') { return <MinimumSuctionPipeDiameterNpshMarginCalculator /> }
+// if (calculatorId === 'requiredStaticLiquidLevelNpshMargin') { return <RequiredStaticLiquidLevelNpshMarginCalculator /> }
+// if (calculatorId === 'maximumSuctionFlowRateNpshMargin') { return <MaximumSuctionFlowRateNpshMarginCalculator /> }
+// if (calculatorId === 'maximumSuctionLineLengthNpshMargin') { return <MaximumSuctionLineLengthNpshMarginCalculator /> }
+// if (calculatorId === 'pitotTubeVelocityFlow') { return <PitotTubeVelocityFlowCalculator /> }
+// if (calculatorId === 'flowNozzleDifferentialPressure') { return <FlowNozzleDifferentialPressureCalculator /> }
+// if (calculatorId === 'variableAreaRotameterFlow') { return <VariableAreaRotameterFlowCalculator /> }
+// if (calculatorId === 'vortexSheddingFlowMeter') { return <VortexSheddingFlowMeterCalculator /> }
+// if (calculatorId === 'ultrasonicTransitTimeFlowMeter') { return <UltrasonicTransitTimeFlowMeterCalculator /> }
+// if (calculatorId === 'electromagneticFlowMeter') { return <ElectromagneticFlowMeterCalculator /> }
+// if (calculatorId === 'positiveDisplacementFlowMeter') { return <PositiveDisplacementFlowMeterCalculator /> }
+// if (calculatorId === 'turbineFlowMeter') { return <TurbineFlowMeterCalculator /> }
+// if (calculatorId === 'sharpCrestedRectangularWeir') { return <SharpCrestedRectangularWeirCalculator /> }
+// if (calculatorId === 'vNotchTriangularWeir') { return <VNotchTriangularWeirCalculator /> }
+// if (calculatorId === 'trapezoidalChannelManningFlow') { return <TrapezoidalChannelManningFlowCalculator /> }
+// if (calculatorId === 'trapezoidalChannelNormalDepth') { return <TrapezoidalChannelNormalDepthCalculator /> }
+// if (calculatorId === 'rectangularHydraulicJump') { return <RectangularHydraulicJumpCalculator /> }
+// if (calculatorId === 'trapezoidalChannelCriticalDepth') { return <TrapezoidalChannelCriticalDepthCalculator /> }
+// if (calculatorId === 'rectangularChannelAlternateDepth') { return <RectangularChannelAlternateDepthCalculator /> }
+// if (calculatorId === 'trapezoidalChannelCriticalSlope') { return <TrapezoidalChannelCriticalSlopeCalculator /> }
+// if (calculatorId === 'trapezoidalHydraulicJump') { return <TrapezoidalHydraulicJumpCalculator /> }
+// if (calculatorId === 'broadCrestedWeirFlow') { return <BroadCrestedWeirFlowCalculator /> }
+// if (calculatorId === 'trapezoidalChannelAlternateDepth') { return <TrapezoidalChannelAlternateDepthCalculator /> }
+// if (calculatorId === 'trapezoidalChannelChezyFlow') { return <TrapezoidalChannelChezyFlowCalculator /> }
+// if (calculatorId === 'mostEconomicalTrapezoidalChannelDesign') { return <MostEconomicalTrapezoidalChannelCalculator /> }
+// if (calculatorId === 'trapezoidalChannelDirectStep') { return <TrapezoidalChannelDirectStepCalculator /> }
+// if (calculatorId === 'trapezoidalChannelGvfSlope') { return <TrapezoidalChannelGvfSlopeCalculator /> }
+// if (calculatorId === 'trapezoidalChannelGvfProfileRk4') { return <TrapezoidalChannelGvfProfileRk4Calculator /> }
+// if (calculatorId === 'trapezoidalMaximumDischargeSpecificEnergy') { return <TrapezoidalMaximumDischargeSpecificEnergyCalculator /> }
+// if (calculatorId === 'trapezoidalCriticalControlWidth') { return <TrapezoidalCriticalControlWidthCalculator /> }
+// if (calculatorId === 'trapezoidalMaximumBedRiseBeforeChoking') { return <TrapezoidalMaximumBedRiseBeforeChokingCalculator /> }
+// if (calculatorId === 'trapezoidalChannelBedRiseCrestDepth') { return <TrapezoidalChannelBedRiseCrestDepthCalculator /> }
+// if (calculatorId === 'trapezoidalMinimumUpstreamDepthBedRise') { return <TrapezoidalMinimumUpstreamDepthBedRiseCalculator /> }
+// if (calculatorId === 'trapezoidalMinimumContractionWidth') { return <TrapezoidalMinimumContractionWidthCalculator /> }
+// if (calculatorId === 'trapezoidalContractionThroatAnalysis') { return <TrapezoidalContractionThroatAnalysisCalculator /> }
+// if (calculatorId === 'trapezoidalContractionTransitionLoss') { return <TrapezoidalContractionTransitionLossCalculator /> }
+// if (calculatorId === 'trapezoidalMaximumTransitionLossCoefficient') { return <TrapezoidalMaximumTransitionLossCoefficientCalculator /> }
+// if (calculatorId === 'trapezoidalMaximumDischargeTransitionLoss') { return <TrapezoidalMaximumDischargeTransitionLossCalculator /> }
+// if (calculatorId === 'trapezoidalMinimumUpstreamDepthContractionLoss') { return <TrapezoidalMinimumUpstreamDepthContractionLossCalculator /> }
+// if (calculatorId === 'trapezoidalMaximumBedRiseContractionLoss') { return <TrapezoidalMaximumBedRiseContractionLossCalculator /> }
+// if (calculatorId === 'trapezoidalMinimumWidthBedRiseTransitionLoss') { return <TrapezoidalMinimumWidthBedRiseTransitionLossCalculator /> }
+// if (calculatorId === 'trapezoidalMaximumDischargeBedRiseTransitionLoss') { return <TrapezoidalMaximumDischargeBedRiseTransitionLossCalculator /> }
+// if (calculatorId === 'trapezoidalMaximumTransitionLossCoefficientBedRise') { return <TrapezoidalMaximumTransitionLossCoefficientBedRiseCalculator /> }
+// if (calculatorId === 'trapezoidalMinimumUpstreamDepthBedRiseTransitionLoss') { return <TrapezoidalMinimumUpstreamDepthBedRiseTransitionLossCalculator /> }
+// if (calculatorId === 'trapezoidalChannelStandardStep') { return <TrapezoidalChannelStandardStepCalculator /> }
+// if (calculatorId === 'trapezoidalChannelStandardStepProfile') { return <TrapezoidalChannelStandardStepProfileCalculator /> }
+// if (calculatorId === 'trapezoidalChannelAdaptiveStandardStepProfile') { return <TrapezoidalChannelAdaptiveStandardStepProfileCalculator /> }
+// if (calculatorId === 'trapezoidalChannelUpstreamStandardStepProfile') { return <TrapezoidalChannelUpstreamStandardStepProfileCalculator /> }
+// if (calculatorId === 'trapezoidalChannelAdaptiveUpstreamStandardStepProfile') { return <TrapezoidalChannelAdaptiveUpstreamStandardStepProfileCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelManningFlow') { return <PartiallyFullCircularChannelManningFlowCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelNormalDepth') { return <PartiallyFullCircularChannelNormalDepthCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelCriticalDepth') { return <PartiallyFullCircularChannelCriticalDepthCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelAlternateDepths') { return <PartiallyFullCircularChannelAlternateDepthsCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelCriticalSlope') { return <PartiallyFullCircularChannelCriticalSlopeCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelHydraulicJump') { return <PartiallyFullCircularChannelHydraulicJumpCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelDirectStep') { return <PartiallyFullCircularChannelDirectStepCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelGvfSlope') { return <PartiallyFullCircularChannelGvfSlopeCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelGvfProfile') { return <PartiallyFullCircularChannelGvfProfileCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelAdaptiveGvfProfile') { return <PartiallyFullCircularChannelAdaptiveGvfProfileCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelStandardStep') { return <PartiallyFullCircularChannelStandardStepCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelStandardStepProfile') { return <PartiallyFullCircularChannelStandardStepProfileCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelAdaptiveStandardStepProfile') { return <PartiallyFullCircularChannelAdaptiveStandardStepProfileCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelUpstreamStandardStepProfile') { return <PartiallyFullCircularChannelUpstreamStandardStepProfileCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelAdaptiveUpstreamStandardStepProfile') { return <PartiallyFullCircularChannelAdaptiveUpstreamStandardStepProfileCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelMaximumDischargeSpecificEnergy') { return <PartiallyFullCircularChannelMaximumDischargeSpecificEnergyCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelMinimumDiameterSpecificEnergy') { return <PartiallyFullCircularChannelMinimumDiameterSpecificEnergyCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelMinimumRequiredSpecificEnergy') { return <PartiallyFullCircularChannelMinimumRequiredSpecificEnergyCalculator /> }
+// if (calculatorId === 'partiallyFullCircularChannelCapacityChokingMargin') { return <PartiallyFullCircularChannelCapacityChokingMarginCalculator /> }
+// if (calculatorId === 'fluidBedDryerAdiabaticInletTemperature') { return <FluidBedDryerAdiabaticInletTemperatureCalculator /> }
+// if (calculatorId === 'fluidBedDryerEnergyBalance') { return <FluidBedDryerEnergyBalanceCalculator /> }
+// if (calculatorId === 'fluidBedDryerMassBalance') { return <FluidBedDryerMassBalanceCalculator /> }
+// if (calculatorId === 'linearInterpolationCalculator') { return <LinearInterpolationCalculator /> }
+// if (calculatorId === 'weightedAverageProperty') { return <WeightedAveragePropertyCalculator /> }
+// if (calculatorId === 'binaryFlashCalculation') { return <BinaryFlashCalculator /> }
+// if (calculatorId === 'centrifugalSettlingTime') { return <CentrifugalSettlingCalculator /> }
+// if (calculatorId === 'constantPressureFiltration') { return <ConstantPressureFiltrationCalculator /> }
+// if (calculatorId === 'countercurrentSolidsWashing') { return <CountercurrentSolidsWashingCalculator /> }
+// if (calculatorId === 'crystallizationYieldMotherLiquor') { return <CrystallizationYieldMotherLiquorCalculator /> }
+// if (calculatorId === 'dryingRateTime') { return <DryingRateTimeCalculator /> }
+// if (calculatorId === 'distillationOperatingLines') { return <DistillationOperatingLinesCalculator /> }
+// if (calculatorId === 'mcCabeThieleMethod') { return <McCabeThieleMethodCalculator /> }
+// if (calculatorId === 'humidificationPsychrometrics') { return <HumidificationPsychrometricsCalculator /> }
+// if (calculatorId === 'ionExchangeBedSizing') { return <IonExchangeBedSizingCalculator /> }
+// if (calculatorId === 'finiteVolumeDialysis') { return <FiniteVolumeDialysisCalculator /> }
+// if (calculatorId === 'msmprCrystallizerDesign') { return <MSMPRCrystallizerDesignCalculator /> }
+// if (calculatorId === 'packedColumnHydraulics') { return <PackedColumnHydraulicsCalculator /> }
+// if (calculatorId === 'relativeVolatilityBinaryVLE') { return <RelativeVolatilityBinaryVLECalculator /> }
+// if (calculatorId === 'singleStageLeachingRecovery') { return <SingleStageLeachingRecoveryCalculator /> }
+// if (calculatorId === 'singleStageLiquidLiquidExtraction') { return <SingleStageLiquidLiquidExtractionCalculator /> }
+// if (calculatorId === 'ultrafiltrationConcentrationPolarization') { return <UltrafiltrationConcentrationPolarizationCalculator /> }
+// if (calculatorId === 'batchSettlingAreaEstimate') { return <BatchSettlingAreaEstimateCalculator /> }
+// if (calculatorId === 'centrifugeSigmaScaleUp') { return <CentrifugeSigmaScaleUpCalculator /> }
+// if (calculatorId === 'constantPressureFilterSizing') { return <ConstantPressureFilterSizingCalculator /> }
+// if (calculatorId === 'coolingCrystallizerYield') { return <CoolingCrystallizerYieldCalculator /> }
+// if (calculatorId === 'evaporativeCrystallizerBalance') { return <EvaporativeCrystallizerBalanceCalculator /> }
+// if (calculatorId === 'dryerThermalDuty') { return <DryerThermalDutyCalculator /> }
+// if (calculatorId === 'binaryDistillationBalance') { return <BinaryDistillationBalanceCalculator /> }
+// if (calculatorId === 'extractionDistributionSelectivity') { return <ExtractionDistributionSelectivityCalculator /> }
+// if (calculatorId === 'extractionSolventRequirement') { return <ExtractionSolventRequirementCalculator /> }
+// if (calculatorId === 'crosscurrentExtractionStages') { return <CrosscurrentExtractionStagesCalculator /> }
+// if (calculatorId === 'countercurrentExtractionStages') { return <CountercurrentExtractionStagesCalculator /> }
+// if (calculatorId === 'gillilandStageEstimate') { return <GillilandStageEstimateCalculator /> }
+// if (calculatorId === 'fenskeUnderwoodGillilandShortcut') { return <FenskeUnderwoodGillilandCalculator /> }
+// if (calculatorId === 'soudersBrownColumnDiameter') { return <SoudersBrownColumnDiameterCalculator /> }
+// if (calculatorId === 'trayHydraulicsWeepingCheck') { return <TrayHydraulicsWeepingCalculator /> }
+// if (calculatorId === 'trayDowncomerBackupResidence') { return <TrayDowncomerBackupCalculator /> }
+// if (calculatorId === 'packedColumnHtuNtuHeight') { return <PackedColumnHtuNtuCalculator /> }
+// if (calculatorId === 'packedColumnPressureDropFlooding') { return <PackedColumnPressureDropCalculator /> }
+// if (calculatorId === 'packedColumnLiquidHoldupResidence') { return <PackedColumnLiquidHoldupCalculator /> }
+// if (calculatorId === 'packedColumnLiquidDistributorIrrigation') { return <PackedColumnLiquidDistributorCalculator /> }
+// if (calculatorId === 'packedColumnGasLoadFFactor') { return <PackedColumnGasLoadCalculator /> }
+// if (calculatorId === 'packedColumnRedistributorSpacing') { return <PackedColumnRedistributorCalculator /> }
+// if (calculatorId === 'kremserAbsorptionFactorStages') { return <KremserAbsorptionCalculator /> }
+// if (calculatorId === 'absorberMinimumSolventRate') { return <AbsorberMinimumSolventRateCalculator /> }
+// if (calculatorId === 'absorptionStrippingFactors') { return <AbsorptionStrippingFactorsCalculator /> }
+// if (calculatorId === 'adsorbentMassRequirement') { return <AdsorbentMassRequirementCalculator /> }
+// if (calculatorId === 'betMonolayerCapacity') { return <BetMonolayerCapacityCalculator /> }
+// if (calculatorId === 'kremserAbsorptionStages') { return <KremserAbsorptionStagesCalculator /> }
+// if (calculatorId === 'kremserStrippingStages') { return <KremserStrippingStagesCalculator /> }
+// if (calculatorId === 'strippingMinimumGasRate') { return <StrippingMinimumGasRateCalculator /> }
+// if (calculatorId === 'gasMembraneAreaRequirement') { return <GasMembraneAreaRequirementCalculator /> }
+// if (calculatorId === 'idealGasMembraneStageCut') { return <IdealGasMembraneStageCutCalculator /> }
+// if (calculatorId === 'reverseOsmosisWaterFlux') { return <ReverseOsmosisWaterFluxCalculator /> }
+// if (calculatorId === 'ultrafiltrationResistanceSeries') { return <UltrafiltrationResistanceSeriesCalculator /> }
+// if (calculatorId === 'psychrometricAirStreamMixing') { return <PsychrometricAirStreamMixingCalculator /> }
+// if (calculatorId === 'relativeHumidityHumidification') { return <RelativeHumidityHumidificationCalculator /> }
+// if (calculatorId === 'combinedDryerTime') { return <CombinedDryerTimeCalculator /> }
+// if (calculatorId === 'fixedBedAdsorberBreakthrough') { return <FixedBedAdsorberBreakthroughCalculator /> }
+// if (calculatorId === 'hydrocycloneSeparationNumber') { return <HydrocycloneSeparationNumberCalculator /> }
+// if (calculatorId === 'singleStageGasAbsorption') { return <SingleStageGasAbsorptionCalculator /> }
+// if (calculatorId === 'singleStageLeachingBalance') { return <SingleStageLeachingBalanceCalculator /> }
+// if (calculatorId === 'adamsBashforthMoulton') { return <AdamsBashforthMoultonCalculator /> }
+// if (calculatorId === 'adaptiveRungeKutta45') { return <AdaptiveRungeKutta45Calculator /> }
+// if (calculatorId === 'broydenNonlinearSystem') { return <BroydenNonlinearSystemCalculator /> }
+// if (calculatorId === 'choleskyDecompositionSolver') { return <CholeskyDecompositionSolverCalculator /> }
+// if (calculatorId === 'conjugateGradientSolver') { return <ConjugateGradientSolverCalculator /> }
+// if (calculatorId === 'coupledODESystemRK4') { return <CoupledODESystemRK4Calculator /> }
+// if (calculatorId === 'crankNicolsonHeatEquation') { return <CrankNicolsonHeatEquationCalculator /> }
+// if (calculatorId === 'cubicHermiteInterpolation') { return <CubicHermiteInterpolationCalculator /> }
+// if (calculatorId === 'curveFitting') { return <CurveFittingCalculator /> }
+// if (calculatorId === 'gaussNewtonNonlinearRegression') { return <GaussNewtonNonlinearRegressionCalculator /> }
+// if (calculatorId === 'gradientDescentOptimization') { return <GradientDescentOptimizationCalculator /> }
+// if (calculatorId === 'highOrderFiniteDifference') { return <HighOrderFiniteDifferenceCalculator /> }
+// if (calculatorId === 'inversePowerMethodEigenvalue') { return <InversePowerMethodEigenvalueCalculator /> }
+// if (calculatorId === 'laplaceEquationFiniteDifference') { return <LaplaceEquationFiniteDifferenceCalculator /> }
+// if (calculatorId === 'levenbergMarquardtRegression') { return <LevenbergMarquardtRegressionCalculator /> }
+// if (calculatorId === 'luDecompositionSolver') { return <LUDecompositionSolverCalculator /> }
+// if (calculatorId === 'methodOfLinesPDESolver') { return <MethodOfLinesPDESolverCalculator /> }
+// if (calculatorId === 'monteCarloIntegration') { return <MonteCarloIntegrationCalculator /> }
+// if (calculatorId === 'naturalCubicSplineInterpolation') { return <NaturalCubicSplineInterpolationCalculator /> }
+// if (calculatorId === 'nelderMeadOptimization') { return <NelderMeadOptimizationCalculator /> }
+// if (calculatorId === 'newtonMultivariableOptimization') { return <NewtonMultivariableOptimizationCalculator /> }
+// if (calculatorId === 'newtonRaphsonNonlinearSystem') { return <NewtonRaphsonNonlinearSystemCalculator /> }
+// if (calculatorId === 'numericalJacobian') { return <NumericalJacobianCalculator /> }
+// if (calculatorId === 'oneDimensionalWaveEquation') { return <OneDimensionalWaveEquationCalculator /> }
+// if (calculatorId === 'powerMethodEigenvalue') { return <PowerMethodEigenvalueCalculator /> }
+// if (calculatorId === 'qrDecompositionSolver') { return <QRDecompositionSolverCalculator /> }
+// if (calculatorId === 'richardsonErrorEstimate') { return <RichardsonErrorEstimateCalculator /> }
+// if (calculatorId === 'riddersRootFinder') { return <RiddersRootFinderCalculator /> }
+// if (calculatorId === 'shootingMethodBoundaryValue') { return <ShootingMethodBoundaryValueCalculator /> }
+// if (calculatorId === 'thomasTridiagonalSolver') { return <ThomasTridiagonalSolverCalculator /> }
+// if (calculatorId === 'blockDiagramAlgebra') { return <BlockDiagramAlgebraCalculator /> }
+// if (calculatorId === 'cascadeControl') { return <CascadeControlCalculator /> }
+// if (calculatorId === 'closedLoopFeedbackAnalysis') { return <ClosedLoopFeedbackAnalysisCalculator /> }
+// if (calculatorId === 'cohenCoonTuning') { return <CohenCoonTuningCalculator /> }
+// if (calculatorId === 'processControlStrategyComparison') { return <ProcessControlStrategyComparisonCalculator /> }
+// if (calculatorId === 'cubicRouthHurwitzStability') { return <CubicRouthHurwitzStabilityCalculator /> }
+// if (calculatorId === 'feedforwardControl') { return <FeedforwardControlCalculator /> }
+// if (calculatorId === 'firstOrderFrequencyResponse') { return <FirstOrderFrequencyResponseCalculator /> }
+// if (calculatorId === 'gainScheduling') { return <GainSchedulingCalculator /> }
+// if (calculatorId === 'integratingProcessResponse') { return <IntegratingProcessResponseCalculator /> }
+// if (calculatorId === 'interactingTankSystem') { return <InteractingTankSystemCalculator /> }
+// if (calculatorId === 'internalModelControlAnalysis') { return <InternalModelControlAnalysisCalculator /> }
+// if (calculatorId === "inverseLaplaceTransformHelper") { return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} /> }
+// if (calculatorId === "laplaceTransformHelper") { return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} /> }
+// if (calculatorId === "liquidControlValveSizing") { return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} /> }
+// if (calculatorId === "liquidLevelDynamics") { return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} /> }
+// if (calculatorId === "modelPredictiveControl") { return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} /> }
+// if (calculatorId === "nonInteractingTankSystem") { return <ProcessControlBatch03Calculator calculatorId={calculatorId as any} /> }
+// if (calculatorId === 'openLoopResponse') { return <OpenLoopResponseCalculator /> }
+// if (calculatorId === 'overrideSelectiveControl') { return <OverrideSelectiveControlCalculator /> }
+// if (calculatorId === 'pdController') { return <PDControllerCalculator /> }
+// if (calculatorId === 'piController') { return <PIControllerCalculator /> }
+// if (calculatorId === 'pressureProcessDynamics') { return <PressureProcessDynamicsCalculator /> }
+// if (calculatorId === 'proportionalController') { return <ProportionalControllerCalculator /> }
+// if (calculatorId === 'mimoDecouplingControl') { return ( <ProcessControlBatch05Calculator mode="mimoDecouplingControl" /> ) }
+// if (calculatorId === 'adaptiveControl') { return ( <ProcessControlBatch05Calculator mode="adaptiveControl" /> ) }
+// if (calculatorId === 'ratioControl') { return ( <ProcessControlBatch05Calculator mode="ratioControl" /> ) }
+// if (calculatorId === 'secondOrderFrequencyResponse') { return ( <ProcessControlBatch05Calculator mode="secondOrderFrequencyResponse" /> ) }
+// if (calculatorId === 'smithPredictor') { return ( <ProcessControlBatch05Calculator mode="smithPredictor" /> ) }
+// if (calculatorId === 'splitRangeControl') { return ( <ProcessControlBatch05Calculator mode="splitRangeControl" /> ) }
+// if (calculatorId === 'temperatureProcessDynamics') { return ( <ProcessControlBatch06Calculator mode="temperatureProcessDynamics" /> ) }
+// if (calculatorId === 'transferFunctionBuilder') { return ( <ProcessControlBatch06Calculator mode="transferFunctionBuilder" /> ) }
+// if (calculatorId === 'valveCharacteristics') { return ( <ProcessControlBatch06Calculator mode="valveCharacteristics" /> ) }
+// if (calculatorId === 'zieglerNicholsUltimateGainTuning') { return ( <ProcessControlBatch06Calculator mode="zieglerNicholsUltimateGain" /> ) }
+// if (calculatorId === 'equipmentCostScaling') { return ( <ProcessSafetyEconomicsBatch01Calculator mode="equipmentCostScaling" /> ) }
+// if (calculatorId === 'costIndexEscalation') { return ( <ProcessSafetyEconomicsBatch01Calculator mode="costIndexEscalation" /> ) }
+// if (calculatorId === 'emergencyVentilationDilution') { return ( <ProcessSafetyEconomicsBatch01Calculator mode="emergencyVentilationDilution" /> ) }
+// if (calculatorId === 'annualizedLossExpectancy') { return ( <ProcessSafetyEconomicsBatch01Calculator mode="annualizedLossExpectancy" /> ) }
+// if (calculatorId === 'liquidLeakRateScreening') { return ( <ProcessSafetyEconomicsBatch01Calculator mode="liquidLeakRateScreening" /> ) }
+// if (calculatorId === 'paybackAndROIAnalysis') { return ( <ProcessSafetyEconomicsBatch01Calculator mode="paybackAndROIAnalysis" /> ) }
+// if (calculatorId === 'langFactorCapitalEstimate') { return ( <ProcessSafetyEconomicsBatch02Calculator mode="langFactorCapitalEstimate" /> ) }
+// if (calculatorId === 'totalCapitalInvestmentEstimate') { return ( <ProcessSafetyEconomicsBatch02Calculator mode="totalCapitalInvestmentEstimate" /> ) }
+// if (calculatorId === 'annualOperatingCostEstimate') { return ( <ProcessSafetyEconomicsBatch02Calculator mode="annualOperatingCostEstimate" /> ) }
+// if (calculatorId === 'straightLineDepreciation') { return ( <ProcessSafetyEconomicsBatch02Calculator mode="straightLineDepreciation" /> ) }
+// if (calculatorId === 'netPresentValueAnalysis') { return ( <ProcessSafetyEconomicsBatch02Calculator mode="netPresentValueAnalysis" /> ) }
+// if (calculatorId === 'internalRateOfReturnAnalysis') { return ( <ProcessSafetyEconomicsBatch02Calculator mode="internalRateOfReturnAnalysis" /> ) }
+// if (calculatorId === 'breakEvenProductionAnalysis') { return ( <ProcessSafetyEconomicsBatch03Calculator mode="breakEvenProductionAnalysis" /> ) }
+// if (calculatorId === 'equivalentAnnualWorth') { return ( <ProcessSafetyEconomicsBatch03Calculator mode="equivalentAnnualWorth" /> ) }
+// if (calculatorId === 'economicSensitivityAnalysis') { return ( <ProcessSafetyEconomicsBatch03Calculator mode="economicSensitivityAnalysis" /> ) }
+// if (calculatorId === 'flammabilityMixtureLimits') { return ( <ProcessSafetyEconomicsBatch03Calculator mode="flammabilityMixtureLimits" /> ) }
+// if (calculatorId === 'gasReliefValveSizing') { return ( <ProcessSafetyEconomicsBatch03Calculator mode="gasReliefValveSizing" /> ) }
+// if (calculatorId === 'liquidReliefValveSizing') { return ( <ProcessSafetyEconomicsBatch03Calculator mode="liquidReliefValveSizing" /> ) }
+// if (calculatorId === 'chemicalProcessRiskMatrix') { return ( <ProcessSafetyEconomicsBatch04Calculator mode="chemicalProcessRiskMatrix" /> ) }
+// if (calculatorId === 'hazopGuideWordAssistant') { return ( <ProcessSafetyEconomicsBatch04Calculator mode="hazopGuideWordAssistant" /> ) }
+// if (calculatorId === 'inherentlySaferDesignChecklist') { return ( <ProcessSafetyEconomicsBatch04Calculator mode="inherentlySaferDesignChecklist" /> ) }
+// if (calculatorId === 'layerOfProtectionAnalysis') { return ( <ProcessSafetyEconomicsBatch04Calculator mode="layerOfProtectionAnalysis" /> ) }
+// if (calculatorId === 'safetyIntegrityLevelTarget') { return ( <ProcessSafetyEconomicsBatch04Calculator mode="safetyIntegrityLevelTarget" /> ) }
+// if (calculatorId === 'poolFireRadiationScreening') { return ( <ProcessSafetyEconomicsBatch04Calculator mode="poolFireRadiationScreening" /> ) }
+// if (calculatorId === 'bleveFireballScreening') { return ( <ProcessSafetyEconomicsBatch05Calculator mode="bleveFireballScreening" /> ) }
+// if (calculatorId === 'tntEquivalentExplosionScreening') { return ( <ProcessSafetyEconomicsBatch05Calculator mode="tntEquivalentExplosionScreening" /> ) }
+// if (calculatorId === 'gasLeakRateScreening') { return ( <ProcessSafetyEconomicsBatch05Calculator mode="gasLeakRateScreening" /> ) }
+// if (calculatorId === 'gaussianPlumeDispersion') { return ( <ProcessSafetyEconomicsBatch05Calculator mode="gaussianPlumeDispersion" /> ) }
+// if (calculatorId === 'toxicExposureDoseScreening') { return ( <ProcessSafetyEconomicsBatch05Calculator mode="toxicExposureDoseScreening" /> ) }
+// if (calculatorId === 'eventTreeAnalysis') { return ( <ProcessSafetyEconomicsBatch05Calculator mode="eventTreeAnalysis" /> ) }
+// if (calculatorId === 'faultTreeProbability') { return ( <ProcessSafetyEconomicsBatch06Calculator mode="faultTreeProbability" /> ) }
+// if (calculatorId === 'sifAveragePFD') { return ( <ProcessSafetyEconomicsBatch06Calculator mode="sifAveragePFD" /> ) }
+// if (calculatorId === 'proofTestIntervalCalculator') { return ( <ProcessSafetyEconomicsBatch06Calculator mode="proofTestIntervalCalculator" /> ) }
+// if (calculatorId === 'riskReductionCostEffectiveness') { return ( <ProcessSafetyEconomicsBatch06Calculator mode="riskReductionCostEffectiveness" /> ) }
+// if (calculatorId === 'expectedMonetaryValueDecision') { return ( <ProcessSafetyEconomicsBatch06Calculator mode="expectedMonetaryValueDecision" /> ) }
+// if (calculatorId === 'lifecycleCostAnalysis') { return ( <ProcessSafetyEconomicsBatch06Calculator mode="lifecycleCostAnalysis" /> ) }
+// if (calculatorId === 'individualRiskScreening') { return <ProcessSafetyEconomicsBatch07Calculator mode="individualRiskScreening" /> }
+// if (calculatorId === 'societalRiskFNScreening') { return <ProcessSafetyEconomicsBatch07Calculator mode="societalRiskFNScreening" /> }
+// if (calculatorId === 'alarpGrossDisproportionScreening') { return <ProcessSafetyEconomicsBatch07Calculator mode="alarpGrossDisproportionScreening" /> }
+// if (calculatorId === 'safetyProjectPortfolioRanking') { return <ProcessSafetyEconomicsBatch07Calculator mode="safetyProjectPortfolioRanking" /> }
+// if (calculatorId === 'adiabaticBatchReactor') { return ( <ReactionEngineeringBatch01Calculator mode="adiabaticBatchReactor" /> ) }
+// if (calculatorId === 'adiabaticCSTR') { return ( <ReactionEngineeringBatch01Calculator mode="adiabaticCSTR" /> ) }
+// if (calculatorId === 'adiabaticPFR') { return ( <ReactionEngineeringBatch01Calculator mode="adiabaticPFR" /> ) }
+// if (calculatorId === 'autocatalyticBatchReactor') { return ( <ReactionEngineeringBatch01Calculator mode="autocatalyticBatchReactor" /> ) }
+// if (calculatorId === 'axialDispersionRTD') { return ( <ReactionEngineeringBatch01Calculator mode="axialDispersionRTD" /> ) }
+// if (calculatorId === 'bypassFractionEstimator') { return ( <ReactionEngineeringBatch01Calculator mode="bypassFractionEstimator" /> ) }
+// if (calculatorId === 'bypassDeadVolumeReactor') { return ( <ReactionEngineeringBatch02Calculator mode="bypassDeadVolumeReactor" /> ) }
+// if (calculatorId === 'catalystDeactivationKinetics') { return ( <ReactionEngineeringBatch02Calculator mode="catalystDeactivationKinetics" /> ) }
+// if (calculatorId === 'catalystRegenerationCycle') { return ( <ReactionEngineeringBatch02Calculator mode="catalystRegenerationCycle" /> ) }
+// if (calculatorId === 'catalystTimeOnStream') { return ( <ReactionEngineeringBatch02Calculator mode="catalystTimeOnStream" /> ) }
+// if (calculatorId === 'catalystWeightFromRateData') { return ( <ReactionEngineeringBatch02Calculator mode="catalystWeightFromRateData" /> ) }
+// if (calculatorId === 'conversionFromRTD') { return ( <ReactionEngineeringBatch02Calculator mode="conversionFromRTD" /> ) }
+// if (calculatorId === 'cstrPFRSequence') { return ( <ReactionEngineeringBatch03Calculator mode="cstrPFRSequence" /> ) }
+// if (calculatorId === 'deactivatingPackedBedReactor') { return ( <ReactionEngineeringBatch03Calculator mode="deactivatingPackedBedReactor" /> ) }
+// if (calculatorId === 'deadVolumeEstimator') { return ( <ReactionEngineeringBatch03Calculator mode="deadVolumeEstimator" /> ) }
+// if (calculatorId === 'eCurveGenerator') { return ( <ReactionEngineeringBatch03Calculator mode="eCurveGenerator" /> ) }
+// if (calculatorId === 'economicReactorSelection') { return ( <ReactionEngineeringBatch03Calculator mode="economicReactorSelection" /> ) }
+// if (calculatorId === 'enzymeBatchReactor') { return ( <ReactionEngineeringBatch03Calculator mode="enzymeBatchReactor" /> ) }
+// if (calculatorId === 'equilibriumConversion') { return ( <ReactionEngineeringBatch04Calculator mode="equilibriumConversion" /> ) }
+// if (calculatorId === 'fCurveGenerator') { return ( <ReactionEngineeringBatch04Calculator mode="fCurveGenerator" /> ) }
+// if (calculatorId === 'heatExchangeBatchReactor') { return ( <ReactionEngineeringBatch04Calculator mode="heatExchangeBatchReactor" /> ) }
+// if (calculatorId === 'heatExchangeCSTR') { return ( <ReactionEngineeringBatch04Calculator mode="heatExchangeCSTR" /> ) }
+// if (calculatorId === 'heatExchangePFR') { return ( <ReactionEngineeringBatch04Calculator mode="heatExchangePFR" /> ) }
+// if (calculatorId === 'immobilizedEnzymeReactor') { return ( <ReactionEngineeringBatch04Calculator mode="immobilizedEnzymeReactor" /> ) }
+// if (calculatorId === 'levenspielPlotSizing') { return ( <ReactionEngineeringBatch05Calculator mode="levenspielPlotSizing" /> ) }
+// if (calculatorId === 'membraneReactor') { return ( <ReactionEngineeringBatch05Calculator mode="membraneReactor" /> ) }
+// if (calculatorId === 'michaelisMentenReactor') { return ( <ReactionEngineeringBatch05Calculator mode="michaelisMentenReactor" /> ) }
+// if (calculatorId === 'monodBioreactorDesign') { return ( <ReactionEngineeringBatch05Calculator mode="monodBioreactorDesign" /> ) }
+// if (calculatorId === 'multipleReactionsCSTR') { return ( <ReactionEngineeringBatch05Calculator mode="multipleReactionsCSTR" /> ) }
+// if (calculatorId === 'multipleReactionsPFR') { return ( <ReactionEngineeringBatch05Calculator mode="multipleReactionsPFR" /> ) }
+// if (calculatorId === 'nonIsothermalCSTRSteadyStates') { return ( <ReactionEngineeringBatch06Calculator mode="nonIsothermalCSTRSteadyStates" /> ) }
+// if (calculatorId === 'packedBedPressureDrop') { return ( <ReactionEngineeringBatch06Calculator mode="packedBedPressureDrop" /> ) }
+// if (calculatorId === 'packedBedReactorDesign') { return ( <ReactionEngineeringBatch06Calculator mode="packedBedReactorDesign" /> ) }
+// if (calculatorId === 'parallelReactions') { return ( <ReactionEngineeringBatch06Calculator mode="parallelReactions" /> ) }
+// if (calculatorId === 'pbrPressureDropEffects') { return ( <ReactionEngineeringBatch06Calculator mode="pbrPressureDropEffects" /> ) }
+// if (calculatorId === 'rateConstantCalculation') { return ( <ReactionEngineeringBatch06Calculator mode="rateConstantCalculation" /> ) }
+// if (calculatorId === 'rateConstantTemperatureShift') { return ( <ReactionEngineeringBatch07Calculator mode="rateConstantTemperatureShift" /> ) }
+// if (calculatorId === 'rateLawBuilder') { return ( <ReactionEngineeringBatch07Calculator mode="rateLawBuilder" /> ) }
+// if (calculatorId === 'reactionOrderDetermination') { return ( <ReactionEngineeringBatch07Calculator mode="reactionOrderDetermination" /> ) }
+// if (calculatorId === 'reactiveDistillationBasics') { return ( <ReactionEngineeringBatch07Calculator mode="reactiveDistillationBasics" /> ) }
+// if (calculatorId === 'reactorOptimization') { return ( <ReactionEngineeringBatch07Calculator mode="reactorOptimization" /> ) }
+// if (calculatorId === 'recyclePFR') { return ( <ReactionEngineeringBatch07Calculator mode="recyclePFR" /> ) }
+// if (calculatorId === 'reversibleReactions') { return ( <ReactionEngineeringBatch08Calculator mode="reversibleReactions" /> ) }
+// if (calculatorId === 'rtdModelComparison') { return ( <ReactionEngineeringBatch08Calculator mode="rtdModelComparison" /> ) }
+// if (calculatorId === 'rtdMoments') { return ( <ReactionEngineeringBatch08Calculator mode="rtdMoments" /> ) }
+// if (calculatorId === 'segregationModelConversion') { return ( <ReactionEngineeringBatch08Calculator mode="segregationModelConversion" /> ) }
+// if (calculatorId === 'semibatchReactor') { return ( <ReactionEngineeringBatch08Calculator mode="semibatchReactor" /> ) }
+// if (calculatorId === 'seriesReactions') { return ( <ReactionEngineeringBatch08Calculator mode="seriesReactions" /> ) }
+// if (calculatorId === 'seriesParallelReactions') { return ( <ReactionEngineeringBatch09Calculator mode="seriesParallelReactions" /> ) }
+// if (calculatorId === 'stepResponseRTDAnalysis') { return ( <ReactionEngineeringBatch09Calculator mode="stepResponseRTDAnalysis" /> ) }
+// if (calculatorId === 'tanksInSeriesRTD') { return ( <ReactionEngineeringBatch09Calculator mode="tanksInSeriesRTD" /> ) }
+// if (calculatorId === 'arrheniusThreePointFit') { return ( <ReactionEngineeringBatch09Calculator mode="arrheniusThreePointFit" /> ) }

@@ -2,189 +2,118 @@ import {
   readFileSync,
 } from 'node:fs'
 
-const CATALOG_PATH =
-  'src/data/calculators.ts'
-
-const WORKBENCH_PATH =
-  'src/components/CalculatorWorkbench.tsx'
-
 const EXPECTED_CALCULATOR_COUNT = 473
+const EXPECTED_COUNT =
+  EXPECTED_CALCULATOR_COUNT
 
 const catalogSource =
   readFileSync(
-    CATALOG_PATH,
+    'src/data/calculators.ts',
+    'utf8',
+  )
+
+const registrySource =
+  readFileSync(
+    'src/components/NativeCalculatorRegistry.tsx',
     'utf8',
   )
 
 const workbenchSource =
   readFileSync(
-    WORKBENCH_PATH,
+    'src/components/CalculatorWorkbench.tsx',
     'utf8',
   )
 
-const catalogPattern =
-  /\{\s*id:\s*"([^"]+)"\s*,\s*title:\s*"([^"]+)"\s*,\s*category:\s*"([^"]+)"\s*,\s*available:\s*(true|false)\s*\}/g
-
-const calculators = [
-  ...catalogSource.matchAll(
-    catalogPattern,
-  ),
-].map(
-  (match) => ({
-    id: match[1],
-    title: match[2],
-    category: match[3],
-    available:
-      match[4] === 'true',
-  }),
-)
-
 const catalogIds =
-  calculators.map(
-    (calculator) =>
-      calculator.id,
+  [
+    ...catalogSource.matchAll(
+      /\{\s*id:\s*"([^"]+)"/g,
+    ),
+  ].map(
+    (match) =>
+      match[1],
   )
 
-const catalogIdSet =
+const registryIds =
+  [
+    ...registrySource.matchAll(
+      /^  "([^"]+)":\s*\(/gm,
+    ),
+  ].map(
+    (match) =>
+      match[1],
+  )
+
+const catalogSet =
   new Set(
     catalogIds,
   )
 
-const routeOccurrences = []
-
-const directPattern =
-  /calculatorId\s*===\s*(['"])([^'"]+)\1/g
-
-for (
-  const match
-  of workbenchSource.matchAll(
-    directPattern,
-  )
-) {
-  routeOccurrences.push(
-    match[2],
-  )
-}
-
-const groupedPattern =
-  /if\s*\(\s*\[([\s\S]*?)\]\s*\.includes\(\s*calculatorId\s*\)\s*\)/g
-
-for (
-  const group
-  of workbenchSource.matchAll(
-    groupedPattern,
-  )
-) {
-  for (
-    const value
-    of group[1].matchAll(
-      /['"]([^'"]+)['"]/g,
-    )
-  ) {
-    routeOccurrences.push(
-      value[1],
-    )
-  }
-}
-
-const counts =
-  new Map()
-
-for (
-  const calculatorId
-  of routeOccurrences
-) {
-  counts.set(
-    calculatorId,
-    (
-      counts.get(
-        calculatorId,
-      ) ?? 0
-    ) + 1,
-  )
-}
-
-const duplicateRoutes =
-  [
-    ...counts,
-  ].filter(
-    ([, count]) =>
-      count > 1,
-  )
-
-const nativeIds =
-  [
-    ...counts.keys(),
-  ]
-
-const nativeIdSet =
+const registrySet =
   new Set(
-    nativeIds,
+    registryIds,
   )
 
-const missingRoutes =
+const missing =
   catalogIds.filter(
-    (calculatorId) =>
-      !nativeIdSet.has(
-        calculatorId,
-      ),
+    (id) =>
+      !registrySet.has(id),
   )
 
-const unknownRoutes =
-  nativeIds.filter(
-    (calculatorId) =>
-      !catalogIdSet.has(
-        calculatorId,
-      ),
+const unknown =
+  registryIds.filter(
+    (id) =>
+      !catalogSet.has(id),
   )
 
 const errors = []
 
 if (
-  calculators.length !==
-  EXPECTED_CALCULATOR_COUNT
+  catalogIds.length !==
+  EXPECTED_COUNT
 ) {
   errors.push(
-    `Expected ${EXPECTED_CALCULATOR_COUNT} catalog calculators; found ${calculators.length}.`,
+    `Expected ${EXPECTED_COUNT} catalog calculators; found ${catalogIds.length}.`,
   )
 }
 
 if (
-  catalogIdSet.size !==
-  calculators.length
+  registryIds.length !==
+  EXPECTED_COUNT
 ) {
   errors.push(
-    'Duplicate calculator IDs exist in the catalog.',
+    `Expected ${EXPECTED_COUNT} registry routes; found ${registryIds.length}.`,
   )
 }
 
-for (
-  const [
-    calculatorId,
-    count,
-  ]
-  of duplicateRoutes
+if (
+  registrySet.size !==
+  EXPECTED_COUNT
 ) {
   errors.push(
-    `Native calculator route "${calculatorId}" is declared ${count} times.`,
+    `Expected ${EXPECTED_COUNT} unique routes; found ${registrySet.size}.`,
   )
 }
 
-for (
-  const calculatorId
-  of missingRoutes
-) {
+if (missing.length) {
   errors.push(
-    `Catalog calculator "${calculatorId}" has no native route.`,
+    `Missing native routes: ${missing.join(', ')}`,
   )
 }
 
-for (
-  const calculatorId
-  of unknownRoutes
+if (unknown.length) {
+  errors.push(
+    `Unknown native routes: ${unknown.join(', ')}`,
+  )
+}
+
+if (
+  !workbenchSource.includes(
+    'renderNativeCalculator(',
+  )
 ) {
   errors.push(
-    `Native route "${calculatorId}" is not present in the catalog.`,
+    'CalculatorWorkbench is not delegated to the native registry.',
   )
 }
 
@@ -192,25 +121,16 @@ if (
   workbenchSource.includes(
     'LegacyWorkbench',
   )
-) {
-  errors.push(
-    'CalculatorWorkbench still contains LegacyWorkbench.',
-  )
-}
-
-if (
-  workbenchSource.includes(
+  || workbenchSource.includes(
     '/legacy/',
   )
 ) {
   errors.push(
-    'CalculatorWorkbench still contains a legacy runtime URL.',
+    'Legacy calculator runtime reference detected.',
   )
 }
 
-if (
-  errors.length > 0
-) {
+if (errors.length) {
   console.error(
     'CALCULATOR ROUTING VERIFICATION FAILED',
   )
@@ -233,23 +153,15 @@ if (
 console.log(
   'CALCULATOR ROUTING VERIFICATION PASSED',
 )
-
 console.log(
-  `Catalog calculators: ${calculators.length}`,
+  `Catalog calculators: ${catalogIds.length}`,
 )
-
 console.log(
-  `Native route IDs: ${nativeIds.length}`,
+  `Native routes: ${registryIds.length}`,
 )
-
 console.log(
-  'Legacy route IDs: 0',
+  'Legacy routes: 0',
 )
-
 console.log(
   'Unrouted calculators: 0',
-)
-
-console.log(
-  'PASS: 473/473 calculators use native routing.',
 )

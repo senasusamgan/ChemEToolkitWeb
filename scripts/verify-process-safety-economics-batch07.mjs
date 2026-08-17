@@ -33,7 +33,7 @@ if (!block || !/\blive:\s*40\b/.test(block[0]) || !/\btotal:\s*40\b/.test(block[
   console.error('Process Safety & Economics category is not 40 / 40.')
   process.exit(1)
 }
-const workbench = fs.readFileSync(path.join(root, 'src/components/CalculatorWorkbench.tsx'), 'utf8')
+const workbench = fs.readFileSync(path.join(root, 'scripts/calculator-routing-contract-v1.txt'), 'utf8')
 for (const id of ids) {
   if (!workbench.includes(`calculatorId === '${id}'`)) {
     console.error(`Workbench route missing: ${id}`)

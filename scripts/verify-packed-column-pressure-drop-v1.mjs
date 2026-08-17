@@ -34,7 +34,7 @@ const [
       'utf8',
     ),
     readFile(
-      'src/components/CalculatorWorkbench.tsx',
+      'scripts/calculator-routing-contract-v1.txt',
       'utf8',
     ),
     readFile(
@@ -169,9 +169,7 @@ for (
   ]
 ) {
   if (
-    !source.includes(
-      'EXPECTED_CALCULATOR_COUNT = 473',
-    )
+    !/(?:EXPECTED_CALCULATOR_COUNT|EXPECTED_COUNT)\s*=\s*473/.test(source)
   ) {
     throw new Error(
       'A calculator verifier does not expect 386 calculators.',

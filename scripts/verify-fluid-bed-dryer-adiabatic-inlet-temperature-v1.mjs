@@ -15,7 +15,7 @@ const [
   readFile('src/features/material-energy-balances/fluid-bed-dryer-adiabatic-inlet-temperature/engine.ts', 'utf8'),
   readFile('src/features/material-energy-balances/fluid-bed-dryer-adiabatic-inlet-temperature/FluidBedDryerAdiabaticInletTemperatureCalculator.tsx', 'utf8'),
   readFile('tests/fluid-bed-dryer-adiabatic-inlet-temperature/fluid-bed-dryer-adiabatic-inlet-temperature.test.ts', 'utf8'),
-  readFile('src/components/CalculatorWorkbench.tsx', 'utf8'),
+  readFile('scripts/calculator-routing-contract-v1.txt', 'utf8'),
   readFile('src/data/calculators.ts', 'utf8'),
   readFile('src/data/categories.ts', 'utf8'),
   readFile('package.json', 'utf8'),

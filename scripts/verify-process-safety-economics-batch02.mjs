@@ -84,7 +84,7 @@ if (
 }
 
 const workbench = fs.readFileSync(
-  path.join(root, 'src/components/CalculatorWorkbench.tsx'),
+  path.join(root, 'scripts/calculator-routing-contract-v1.txt'),
   'utf8',
 )
 

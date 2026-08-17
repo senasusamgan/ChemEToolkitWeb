@@ -2,122 +2,53 @@ import {
   readFileSync,
 } from 'node:fs'
 
-const CATALOG_PATH =
-  'src/data/calculators.ts'
-
-const WORKBENCH_PATH =
-  'src/components/CalculatorWorkbench.tsx'
-
-const EXPECTED_COUNT = 473
+const EXPECTED_CALCULATOR_COUNT = 473
+const EXPECTED_COUNT =
+  EXPECTED_CALCULATOR_COUNT
 
 const catalogSource =
   readFileSync(
-    CATALOG_PATH,
+    'src/data/calculators.ts',
     'utf8',
   )
 
-const workbenchSource =
+const registrySource =
   readFileSync(
-    WORKBENCH_PATH,
+    'src/components/NativeCalculatorRegistry.tsx',
     'utf8',
   )
 
-const catalogPattern =
-  /\{\s*id:\s*"([^"]+)"\s*,\s*title:\s*"([^"]+)"\s*,\s*category:\s*"([^"]+)"\s*,\s*available:\s*(true|false)\s*\}/g
-
-const calculators = [
-  ...catalogSource.matchAll(
-    catalogPattern,
-  ),
-].map(
-  (match) => ({
-    id: match[1],
-    title: match[2],
-    category: match[3],
-    available:
-      match[4] === 'true',
-  }),
-)
-
-if (
-  calculators.length !==
-  EXPECTED_COUNT
-) {
-  console.error(
-    `❌ Expected ${EXPECTED_COUNT} calculators; found ${calculators.length}.`,
-  )
-
-  process.exit(1)
-}
-
-const nativeIds =
-  new Set()
-
-const directPattern =
-  /calculatorId\s*===\s*(['"])([^'"]+)\1/g
-
-for (
-  const match
-  of workbenchSource.matchAll(
-    directPattern,
-  )
-) {
-  nativeIds.add(
-    match[2],
-  )
-}
-
-const groupedPattern =
-  /if\s*\(\s*\[([\s\S]*?)\]\s*\.includes\(\s*calculatorId\s*\)\s*\)/g
-
-for (
-  const group
-  of workbenchSource.matchAll(
-    groupedPattern,
-  )
-) {
-  const values =
-    group[1].matchAll(
-      /['"]([^'"]+)['"]/g,
-    )
-
-  for (
-    const value
-    of values
-  ) {
-    nativeIds.add(
-      value[1],
-    )
-  }
-}
-
-const catalogIds =
-  new Set(
-    calculators.map(
-      (calculator) =>
-        calculator.id,
-    ),
-  )
-
-const missingNative =
-  calculators.filter(
-    (calculator) =>
-      !nativeIds.has(
-        calculator.id,
-      ),
-  )
-
-const unknownNative =
+const calculators =
   [
-    ...nativeIds,
-  ].filter(
-    (calculatorId) =>
-      !catalogIds.has(
-        calculatorId,
-      ),
+    ...catalogSource.matchAll(
+      /\{\s*id:\s*"([^"]+)"\s*,\s*title:\s*"([^"]+)"\s*,\s*category:\s*"([^"]+)"\s*,\s*available:\s*(true|false)\s*\}/g,
+    ),
+  ].map(
+    (match) => ({
+      id: match[1],
+      title: match[2],
+      category: match[3],
+      available:
+        match[4] === 'true',
+    }),
   )
 
-const duplicateCheck =
+const registryIds =
+  [
+    ...registrySource.matchAll(
+      /^  "([^"]+)":\s*\(/gm,
+    ),
+  ].map(
+    (match) =>
+      match[1],
+  )
+
+const registrySet =
+  new Set(
+    registryIds,
+  )
+
+const catalogSet =
   new Set(
     calculators.map(
       (calculator) =>
@@ -125,11 +56,19 @@ const duplicateCheck =
     ),
   )
 
-const availableCount =
+const missing =
   calculators.filter(
     (calculator) =>
-      calculator.available,
-  ).length
+      !registrySet.has(
+        calculator.id,
+      ),
+  )
+
+const unknown =
+  registryIds.filter(
+    (id) =>
+      !catalogSet.has(id),
+  )
 
 const categories =
   new Map()
@@ -149,7 +88,7 @@ for (
   current.total += 1
 
   if (
-    nativeIds.has(
+    registrySet.has(
       calculator.id,
     )
   ) {
@@ -160,6 +99,64 @@ for (
     calculator.category,
     current,
   )
+}
+
+const errors = []
+
+if (
+  calculators.length !==
+  EXPECTED_COUNT
+) {
+  errors.push(
+    `Expected ${EXPECTED_COUNT} calculators; found ${calculators.length}.`,
+  )
+}
+
+if (
+  registryIds.length !==
+  EXPECTED_COUNT
+) {
+  errors.push(
+    `Expected ${EXPECTED_COUNT} registry routes; found ${registryIds.length}.`,
+  )
+}
+
+if (
+  registrySet.size !==
+  EXPECTED_COUNT
+) {
+  errors.push(
+    `Expected ${EXPECTED_COUNT} unique registry routes; found ${registrySet.size}.`,
+  )
+}
+
+if (missing.length) {
+  errors.push(
+    `Non-native calculators: ${missing.map((item) => item.id).join(', ')}`,
+  )
+}
+
+if (unknown.length) {
+  errors.push(
+    `Unknown routes: ${unknown.join(', ')}`,
+  )
+}
+
+if (errors.length) {
+  console.error(
+    'ALL-NATIVE CALCULATOR VERIFIER FAILED',
+  )
+
+  for (
+    const error
+    of errors
+  ) {
+    console.error(
+      `- ${error}`,
+    )
+  }
+
+  process.exit(1)
 }
 
 console.log(
@@ -175,16 +172,10 @@ console.log(
   `Catalog calculators: ${calculators.length}`,
 )
 console.log(
-  `Available calculators: ${availableCount}`,
+  `Native catalog calculators: ${registrySet.size}`,
 )
 console.log(
-  `Native catalog calculators: ${
-    calculators.length -
-    missingNative.length
-  }`,
-)
-console.log(
-  `Legacy catalog calculators: ${missingNative.length}`,
+  'Legacy catalog calculators: 0',
 )
 console.log('')
 
@@ -200,68 +191,6 @@ for (
   console.log(
     `- ${category}: ${counts.native}/${counts.total} native`,
   )
-}
-
-if (
-  duplicateCheck.size !==
-  calculators.length
-) {
-  console.error(
-    '❌ Duplicate calculator IDs detected.',
-  )
-
-  process.exit(1)
-}
-
-if (
-  unknownNative.length > 0
-) {
-  console.error('')
-  console.error(
-    '❌ Native routes not present in catalog:',
-  )
-
-  for (
-    const calculatorId
-    of unknownNative
-  ) {
-    console.error(
-      `- ${calculatorId}`,
-    )
-  }
-
-  process.exit(1)
-}
-
-if (
-  missingNative.length > 0
-) {
-  console.error('')
-  console.error(
-    '❌ Legacy/non-native calculators detected:',
-  )
-
-  for (
-    const calculator
-    of missingNative
-  ) {
-    console.error(
-      `- ${calculator.id} (${calculator.category})`,
-    )
-  }
-
-  process.exit(1)
-}
-
-if (
-  nativeIds.size <
-  EXPECTED_COUNT
-) {
-  console.error(
-    `❌ Expected at least ${EXPECTED_COUNT} native routes; found ${nativeIds.size}.`,
-  )
-
-  process.exit(1)
 }
 
 console.log('')

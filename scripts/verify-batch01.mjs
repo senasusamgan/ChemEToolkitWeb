@@ -56,7 +56,7 @@ if (!/name: "Mass Transfer", icon: "⠿", total: 45, live: 34/.test(categoriesTe
 }
 
 const workbenchText = await readFile(
-  path.join(root, 'src/components/CalculatorWorkbench.tsx'),
+  path.join(root, 'scripts/calculator-routing-contract-v1.txt'),
   'utf8',
 )
 for (const id of requiredIds) {

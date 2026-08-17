@@ -338,45 +338,60 @@ function addFeatureKey(
   )
 }
 
+function escapeRegExp(
+  value,
+) {
+  return value.replace(
+    /[.*+?^${}()|[\]\\]/g,
+    '\\$&',
+  )
+}
+
 for (
   const calculator
   of calculators
 ) {
-  const quotedIdPattern =
+  const registryEntryPattern =
     new RegExp(
-      `calculatorId\\s*===\\s*(['"])${calculator.id}\\1`,
+      `^\\s*["']${escapeRegExp(
+        calculator.id,
+      )}["']\\s*:\\s*`,
+      'm',
     )
 
-  const directMatch =
-    quotedIdPattern.exec(
-      workbenchSource,
+  const registryMatch =
+    registryEntryPattern.exec(
+      registrySource,
     )
 
-  if (!directMatch) {
+  if (!registryMatch) {
     continue
   }
 
   const start =
-    directMatch.index
+    registryMatch.index
 
   const followingSource =
-    workbenchSource.slice(
+    registrySource.slice(
       start,
-      start + 2500,
     )
 
-  const nextBranchIndex =
-    followingSource
-      .slice(20)
-      .search(
-        /\n\s*if\s*\(/,
-      )
+  const afterHeader =
+    followingSource.slice(
+      registryMatch[0].length,
+    )
+
+  const nextEntryIndex =
+    afterHeader.search(
+      /\n\s{2}["'][^"']+["']\s*:\s*\(/,
+    )
 
   const branchSource =
-    nextBranchIndex >= 0
+    nextEntryIndex >= 0
       ? followingSource.slice(
           0,
-          nextBranchIndex + 20,
+          registryMatch[0].length +
+            nextEntryIndex,
         )
       : followingSource
 
