@@ -1,0 +1,106 @@
+{
+  "calculatorIds": [
+    "crystallizerBalance",
+    "pressureDrop",
+    "filterCakeBalance",
+    "finHeatTransfer",
+    "froudeNumber",
+    "gasAbsorberBalance",
+    "heatExchangerLMTD",
+    "heatExchangerAreaSizing",
+    "heatExchangerEffectivenessNTU",
+    "humidifierWaterBalance",
+    "hydrostaticPressure",
+    "limitingReactantExcess",
+    "liquidLiquidExtractionBalance",
+    "membraneSeparatorBalance",
+    "openChannelFlow",
+    "overallHeatTransferCoefficient",
+    "frictionFactor",
+    "pumpPower",
+    "raoultBubblePointPressure",
+    "raoultDewPointPressure"
+  ],
+  "sources": {
+    "crystallizerBalance": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 455.923375
+    },
+    "pressureDrop": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 495.921125
+    },
+    "filterCakeBalance": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 455.929625
+    },
+    "finHeatTransfer": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 531.90225
+    },
+    "froudeNumber": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 453.94275
+    },
+    "gasAbsorberBalance": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 455.929625
+    },
+    "heatExchangerLMTD": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 511.924125
+    },
+    "heatExchangerAreaSizing": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 475.92925
+    },
+    "heatExchangerEffectivenessNTU": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 471.929625
+    },
+    "humidifierWaterBalance": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 455.927875
+    },
+    "hydrostaticPressure": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 455.93775
+    },
+    "limitingReactantExcess": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 455.910625
+    },
+    "liquidLiquidExtractionBalance": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 455.918375
+    },
+    "membraneSeparatorBalance": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 475.91375
+    },
+    "openChannelFlow": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 493.923375
+    },
+    "overallHeatTransferCoefficient": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 475.923875
+    },
+    "frictionFactor": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 473.92675
+    },
+    "pumpPower": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 475.933125
+    },
+    "raoultBubblePointPressure": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 455.9335
+    },
+    "raoultDewPointPressure": {
+      "asset": "public/legacy/assets/page-B3PN5Psl.js",
+      "score": 455.933875
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { PhaseNineLegacyNativeCalculator } from '../features/native-migrations/phase-nine/PhaseNineLegacyNativeCalculator'
 import { PriorityTenLegacyNativeCalculator } from '../features/native-migrations/priority-ten-legacy/PriorityTenLegacyNativeCalculator'
 import { SecondFiveLegacyNativeCalculator } from '../features/native-migrations/second-five-legacy/SecondFiveLegacyNativeCalculator'
 import { TopFiveLegacyNativeCalculator } from '../features/native-migrations/top-five-legacy/TopFiveLegacyNativeCalculator'
@@ -220,6 +221,166 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === "crystallizerBalance") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "pressureDrop") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "filterCakeBalance") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "finHeatTransfer") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "froudeNumber") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "gasAbsorberBalance") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "heatExchangerLMTD") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "heatExchangerAreaSizing") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "heatExchangerEffectivenessNTU") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "humidifierWaterBalance") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "hydrostaticPressure") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "limitingReactantExcess") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "liquidLiquidExtractionBalance") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "membraneSeparatorBalance") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "openChannelFlow") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "overallHeatTransferCoefficient") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "frictionFactor") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "pumpPower") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "raoultBubblePointPressure") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "raoultDewPointPressure") {
+    return (
+      <PhaseNineLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
   if (calculatorId === 'bernoulliEquation') {
     return (
       <PriorityTenLegacyNativeCalculator
