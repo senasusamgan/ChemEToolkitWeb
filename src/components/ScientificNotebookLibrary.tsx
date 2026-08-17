@@ -11,6 +11,15 @@ import {
 } from '../lib/scientificNotebookReport'
 
 
+import {
+  ScientificNotebookProjectSets,
+} from './ScientificNotebookProjectSets'
+
+import {
+  readNotebookProjectSets,
+  type NotebookProjectSet,
+} from '../lib/scientificNotebookProjectSets'
+
 import '../styles/scientific-notebook-library.css'
 
 const STORAGE_KEY =
@@ -539,6 +548,16 @@ export function ScientificNotebookLibrary({
 
 
   const [
+    projectSets,
+    setProjectSets,
+  ] = useState<
+    NotebookProjectSet[]
+  >(
+    [],
+  )
+
+
+  const [
     importMode,
     setImportMode,
   ] = useState<ImportMode>(
@@ -555,6 +574,10 @@ export function ScientificNotebookLibrary({
       () => {
         setStore(
           readStore(),
+        )
+
+        setProjectSets(
+          readNotebookProjectSets(),
         )
       }
 
@@ -770,6 +793,39 @@ export function ScientificNotebookLibrary({
           ),
       0,
     )
+
+  function loadProjectSet(
+    projectSet:
+      NotebookProjectSet,
+  ) {
+    const availableIds =
+      new Set(
+        notebooks.map(
+          (notebook) =>
+            notebook.calculatorId,
+        ),
+      )
+
+    const validIds =
+      projectSet.calculatorIds.filter(
+        (calculatorId) =>
+          availableIds.has(
+            calculatorId,
+          ),
+      )
+
+    setProjectReportIds(
+      validIds,
+    )
+
+    setProjectReportTitle(
+      projectSet.reportTitle,
+    )
+
+    setStatus(
+      `Project set "${projectSet.name}" loaded (${validIds.length} calculators).`,
+    )
+  }
 
   function toggleProjectReportNotebook(
     calculatorId: string,
@@ -1199,6 +1255,24 @@ export function ScientificNotebookLibrary({
           </div>
         </div>
       </section>
+
+      <ScientificNotebookProjectSets
+        projectSets={
+          projectSets
+        }
+        currentTitle={
+          projectReportTitle
+        }
+        currentCalculatorIds={
+          projectReportIds
+        }
+        onProjectSetsChange={
+          setProjectSets
+        }
+        onLoad={
+          loadProjectSet
+        }
+      />
 
       <section
         className="scientific-notebook-library-controls"
