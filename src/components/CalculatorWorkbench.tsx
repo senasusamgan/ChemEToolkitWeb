@@ -1,3 +1,4 @@
+import { PhaseTwelveNativeCalculator } from '../features/native-migrations/phase-twelve/PhaseTwelveNativeCalculator'
 import { PhaseElevenNativeCalculator } from '../features/native-migrations/phase-eleven/PhaseElevenNativeCalculator'
 import { PhaseTenThermodynamicsCalculator } from '../features/native-migrations/phase-ten-thermodynamics/PhaseTenThermodynamicsCalculator'
 import { PhaseNineLegacyNativeCalculator } from '../features/native-migrations/phase-nine/PhaseNineLegacyNativeCalculator'
@@ -223,6 +224,286 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === "averageMolecularWeight") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "binaryCompositionBasisConversion") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "chemicalFormulaMolecularWeight") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "densitySpecificGravity") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "engineeringPrefixConverter") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "massFlowMolarFlowConversion") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "massFractionCalculator") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "massMoleConversion") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "mixtureDensityCalculator") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "moleFractionCalculator") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "concentrationScaleConverter") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "significantFiguresRounding") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "solutionConcentration") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "standardGasFlowConverter") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "unitConverter") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "volumetricMassFlowConversion") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "biotNumber") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "combinedConvectionRadiation") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "compositeWallConduction") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "criticalRadiusOfInsulation") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "cylindricalWallConduction") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "forcedConvectionCorrelation") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "foulingAnalysis") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "fourierNumber") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "grashofNumber") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "naturalConvectionCorrelation") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "nusseltNumber") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "planeWallConduction") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "prandtlNumber") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "rayleighNumber") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "shellAndTubeHeatExchanger") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "sphericalWallConduction") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "thermalRadiation") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "thermalResistanceNetwork") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === "lumpedCapacitance") {
+    return (
+      <PhaseTwelveNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
   if (calculatorId === "adsorptionIsotherms") {
     return (
       <PhaseElevenNativeCalculator
