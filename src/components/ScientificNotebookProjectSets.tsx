@@ -5,6 +5,7 @@ import {
 
 import {
   createNotebookProjectSet,
+  normalizeProjectDueDate,
   normalizeProjectProgress,
   normalizeProjectSetTags,
   type NotebookProjectSet,
@@ -22,6 +23,126 @@ interface ScientificNotebookProjectSetsProps {
   onLoad: (
     projectSet: NotebookProjectSet,
   ) => void
+}
+
+type ProjectDeadlineState =
+  | 'none'
+  | 'overdue'
+  | 'due-soon'
+  | 'scheduled'
+  | 'complete'
+
+function getTodayUtcDay(): number {
+  const today =
+    new Date()
+
+  return Date.UTC(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate(),
+  )
+}
+
+function getDeadlineState(
+  projectSet:
+    NotebookProjectSet,
+): ProjectDeadlineState {
+  if (
+    projectSet.status ===
+    'complete'
+  ) {
+    return 'complete'
+  }
+
+  const dueDate =
+    normalizeProjectDueDate(
+      projectSet.dueDate,
+    )
+
+  if (!dueDate) {
+    return 'none'
+  }
+
+  const [
+    year,
+    month,
+    day,
+  ] =
+    dueDate
+      .split('-')
+      .map(Number)
+
+  const dueUtc =
+    Date.UTC(
+      year,
+      month - 1,
+      day,
+    )
+
+  const daysRemaining =
+    Math.round(
+      (
+        dueUtc
+        - getTodayUtcDay()
+      )
+      / 86_400_000,
+    )
+
+  if (
+    daysRemaining < 0
+  ) {
+    return 'overdue'
+  }
+
+  if (
+    daysRemaining <= 7
+  ) {
+    return 'due-soon'
+  }
+
+  return 'scheduled'
+}
+
+function formatDueDate(
+  dueDate:
+    | string
+    | undefined,
+): string {
+  const normalized =
+    normalizeProjectDueDate(
+      dueDate,
+    )
+
+  if (!normalized) {
+    return 'No due date'
+  }
+
+  const [
+    year,
+    month,
+    day,
+  ] =
+    normalized
+      .split('-')
+      .map(Number)
+
+  return new Intl.DateTimeFormat(
+    undefined,
+    {
+      year:
+        'numeric',
+      month:
+        'short',
+      day:
+        'numeric',
+    },
+  ).format(
+    new Date(
+      year,
+      month - 1,
+      day,
+    ),
+  )
 }
 
 function parseTags(
@@ -69,6 +190,12 @@ export function ScientificNotebookProjectSets({
     setProgress,
   ] = useState(0)
 
+
+  const [
+    dueDate,
+    setDueDate,
+  ] = useState('')
+
   const [
     query,
     setQuery,
@@ -83,6 +210,12 @@ export function ScientificNotebookProjectSets({
   const [
     statusFilter,
     setStatusFilter,
+  ] = useState('all')
+
+
+  const [
+    deadlineFilter,
+    setDeadlineFilter,
   ] = useState('all')
 
   const [
@@ -157,6 +290,21 @@ export function ScientificNotebookProjectSets({
               return false
             }
 
+
+            const deadlineState =
+              getDeadlineState(
+                projectSet,
+              )
+
+            if (
+              deadlineFilter !==
+                'all'
+              && deadlineState !==
+                deadlineFilter
+            ) {
+              return false
+            }
+
             if (
               !normalizedQuery
             ) {
@@ -196,6 +344,7 @@ export function ScientificNotebookProjectSets({
         query,
         tagFilter,
         statusFilter,
+        deadlineFilter,
       ],
     )
 
@@ -206,6 +355,8 @@ export function ScientificNotebookProjectSets({
         let active = 0
         let blocked = 0
         let complete = 0
+        let overdue = 0
+        let dueSoon = 0
         let progressTotal = 0
 
         for (
@@ -235,6 +386,23 @@ export function ScientificNotebookProjectSets({
             planned += 1
           }
 
+          const deadlineState =
+            getDeadlineState(
+              projectSet,
+            )
+
+          if (
+            deadlineState ===
+            'overdue'
+          ) {
+            overdue += 1
+          } else if (
+            deadlineState ===
+            'due-soon'
+          ) {
+            dueSoon += 1
+          }
+
           progressTotal +=
             normalizeProjectProgress(
               projectStatus ===
@@ -259,6 +427,8 @@ export function ScientificNotebookProjectSets({
           active,
           blocked,
           complete,
+          overdue,
+          dueSoon,
           averageProgress,
         }
       },
@@ -288,6 +458,7 @@ export function ScientificNotebookProjectSets({
       'planned',
     )
     setProgress(0)
+    setDueDate('')
   }
 
   function saveProjectSet() {
@@ -367,6 +538,11 @@ export function ScientificNotebookProjectSets({
                   progress,
                 ),
 
+          dueDate:
+            normalizeProjectDueDate(
+              dueDate,
+            ),
+
           calculatorIds:
             Array.from(
               new Set(
@@ -414,6 +590,9 @@ export function ScientificNotebookProjectSets({
               'complete'
               ? 100
               : progress,
+
+          dueDate:
+            dueDate,
 
           calculatorIds:
             currentCalculatorIds,
@@ -492,6 +671,11 @@ export function ScientificNotebookProjectSets({
       ),
     )
 
+    setDueDate(
+      projectSet.dueDate
+      ?? '',
+    )
+
     setStatus(
       `Editing "${projectSet.name}". Save current selection to update it.`,
     )
@@ -501,6 +685,7 @@ export function ScientificNotebookProjectSets({
     setQuery('')
     setTagFilter('all')
     setStatusFilter('all')
+    setDeadlineFilter('all')
   }
 
   return (
@@ -631,6 +816,50 @@ export function ScientificNotebookProjectSets({
 
             <strong>
               {portfolioMetrics.complete}
+            </strong>
+          </button>
+        </div>
+
+        <div className="scientific-notebook-project-deadline-summary">
+          <button
+            type="button"
+            aria-pressed={
+              deadlineFilter ===
+              'overdue'
+            }
+            onClick={() =>
+              setDeadlineFilter(
+                'overdue',
+              )
+            }
+          >
+            <span>
+              Overdue
+            </span>
+
+            <strong>
+              {portfolioMetrics.overdue}
+            </strong>
+          </button>
+
+          <button
+            type="button"
+            aria-pressed={
+              deadlineFilter ===
+              'due-soon'
+            }
+            onClick={() =>
+              setDeadlineFilter(
+                'due-soon',
+              )
+            }
+          >
+            <span>
+              Due in 7 days
+            </span>
+
+            <strong>
+              {portfolioMetrics.dueSoon}
             </strong>
           </button>
         </div>
@@ -792,6 +1021,24 @@ export function ScientificNotebookProjectSets({
           />
         </label>
 
+        <label>
+          <span>
+            Due date
+          </span>
+
+          <input
+            type="date"
+            value={
+              dueDate
+            }
+            onChange={(event) =>
+              setDueDate(
+                event.target.value,
+              )
+            }
+          />
+        </label>
+
         <button
           type="button"
           onClick={
@@ -894,6 +1141,43 @@ export function ScientificNotebookProjectSets({
           </select>
         </label>
 
+        <label>
+          <span>
+            Deadline
+          </span>
+
+          <select
+            value={
+              deadlineFilter
+            }
+            onChange={(event) =>
+              setDeadlineFilter(
+                event.target.value,
+              )
+            }
+          >
+            <option value="all">
+              All deadlines
+            </option>
+
+            <option value="overdue">
+              Overdue
+            </option>
+
+            <option value="due-soon">
+              Due in 7 days
+            </option>
+
+            <option value="scheduled">
+              Later
+            </option>
+
+            <option value="none">
+              No due date
+            </option>
+          </select>
+        </label>
+
         <button
           type="button"
           onClick={
@@ -904,6 +1188,8 @@ export function ScientificNotebookProjectSets({
             && tagFilter ===
               'all'
             && statusFilter ===
+              'all'
+            && deadlineFilter ===
               'all'
           }
         >
@@ -941,6 +1227,27 @@ export function ScientificNotebookProjectSets({
                     {projectSet.reportTitle}
                   </small>
 
+
+                  {projectSet.dueDate ? (
+                    <div
+                      className="scientific-notebook-project-set-deadline"
+                      data-deadline-state={
+                        getDeadlineState(
+                          projectSet,
+                        )
+                      }
+                    >
+                      <span>
+                        Due
+                      </span>
+
+                      <strong>
+                        {formatDueDate(
+                          projectSet.dueDate,
+                        )}
+                      </strong>
+                    </div>
+                  ) : null}
 
                   <div className="scientific-notebook-project-set-progress">
                     <div>

@@ -955,3 +955,118 @@
       );
   }
 }
+
+.scientific-notebook-project-portfolio {
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(10rem, 0.22fr)
+    minmax(12rem, 0.32fr);
+}
+
+.scientific-notebook-project-deadline-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.scientific-notebook-project-deadline-summary button {
+  display: grid;
+  align-content: center;
+  gap: 0.1rem;
+  padding: 0.5rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.scientific-notebook-project-deadline-summary button[aria-pressed="true"] {
+  border-width: 2px;
+}
+
+.scientific-notebook-project-deadline-summary span {
+  font-size: 0.62rem;
+  opacity: 0.68;
+}
+
+.scientific-notebook-project-deadline-summary strong {
+  font-size: 0.95rem;
+}
+
+.scientific-notebook-project-set-create {
+  grid-template-columns:
+    minmax(9rem, 1fr)
+    minmax(12rem, 1.25fr)
+    minmax(9rem, 0.85fr)
+    minmax(7rem, 0.5fr)
+    minmax(9rem, 0.7fr)
+    minmax(9rem, 0.65fr)
+    auto;
+}
+
+.scientific-notebook-project-set-discovery {
+  grid-template-columns:
+    minmax(12rem, 1fr)
+    minmax(7rem, 0.35fr)
+    minmax(7rem, 0.35fr)
+    minmax(8rem, 0.4fr)
+    auto
+    auto;
+}
+
+.scientific-notebook-project-set-deadline {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  margin-top: 0.4rem;
+  padding: 0.24rem 0.45rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 999px;
+  font-size: 0.66rem;
+}
+
+.scientific-notebook-project-set-deadline > span {
+  opacity: 0.62;
+}
+
+.scientific-notebook-project-set-deadline[data-deadline-state="overdue"] {
+  font-weight: 700;
+}
+
+.scientific-notebook-project-set-deadline[data-deadline-state="due-soon"] {
+  border-width: 2px;
+}
+
+@media (max-width: 1100px) {
+  .scientific-notebook-project-portfolio {
+    grid-template-columns: 1fr;
+  }
+
+  .scientific-notebook-project-deadline-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .scientific-notebook-project-set-create {
+    grid-template-columns:
+      1fr
+      1fr
+      1fr;
+  }
+
+  .scientific-notebook-project-set-discovery {
+    grid-template-columns:
+      1fr
+      1fr
+      1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .scientific-notebook-project-deadline-summary,
+  .scientific-notebook-project-set-create,
+  .scientific-notebook-project-set-discovery {
+    grid-template-columns: 1fr;
+  }
+}

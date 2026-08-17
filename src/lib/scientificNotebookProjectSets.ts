@@ -15,6 +15,7 @@ export interface NotebookProjectSet {
   tags?: string[]
   status?: NotebookProjectStatus
   progress?: number
+  dueDate?: string
   calculatorIds: string[]
   createdAt: string
   updatedAt: string
@@ -105,6 +106,76 @@ export function normalizeProjectProgress(
   )
 }
 
+export function normalizeProjectDueDate(
+  dueDate:
+    | string
+    | undefined,
+): string | undefined {
+  if (
+    typeof dueDate !==
+      'string'
+  ) {
+    return undefined
+  }
+
+  const normalized =
+    dueDate.trim()
+
+  if (
+    normalized.length !== 10
+  ) {
+    return undefined
+  }
+
+  const parts =
+    normalized.split('-')
+
+  if (
+    parts.length !== 3
+  ) {
+    return undefined
+  }
+
+  const year =
+    Number(parts[0])
+
+  const month =
+    Number(parts[1])
+
+  const day =
+    Number(parts[2])
+
+  if (
+    !Number.isInteger(year)
+    || !Number.isInteger(month)
+    || !Number.isInteger(day)
+  ) {
+    return undefined
+  }
+
+  const candidate =
+    new Date(
+      Date.UTC(
+        year,
+        month - 1,
+        day,
+      ),
+    )
+
+  if (
+    candidate.getUTCFullYear() !==
+      year
+    || candidate.getUTCMonth() !==
+      month - 1
+    || candidate.getUTCDate() !==
+      day
+  ) {
+    return undefined
+  }
+
+  return normalized
+}
+
 export function normalizeProjectStatus(
   status:
     | NotebookProjectStatus
@@ -178,6 +249,14 @@ export function isProjectSet(
       )
     )
 
+
+  const dueDateValid =
+    candidate.dueDate ===
+      undefined
+    || normalizeProjectDueDate(
+        candidate.dueDate,
+      ) !== undefined
+
   return (
     typeof candidate.id === 'string'
     && typeof candidate.name === 'string'
@@ -186,6 +265,7 @@ export function isProjectSet(
     && tagsValid
     && statusValid
     && progressValid
+    && dueDateValid
     && Array.isArray(
       candidate.calculatorIds,
     )
@@ -230,6 +310,11 @@ function normalizeProjectSet(
 
     status,
     progress,
+
+    dueDate:
+      normalizeProjectDueDate(
+        projectSet.dueDate,
+      ),
   }
 }
 
@@ -374,6 +459,7 @@ export function createNotebookProjectSet({
   tags,
   status,
   progress,
+  dueDate,
   calculatorIds,
 }: {
   name: string
@@ -382,6 +468,7 @@ export function createNotebookProjectSet({
   tags?: string[]
   status?: NotebookProjectStatus
   progress?: number
+  dueDate?: string
   calculatorIds: string[]
 }): NotebookProjectSet {
   const now =
@@ -425,6 +512,11 @@ export function createNotebookProjectSet({
         : normalizeProjectProgress(
             progress,
           ),
+
+    dueDate:
+      normalizeProjectDueDate(
+        dueDate,
+      ),
 
     calculatorIds:
       Array.from(
