@@ -235,10 +235,10 @@ if (
 
 if (
   baseline.directTestSignals !==
-  334
+  baseline.catalogCalculatorCount
 ) {
   throw new Error(
-    `Calculator 389 expected 248 direct test signals; found ${baseline.directTestSignals}.`,
+    `Calculator 389 expected full direct-test coverage (${baseline.catalogCalculatorCount}); found ${baseline.directTestSignals}.`,
   )
 }
 
@@ -304,5 +304,5 @@ console.log(
 )
 
 console.log(
-  'Direct test signals: 258',
+  'Direct test signals: ${baseline.directTestSignals}',
 )

@@ -148,7 +148,7 @@ if (baseline.catalogCalculatorCount !== 473) {
   )
 }
 
-if (baseline.directTestSignals !== 334) {
+if (baseline.directTestSignals !== baseline.catalogCalculatorCount) {
   throw new Error(
     `Expected 254 direct test signals; found ${baseline.directTestSignals}.`,
   )
@@ -203,5 +203,5 @@ if (
 console.log('PASS: Calculator 394 verifier.')
 console.log('Calculator count: 398')
 console.log('Material & Energy Balances: 33')
-console.log('Direct test signals: 258')
+console.log('Direct test signals: ${baseline.directTestSignals}')
 console.log('Coverage gaps: 140')

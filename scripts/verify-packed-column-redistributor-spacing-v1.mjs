@@ -250,7 +250,7 @@ if (
 
 if (
   baseline.directTestSignals !==
-  334
+  baseline.catalogCalculatorCount
 ) {
   throw new Error(
     `Expected 252 direct test signals; found ${baseline.directTestSignals}.`,
@@ -319,5 +319,5 @@ console.log(
 )
 
 console.log(
-  'Direct test signals: 258',
+  'Direct test signals: ${baseline.directTestSignals}',
 )
