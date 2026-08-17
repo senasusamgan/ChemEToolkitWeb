@@ -624,3 +624,142 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.scientific-notebook-project-set-create {
+  grid-template-columns:
+    minmax(11rem, 1fr)
+    minmax(14rem, 1.4fr)
+    minmax(11rem, 1fr)
+    auto;
+}
+
+.scientific-notebook-project-set-create textarea {
+  width: 100%;
+  min-height: 2.35rem;
+  box-sizing: border-box;
+  resize: vertical;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 8px;
+  padding: 0.4rem 0.65rem;
+  background: var(--surface, #fff);
+  color: inherit;
+  font: inherit;
+}
+
+.scientific-notebook-project-set-discovery {
+  display: grid;
+  grid-template-columns:
+    minmax(14rem, 1fr)
+    minmax(9rem, 0.45fr)
+    auto
+    auto;
+  align-items: end;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.scientific-notebook-project-set-discovery label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.scientific-notebook-project-set-discovery label > span {
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.scientific-notebook-project-set-discovery input,
+.scientific-notebook-project-set-discovery select {
+  width: 100%;
+  min-height: 2.35rem;
+  box-sizing: border-box;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 8px;
+  padding: 0.4rem 0.65rem;
+  background: var(--surface, #fff);
+  color: inherit;
+  font: inherit;
+}
+
+.scientific-notebook-project-set-discovery > button {
+  min-height: 2.35rem;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.scientific-notebook-project-set-discovery > button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.scientific-notebook-project-set-discovery > span {
+  min-height: 2.35rem;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  opacity: 0.65;
+}
+
+.scientific-notebook-project-set-list article > div:first-child > p {
+  max-width: 42rem;
+  margin: 0.3rem 0 0;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  opacity: 0.75;
+}
+
+.scientific-notebook-project-set-tags {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.scientific-notebook-project-set-tags button {
+  min-height: auto;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.66rem;
+}
+
+@media (max-width: 1000px) {
+  .scientific-notebook-project-set-create {
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .scientific-notebook-project-set-discovery {
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .scientific-notebook-project-set-create,
+  .scientific-notebook-project-set-discovery {
+    grid-template-columns: 1fr;
+  }
+
+  .scientific-notebook-project-set-discovery > span {
+    min-height: auto;
+  }
+
+  .scientific-notebook-project-set-list article > div:last-child {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scientific-notebook-project-sets-loading {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--line, #d7dde5);
+  font-size: 0.74rem;
+  opacity: 0.65;
+}

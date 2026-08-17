@@ -1,9 +1,11 @@
 import {
+  useMemo,
   useState,
 } from 'react'
 
 import {
   createNotebookProjectSet,
+  normalizeProjectSetTags,
   type NotebookProjectSet,
   writeNotebookProjectSets,
 } from '../lib/scientificNotebookProjectSets'
@@ -20,6 +22,14 @@ interface ScientificNotebookProjectSetsProps {
   ) => void
 }
 
+function parseTags(
+  value: string,
+): string[] {
+  return normalizeProjectSetTags(
+    value.split(','),
+  )
+}
+
 export function ScientificNotebookProjectSets({
   projectSets,
   currentTitle,
@@ -33,11 +43,124 @@ export function ScientificNotebookProjectSets({
   ] = useState('')
 
   const [
+    description,
+    setDescription,
+  ] = useState('')
+
+  const [
+    tags,
+    setTags,
+  ] = useState('')
+
+  const [
+    query,
+    setQuery,
+  ] = useState('')
+
+  const [
+    tagFilter,
+    setTagFilter,
+  ] = useState('all')
+
+  const [
     status,
     setStatus,
   ] = useState(
     'Save reusable calculator selections for future project reports.',
   )
+
+  const availableTags =
+    useMemo(
+      () =>
+        Array.from(
+          new Set(
+            projectSets.flatMap(
+              (projectSet) =>
+                projectSet.tags
+                ?? [],
+            ),
+          ),
+        ).sort(
+          (
+            left,
+            right,
+          ) =>
+            left.localeCompare(
+              right,
+            ),
+        ),
+      [
+        projectSets,
+      ],
+    )
+
+  const visibleProjectSets =
+    useMemo(
+      () => {
+        const normalizedQuery =
+          query
+            .trim()
+            .toLocaleLowerCase(
+              'en-US',
+            )
+
+        return projectSets.filter(
+          (projectSet) => {
+            if (
+              tagFilter !==
+                'all'
+              && !(
+                projectSet.tags
+                ?? []
+              ).some(
+                (tag) =>
+                  tag ===
+                  tagFilter,
+              )
+            ) {
+              return false
+            }
+
+            if (
+              !normalizedQuery
+            ) {
+              return true
+            }
+
+            const searchable =
+              [
+                projectSet.name,
+                projectSet.reportTitle,
+                projectSet.description,
+                ...(
+                  projectSet.tags
+                  ?? []
+                ),
+              ]
+                .filter(
+                  (
+                    value,
+                  ): value is string =>
+                    typeof value ===
+                    'string',
+                )
+                .join(' ')
+                .toLocaleLowerCase(
+                  'en-US',
+                )
+
+            return searchable.includes(
+              normalizedQuery,
+            )
+          },
+        )
+      },
+      [
+        projectSets,
+        query,
+        tagFilter,
+      ],
+    )
 
   function persist(
     nextProjectSets:
@@ -52,6 +175,12 @@ export function ScientificNotebookProjectSets({
     )
   }
 
+  function clearEditor() {
+    setName('')
+    setDescription('')
+    setTags('')
+  }
+
   function saveProjectSet() {
     const normalizedName =
       name.trim()
@@ -60,17 +189,28 @@ export function ScientificNotebookProjectSets({
       setStatus(
         'Enter a project set name.',
       )
+
       return
     }
 
     if (
-      currentCalculatorIds.length === 0
+      currentCalculatorIds.length ===
+      0
     ) {
       setStatus(
         'Select at least one notebook before saving a project set.',
       )
+
       return
     }
+
+    const normalizedTags =
+      parseTags(
+        tags,
+      )
+
+    const normalizedDescription =
+      description.trim()
 
     const existing =
       projectSets.find(
@@ -89,23 +229,35 @@ export function ScientificNotebookProjectSets({
       NotebookProjectSet[]
 
     if (existing) {
-      const updated: NotebookProjectSet = {
-        ...existing,
-        name:
-          normalizedName,
-        reportTitle:
-          currentTitle.trim()
-          || 'Engineering Project Report',
-        calculatorIds:
-          Array.from(
-            new Set(
-              currentCalculatorIds,
+      const updated:
+        NotebookProjectSet = {
+          ...existing,
+
+          name:
+            normalizedName,
+
+          reportTitle:
+            currentTitle.trim()
+            || 'Engineering Project Report',
+
+          description:
+            normalizedDescription
+            || undefined,
+
+          tags:
+            normalizedTags,
+
+          calculatorIds:
+            Array.from(
+              new Set(
+                currentCalculatorIds,
+              ),
             ),
-          ),
-        updatedAt:
-          new Date()
-            .toISOString(),
-      }
+
+          updatedAt:
+            new Date()
+              .toISOString(),
+        }
 
       nextProjectSets =
         projectSets.map(
@@ -124,8 +276,16 @@ export function ScientificNotebookProjectSets({
         createNotebookProjectSet({
           name:
             normalizedName,
+
           reportTitle:
             currentTitle,
+
+          description:
+            normalizedDescription,
+
+          tags:
+            normalizedTags,
+
           calculatorIds:
             currentCalculatorIds,
         })
@@ -144,7 +304,7 @@ export function ScientificNotebookProjectSets({
       nextProjectSets,
     )
 
-    setName('')
+    clearEditor()
   }
 
   function deleteProjectSet(
@@ -170,6 +330,36 @@ export function ScientificNotebookProjectSets({
     setStatus(
       `Project set "${projectSet.name}" deleted.`,
     )
+  }
+
+  function editProjectSet(
+    projectSet:
+      NotebookProjectSet,
+  ) {
+    setName(
+      projectSet.name,
+    )
+
+    setDescription(
+      projectSet.description
+      ?? '',
+    )
+
+    setTags(
+      (
+        projectSet.tags
+        ?? []
+      ).join(', '),
+    )
+
+    setStatus(
+      `Editing "${projectSet.name}". Save current selection to update it.`,
+    )
+  }
+
+  function clearFilters() {
+    setQuery('')
+    setTagFilter('all')
   }
 
   return (
@@ -211,22 +401,129 @@ export function ScientificNotebookProjectSets({
           />
         </label>
 
+        <label>
+          <span>
+            Description
+          </span>
+
+          <textarea
+            value={description}
+            onChange={(event) =>
+              setDescription(
+                event.target.value,
+              )
+            }
+            placeholder="Short project scope or purpose"
+            rows={2}
+          />
+        </label>
+
+        <label>
+          <span>
+            Tags
+          </span>
+
+          <input
+            type="text"
+            value={tags}
+            onChange={(event) =>
+              setTags(
+                event.target.value,
+              )
+            }
+            placeholder="distillation, design, thesis"
+          />
+        </label>
+
         <button
           type="button"
           onClick={
             saveProjectSet
           }
           disabled={
-            currentCalculatorIds.length === 0
+            currentCalculatorIds.length ===
+            0
           }
         >
           Save current selection
         </button>
       </div>
 
-      {projectSets.length > 0 ? (
+      <div
+        className="scientific-notebook-project-set-discovery"
+        aria-label="Project set search and filters"
+      >
+        <label>
+          <span>
+            Search sets
+          </span>
+
+          <input
+            type="search"
+            value={query}
+            onChange={(event) =>
+              setQuery(
+                event.target.value,
+              )
+            }
+            placeholder="Name, description, title or tag…"
+          />
+        </label>
+
+        <label>
+          <span>
+            Tag
+          </span>
+
+          <select
+            value={tagFilter}
+            onChange={(event) =>
+              setTagFilter(
+                event.target.value,
+              )
+            }
+          >
+            <option value="all">
+              All tags
+            </option>
+
+            {availableTags.map(
+              (tag) => (
+                <option
+                  key={tag}
+                  value={tag}
+                >
+                  {tag}
+                </option>
+              ),
+            )}
+          </select>
+        </label>
+
+        <button
+          type="button"
+          onClick={
+            clearFilters
+          }
+          disabled={
+            !query
+            && tagFilter ===
+              'all'
+          }
+        >
+          Clear filters
+        </button>
+
+        <span>
+          {visibleProjectSets.length}
+          {' '}
+          visible
+        </span>
+      </div>
+
+      {visibleProjectSets.length > 0 ? (
         <div className="scientific-notebook-project-set-list">
-          {projectSets.map(
+          {visibleProjectSets.map(
             (projectSet) => (
               <article
                 key={
@@ -247,6 +544,32 @@ export function ScientificNotebookProjectSets({
                   <small>
                     {projectSet.reportTitle}
                   </small>
+
+                  {projectSet.description ? (
+                    <p>
+                      {projectSet.description}
+                    </p>
+                  ) : null}
+
+                  {projectSet.tags?.length ? (
+                    <div className="scientific-notebook-project-set-tags">
+                      {projectSet.tags.map(
+                        (tag) => (
+                          <button
+                            key={tag}
+                            type="button"
+                            onClick={() =>
+                              setTagFilter(
+                                tag,
+                              )
+                            }
+                          >
+                            {tag}
+                          </button>
+                        ),
+                      )}
+                    </div>
+                  ) : null}
                 </div>
 
                 <div>
@@ -259,6 +582,17 @@ export function ScientificNotebookProjectSets({
                     }
                   >
                     Load
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      editProjectSet(
+                        projectSet,
+                      )
+                    }
+                  >
+                    Edit metadata
                   </button>
 
                   <button
@@ -278,7 +612,9 @@ export function ScientificNotebookProjectSets({
         </div>
       ) : (
         <p className="scientific-notebook-project-set-empty">
-          No saved project sets yet.
+          {projectSets.length > 0
+            ? 'No project sets match the current search or tag filter.'
+            : 'No saved project sets yet.'}
         </p>
       )}
     </section>

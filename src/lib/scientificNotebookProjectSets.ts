@@ -5,6 +5,8 @@ export interface NotebookProjectSet {
   id: string
   name: string
   reportTitle: string
+  description?: string
+  tags?: string[]
   calculatorIds: string[]
   createdAt: string
   updatedAt: string
@@ -26,6 +28,49 @@ function createId(): string {
   ].join('-')
 }
 
+export function normalizeProjectSetTags(
+  tags: string[],
+): string[] {
+  const unique =
+    new Map<
+      string,
+      string
+    >()
+
+  for (
+    const tag
+    of tags
+  ) {
+    const normalized =
+      tag.trim()
+
+    if (!normalized) {
+      continue
+    }
+
+    const key =
+      normalized
+        .toLocaleLowerCase(
+          'en-US',
+        )
+
+    if (
+      !unique.has(
+        key,
+      )
+    ) {
+      unique.set(
+        key,
+        normalized,
+      )
+    }
+  }
+
+  return Array.from(
+    unique.values(),
+  )
+}
+
 export function isProjectSet(
   value: unknown,
 ): value is NotebookProjectSet {
@@ -40,10 +85,32 @@ export function isProjectSet(
   const candidate =
     value as Partial<NotebookProjectSet>
 
+  const descriptionValid =
+    candidate.description ===
+      undefined
+    || typeof candidate.description ===
+      'string'
+
+  const tagsValid =
+    candidate.tags ===
+      undefined
+    || (
+      Array.isArray(
+        candidate.tags,
+      )
+      && candidate.tags.every(
+        (tag) =>
+          typeof tag ===
+          'string',
+      )
+    )
+
   return (
     typeof candidate.id === 'string'
     && typeof candidate.name === 'string'
     && typeof candidate.reportTitle === 'string'
+    && descriptionValid
+    && tagsValid
     && Array.isArray(
       candidate.calculatorIds,
     )
@@ -79,8 +146,25 @@ export function readNotebookProjectSets():
       .filter(
         isProjectSet,
       )
+      .map(
+        (projectSet) => ({
+          ...projectSet,
+          description:
+            projectSet.description
+              ?.trim()
+            || undefined,
+          tags:
+            normalizeProjectSetTags(
+              projectSet.tags
+              ?? [],
+            ),
+        }),
+      )
       .sort(
-        (left, right) =>
+        (
+          left,
+          right,
+        ) =>
           new Date(
             right.updatedAt,
           ).getTime()
@@ -119,15 +203,28 @@ export function mergeNotebookProjectSets(
       projectSet:
         NotebookProjectSet,
     ) => {
+      const normalized: NotebookProjectSet = {
+        ...projectSet,
+        description:
+          projectSet.description
+            ?.trim()
+          || undefined,
+        tags:
+          normalizeProjectSetTags(
+            projectSet.tags
+            ?? [],
+          ),
+      }
+
       const existing =
         merged.get(
-          projectSet.id,
+          normalized.id,
         )
 
       if (!existing) {
         merged.set(
-          projectSet.id,
-          projectSet,
+          normalized.id,
+          normalized,
         )
 
         return
@@ -140,14 +237,14 @@ export function mergeNotebookProjectSets(
 
       const incomingUpdated =
         new Date(
-          projectSet.updatedAt,
+          normalized.updatedAt,
         ).getTime()
 
       merged.set(
-        projectSet.id,
+        normalized.id,
         incomingUpdated >=
           existingUpdated
-          ? projectSet
+          ? normalized
           : existing,
       )
     }
@@ -179,10 +276,14 @@ export function mergeNotebookProjectSets(
 export function createNotebookProjectSet({
   name,
   reportTitle,
+  description,
+  tags,
   calculatorIds,
 }: {
   name: string
   reportTitle: string
+  description?: string
+  tags?: string[]
   calculatorIds: string[]
 }): NotebookProjectSet {
   const now =
@@ -199,6 +300,17 @@ export function createNotebookProjectSet({
     reportTitle:
       reportTitle.trim()
       || 'Engineering Project Report',
+
+    description:
+      description
+        ?.trim()
+      || undefined,
+
+    tags:
+      normalizeProjectSetTags(
+        tags
+        ?? [],
+      ),
 
     calculatorIds:
       Array.from(

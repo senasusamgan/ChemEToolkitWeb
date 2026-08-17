@@ -1,4 +1,6 @@
 import {
+  lazy,
+  Suspense,
   useEffect,
   useMemo,
   useRef,
@@ -12,10 +14,6 @@ import {
 
 
 import {
-  ScientificNotebookProjectSets,
-} from './ScientificNotebookProjectSets'
-
-import {
   isProjectSet,
   mergeNotebookProjectSets,
   readNotebookProjectSets,
@@ -24,6 +22,22 @@ import {
 } from '../lib/scientificNotebookProjectSets'
 
 import '../styles/scientific-notebook-library.css'
+
+const ScientificNotebookProjectSets =
+  lazy(
+    async () => {
+      const module =
+        await import(
+          './ScientificNotebookProjectSets'
+        )
+
+      return {
+        default:
+          module.ScientificNotebookProjectSets,
+      }
+    },
+  )
+
 
 const STORAGE_KEY =
   'cheme-toolkit.scientific-notebook.v1'
@@ -1345,7 +1359,14 @@ export function ScientificNotebookLibrary({
         </div>
       </section>
 
-      <ScientificNotebookProjectSets
+      <Suspense
+        fallback={
+          <div className="scientific-notebook-project-sets-loading">
+            Loading saved project sets…
+          </div>
+        }
+      >
+        <ScientificNotebookProjectSets
         projectSets={
           projectSets
         }
@@ -1362,6 +1383,7 @@ export function ScientificNotebookLibrary({
           loadProjectSet
         }
       />
+      </Suspense>
 
       <section
         className="scientific-notebook-library-controls"
