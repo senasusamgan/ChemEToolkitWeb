@@ -5,16 +5,31 @@ import {
   useState,
 } from 'react'
 
+import {
+  downloadNotebookEngineeringReport,
+  printNotebookEngineeringReport,
+} from '../lib/scientificNotebookReport'
+
 import '../styles/scientific-notebook-library.css'
 
 const STORAGE_KEY =
   'cheme-toolkit.scientific-notebook.v1'
+
+interface SnapshotValue {
+  label?: string
+  value?: string
+  unit?: string
+}
 
 interface SnapshotRecord {
   id?: string
   name?: string
   favorite?: boolean
   capturedAt?: string
+  inputs?: SnapshotValue[]
+  results?: SnapshotValue[]
+  formula?: string
+  reference?: string
 }
 
 interface NotebookRecord {
@@ -1228,6 +1243,40 @@ export function ScientificNotebookLibrary({
                       }
                     >
                       Open notebook
+                    </button>
+
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        downloadNotebookEngineeringReport(
+                          record,
+                        )
+
+                        setStatus(
+                          `Engineering report exported for ${record.calculatorTitle}.`,
+                        )
+                      }}
+                    >
+                      Export report .md
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const opened =
+                          printNotebookEngineeringReport(
+                            record,
+                          )
+
+                        setStatus(
+                          opened
+                            ? `Print-ready report opened for ${record.calculatorTitle}.`
+                            : 'Print preview was blocked by the browser.',
+                        )
+                      }}
+                    >
+                      Print report
                     </button>
                   </footer>
                 </article>
