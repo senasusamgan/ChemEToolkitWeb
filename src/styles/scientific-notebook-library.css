@@ -1,0 +1,306 @@
+.scientific-notebook-library {
+  margin: 0 1rem 1rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 16px;
+  background: var(--surface, #fff);
+  overflow: hidden;
+}
+
+.scientific-notebook-library-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--line, #d7dde5);
+}
+
+.scientific-notebook-library-header span {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.scientific-notebook-library-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.scientific-notebook-library-header p {
+  max-width: 48rem;
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  opacity: 0.72;
+}
+
+.scientific-notebook-library-close {
+  min-width: 2rem;
+  min-height: 2rem;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.scientific-notebook-library-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line, #d7dde5);
+}
+
+.scientific-notebook-library-stats article {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.85rem 1.1rem;
+  border-right: 1px solid var(--line, #d7dde5);
+}
+
+.scientific-notebook-library-stats article:last-child {
+  border-right: 0;
+}
+
+.scientific-notebook-library-stats strong {
+  font-size: 1.1rem;
+}
+
+.scientific-notebook-library-stats span {
+  font-size: 0.72rem;
+  opacity: 0.65;
+}
+
+.scientific-notebook-library-controls {
+  display: grid;
+  grid-template-columns:
+    minmax(14rem, 2fr)
+    minmax(10rem, 1fr)
+    minmax(10rem, 1fr)
+    auto;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--line, #d7dde5);
+}
+
+.scientific-notebook-library-controls label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.scientific-notebook-library-controls label > span {
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.scientific-notebook-library-controls input[type="search"],
+.scientific-notebook-library-controls select {
+  width: 100%;
+  min-height: 2.5rem;
+  box-sizing: border-box;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 8px;
+  padding: 0.45rem 0.65rem;
+  background: var(--surface, #fff);
+  color: inherit;
+  font: inherit;
+}
+
+.scientific-notebook-library-favorite-filter {
+  display: flex !important;
+  align-items: center;
+  align-self: end;
+  min-height: 2.5rem;
+  grid-template-columns: auto 1fr;
+  gap: 0.45rem !important;
+}
+
+.scientific-notebook-library-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.1rem;
+}
+
+.scientific-notebook-library-toolbar > span {
+  font-size: 0.74rem;
+  opacity: 0.68;
+}
+
+.scientific-notebook-library-toolbar > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.scientific-notebook-library-toolbar button,
+.scientific-notebook-library-card button {
+  min-height: 2.2rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.scientific-notebook-library-toolbar button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.scientific-notebook-library-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  padding: 0.25rem 1.1rem 1.1rem;
+}
+
+.scientific-notebook-library-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.9rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 12px;
+}
+
+.scientific-notebook-library-card > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.scientific-notebook-library-card > header span {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.62;
+}
+
+.scientific-notebook-library-card h4 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.scientific-notebook-library-card > header > strong {
+  white-space: nowrap;
+  font-size: 0.78rem;
+}
+
+.scientific-notebook-library-card > p {
+  min-height: 2.5rem;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  opacity: 0.75;
+}
+
+.scientific-notebook-library-card dl {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+}
+
+.scientific-notebook-library-card dl > div {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.scientific-notebook-library-card dt {
+  font-size: 0.66rem;
+  opacity: 0.6;
+}
+
+.scientific-notebook-library-card dd {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.scientific-notebook-library-card > footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.scientific-notebook-library-empty {
+  margin: 0 1.1rem 1.1rem;
+  padding: 1.4rem;
+  border: 1px dashed var(--line, #d7dde5);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.scientific-notebook-library-empty p {
+  margin: 0.35rem auto 0;
+  max-width: 36rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  opacity: 0.7;
+}
+
+@media (max-width: 900px) {
+  .scientific-notebook-library-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .scientific-notebook-library-search {
+    grid-column: 1 / -1;
+  }
+
+  .scientific-notebook-library-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .scientific-notebook-library {
+    margin-inline: 0.75rem;
+  }
+
+  .scientific-notebook-library-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .scientific-notebook-library-stats article:nth-child(2) {
+    border-right: 0;
+  }
+
+  .scientific-notebook-library-stats article:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line, #d7dde5);
+  }
+
+  .scientific-notebook-library-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .scientific-notebook-library-search {
+    grid-column: auto;
+  }
+
+  .scientific-notebook-library-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .scientific-notebook-library-toolbar > div {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .scientific-notebook-library-card > footer {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}

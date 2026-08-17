@@ -3,6 +3,7 @@ import type { CalculatorDefinition } from '../types/calculator'
 import { CalculatorSearchCombobox } from './CalculatorSearchCombobox'
 import { CalculatorWorkbench } from './CalculatorWorkbench'
 import { ScientificNotebookPanel } from './ScientificNotebookPanel'
+import { ScientificNotebookLibrary } from './ScientificNotebookLibrary'
 
 interface CalculatorStageProps {
   activeCalculator: CalculatorDefinition
@@ -23,6 +24,11 @@ export function CalculatorStage({
   const [
     notebookOpen,
     setNotebookOpen,
+  ] = useState(false)
+
+  const [
+    notebookLibraryOpen,
+    setNotebookLibraryOpen,
   ] = useState(false)
 
   function resetCalculatorSession() {
@@ -108,7 +114,31 @@ export function CalculatorStage({
         />
       </div>
 
-      {notebookOpen ? (
+      {notebookLibraryOpen ? (
+        <ScientificNotebookLibrary
+          onClose={() =>
+            setNotebookLibraryOpen(
+              false,
+            )
+          }
+          onOpenCalculator={(
+            calculatorId,
+            openNotebook,
+          ) => {
+            onSelect(
+              calculatorId,
+            )
+
+            setNotebookLibraryOpen(
+              false,
+            )
+
+            setNotebookOpen(
+              openNotebook,
+            )
+          }}
+        />
+      ) : notebookOpen ? (
         <ScientificNotebookPanel
           calculatorId={activeCalculator.id}
           calculatorTitle={activeCalculator.title}
@@ -146,13 +176,36 @@ export function CalculatorStage({
             type="button"
             aria-expanded={notebookOpen}
             aria-controls="scientific-notebook-panel"
-            onClick={() =>
+            onClick={() => {
+              setNotebookLibraryOpen(
+                false,
+              )
+
               setNotebookOpen(
                 (current) => !current,
               )
-            }
+            }}
           >
             Notebook
+          </button>
+
+          <button
+            type="button"
+            aria-expanded={
+              notebookLibraryOpen
+            }
+            aria-controls="scientific-notebook-library"
+            onClick={() => {
+              setNotebookOpen(
+                false,
+              )
+
+              setNotebookLibraryOpen(
+                (current) => !current,
+              )
+            }}
+          >
+            Notebook Library
           </button>
 
           <a href="#references">
