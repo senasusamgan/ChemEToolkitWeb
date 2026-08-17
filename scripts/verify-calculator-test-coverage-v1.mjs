@@ -17,6 +17,9 @@ const CATALOG_PATH =
 const WORKBENCH_PATH =
   'src/components/CalculatorWorkbench.tsx'
 
+const NATIVE_REGISTRY_PATH =
+  'src/components/NativeCalculatorRegistry.tsx'
+
 const PACKAGE_PATH =
   'package.json'
 
@@ -124,6 +127,16 @@ const workbenchSource =
     'utf8',
   )
 
+const registrySource =
+  existsSync(
+    NATIVE_REGISTRY_PATH,
+  )
+    ? readFileSync(
+        NATIVE_REGISTRY_PATH,
+        'utf8',
+      )
+    : ''
+
 const packageJson =
   JSON.parse(
     readFileSync(
@@ -165,6 +178,20 @@ const calculatorIdSet =
   )
 
 const nativeRouteIds = []
+
+const registryNativePattern =
+  /^  ["']([^"']+)["']:\s*\(/gm
+
+for (
+  const match
+  of registrySource.matchAll(
+    registryNativePattern,
+  )
+) {
+  nativeRouteIds.push(
+    match[1],
+  )
+}
 
 const directNativePattern =
   /calculatorId\s*===\s*(['"])([^'"]+)\1/g
@@ -269,9 +296,12 @@ const importPathsByComponent =
 const importPattern =
   /import\s*\{\s*([A-Za-z0-9_]+)\s*\}\s*from\s*['"]([^'"]+)['"]/g
 
+const routingImportSource =
+  `${workbenchSource}\n${registrySource}`
+
 for (
   const match
-  of workbenchSource.matchAll(
+  of routingImportSource.matchAll(
     importPattern,
   )
 ) {
