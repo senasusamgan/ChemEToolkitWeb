@@ -6,8 +6,10 @@ import {
 import {
   createNotebookProjectSet,
   normalizeProjectDueDate,
+  normalizeProjectPriority,
   normalizeProjectProgress,
   normalizeProjectSetTags,
+  type NotebookProjectPriority,
   type NotebookProjectSet,
   type NotebookProjectStatus,
   writeNotebookProjectSets,
@@ -192,6 +194,16 @@ export function ScientificNotebookProjectSets({
 
 
   const [
+    priority,
+    setPriority,
+  ] = useState<
+    NotebookProjectPriority
+  >(
+    'normal',
+  )
+
+
+  const [
     dueDate,
     setDueDate,
   ] = useState('')
@@ -210,6 +222,12 @@ export function ScientificNotebookProjectSets({
   const [
     statusFilter,
     setStatusFilter,
+  ] = useState('all')
+
+
+  const [
+    priorityFilter,
+    setPriorityFilter,
   ] = useState('all')
 
 
@@ -291,6 +309,18 @@ export function ScientificNotebookProjectSets({
             }
 
 
+            if (
+              priorityFilter !==
+                'all'
+              && normalizeProjectPriority(
+                projectSet.priority,
+              ) !==
+                priorityFilter
+            ) {
+              return false
+            }
+
+
             const deadlineState =
               getDeadlineState(
                 projectSet,
@@ -344,6 +374,7 @@ export function ScientificNotebookProjectSets({
         query,
         tagFilter,
         statusFilter,
+        priorityFilter,
         deadlineFilter,
       ],
     )
@@ -437,6 +468,44 @@ export function ScientificNotebookProjectSets({
       ],
     )
 
+  const priorityMetrics =
+    useMemo(
+      () => {
+        let high = 0
+        let critical = 0
+
+        for (
+          const projectSet
+          of projectSets
+        ) {
+          const projectPriority =
+            normalizeProjectPriority(
+              projectSet.priority,
+            )
+
+          if (
+            projectPriority ===
+            'critical'
+          ) {
+            critical += 1
+          } else if (
+            projectPriority ===
+            'high'
+          ) {
+            high += 1
+          }
+        }
+
+        return {
+          high,
+          critical,
+        }
+      },
+      [
+        projectSets,
+      ],
+    )
+
   function persist(
     nextProjectSets:
       NotebookProjectSet[],
@@ -458,6 +527,9 @@ export function ScientificNotebookProjectSets({
       'planned',
     )
     setProgress(0)
+    setPriority(
+      'normal',
+    )
     setDueDate('')
   }
 
@@ -538,6 +610,9 @@ export function ScientificNotebookProjectSets({
                   progress,
                 ),
 
+          priority:
+            priority,
+
           dueDate:
             normalizeProjectDueDate(
               dueDate,
@@ -590,6 +665,9 @@ export function ScientificNotebookProjectSets({
               'complete'
               ? 100
               : progress,
+
+          priority:
+            priority,
 
           dueDate:
             dueDate,
@@ -671,6 +749,12 @@ export function ScientificNotebookProjectSets({
       ),
     )
 
+    setPriority(
+      normalizeProjectPriority(
+        projectSet.priority,
+      ),
+    )
+
     setDueDate(
       projectSet.dueDate
       ?? '',
@@ -685,6 +769,7 @@ export function ScientificNotebookProjectSets({
     setQuery('')
     setTagFilter('all')
     setStatusFilter('all')
+    setPriorityFilter('all')
     setDeadlineFilter('all')
   }
 
@@ -816,6 +901,50 @@ export function ScientificNotebookProjectSets({
 
             <strong>
               {portfolioMetrics.complete}
+            </strong>
+          </button>
+        </div>
+
+        <div className="scientific-notebook-project-priority-summary">
+          <button
+            type="button"
+            aria-pressed={
+              priorityFilter ===
+              'critical'
+            }
+            onClick={() =>
+              setPriorityFilter(
+                'critical',
+              )
+            }
+          >
+            <span>
+              Critical
+            </span>
+
+            <strong>
+              {priorityMetrics.critical}
+            </strong>
+          </button>
+
+          <button
+            type="button"
+            aria-pressed={
+              priorityFilter ===
+              'high'
+            }
+            onClick={() =>
+              setPriorityFilter(
+                'high',
+              )
+            }
+          >
+            <span>
+              High
+            </span>
+
+            <strong>
+              {priorityMetrics.high}
             </strong>
           </button>
         </div>
@@ -1023,6 +1152,39 @@ export function ScientificNotebookProjectSets({
 
         <label>
           <span>
+            Priority
+          </span>
+
+          <select
+            value={
+              priority
+            }
+            onChange={(event) =>
+              setPriority(
+                event.target.value as NotebookProjectPriority,
+              )
+            }
+          >
+            <option value="low">
+              Low
+            </option>
+
+            <option value="normal">
+              Normal
+            </option>
+
+            <option value="high">
+              High
+            </option>
+
+            <option value="critical">
+              Critical
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <span>
             Due date
           </span>
 
@@ -1143,6 +1305,43 @@ export function ScientificNotebookProjectSets({
 
         <label>
           <span>
+            Priority
+          </span>
+
+          <select
+            value={
+              priorityFilter
+            }
+            onChange={(event) =>
+              setPriorityFilter(
+                event.target.value,
+              )
+            }
+          >
+            <option value="all">
+              All priorities
+            </option>
+
+            <option value="critical">
+              Critical
+            </option>
+
+            <option value="high">
+              High
+            </option>
+
+            <option value="normal">
+              Normal
+            </option>
+
+            <option value="low">
+              Low
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <span>
             Deadline
           </span>
 
@@ -1189,6 +1388,8 @@ export function ScientificNotebookProjectSets({
               'all'
             && statusFilter ===
               'all'
+            && priorityFilter ===
+              'all'
             && deadlineFilter ===
               'all'
           }
@@ -1227,6 +1428,29 @@ export function ScientificNotebookProjectSets({
                     {projectSet.reportTitle}
                   </small>
 
+
+                  <div
+                    className="scientific-notebook-project-set-priority"
+                    data-project-priority={
+                      normalizeProjectPriority(
+                        projectSet.priority,
+                      )
+                    }
+                  >
+                    <span>
+                      Priority
+                    </span>
+
+                    <strong>
+                      {normalizeProjectPriority(
+                        projectSet.priority,
+                      ).replace(
+                        /^./,
+                        (value) =>
+                          value.toUpperCase(),
+                      )}
+                    </strong>
+                  </div>
 
                   {projectSet.dueDate ? (
                     <div

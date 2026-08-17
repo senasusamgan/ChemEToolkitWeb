@@ -7,6 +7,13 @@ export type NotebookProjectStatus =
   | 'blocked'
   | 'complete'
 
+
+export type NotebookProjectPriority =
+  | 'low'
+  | 'normal'
+  | 'high'
+  | 'critical'
+
 export interface NotebookProjectSet {
   id: string
   name: string
@@ -15,6 +22,7 @@ export interface NotebookProjectSet {
   tags?: string[]
   status?: NotebookProjectStatus
   progress?: number
+  priority?: NotebookProjectPriority
   dueDate?: string
   calculatorIds: string[]
   createdAt: string
@@ -176,6 +184,22 @@ export function normalizeProjectDueDate(
   return normalized
 }
 
+export function normalizeProjectPriority(
+  priority:
+    | NotebookProjectPriority
+    | undefined,
+): NotebookProjectPriority {
+  if (
+    priority === 'low'
+    || priority === 'high'
+    || priority === 'critical'
+  ) {
+    return priority
+  }
+
+  return 'normal'
+}
+
 export function normalizeProjectStatus(
   status:
     | NotebookProjectStatus
@@ -250,6 +274,18 @@ export function isProjectSet(
     )
 
 
+  const priorityValid =
+    candidate.priority ===
+      undefined
+    || candidate.priority ===
+      'low'
+    || candidate.priority ===
+      'normal'
+    || candidate.priority ===
+      'high'
+    || candidate.priority ===
+      'critical'
+
   const dueDateValid =
     candidate.dueDate ===
       undefined
@@ -265,6 +301,7 @@ export function isProjectSet(
     && tagsValid
     && statusValid
     && progressValid
+    && priorityValid
     && dueDateValid
     && Array.isArray(
       candidate.calculatorIds,
@@ -310,6 +347,11 @@ function normalizeProjectSet(
 
     status,
     progress,
+
+    priority:
+      normalizeProjectPriority(
+        projectSet.priority,
+      ),
 
     dueDate:
       normalizeProjectDueDate(
@@ -459,6 +501,7 @@ export function createNotebookProjectSet({
   tags,
   status,
   progress,
+  priority,
   dueDate,
   calculatorIds,
 }: {
@@ -468,6 +511,7 @@ export function createNotebookProjectSet({
   tags?: string[]
   status?: NotebookProjectStatus
   progress?: number
+  priority?: NotebookProjectPriority
   dueDate?: string
   calculatorIds: string[]
 }): NotebookProjectSet {
@@ -512,6 +556,11 @@ export function createNotebookProjectSet({
         : normalizeProjectProgress(
             progress,
           ),
+
+    priority:
+      normalizeProjectPriority(
+        priority,
+      ),
 
     dueDate:
       normalizeProjectDueDate(
