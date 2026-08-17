@@ -179,18 +179,79 @@ const calculatorIdSet =
 
 const nativeRouteIds = []
 
-const registryNativePattern =
-  /^  ["']([^"']+)["']:\s*\(/gm
+const registryMapMarker =
+  'const CATEGORY_BY_CALCULATOR:'
 
-for (
-  const match
-  of registrySource.matchAll(
-    registryNativePattern,
+const registryMapStart =
+  registrySource.indexOf(
+    registryMapMarker,
   )
-) {
-  nativeRouteIds.push(
-    match[1],
+
+if (registryMapStart < 0) {
+  addError(
+    'CATEGORY_BY_CALCULATOR not found in native registry.',
   )
+} else {
+  const registryMapBodyStart =
+    registrySource.indexOf(
+      '{',
+      registryMapStart,
+    )
+
+  const registryMapBodyEnd =
+    registrySource.indexOf(
+      '\n}',
+      registryMapBodyStart,
+    )
+
+  if (
+    registryMapBodyStart < 0
+    || registryMapBodyEnd < 0
+  ) {
+    addError(
+      'CATEGORY_BY_CALCULATOR body could not be parsed.',
+    )
+  } else {
+    const registryMapBody =
+      registrySource.slice(
+        registryMapBodyStart + 1,
+        registryMapBodyEnd,
+      )
+
+    for (
+      const line
+      of registryMapBody.split(
+        '\n',
+      )
+    ) {
+      const trimmed =
+        line.trim()
+
+      if (
+        !trimmed.startsWith(
+          '"',
+        )
+      ) {
+        continue
+      }
+
+      const delimiter =
+        trimmed.indexOf(
+          '":',
+        )
+
+      if (delimiter <= 1) {
+        continue
+      }
+
+      nativeRouteIds.push(
+        trimmed.slice(
+          1,
+          delimiter,
+        ),
+      )
+    }
+  }
 }
 
 const directNativePattern =
@@ -534,6 +595,24 @@ const legacyRows =
     (row) =>
       row.routeType === 'legacy',
   )
+
+
+if (
+  nativeRows.length !==
+  EXPECTED_CALCULATOR_COUNT
+) {
+  addError(
+    `Expected ${EXPECTED_CALCULATOR_COUNT} native calculators, found ${nativeRows.length}.`,
+  )
+}
+
+if (
+  legacyRows.length !== 0
+) {
+  addError(
+    `Expected 0 legacy calculators, found ${legacyRows.length}.`,
+  )
+}
 
 const nativeWithoutDirectTest =
   nativeRows.filter(

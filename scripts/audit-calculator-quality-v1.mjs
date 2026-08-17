@@ -15,6 +15,13 @@ const workbenchSource =
     'utf8',
   )
 
+
+const registrySource =
+  readFileSync(
+    'src/components/NativeCalculatorRegistry.tsx',
+    'utf8',
+  )
+
 const baseline =
   JSON.parse(
     readFileSync(
@@ -46,6 +53,81 @@ if (calculators.length !== 473) {
 
 const nativeIds =
   new Set()
+
+const registryMapMarker =
+  'const CATEGORY_BY_CALCULATOR:'
+
+const registryMapStart =
+  registrySource.indexOf(
+    registryMapMarker,
+  )
+
+if (registryMapStart < 0) {
+  throw new Error(
+    'CATEGORY_BY_CALCULATOR not found.',
+  )
+}
+
+const registryMapBodyStart =
+  registrySource.indexOf(
+    '{',
+    registryMapStart,
+  )
+
+const registryMapBodyEnd =
+  registrySource.indexOf(
+    '\n}',
+    registryMapBodyStart,
+  )
+
+if (
+  registryMapBodyStart < 0
+  || registryMapBodyEnd < 0
+) {
+  throw new Error(
+    'CATEGORY_BY_CALCULATOR body could not be parsed.',
+  )
+}
+
+const registryMapBody =
+  registrySource.slice(
+    registryMapBodyStart + 1,
+    registryMapBodyEnd,
+  )
+
+for (
+  const line
+  of registryMapBody.split(
+    '\n',
+  )
+) {
+  const trimmed =
+    line.trim()
+
+  if (
+    !trimmed.startsWith(
+      '"',
+    )
+  ) {
+    continue
+  }
+
+  const delimiter =
+    trimmed.indexOf(
+      '":',
+    )
+
+  if (delimiter <= 1) {
+    continue
+  }
+
+  nativeIds.add(
+    trimmed.slice(
+      1,
+      delimiter,
+    ),
+  )
+}
 
 const directPattern =
   /calculatorId\s*===\s*(['"])([^'"]+)\1/g
@@ -80,6 +162,14 @@ for (
       value[1],
     )
   }
+}
+
+if (
+  nativeIds.size !== 473
+) {
+  throw new Error(
+    `Expected 473 native calculator IDs, found ${nativeIds.size}.`,
+  )
 }
 
 const coverageGaps =
