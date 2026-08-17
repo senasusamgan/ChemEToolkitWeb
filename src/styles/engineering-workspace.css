@@ -1031,3 +1031,307 @@ textarea:focus {
     min-height: 48px;
   }
 }
+
+
+/* PHASE 3.3C WORKSPACE FINAL PASS */
+
+.workspace-page-section,
+.workspace-page-inner,
+.engineering-workspace-shell,
+.engineering-workspace-header,
+.engineering-workspace-groups,
+.engineering-workspace-tabs,
+.engineering-workspace-active-heading,
+.engineering-workspace-panel,
+.engineering-workspace-module {
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.workspace-page-section
+.engineering-workspace-header {
+  align-items: center;
+}
+
+.workspace-page-section
+.engineering-workspace-title {
+  min-width: 0;
+}
+
+.workspace-page-section
+.engineering-workspace-context {
+  flex-shrink: 0;
+}
+
+.workspace-page-section
+.engineering-workspace-groups {
+  position: relative;
+}
+
+.workspace-page-section
+.engineering-workspace-groups button,
+.workspace-page-section
+.engineering-workspace-tabs button {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.workspace-page-section
+.engineering-workspace-groups button strong,
+.workspace-page-section
+.engineering-workspace-groups button span,
+.workspace-page-section
+.engineering-workspace-tabs button strong {
+  overflow-wrap: anywhere;
+}
+
+.workspace-page-section
+.engineering-workspace-tabs button {
+  min-height: 52px;
+}
+
+.workspace-page-section
+.engineering-workspace-active-heading {
+  border-bottom:
+    1px solid
+    rgba(217, 208, 189, 0.56);
+}
+
+.workspace-page-section
+.engineering-workspace-panel {
+  padding-top: 18px;
+}
+
+.workspace-page-section
+.engineering-workspace-module {
+  overflow-x: hidden;
+}
+
+.workspace-page-section
+.engineering-workspace-module
+button {
+  min-height: 38px;
+}
+
+.workspace-page-section
+.engineering-workspace-module
+input,
+.workspace-page-section
+.engineering-workspace-module
+select,
+.workspace-page-section
+.engineering-workspace-module
+textarea {
+  max-width: 100%;
+}
+
+@media (max-width: 900px) {
+  .workspace-page-section {
+    padding:
+      42px
+      22px
+      54px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-header {
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-context {
+    min-width: 0;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-groups {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-tabs {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-active-heading {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-panel {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 700px) {
+  .workspace-page-section {
+    padding:
+      30px
+      14px
+      42px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-shell {
+    border-radius: 14px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-header {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr);
+    padding:
+      18px
+      14px
+      15px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-title h2 {
+    font-size:
+      clamp(
+        1.45rem,
+        7vw,
+        1.85rem
+      );
+  }
+
+  .workspace-page-section
+  .engineering-workspace-context {
+    width: 100%;
+    padding: 11px 12px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-groups {
+    margin:
+      14px
+      14px
+      0;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .workspace-page-section
+  .engineering-workspace-tabs {
+    margin:
+      8px
+      14px
+      0;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-active-heading {
+    padding:
+      16px
+      14px
+      12px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-active-heading
+  > div {
+    gap: 9px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-panel {
+    padding:
+      14px
+      14px
+      18px;
+    gap: 12px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-module {
+    padding: 14px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .workspace-page-section {
+    padding:
+      24px
+      10px
+      34px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-groups {
+    margin:
+      12px
+      10px
+      0;
+    gap: 5px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-groups button {
+    min-height: 44px;
+    padding: 9px 10px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-groups button strong {
+    font-size: 0.72rem;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-tabs {
+    margin:
+      7px
+      10px
+      0;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-tabs button {
+    min-height: 44px;
+    padding: 8px 10px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-active-heading {
+    padding:
+      14px
+      10px
+      11px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-panel {
+    padding:
+      12px
+      10px
+      16px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-module {
+    padding: 12px;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-module
+  button {
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-page-section *,
+  .workspace-page-section *::before,
+  .workspace-page-section *::after {
+    scroll-behavior: auto !important;
+  }
+}

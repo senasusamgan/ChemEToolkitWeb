@@ -793,3 +793,132 @@ button small {
     min-height: auto;
   }
 }
+
+
+/* PHASE 3.3C COMMAND CENTER RESPONSIVE FINAL */
+
+.workspace-command-center,
+.workspace-command-header,
+.workspace-command-grid,
+.workspace-command-card,
+.workspace-command-health,
+.workspace-command-actions {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.workspace-command-header {
+  align-items: stretch;
+}
+
+.workspace-command-active {
+  min-width: 0;
+}
+
+.workspace-command-active > strong,
+.workspace-command-active > small {
+  overflow-wrap: anywhere;
+}
+
+.workspace-command-grid--simplified
+.workspace-command-card {
+  box-shadow:
+    0 7px 22px
+    rgba(12, 54, 88, 0.04);
+}
+
+.workspace-command-grid--simplified
+.workspace-command-health
+> div > article {
+  min-width: 0;
+}
+
+.workspace-command-grid--simplified
+.workspace-command-health
+> div > article > div {
+  min-width: 0;
+}
+
+.workspace-command-grid--simplified
+.workspace-command-health
+strong,
+.workspace-command-grid--simplified
+.workspace-command-health
+p {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .workspace-command-header {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .workspace-command-active {
+    width: 100%;
+  }
+
+  .workspace-command-grid--simplified {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .workspace-command-grid--simplified
+  .workspace-command-actions
+  > div {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .workspace-command-grid--simplified
+  .workspace-command-health
+  > div > article {
+    grid-template-columns:
+      28px minmax(0, 1fr);
+  }
+
+  .workspace-command-grid--simplified
+  .workspace-command-health
+  > div > article > button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .workspace-command-health
+  > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .workspace-command-header h3 {
+    font-size: 1.28rem;
+  }
+
+  .workspace-command-grid--simplified
+  .workspace-command-card {
+    padding: 13px;
+  }
+
+  .workspace-command-grid--simplified
+  .workspace-command-actions
+  > div > button {
+    min-height: 52px;
+  }
+
+  .workspace-command-grid--simplified
+  .workspace-command-actions
+  button {
+    grid-template-columns:
+      24px minmax(0, 1fr) auto;
+  }
+
+  .workspace-command-grid--simplified
+  .workspace-command-health
+  > div > article {
+    padding: 10px;
+  }
+}
