@@ -16,8 +16,11 @@ import {
 } from './ScientificNotebookProjectSets'
 
 import {
+  isProjectSet,
+  mergeNotebookProjectSets,
   readNotebookProjectSets,
   type NotebookProjectSet,
+  writeNotebookProjectSets,
 } from '../lib/scientificNotebookProjectSets'
 
 import '../styles/scientific-notebook-library.css'
@@ -71,9 +74,10 @@ type ImportMode =
   | 'replace'
 
 interface NotebookArchive {
-  version: number
+  version: 1 | 2
   exportedAt?: string
   notebooks: NotebookStore
+  projectSets?: NotebookProjectSet[]
 }
 
 interface ScientificNotebookLibraryProps {
@@ -272,8 +276,10 @@ function parseArchive(
 
   if (
     !isRecord(parsed)
-    || typeof parsed.version !==
-      'number'
+    || (
+      parsed.version !== 1
+      && parsed.version !== 2
+    )
     || !isNotebookStore(
       parsed.notebooks,
     )
@@ -283,16 +289,47 @@ function parseArchive(
     )
   }
 
+  const projectSetsValue =
+    parsed.projectSets
+
+  if (
+    projectSetsValue !==
+      undefined
+    && (
+      !Array.isArray(
+        projectSetsValue,
+      )
+      || !projectSetsValue.every(
+        isProjectSet,
+      )
+    )
+  ) {
+    throw new Error(
+      'Invalid ChemE Toolkit project set archive.',
+    )
+  }
+
   return {
     version:
       parsed.version,
+
     exportedAt:
       typeof parsed.exportedAt ===
         'string'
         ? parsed.exportedAt
         : undefined,
+
     notebooks:
       parsed.notebooks,
+
+    projectSets:
+      Array.isArray(
+        projectSetsValue,
+      )
+        ? projectSetsValue.filter(
+            isProjectSet,
+          )
+        : undefined,
   }
 }
 
@@ -942,14 +979,20 @@ export function ScientificNotebookLibrary({
   }
 
   function exportArchive() {
-    const archive = {
-      version: 1,
-      exportedAt:
-        new Date()
-          .toISOString(),
-      notebooks:
-        store,
-    }
+    const archive:
+      NotebookArchive = {
+        version:
+          2,
+
+        exportedAt:
+          new Date()
+            .toISOString(),
+
+        notebooks:
+          store,
+
+        projectSets,
+      }
 
     const blob =
       new Blob(
@@ -978,7 +1021,7 @@ export function ScientificNotebookLibrary({
 
     anchor.href = url
     anchor.download =
-      `cheme-toolkit-notebook-library-${
+      `cheme-toolkit-workspace-${
         createSlug(
           new Date()
             .toISOString()
@@ -1001,7 +1044,7 @@ export function ScientificNotebookLibrary({
     )
 
     setStatus(
-      'Notebook library exported.',
+      `Workspace backup exported (${notebooks.length} notebooks, ${projectSets.length} project sets).`,
     )
   }
 
@@ -1019,9 +1062,18 @@ export function ScientificNotebookLibrary({
           archive.notebooks,
         ).length
 
+      const hasProjectSets =
+        archive.projectSets !==
+        undefined
+
+      const importedProjectSetCount =
+        archive.projectSets
+          ?.length
+        ?? 0
+
       if (
         importMode ===
-        'replace'
+          'replace'
         && !window.confirm(
           'Replace the entire local Notebook Library with this backup?',
         )
@@ -1029,6 +1081,7 @@ export function ScientificNotebookLibrary({
         setStatus(
           'Restore cancelled.',
         )
+
         return
       }
 
@@ -1041,6 +1094,24 @@ export function ScientificNotebookLibrary({
               archive.notebooks,
             )
 
+      const currentProjectSets =
+        readNotebookProjectSets()
+
+      const nextProjectSets =
+        !hasProjectSets
+          ? currentProjectSets
+          : importMode ===
+              'replace'
+            ? (
+                archive.projectSets
+                ?? []
+              )
+            : mergeNotebookProjectSets(
+                currentProjectSets,
+                archive.projectSets
+                ?? [],
+              )
+
       localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify(
@@ -1052,11 +1123,29 @@ export function ScientificNotebookLibrary({
         nextStore,
       )
 
+      if (hasProjectSets) {
+        writeNotebookProjectSets(
+          nextProjectSets,
+        )
+
+        setProjectSets(
+          nextProjectSets,
+        )
+      }
+
+      const projectSetMessage =
+        hasProjectSets
+          ? ` ${importedProjectSetCount} project sets processed.`
+          : ' Existing project sets preserved from this legacy v1 backup.'
+
       setStatus(
-        importMode ===
-          'replace'
-          ? `Library restored from backup (${importedCount} notebooks).`
-          : `Backup merged (${importedCount} notebooks imported).`,
+        (
+          importMode ===
+            'replace'
+            ? `Library restored from backup (${importedCount} notebooks).`
+            : `Backup merged (${importedCount} notebooks imported).`
+        )
+        + projectSetMessage,
       )
     } catch {
       setStatus(

@@ -26,7 +26,7 @@ function createId(): string {
   ].join('-')
 }
 
-function isProjectSet(
+export function isProjectSet(
   value: unknown,
 ): value is NotebookProjectSet {
   if (
@@ -101,6 +101,78 @@ export function writeNotebookProjectSets(
     JSON.stringify(
       projectSets,
     ),
+  )
+}
+
+export function mergeNotebookProjectSets(
+  current: NotebookProjectSet[],
+  incoming: NotebookProjectSet[],
+): NotebookProjectSet[] {
+  const merged =
+    new Map<
+      string,
+      NotebookProjectSet
+    >()
+
+  const addProjectSet =
+    (
+      projectSet:
+        NotebookProjectSet,
+    ) => {
+      const existing =
+        merged.get(
+          projectSet.id,
+        )
+
+      if (!existing) {
+        merged.set(
+          projectSet.id,
+          projectSet,
+        )
+
+        return
+      }
+
+      const existingUpdated =
+        new Date(
+          existing.updatedAt,
+        ).getTime()
+
+      const incomingUpdated =
+        new Date(
+          projectSet.updatedAt,
+        ).getTime()
+
+      merged.set(
+        projectSet.id,
+        incomingUpdated >=
+          existingUpdated
+          ? projectSet
+          : existing,
+      )
+    }
+
+  current.forEach(
+    addProjectSet,
+  )
+
+  incoming.forEach(
+    addProjectSet,
+  )
+
+  return Array.from(
+    merged.values(),
+  ).sort(
+    (
+      left,
+      right,
+    ) =>
+      new Date(
+        right.updatedAt,
+      ).getTime()
+      - new Date(
+          left.updatedAt,
+        ).getTime(),
   )
 }
 
