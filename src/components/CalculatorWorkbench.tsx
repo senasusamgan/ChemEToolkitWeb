@@ -214,8 +214,6 @@ import { PartiallyFullCircularChannelMaximumDischargeSpecificEnergyCalculator } 
 import { PartiallyFullCircularChannelMinimumDiameterSpecificEnergyCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-minimum-diameter-specific-energy/PartiallyFullCircularChannelMinimumDiameterSpecificEnergyCalculator'
 import { PartiallyFullCircularChannelMinimumRequiredSpecificEnergyCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-minimum-required-specific-energy/PartiallyFullCircularChannelMinimumRequiredSpecificEnergyCalculator'
 import { PartiallyFullCircularChannelCapacityChokingMarginCalculator } from '../features/fluid-mechanics/partially-full-circular-channel-capacity-choking-margin/PartiallyFullCircularChannelCapacityChokingMarginCalculator'
-import { LegacyWorkbench } from './LegacyWorkbench'
-
 interface CalculatorWorkbenchProps {
   calculatorId: string
   title: string
@@ -17186,9 +17184,36 @@ if (calculatorId === 'absorptionStrippingFactors') {
 
 
   return (
-    <LegacyWorkbench
-      calculatorId={calculatorId}
-      title={title}
-    />
+    <section className="native-calculator">
+        <header className="native-calculator-header">
+          <div
+            className="native-icon"
+            aria-hidden="true"
+          >
+            !
+          </div>
+
+          <div>
+            <p>
+              Calculator routing
+            </p>
+
+            <h2>
+              {title}
+            </h2>
+
+            <span>
+              Native calculator route unavailable
+            </span>
+          </div>
+        </header>
+
+        <div
+          className="native-error"
+          role="alert"
+        >
+          Calculator route {calculatorId} is not registered.
+        </div>
+      </section>
   )
 }

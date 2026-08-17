@@ -8,49 +8,7 @@ const CATALOG_PATH =
 const WORKBENCH_PATH =
   'src/components/CalculatorWorkbench.tsx'
 
-const LEGACY_WORKBENCH_PATH =
-  'src/components/LegacyWorkbench.tsx'
-
-const LEGACY_HTML_PATH =
-  'public/legacy/index.html'
-
 const EXPECTED_CALCULATOR_COUNT = 473
-
-const errors = []
-
-function addError(message) {
-  errors.push(message)
-}
-
-function countValues(values) {
-  const counts = new Map()
-
-  for (const value of values) {
-    counts.set(
-      value,
-      (counts.get(value) ?? 0) + 1,
-    )
-  }
-
-  return counts
-}
-
-function duplicates(values) {
-  return [
-    ...countValues(values),
-  ]
-    .filter(([, count]) => count > 1)
-    .map(([value, count]) => ({
-      value,
-      count,
-    }))
-}
-
-function unique(values) {
-  return [
-    ...new Set(values),
-  ]
-}
 
 const catalogSource =
   readFileSync(
@@ -64,18 +22,6 @@ const workbenchSource =
     'utf8',
   )
 
-const legacyWorkbenchSource =
-  readFileSync(
-    LEGACY_WORKBENCH_PATH,
-    'utf8',
-  )
-
-const legacyHtmlSource =
-  readFileSync(
-    LEGACY_HTML_PATH,
-    'utf8',
-  )
-
 const catalogPattern =
   /\{\s*id:\s*"([^"]+)"\s*,\s*title:\s*"([^"]+)"\s*,\s*category:\s*"([^"]+)"\s*,\s*available:\s*(true|false)\s*\}/g
 
@@ -83,12 +29,15 @@ const calculators = [
   ...catalogSource.matchAll(
     catalogPattern,
   ),
-].map((match) => ({
-  id: match[1],
-  title: match[2],
-  category: match[3],
-  available: match[4] === 'true',
-}))
+].map(
+  (match) => ({
+    id: match[1],
+    title: match[2],
+    category: match[3],
+    available:
+      match[4] === 'true',
+  }),
+)
 
 const catalogIds =
   calculators.map(
@@ -97,322 +46,171 @@ const catalogIds =
   )
 
 const catalogIdSet =
-  new Set(catalogIds)
-
-if (
-  calculators.length !==
-  EXPECTED_CALCULATOR_COUNT
-) {
-  addError(
-    `Expected ${EXPECTED_CALCULATOR_COUNT} catalog entries, found ${calculators.length}.`,
+  new Set(
+    catalogIds,
   )
-}
 
-const directNativeIds = []
+const routeOccurrences = []
 
-const directNativePattern =
+const directPattern =
   /calculatorId\s*===\s*(['"])([^'"]+)\1/g
 
 for (
   const match
   of workbenchSource.matchAll(
-    directNativePattern,
+    directPattern,
   )
 ) {
-  directNativeIds.push(
+  routeOccurrences.push(
     match[2],
   )
 }
 
-const groupedNativeIds = []
-
-const groupedNativePattern =
+const groupedPattern =
   /if\s*\(\s*\[([\s\S]*?)\]\s*\.includes\(\s*calculatorId\s*\)\s*\)/g
 
 for (
-  const groupMatch
+  const group
   of workbenchSource.matchAll(
-    groupedNativePattern,
+    groupedPattern,
   )
 ) {
-  const groupSource =
-    groupMatch[1]
-
-  const stringPattern =
-    /['"]([^'"]+)['"]/g
-
   for (
-    const valueMatch
-    of groupSource.matchAll(
-      stringPattern,
+    const value
+    of group[1].matchAll(
+      /['"]([^'"]+)['"]/g,
     )
   ) {
-    groupedNativeIds.push(
-      valueMatch[1],
+    routeOccurrences.push(
+      value[1],
     )
   }
 }
 
-const allNativeRouteOccurrences = [
-  ...directNativeIds,
-  ...groupedNativeIds,
-]
-
-const nativeRouteIds =
-  unique(
-    allNativeRouteOccurrences,
-  )
-
-const nativeRouteIdSet =
-  new Set(nativeRouteIds)
-
-const legacyOptionIds = []
-
-const legacyOptionPattern =
-  /<option\b[^>]*\bvalue=(['"])(.*?)\1/gs
-
-for (
-  const match
-  of legacyHtmlSource.matchAll(
-    legacyOptionPattern,
-  )
-) {
-  legacyOptionIds.push(
-    match[2],
-  )
-}
-
-const uniqueLegacyOptionIds =
-  unique(
-    legacyOptionIds,
-  )
-
-const legacyOptionIdSet =
-  new Set(
-    uniqueLegacyOptionIds,
-  )
-
-for (
-  const duplicate
-  of duplicates(
-    allNativeRouteOccurrences,
-  )
-) {
-  addError(
-    `Native calculator route "${duplicate.value}" is declared ${duplicate.count} times.`,
-  )
-}
-
-for (
-  const duplicate
-  of duplicates(
-    legacyOptionIds,
-  )
-) {
-  addError(
-    `Legacy calculator option "${duplicate.value}" appears ${duplicate.count} times.`,
-  )
-}
-
-for (
-  const nativeId
-  of nativeRouteIds
-) {
-  if (
-    !catalogIdSet.has(
-      nativeId,
-    )
-  ) {
-    addError(
-      `Native route "${nativeId}" is not present in the calculator catalog.`,
-    )
-  }
-}
-
-for (
-  const legacyId
-  of uniqueLegacyOptionIds
-) {
-  if (
-    !catalogIdSet.has(
-      legacyId,
-    )
-  ) {
-    addError(
-      `Legacy option "${legacyId}" is not present in the calculator catalog.`,
-    )
-  }
-}
-
-const unroutedCalculatorIds =
-  catalogIds.filter(
-    (calculatorId) =>
-      !nativeRouteIdSet.has(
-        calculatorId,
-      ) &&
-      !legacyOptionIdSet.has(
-        calculatorId,
-      ),
-  )
+const counts =
+  new Map()
 
 for (
   const calculatorId
-  of unroutedCalculatorIds
+  of routeOccurrences
 ) {
-  addError(
-    `Catalog calculator "${calculatorId}" has neither a native route nor a legacy selector option.`,
+  counts.set(
+    calculatorId,
+    (
+      counts.get(
+        calculatorId,
+      ) ?? 0
+    ) + 1,
+  )
+}
+
+const duplicateRoutes =
+  [
+    ...counts,
+  ].filter(
+    ([, count]) =>
+      count > 1,
+  )
+
+const nativeIds =
+  [
+    ...counts.keys(),
+  ]
+
+const nativeIdSet =
+  new Set(
+    nativeIds,
+  )
+
+const missingRoutes =
+  catalogIds.filter(
+    (calculatorId) =>
+      !nativeIdSet.has(
+        calculatorId,
+      ),
+  )
+
+const unknownRoutes =
+  nativeIds.filter(
+    (calculatorId) =>
+      !catalogIdSet.has(
+        calculatorId,
+      ),
+  )
+
+const errors = []
+
+if (
+  calculators.length !==
+  EXPECTED_CALCULATOR_COUNT
+) {
+  errors.push(
+    `Expected ${EXPECTED_CALCULATOR_COUNT} catalog calculators; found ${calculators.length}.`,
   )
 }
 
 if (
-  nativeRouteIds.length === 0
+  catalogIdSet.size !==
+  calculators.length
 ) {
-  addError(
-    'No native calculator routes were detected.',
+  errors.push(
+    'Duplicate calculator IDs exist in the catalog.',
+  )
+}
+
+for (
+  const [
+    calculatorId,
+    count,
+  ]
+  of duplicateRoutes
+) {
+  errors.push(
+    `Native calculator route "${calculatorId}" is declared ${count} times.`,
+  )
+}
+
+for (
+  const calculatorId
+  of missingRoutes
+) {
+  errors.push(
+    `Catalog calculator "${calculatorId}" has no native route.`,
+  )
+}
+
+for (
+  const calculatorId
+  of unknownRoutes
+) {
+  errors.push(
+    `Native route "${calculatorId}" is not present in the catalog.`,
   )
 }
 
 if (
-  uniqueLegacyOptionIds.length === 0
+  workbenchSource.includes(
+    'LegacyWorkbench',
+  )
 ) {
-  addError(
-    'No legacy calculator selector options were detected.',
+  errors.push(
+    'CalculatorWorkbench still contains LegacyWorkbench.',
   )
 }
 
-const requiredWorkbenchContracts = [
-  {
-    description:
-      'LegacyWorkbench import',
-    pattern:
-      /import\s*\{\s*LegacyWorkbench\s*\}\s*from\s*['"]\.\/LegacyWorkbench['"]/,
-  },
-  {
-    description:
-      'LegacyWorkbench fallback rendering',
-    pattern:
-      /<LegacyWorkbench\b/,
-  },
-  {
-    description:
-      'fallback calculatorId forwarding',
-    pattern:
-      /calculatorId=\{calculatorId\}/,
-  },
-  {
-    description:
-      'fallback title forwarding',
-    pattern:
-      /title=\{title\}/,
-  },
-]
-
-for (
-  const contract
-  of requiredWorkbenchContracts
+if (
+  workbenchSource.includes(
+    '/legacy/',
+  )
 ) {
-  if (
-    !contract.pattern.test(
-      workbenchSource,
-    )
-  ) {
-    addError(
-      `CalculatorWorkbench is missing ${contract.description}.`,
-    )
-  }
+  errors.push(
+    'CalculatorWorkbench still contains a legacy runtime URL.',
+  )
 }
 
-const requiredLegacyContracts = [
-  {
-    description:
-      'same-origin legacy source',
-    pattern:
-      /\/legacy\/index\.html\?embed=1&calculator=/,
-  },
-  {
-    description:
-      'encoded calculator query parameter',
-    pattern:
-      /encodeURIComponent\(\s*calculatorId\s*,?\s*\)/,
-  },
-  {
-    description:
-      'legacy selector option lookup',
-    pattern:
-      /option\.value\s*===\s*calculatorId/,
-  },
-  {
-    description:
-      'selector value synchronization',
-    pattern:
-      /calculatorSelector\.value\s*!==\s*calculatorId/,
-  },
-  {
-    description:
-      'input event dispatch',
-    pattern:
-      /initEvent\(\s*['"]input['"]/,
-  },
-  {
-    description:
-      'change event dispatch',
-    pattern:
-      /initEvent\(\s*['"]change['"]/,
-  },
-  {
-    description:
-      'calculator-aware synchronization dependency',
-    pattern:
-      /\},\s*\[\s*calculatorId\s*\]\s*\)/,
-  },
-  {
-    description:
-      'iframe source binding',
-    pattern:
-      /src=\{source\}/,
-  },
-]
-
-for (
-  const contract
-  of requiredLegacyContracts
+if (
+  errors.length > 0
 ) {
-  if (
-    !contract.pattern.test(
-      legacyWorkbenchSource,
-    )
-  ) {
-    addError(
-      `LegacyWorkbench is missing ${contract.description}.`,
-    )
-  }
-}
-
-const nativeAndLegacyOverlap =
-  nativeRouteIds.filter(
-    (calculatorId) =>
-      legacyOptionIdSet.has(
-        calculatorId,
-      ),
-  )
-
-const nativeOnlyIds =
-  nativeRouteIds.filter(
-    (calculatorId) =>
-      !legacyOptionIdSet.has(
-        calculatorId,
-      ),
-  )
-
-const legacyOnlyIds =
-  uniqueLegacyOptionIds.filter(
-    (calculatorId) =>
-      !nativeRouteIdSet.has(
-        calculatorId,
-      ),
-  )
-
-if (errors.length > 0) {
   console.error(
     'CALCULATOR ROUTING VERIFICATION FAILED',
   )
@@ -421,7 +219,8 @@ if (errors.length > 0) {
     const [
       index,
       error,
-    ] of errors.entries()
+    ]
+    of errors.entries()
   ) {
     console.error(
       `${index + 1}. ${error}`,
@@ -436,27 +235,15 @@ console.log(
 )
 
 console.log(
-  `Catalog calculators: ${catalogIds.length}`,
+  `Catalog calculators: ${calculators.length}`,
 )
 
 console.log(
-  `Native route IDs: ${nativeRouteIds.length}`,
+  `Native route IDs: ${nativeIds.length}`,
 )
 
 console.log(
-  `Legacy selector IDs: ${uniqueLegacyOptionIds.length}`,
-)
-
-console.log(
-  `Native and legacy overlap: ${nativeAndLegacyOverlap.length}`,
-)
-
-console.log(
-  `Native-only routes: ${nativeOnlyIds.length}`,
-)
-
-console.log(
-  `Legacy-only routes: ${legacyOnlyIds.length}`,
+  'Legacy route IDs: 0',
 )
 
 console.log(
@@ -464,5 +251,5 @@ console.log(
 )
 
 console.log(
-  'Legacy fallback and synchronization contracts verified.',
+  'PASS: 473/473 calculators use native routing.',
 )
