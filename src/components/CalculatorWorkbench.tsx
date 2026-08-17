@@ -1,3 +1,4 @@
+import { TopFiveLegacyNativeCalculator } from '../features/native-migrations/top-five-legacy/TopFiveLegacyNativeCalculator'
 import { BinaryFlashCalculator } from '../features/mass-transfer/binary-flash/BinaryFlashCalculator'
 import { CentrifugalSettlingCalculator } from '../features/mass-transfer/centrifugal-settling/CentrifugalSettlingCalculator'
 import { ConstantPressureFiltrationCalculator } from '../features/mass-transfer/constant-pressure-filtration/ConstantPressureFiltrationCalculator'
@@ -217,6 +218,46 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === 'heatExchangerEnergyBalance') {
+    return (
+      <TopFiveLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'activationEnergyTwoPoint') {
+    return (
+      <TopFiveLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'adiabaticMixingTemperature') {
+    return (
+      <TopFiveLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'doublePipeHeatExchanger') {
+    return (
+      <TopFiveLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'dryerBalance') {
+    return (
+      <TopFiveLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
   if (calculatorId === 'fluidBedDryerAdiabaticDryAirRequirement') {
     return <FluidBedDryerAdiabaticDryAirRequirementCalculator />
   }
