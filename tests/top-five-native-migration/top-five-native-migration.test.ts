@@ -2,9 +2,9 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import {
-  TopFiveLegacyCalculatorError,
+  TopFiveCalculatorError,
   calculateTopFiveCalculator,
-} from '../../src/features/native-migrations/top-five-legacy/engine.ts'
+} from '../../src/features/native-migrations/top-five-native/engine.ts'
 
 function closeTo(
   actual: number,
@@ -142,7 +142,7 @@ test(
               300,
           },
         ),
-      TopFiveLegacyCalculatorError,
+      TopFiveCalculatorError,
     )
   },
 )
@@ -163,7 +163,7 @@ test(
               0.20,
           },
         ),
-      TopFiveLegacyCalculatorError,
+      TopFiveCalculatorError,
     )
   },
 )

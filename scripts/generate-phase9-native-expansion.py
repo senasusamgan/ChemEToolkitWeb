@@ -406,7 +406,7 @@ import {
   type PhaseNineCalculatorId,
 } from './definitions'
 
-interface PhaseNineLegacyNativeCalculatorProps {
+interface PhaseNineNativeCalculatorProps {
   calculatorId: PhaseNineCalculatorId
 }
 
@@ -433,9 +433,9 @@ const CATEGORY_REFERENCES: Record<string, string> = {
     'Smith, Van Ness & Abbott · Chemical Engineering Thermodynamics',
 }
 
-export function PhaseNineLegacyNativeCalculator({
+export function PhaseNineNativeCalculator({
   calculatorId,
-}: PhaseNineLegacyNativeCalculatorProps) {
+}: PhaseNineNativeCalculatorProps) {
   const definition =
     PHASE_NINE_DEFINITIONS[
       calculatorId
@@ -702,7 +702,7 @@ export function PhaseNineLegacyNativeCalculator({
 """
 
 Path(
-    "src/features/native-migrations/phase-nine/PhaseNineLegacyNativeCalculator.tsx"
+    "src/features/native-migrations/phase-nine/PhaseNineNativeCalculator.tsx"
 ).write_text(
     component
 )
@@ -716,9 +716,9 @@ workbench = (
 )
 
 import_line = (
-    "import { PhaseNineLegacyNativeCalculator } "
+    "import { PhaseNineNativeCalculator } "
     "from '../features/native-migrations/phase-nine/"
-    "PhaseNineLegacyNativeCalculator'\n"
+    "PhaseNineNativeCalculator'\n"
 )
 
 if import_line not in workbench:
@@ -736,7 +736,7 @@ if anchor not in workbench:
     )
 
 if (
-    "<PhaseNineLegacyNativeCalculator"
+    "<PhaseNineNativeCalculator"
     not in workbench
 ):
     routes = []
@@ -745,7 +745,7 @@ if (
         routes.append(
             f"""  if (calculatorId === {json.dumps(calculator_id)}) {{
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={{calculatorId}}
       />
     )

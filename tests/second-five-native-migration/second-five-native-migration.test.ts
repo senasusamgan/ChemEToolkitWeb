@@ -4,7 +4,7 @@ import test from 'node:test'
 import {
   SecondFiveCalculatorError,
   calculateSecondFiveCalculator,
-} from '../../src/features/native-migrations/second-five-legacy/engine.ts'
+} from '../../src/features/native-migrations/second-five-native/engine.ts'
 
 function closeTo(
   actual: number,

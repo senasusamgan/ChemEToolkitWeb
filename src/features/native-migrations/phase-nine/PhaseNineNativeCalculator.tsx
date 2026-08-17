@@ -14,7 +14,7 @@ import {
   type PhaseNineCalculatorId,
 } from './definitions'
 
-interface PhaseNineLegacyNativeCalculatorProps {
+interface PhaseNineNativeCalculatorProps {
   calculatorId: PhaseNineCalculatorId
 }
 
@@ -41,9 +41,9 @@ const CATEGORY_REFERENCES: Record<string, string> = {
     'Smith, Van Ness & Abbott · Chemical Engineering Thermodynamics',
 }
 
-export function PhaseNineLegacyNativeCalculator({
+export function PhaseNineNativeCalculator({
   calculatorId,
-}: PhaseNineLegacyNativeCalculatorProps) {
+}: PhaseNineNativeCalculatorProps) {
   const definition =
     PHASE_NINE_DEFINITIONS[
       calculatorId
@@ -176,7 +176,7 @@ export function PhaseNineLegacyNativeCalculator({
       ? definition.interpret(
           result,
         )
-      : 'Verified legacy numerical relation migrated to the native workspace.'
+      : 'Verified numerical relation migrated to the native workspace.'
 
   return (
     <section className="native-calculator">
@@ -299,7 +299,7 @@ export function PhaseNineLegacyNativeCalculator({
 
           <ResultItem
             label="Migration basis"
-            value="Legacy calculation source preserved"
+            value="Verified calculation source preserved"
             unit="native"
           />
         </ResultPanel>

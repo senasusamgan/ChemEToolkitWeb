@@ -2,10 +2,10 @@ import { PhaseThirteenNativeCalculator } from '../features/native-migrations/pha
 import { PhaseTwelveNativeCalculator } from '../features/native-migrations/phase-twelve/PhaseTwelveNativeCalculator'
 import { PhaseElevenNativeCalculator } from '../features/native-migrations/phase-eleven/PhaseElevenNativeCalculator'
 import { PhaseTenThermodynamicsCalculator } from '../features/native-migrations/phase-ten-thermodynamics/PhaseTenThermodynamicsCalculator'
-import { PhaseNineLegacyNativeCalculator } from '../features/native-migrations/phase-nine/PhaseNineLegacyNativeCalculator'
-import { PriorityTenLegacyNativeCalculator } from '../features/native-migrations/priority-ten-legacy/PriorityTenLegacyNativeCalculator'
-import { SecondFiveLegacyNativeCalculator } from '../features/native-migrations/second-five-legacy/SecondFiveLegacyNativeCalculator'
-import { TopFiveLegacyNativeCalculator } from '../features/native-migrations/top-five-legacy/TopFiveLegacyNativeCalculator'
+import { PhaseNineNativeCalculator } from '../features/native-migrations/phase-nine/PhaseNineNativeCalculator'
+import { PriorityTenNativeCalculator } from '../features/native-migrations/priority-ten-native/PriorityTenNativeCalculator'
+import { SecondFiveNativeCalculator } from '../features/native-migrations/second-five-native/SecondFiveNativeCalculator'
+import { TopFiveNativeCalculator } from '../features/native-migrations/top-five-native/TopFiveNativeCalculator'
 import { BinaryFlashCalculator } from '../features/mass-transfer/binary-flash/BinaryFlashCalculator'
 import { CentrifugalSettlingCalculator } from '../features/mass-transfer/centrifugal-settling/CentrifugalSettlingCalculator'
 import { ConstantPressureFiltrationCalculator } from '../features/mass-transfer/constant-pressure-filtration/ConstantPressureFiltrationCalculator'
@@ -1313,7 +1313,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "crystallizerBalance") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1321,7 +1321,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "pressureDrop") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1329,7 +1329,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "filterCakeBalance") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1337,7 +1337,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "finHeatTransfer") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1345,7 +1345,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "froudeNumber") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1353,7 +1353,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "gasAbsorberBalance") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1361,7 +1361,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "heatExchangerLMTD") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1369,7 +1369,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "heatExchangerAreaSizing") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1377,7 +1377,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "heatExchangerEffectivenessNTU") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1385,7 +1385,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "humidifierWaterBalance") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1393,7 +1393,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "hydrostaticPressure") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1401,7 +1401,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "limitingReactantExcess") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1409,7 +1409,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "liquidLiquidExtractionBalance") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1417,7 +1417,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "membraneSeparatorBalance") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1425,7 +1425,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "openChannelFlow") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1433,7 +1433,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "overallHeatTransferCoefficient") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1441,7 +1441,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "frictionFactor") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1449,7 +1449,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "pumpPower") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1457,7 +1457,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "raoultBubblePointPressure") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1465,7 +1465,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === "raoultDewPointPressure") {
     return (
-      <PhaseNineLegacyNativeCalculator
+      <PhaseNineNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1473,7 +1473,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'bernoulliEquation') {
     return (
-      <PriorityTenLegacyNativeCalculator
+      <PriorityTenNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1481,7 +1481,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'binarySeparatorBalance') {
     return (
-      <PriorityTenLegacyNativeCalculator
+      <PriorityTenNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1489,7 +1489,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'boilingHeatTransfer') {
     return (
-      <PriorityTenLegacyNativeCalculator
+      <PriorityTenNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1497,7 +1497,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'bypassMixingBalance') {
     return (
-      <PriorityTenLegacyNativeCalculator
+      <PriorityTenNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1505,7 +1505,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'combustionAirRequirement') {
     return (
-      <PriorityTenLegacyNativeCalculator
+      <PriorityTenNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1513,7 +1513,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'condensationHeatTransfer') {
     return (
-      <PriorityTenLegacyNativeCalculator
+      <PriorityTenNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1521,7 +1521,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'condenserBalance') {
     return (
-      <PriorityTenLegacyNativeCalculator
+      <PriorityTenNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1529,7 +1529,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'convectionHeatTransfer') {
     return (
-      <PriorityTenLegacyNativeCalculator
+      <PriorityTenNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1537,7 +1537,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'reactionPerformanceBalance') {
     return (
-      <PriorityTenLegacyNativeCalculator
+      <PriorityTenNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1545,7 +1545,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'criticalDepth') {
     return (
-      <PriorityTenLegacyNativeCalculator
+      <PriorityTenNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1553,7 +1553,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'evaporatorBalance') {
     return (
-      <SecondFiveLegacyNativeCalculator
+      <SecondFiveNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1561,7 +1561,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'massBalance') {
     return (
-      <SecondFiveLegacyNativeCalculator
+      <SecondFiveNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1569,7 +1569,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'phaseChangeEnergyBalance') {
     return (
-      <SecondFiveLegacyNativeCalculator
+      <SecondFiveNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1577,7 +1577,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'sensibleHeatBalance') {
     return (
-      <SecondFiveLegacyNativeCalculator
+      <SecondFiveNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1585,7 +1585,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'flowRate') {
     return (
-      <SecondFiveLegacyNativeCalculator
+      <SecondFiveNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1593,7 +1593,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'heatExchangerEnergyBalance') {
     return (
-      <TopFiveLegacyNativeCalculator
+      <TopFiveNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1601,7 +1601,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'activationEnergyTwoPoint') {
     return (
-      <TopFiveLegacyNativeCalculator
+      <TopFiveNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1609,7 +1609,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'adiabaticMixingTemperature') {
     return (
-      <TopFiveLegacyNativeCalculator
+      <TopFiveNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1617,7 +1617,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'doublePipeHeatExchanger') {
     return (
-      <TopFiveLegacyNativeCalculator
+      <TopFiveNativeCalculator
         calculatorId={calculatorId}
       />
     )
@@ -1625,7 +1625,7 @@ export function CalculatorWorkbench({
 
   if (calculatorId === 'dryerBalance') {
     return (
-      <TopFiveLegacyNativeCalculator
+      <TopFiveNativeCalculator
         calculatorId={calculatorId}
       />
     )

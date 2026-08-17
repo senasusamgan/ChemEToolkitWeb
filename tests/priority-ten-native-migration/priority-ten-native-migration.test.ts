@@ -4,7 +4,7 @@ import test from 'node:test'
 import {
   PriorityTenCalculatorError,
   calculatePriorityTenCalculator,
-} from '../../src/features/native-migrations/priority-ten-legacy/engine.ts'
+} from '../../src/features/native-migrations/priority-ten-native/engine.ts'
 
 function closeTo(
   actual: number,

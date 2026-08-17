@@ -250,7 +250,7 @@ export function PhaseTenThermodynamicsCalculator({
             definition.code ??
             calculatorId
           }
-          note="The verified legacy numerical relation is preserved in the native workspace."
+          note="The verified numerical relation is preserved in the native workspace."
         >
           <ResultItem
             label="Engineering interpretation"

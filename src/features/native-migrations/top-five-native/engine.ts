@@ -36,7 +36,7 @@ export interface MigratedCalculatorDefinition {
   ) => string
 }
 
-export class TopFiveLegacyCalculatorError extends Error {}
+export class TopFiveCalculatorError extends Error {}
 
 const DEFINITIONS: Record<
   TopFiveNativeCalculatorId,
@@ -388,7 +388,7 @@ function validatePositiveFiniteInputs(
       !Number.isFinite(value) ||
       value <= 0
     ) {
-      throw new TopFiveLegacyCalculatorError(
+      throw new TopFiveCalculatorError(
         `Enter a positive, finite value for ${field.label}.`,
       )
     }
@@ -413,7 +413,7 @@ export function calculateTopFiveCalculator(
     values.temperatureOne ===
       values.temperatureTwo
   ) {
-    throw new TopFiveLegacyCalculatorError(
+    throw new TopFiveCalculatorError(
       'The two temperatures must be different.',
     )
   }
@@ -428,7 +428,7 @@ export function calculateTopFiveCalculator(
       values.productMoisture >=
         values.feedMoisture
     ) {
-      throw new TopFiveLegacyCalculatorError(
+      throw new TopFiveCalculatorError(
         'Fractions must remain between 0 and 1 and satisfy the stated process direction.',
       )
     }
@@ -450,7 +450,7 @@ export function calculateTopFiveCalculator(
       deltaOne <= 0 ||
       deltaTwo <= 0
     ) {
-      throw new TopFiveLegacyCalculatorError(
+      throw new TopFiveCalculatorError(
         'Both counter-current terminal temperature differences must be positive.',
       )
     }
@@ -464,7 +464,7 @@ export function calculateTopFiveCalculator(
   if (
     !Number.isFinite(result)
   ) {
-    throw new TopFiveLegacyCalculatorError(
+    throw new TopFiveCalculatorError(
       'The supplied values do not produce a finite engineering result.',
     )
   }

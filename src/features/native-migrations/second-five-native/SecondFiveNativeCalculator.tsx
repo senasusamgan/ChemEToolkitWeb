@@ -16,13 +16,13 @@ import {
   type SecondFiveNativeCalculatorId,
 } from './engine'
 
-interface SecondFiveLegacyNativeCalculatorProps {
+interface SecondFiveNativeCalculatorProps {
   calculatorId: SecondFiveNativeCalculatorId
 }
 
-export function SecondFiveLegacyNativeCalculator({
+export function SecondFiveNativeCalculator({
   calculatorId,
-}: SecondFiveLegacyNativeCalculatorProps) {
+}: SecondFiveNativeCalculatorProps) {
   const definition =
     getSecondFiveCalculatorDefinition(
       calculatorId,
@@ -220,7 +220,7 @@ export function SecondFiveLegacyNativeCalculator({
           modelName={
             definition.code
           }
-          note="Native migration preserves the verified legacy numerical relation."
+          note="Native migration preserves the verified numerical relation."
         >
           <ResultItem
             label="Engineering interpretation"

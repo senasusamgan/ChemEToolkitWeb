@@ -16,13 +16,13 @@ import {
   type PriorityTenNativeCalculatorId,
 } from './engine'
 
-interface PriorityTenLegacyNativeCalculatorProps {
+interface PriorityTenNativeCalculatorProps {
   calculatorId: PriorityTenNativeCalculatorId
 }
 
-export function PriorityTenLegacyNativeCalculator({
+export function PriorityTenNativeCalculator({
   calculatorId,
-}: PriorityTenLegacyNativeCalculatorProps) {
+}: PriorityTenNativeCalculatorProps) {
   const definition =
     getPriorityTenDefinition(
       calculatorId,
@@ -220,7 +220,7 @@ export function PriorityTenLegacyNativeCalculator({
           modelName={
             definition.code
           }
-          note="Native migration preserves the verified legacy numerical relation."
+          note="Native migration preserves the verified numerical relation."
         >
           <ResultItem
             label="Engineering interpretation"

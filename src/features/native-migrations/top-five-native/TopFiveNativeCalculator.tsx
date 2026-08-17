@@ -10,26 +10,26 @@ import {
   formatEngineeringNumber,
 } from '../../mass-transfer/shared/NativeCalculatorPrimitives'
 import {
-  TopFiveLegacyCalculatorError,
+  TopFiveCalculatorError,
   calculateTopFiveCalculator,
   getTopFiveCalculatorDefinition,
   isTopFiveNativeCalculatorId,
 } from './engine'
 
-type TopFiveLegacyCalculatorId =
+type TopFiveCalculatorId =
   | 'heatExchangerEnergyBalance'
   | 'activationEnergyTwoPoint'
   | 'adiabaticMixingTemperature'
   | 'doublePipeHeatExchanger'
   | 'dryerBalance'
 
-interface TopFiveLegacyNativeCalculatorProps {
-  calculatorId: TopFiveLegacyCalculatorId
+interface TopFiveNativeCalculatorProps {
+  calculatorId: TopFiveCalculatorId
 }
 
-export function TopFiveLegacyNativeCalculator({
+export function TopFiveNativeCalculator({
   calculatorId,
-}: TopFiveLegacyNativeCalculatorProps) {
+}: TopFiveNativeCalculatorProps) {
   if (
     !isTopFiveNativeCalculatorId(
       calculatorId,
@@ -110,7 +110,7 @@ export function TopFiveLegacyNativeCalculator({
 
       setErrorMessage(
         error instanceof
-          TopFiveLegacyCalculatorError
+          TopFiveCalculatorError
           ? error.message
           : 'The calculation could not be completed.',
       )
@@ -240,7 +240,7 @@ export function TopFiveLegacyNativeCalculator({
           modelName={
             definition.code
           }
-          note="Native migration preserves the verified legacy numerical relation and engineering basis."
+          note="Native migration preserves the verified numerical relation and engineering basis."
         >
           <ResultItem
             label="Engineering interpretation"

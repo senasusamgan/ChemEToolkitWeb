@@ -268,7 +268,7 @@ export function PhaseTwelveNativeCalculator({
             definition.code ??
             calculatorId
           }
-          note="Verified legacy numerical behavior preserved in the native workspace."
+          note="Verified numerical behavior preserved in the native workspace."
         >
           <ResultItem
             label="Engineering interpretation"
