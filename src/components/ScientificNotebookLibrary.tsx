@@ -1,6 +1,7 @@
 import {
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 
@@ -38,6 +39,17 @@ type SortMode =
   | 'updated'
   | 'favorites'
   | 'title'
+
+
+type ImportMode =
+  | 'merge'
+  | 'replace'
+
+interface NotebookArchive {
+  version: number
+  exportedAt?: string
+  notebooks: NotebookStore
+}
 
 interface ScientificNotebookLibraryProps {
   onClose: () => void
@@ -175,6 +187,263 @@ function notePreview(
   )
 }
 
+function isRecord(
+  value: unknown,
+): value is Record<
+  string,
+  unknown
+> {
+  return (
+    typeof value === 'object'
+    && value !== null
+    && !Array.isArray(
+      value,
+    )
+  )
+}
+
+function isNotebookStore(
+  value: unknown,
+): value is NotebookStore {
+  if (!isRecord(value)) {
+    return false
+  }
+
+  return Object.entries(
+    value,
+  ).every(
+    (
+      [
+        calculatorId,
+        record,
+      ],
+    ) => {
+      if (
+        !calculatorId
+        || !isRecord(
+          record,
+        )
+      ) {
+        return false
+      }
+
+      return (
+        typeof record.calculatorId ===
+          'string'
+        && typeof record.calculatorTitle ===
+          'string'
+        && typeof record.category ===
+          'string'
+      )
+    },
+  )
+}
+
+function parseArchive(
+  text: string,
+): NotebookArchive {
+  const parsed: unknown =
+    JSON.parse(text)
+
+  if (
+    !isRecord(parsed)
+    || typeof parsed.version !==
+      'number'
+    || !isNotebookStore(
+      parsed.notebooks,
+    )
+  ) {
+    throw new Error(
+      'Invalid ChemE Toolkit notebook archive.',
+    )
+  }
+
+  return {
+    version:
+      parsed.version,
+    exportedAt:
+      typeof parsed.exportedAt ===
+        'string'
+        ? parsed.exportedAt
+        : undefined,
+    notebooks:
+      parsed.notebooks,
+  }
+}
+
+function mergeSnapshotArrays(
+  current:
+    | SnapshotRecord[]
+    | undefined,
+  incoming:
+    | SnapshotRecord[]
+    | undefined,
+): SnapshotRecord[] {
+  const merged =
+    new Map<
+      string,
+      SnapshotRecord
+    >()
+
+  const add =
+    (
+      snapshot: SnapshotRecord,
+      index: number,
+      source: string,
+    ) => {
+      const key =
+        snapshot.id
+        || [
+            source,
+            snapshot.capturedAt
+              || 'unknown',
+            snapshot.name
+              || 'unnamed',
+            index,
+          ].join(':')
+
+      merged.set(
+        key,
+        {
+          ...(
+            merged.get(
+              key,
+            )
+            ?? {}
+          ),
+          ...snapshot,
+        },
+      )
+    }
+
+  current
+    ?.forEach(
+      (
+        snapshot,
+        index,
+      ) =>
+        add(
+          snapshot,
+          index,
+          'current',
+        ),
+    )
+
+  incoming
+    ?.forEach(
+      (
+        snapshot,
+        index,
+      ) =>
+        add(
+          snapshot,
+          index,
+          'incoming',
+        ),
+    )
+
+  return Array.from(
+    merged.values(),
+  ).sort(
+    (
+      left,
+      right,
+    ) =>
+      new Date(
+        right.capturedAt
+        ?? 0,
+      ).getTime()
+      - new Date(
+          left.capturedAt
+          ?? 0,
+        ).getTime(),
+  )
+}
+
+function mergeNotebookStores(
+  current: NotebookStore,
+  incoming: NotebookStore,
+): NotebookStore {
+  const merged: NotebookStore = {
+    ...current,
+  }
+
+  for (
+    const [
+      calculatorId,
+      incomingRecord,
+    ]
+    of Object.entries(
+      incoming,
+    )
+  ) {
+    const currentRecord =
+      merged[
+        calculatorId
+      ]
+
+    if (!currentRecord) {
+      merged[
+        calculatorId
+      ] = incomingRecord
+      continue
+    }
+
+    const incomingUpdated =
+      new Date(
+        incomingRecord.updatedAt
+        ?? 0,
+      ).getTime()
+
+    const currentUpdated =
+      new Date(
+        currentRecord.updatedAt
+        ?? 0,
+      ).getTime()
+
+    const newerRecord =
+      incomingUpdated >=
+        currentUpdated
+        ? incomingRecord
+        : currentRecord
+
+    const olderRecord =
+      newerRecord ===
+        incomingRecord
+        ? currentRecord
+        : incomingRecord
+
+    merged[
+      calculatorId
+    ] = {
+      ...olderRecord,
+      ...newerRecord,
+      calculatorId,
+      calculatorTitle:
+        newerRecord.calculatorTitle
+        || olderRecord.calculatorTitle,
+      category:
+        newerRecord.category
+        || olderRecord.category,
+      snapshots:
+        mergeSnapshotArrays(
+          currentRecord.snapshots,
+          incomingRecord.snapshots,
+        ),
+      updatedAt:
+        new Date(
+          Math.max(
+            currentUpdated,
+            incomingUpdated,
+          )
+          || Date.now(),
+        ).toISOString(),
+    }
+  }
+
+  return merged
+}
+
 function createSlug(
   value: string,
 ): string {
@@ -236,6 +505,19 @@ export function ScientificNotebookLibrary({
   ] = useState(
     'Stored locally on this device.',
   )
+
+
+  const [
+    importMode,
+    setImportMode,
+  ] = useState<ImportMode>(
+    'merge',
+  )
+
+  const importInputRef =
+    useRef<HTMLInputElement>(
+      null,
+    )
 
   useEffect(() => {
     const refresh =
@@ -514,6 +796,78 @@ export function ScientificNotebookLibrary({
     )
   }
 
+  async function importArchive(
+    file: File,
+  ) {
+    try {
+      const archive =
+        parseArchive(
+          await file.text(),
+        )
+
+      const importedCount =
+        Object.keys(
+          archive.notebooks,
+        ).length
+
+      if (
+        importMode ===
+        'replace'
+        && !window.confirm(
+          'Replace the entire local Notebook Library with this backup?',
+        )
+      ) {
+        setStatus(
+          'Restore cancelled.',
+        )
+        return
+      }
+
+      const nextStore =
+        importMode ===
+          'replace'
+          ? archive.notebooks
+          : mergeNotebookStores(
+              readStore(),
+              archive.notebooks,
+            )
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(
+          nextStore,
+        ),
+      )
+
+      setStore(
+        nextStore,
+      )
+
+      setStatus(
+        importMode ===
+          'replace'
+          ? `Library restored from backup (${importedCount} notebooks).`
+          : `Backup merged (${importedCount} notebooks imported).`,
+      )
+    } catch {
+      setStatus(
+        'Import failed. Choose a valid ChemE Toolkit Notebook Library JSON backup.',
+      )
+    } finally {
+      if (
+        importInputRef.current
+      ) {
+        importInputRef.current.value =
+          ''
+      }
+    }
+  }
+
+  function openImportPicker() {
+    importInputRef.current
+      ?.click()
+  }
+
   function clearFilters() {
     setQuery('')
     setCategory('all')
@@ -705,6 +1059,56 @@ export function ScientificNotebookLibrary({
         </span>
 
         <div>
+          <label className="scientific-notebook-library-import-mode">
+            <span>
+              Restore mode
+            </span>
+
+            <select
+              value={importMode}
+              onChange={(event) =>
+                setImportMode(
+                  event.target.value as ImportMode,
+                )
+              }
+            >
+              <option value="merge">
+                Merge backup
+              </option>
+
+              <option value="replace">
+                Replace library
+              </option>
+            </select>
+          </label>
+
+          <input
+            ref={importInputRef}
+            className="scientific-notebook-library-file-input"
+            type="file"
+            accept=".json,application/json"
+            aria-label="Import Notebook Library JSON backup"
+            onChange={(event) => {
+              const file =
+                event.target.files?.[0]
+
+              if (file) {
+                void importArchive(
+                  file,
+                )
+              }
+            }}
+          />
+
+          <button
+            type="button"
+            onClick={
+              openImportPicker
+            }
+          >
+            Import library JSON
+          </button>
+
           <button
             type="button"
             onClick={
