@@ -1,3 +1,4 @@
+import { PriorityTenLegacyNativeCalculator } from '../features/native-migrations/priority-ten-legacy/PriorityTenLegacyNativeCalculator'
 import { SecondFiveLegacyNativeCalculator } from '../features/native-migrations/second-five-legacy/SecondFiveLegacyNativeCalculator'
 import { TopFiveLegacyNativeCalculator } from '../features/native-migrations/top-five-legacy/TopFiveLegacyNativeCalculator'
 import { BinaryFlashCalculator } from '../features/mass-transfer/binary-flash/BinaryFlashCalculator'
@@ -219,6 +220,86 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === 'bernoulliEquation') {
+    return (
+      <PriorityTenLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'binarySeparatorBalance') {
+    return (
+      <PriorityTenLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'boilingHeatTransfer') {
+    return (
+      <PriorityTenLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'bypassMixingBalance') {
+    return (
+      <PriorityTenLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'combustionAirRequirement') {
+    return (
+      <PriorityTenLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'condensationHeatTransfer') {
+    return (
+      <PriorityTenLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'condenserBalance') {
+    return (
+      <PriorityTenLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'convectionHeatTransfer') {
+    return (
+      <PriorityTenLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'reactionPerformanceBalance') {
+    return (
+      <PriorityTenLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'criticalDepth') {
+    return (
+      <PriorityTenLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
   if (calculatorId === 'evaporatorBalance') {
     return (
       <SecondFiveLegacyNativeCalculator
