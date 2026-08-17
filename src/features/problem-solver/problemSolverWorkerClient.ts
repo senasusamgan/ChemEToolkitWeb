@@ -1,3 +1,6 @@
+import {
+  rankProblemSolvers,
+} from './problemSolverEngine'
 import type {
   ProblemSolverMatch,
 } from './problemSolverEngine'
@@ -378,23 +381,14 @@ async function runFallback(
   const startedAt =
     currentTime()
 
-  const [
-    calculatorModule,
-    engineModule,
-  ] =
-    await Promise.all([
-      import(
-        '../../data/calculators'
-      ),
-      import(
-        './problemSolverEngine'
-      ),
-    ])
+  const calculatorModule =
+    await import(
+      '../../data/calculators'
+    )
 
   return {
     matches:
-      engineModule
-        .rankProblemSolvers(
+      rankProblemSolvers(
           query,
           calculatorModule
             .calculators,

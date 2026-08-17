@@ -202,7 +202,7 @@ const largest =
   chunks[0]
 
 const maximumChunkBytes =
-  1_200_000
+  204_800
 
 if (
   largest &&
@@ -299,7 +299,7 @@ const largestEntryChunk =
   )[0]
 
 const maximumEntryBytes =
-  250_000
+  122_880
 
 if (
   largestEntryChunk &&
@@ -438,7 +438,7 @@ if (
             ).size
 
           const maximumSolverChunkBytes =
-            900_000
+            204_800
 
           if (
             solverChunkBytes >

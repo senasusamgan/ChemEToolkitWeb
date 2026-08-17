@@ -2147,8 +2147,7 @@ test(
         'WORKER_TIMEOUT_MS',
         'requestProblemSolverMatches',
         "executionMode:\n      'fallback'",
-        "import(\n        '../../data/calculators'",
-        "import(\n        './problemSolverEngine'",
+        "from './problemSolverEngine'",
       ]
     ) {
       assert.ok(
@@ -2160,7 +2159,6 @@ test(
     }
   },
 )
-
 test(
   'prevents stale background Solver results from rendering',
   async () => {
