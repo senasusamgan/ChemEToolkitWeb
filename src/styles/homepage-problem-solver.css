@@ -2460,3 +2460,315 @@ button.is-primary:hover {
     grid-column: auto;
   }
 }
+
+
+/* PHASE 3.4C SOLVER STATE AND MOBILE FINAL */
+
+.homepage-problem-readiness {
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.homepage-problem-readiness[
+  data-status="ready"
+] {
+  border-color:
+    rgba(7, 156, 153, 0.55);
+  background:
+    rgba(7, 156, 153, 0.085);
+}
+
+.homepage-problem-readiness[
+  data-status="ready"
+] strong {
+  color:
+    var(--teal-dark, #007b78);
+}
+
+.homepage-problem-readiness[
+  data-status="needs-inputs"
+] {
+  border-color:
+    rgba(190, 132, 37, 0.55);
+  background:
+    rgba(190, 132, 37, 0.075);
+}
+
+.homepage-problem-readiness[
+  data-status="ambiguous"
+] {
+  border-color:
+    rgba(184, 81, 66, 0.55);
+  background:
+    rgba(184, 81, 66, 0.07);
+}
+
+.homepage-problem-quick-result[
+  data-state="ready"
+] {
+  border-color:
+    rgba(7, 156, 153, 0.48)
+    !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(228, 243, 240, 0.76),
+      rgba(255, 255, 255, 0.9)
+    );
+}
+
+.homepage-problem-quick-result[
+  data-state="ready"
+] strong {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.78rem;
+  font-variant-numeric:
+    tabular-nums;
+}
+
+.homepage-problem-quick-result[
+  data-state="waiting"
+] {
+  border-style: dashed;
+  background:
+    rgba(249, 246, 238, 0.58);
+}
+
+.homepage-problem-input-check[
+  data-status="ready"
+] {
+  border-color:
+    rgba(7, 156, 153, 0.32);
+  background:
+    rgba(228, 243, 240, 0.46);
+}
+
+.homepage-problem-input-check[
+  data-status="ready"
+] strong {
+  color:
+    var(--teal-dark, #007b78);
+}
+
+.homepage-problem-input-check[
+  data-status="missing"
+] {
+  border-color:
+    rgba(190, 132, 37, 0.42);
+  border-left:
+    3px solid
+    rgba(190, 132, 37, 0.8);
+  background:
+    rgba(190, 132, 37, 0.055);
+}
+
+.homepage-problem-input-check[
+  data-status="missing"
+] strong {
+  color: #805b1d;
+}
+
+.homepage-problem-result-refreshing {
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  display: grid;
+  gap: 2px;
+  border:
+    1px solid
+    rgba(7, 156, 153, 0.22);
+  border-radius: 7px;
+  background:
+    rgba(228, 243, 240, 0.5);
+}
+
+.homepage-problem-result-refreshing
+strong {
+  color:
+    var(--teal-dark, #007b78);
+  font-size: 0.57rem;
+}
+
+.homepage-problem-result-refreshing
+span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.51rem;
+}
+
+.homepage-problem-solver-result[
+  data-stale="true"
+] {
+  opacity: 0.88;
+}
+
+.homepage-problem-worker-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 3px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background:
+    rgba(7, 156, 153, 0.055);
+  color:
+    var(--teal-dark, #007b78);
+}
+
+.homepage-problem-worker-status[
+  data-mode="error"
+] {
+  background:
+    rgba(184, 81, 66, 0.07);
+  color: #8b3e34;
+}
+
+.homepage-problem-equation,
+.homepage-problem-input-section,
+.homepage-problem-input-check,
+.homepage-problem-solution-plan,
+.homepage-problem-result-grid article {
+  min-width: 0;
+}
+
+.homepage-problem-equation code,
+.homepage-problem-input-chips,
+.homepage-problem-input-check strong,
+.homepage-problem-input-check small,
+.homepage-problem-solution-plan li {
+  overflow-wrap: anywhere;
+}
+
+.homepage-problem-solver-editor textarea {
+  max-width: 100%;
+}
+
+@media (max-width: 700px) {
+  .homepage-problem-solver {
+    padding:
+      30px
+      14px;
+  }
+
+  .homepage-problem-solver-header {
+    gap: 12px;
+  }
+
+  .homepage-problem-solver-badge {
+    min-width: 0;
+    padding: 10px 12px;
+  }
+
+  .homepage-problem-solver-layout {
+    margin-top: 14px;
+  }
+
+  .homepage-problem-result-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .homepage-problem-readiness {
+    width: 100%;
+    min-width: 0;
+    justify-items: start;
+  }
+
+  .homepage-problem-result-grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .homepage-problem-solver-editor
+  textarea {
+    min-height: 150px;
+  }
+
+  .homepage-problem-input-chips {
+    gap: 4px;
+  }
+
+  .homepage-problem-result-footer {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .homepage-problem-solver {
+    padding:
+      24px
+      10px;
+  }
+
+  .homepage-problem-solver-header h2 {
+    font-size: 1.38rem;
+  }
+
+  .homepage-problem-solver-editor,
+  .homepage-problem-solver-result {
+    padding: 11px;
+    border-radius: 11px;
+  }
+
+  .homepage-problem-solver-editor
+  textarea {
+    min-height: 138px;
+    padding: 11px;
+    font-size: 0.7rem;
+  }
+
+  .homepage-problem-solver-examples
+  > div {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .homepage-problem-solver-examples
+  button {
+    width: 100%;
+    min-height: 34px;
+  }
+
+  .homepage-problem-readiness
+  strong {
+    font-size: 1.18rem;
+  }
+
+  .homepage-problem-quick-result[
+    data-state="ready"
+  ] strong {
+    font-size: 0.72rem;
+  }
+
+  .homepage-problem-lazy-tool-launcher {
+    display: grid;
+    gap: 8px;
+  }
+
+  .homepage-problem-lazy-tool-launcher
+  > button {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .homepage-problem-result-actions
+  button {
+    min-height: 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homepage-problem-readiness,
+  .homepage-problem-result-actions
+  button {
+    transition: none;
+  }
+
+  .homepage-problem-result-actions
+  button.is-primary:hover {
+    transform: none;
+  }
+}

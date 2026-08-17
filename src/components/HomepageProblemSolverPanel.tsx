@@ -1905,7 +1905,14 @@ export function HomepageProblemSolverPanel({
                     </small>
                   </article>
 
-                  <article className="homepage-problem-quick-result">
+                  <article
+                    className="homepage-problem-quick-result"
+                    data-state={
+                      bestMatch.quickSolution
+                        ? 'ready'
+                        : 'waiting'
+                    }
+                  >
                     <span>
                       Quick Solve
                     </span>
@@ -2002,7 +2009,17 @@ export function HomepageProblemSolverPanel({
                   )}
                 </div>
 
-                <div className="homepage-problem-input-check">
+                <div
+                  className="homepage-problem-input-check"
+                  data-status={
+                    bestMatch
+                      .equationContext
+                      .missingVariableNames
+                      .length > 0
+                      ? 'missing'
+                      : 'ready'
+                  }
+                >
                   <span>
                     Input check
                   </span>
