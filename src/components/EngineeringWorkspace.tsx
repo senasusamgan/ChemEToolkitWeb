@@ -1,28 +1,208 @@
 import {
+  lazy,
+  Suspense,
   useEffect,
   useState,
 } from 'react'
 import type { CalculatorDefinition } from '../types/calculator'
-import { CalculationExportPanel } from './CalculationExportPanel'
-import { CalculationHistoryPanel } from './CalculationHistoryPanel'
-import { CalculationComparisonPanel } from './CalculationComparisonPanel'
-import { SavedComparisonsPanel } from './SavedComparisonsPanel'
-import { ProjectWorkspacesPanel } from './ProjectWorkspacesPanel'
-import { ProjectFilesPanel } from './ProjectFilesPanel'
-import { PersonalDataBackupPanel } from './PersonalDataBackupPanel'
-import { WorkspaceSearchPanel } from './WorkspaceSearchPanel'
-import { WorkspaceMetadataPanel } from './WorkspaceMetadataPanel'
-import { WorkspaceRecordManagementPanel } from './WorkspaceRecordManagementPanel'
-import { WorkspaceDashboardPanel } from './WorkspaceDashboardPanel'
-import { WorkspaceTemplatesPanel } from './WorkspaceTemplatesPanel'
-import { WorkspaceCollectionsPanel } from './WorkspaceCollectionsPanel'
-import { WorkspaceReportBuilderPanel } from './WorkspaceReportBuilderPanel'
-import { WorkspaceInsightsPanel } from './WorkspaceInsightsPanel'
-import { WorkspaceCommandCenterPanel } from './WorkspaceCommandCenterPanel'
-import { WorkspaceSmartLauncherPanel } from './WorkspaceSmartLauncherPanel'
-import { WorkspaceActivityFeedPanel } from './WorkspaceActivityFeedPanel'
-import { WorkspaceDataQualityAssistantPanel } from './WorkspaceDataQualityAssistantPanel'
+
+
+
+
+
+
+
 import '../styles/engineering-workspace.css'
+
+const WorkspaceCommandCenterPanel =
+  lazy(() =>
+    import(
+      './WorkspaceCommandCenterPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceCommandCenterPanel,
+    })),
+  )
+
+const WorkspaceSmartLauncherPanel =
+  lazy(() =>
+    import(
+      './WorkspaceSmartLauncherPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceSmartLauncherPanel,
+    })),
+  )
+
+const WorkspaceActivityFeedPanel =
+  lazy(() =>
+    import(
+      './WorkspaceActivityFeedPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceActivityFeedPanel,
+    })),
+  )
+
+const WorkspaceDataQualityAssistantPanel =
+  lazy(() =>
+    import(
+      './WorkspaceDataQualityAssistantPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceDataQualityAssistantPanel,
+    })),
+  )
+
+const WorkspaceDashboardPanel =
+  lazy(() =>
+    import(
+      './WorkspaceDashboardPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceDashboardPanel,
+    })),
+  )
+
+const WorkspaceInsightsPanel =
+  lazy(() =>
+    import(
+      './WorkspaceInsightsPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceInsightsPanel,
+    })),
+  )
+
+const CalculationExportPanel =
+  lazy(() =>
+    import(
+      './CalculationExportPanel'
+    ).then((module) => ({
+      default:
+        module.CalculationExportPanel,
+    })),
+  )
+
+const CalculationHistoryPanel =
+  lazy(() =>
+    import(
+      './CalculationHistoryPanel'
+    ).then((module) => ({
+      default:
+        module.CalculationHistoryPanel,
+    })),
+  )
+
+const CalculationComparisonPanel =
+  lazy(() =>
+    import(
+      './CalculationComparisonPanel'
+    ).then((module) => ({
+      default:
+        module.CalculationComparisonPanel,
+    })),
+  )
+
+const SavedComparisonsPanel =
+  lazy(() =>
+    import(
+      './SavedComparisonsPanel'
+    ).then((module) => ({
+      default:
+        module.SavedComparisonsPanel,
+    })),
+  )
+
+const ProjectWorkspacesPanel =
+  lazy(() =>
+    import(
+      './ProjectWorkspacesPanel'
+    ).then((module) => ({
+      default:
+        module.ProjectWorkspacesPanel,
+    })),
+  )
+
+const ProjectFilesPanel =
+  lazy(() =>
+    import(
+      './ProjectFilesPanel'
+    ).then((module) => ({
+      default:
+        module.ProjectFilesPanel,
+    })),
+  )
+
+const WorkspaceReportBuilderPanel =
+  lazy(() =>
+    import(
+      './WorkspaceReportBuilderPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceReportBuilderPanel,
+    })),
+  )
+
+const WorkspaceSearchPanel =
+  lazy(() =>
+    import(
+      './WorkspaceSearchPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceSearchPanel,
+    })),
+  )
+
+const WorkspaceMetadataPanel =
+  lazy(() =>
+    import(
+      './WorkspaceMetadataPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceMetadataPanel,
+    })),
+  )
+
+const WorkspaceRecordManagementPanel =
+  lazy(() =>
+    import(
+      './WorkspaceRecordManagementPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceRecordManagementPanel,
+    })),
+  )
+
+const WorkspaceTemplatesPanel =
+  lazy(() =>
+    import(
+      './WorkspaceTemplatesPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceTemplatesPanel,
+    })),
+  )
+
+const WorkspaceCollectionsPanel =
+  lazy(() =>
+    import(
+      './WorkspaceCollectionsPanel'
+    ).then((module) => ({
+      default:
+        module.WorkspaceCollectionsPanel,
+    })),
+  )
+
+const PersonalDataBackupPanel =
+  lazy(() =>
+    import(
+      './PersonalDataBackupPanel'
+    ).then((module) => ({
+      default:
+        module.PersonalDataBackupPanel,
+    })),
+  )
 
 const ACTIVE_TAB_KEY =
   'cheme-toolkit.workspace-active-tab.v1'
@@ -252,6 +432,19 @@ function readActiveTab():
   }
 }
 
+function WorkspaceModuleFallback() {
+  return (
+    <div
+      className="engineering-workspace-module-loading"
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      Loading workspace tool…
+    </div>
+  )
+}
+
 export function EngineeringWorkspace({
   calculator,
   onOpenCalculator,
@@ -264,6 +457,19 @@ export function EngineeringWorkspace({
   ] = useState<WorkspaceTabId>(
     readActiveTab,
   )
+
+  const [
+    loadedTabs,
+    setLoadedTabs,
+  ] = useState<
+    Set<WorkspaceTabId>
+  >(
+    () =>
+      new Set([
+        activeTab,
+      ]),
+  )
+
 
   const activeDefinition =
     WORKSPACE_TABS.find(
@@ -291,6 +497,29 @@ export function EngineeringWorkspace({
     localStorage.setItem(
       ACTIVE_TAB_KEY,
       activeTab,
+    )
+  }, [activeTab])
+
+  useEffect(() => {
+    setLoadedTabs(
+      (current) => {
+        if (
+          current.has(
+            activeTab,
+          )
+        ) {
+          return current
+        }
+
+        const next =
+          new Set(current)
+
+        next.add(
+          activeTab,
+        )
+
+        return next
+      },
     )
   }, [activeTab])
 
@@ -600,15 +829,21 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'command'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceCommandCenterPanel
-            currentCalculator={
-              calculator
-            }
-            onOpenCalculator={
-              onOpenCalculator
-            }
-            onOpenTab={selectTab}
-          />
+          {loadedTabs.has('command') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceCommandCenterPanel
+                          currentCalculator={
+                            calculator
+                          }
+                          onOpenCalculator={
+                            onOpenCalculator
+                          }
+                          onOpenTab={selectTab}
+                        />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -621,15 +856,21 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'launcher'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceSmartLauncherPanel
-            currentCalculator={
-              calculator
-            }
-            onOpenCalculator={
-              onOpenCalculator
-            }
-            onOpenTab={selectTab}
-          />
+          {loadedTabs.has('launcher') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceSmartLauncherPanel
+                          currentCalculator={
+                            calculator
+                          }
+                          onOpenCalculator={
+                            onOpenCalculator
+                          }
+                          onOpenTab={selectTab}
+                        />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -642,12 +883,18 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'activity'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceActivityFeedPanel
-            onOpenCalculator={
-              onOpenCalculator
-            }
-            onOpenTab={selectTab}
-          />
+          {loadedTabs.has('activity') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceActivityFeedPanel
+                          onOpenCalculator={
+                            onOpenCalculator
+                          }
+                          onOpenTab={selectTab}
+                        />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -660,9 +907,15 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'quality'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceDataQualityAssistantPanel
-            onOpenTab={selectTab}
-          />
+          {loadedTabs.has('quality') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceDataQualityAssistantPanel
+                          onOpenTab={selectTab}
+                        />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -675,7 +928,13 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'insights'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceInsightsPanel />
+          {loadedTabs.has('insights') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceInsightsPanel />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -691,21 +950,33 @@ export function EngineeringWorkspace({
           id="workspace-export"
           className="engineering-workspace-module"
         >
-          <CalculationExportPanel
-            calculator={calculator}
-          />
+          {loadedTabs.has('records') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <CalculationExportPanel
+                          calculator={calculator}
+                        />
+            </Suspense>
+          ) : null}
         </div>
 
         <div
           id="workspace-history"
           className="engineering-workspace-module"
         >
-          <CalculationHistoryPanel
-            calculator={calculator}
-            onOpenCalculator={
-              onOpenCalculator
-            }
-          />
+          {loadedTabs.has('records') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <CalculationHistoryPanel
+                          calculator={calculator}
+                          onOpenCalculator={
+                            onOpenCalculator
+                          }
+                        />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -721,13 +992,25 @@ export function EngineeringWorkspace({
           id="workspace-compare"
           className="engineering-workspace-module"
         >
-          <CalculationComparisonPanel
-            calculator={calculator}
-          />
+          {loadedTabs.has('compare') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <CalculationComparisonPanel
+                          calculator={calculator}
+                        />
+            </Suspense>
+          ) : null}
         </div>
 
         <div className="engineering-workspace-module">
-          <SavedComparisonsPanel />
+          {loadedTabs.has('compare') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <SavedComparisonsPanel />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -740,13 +1023,25 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'projects'}
       >
         <div className="engineering-workspace-module">
-          <ProjectWorkspacesPanel
-            calculator={calculator}
-          />
+          {loadedTabs.has('projects') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <ProjectWorkspacesPanel
+                          calculator={calculator}
+                        />
+            </Suspense>
+          ) : null}
         </div>
 
         <div className="engineering-workspace-module">
-          <ProjectFilesPanel />
+          {loadedTabs.has('projects') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <ProjectFilesPanel />
+            </Suspense>
+          ) : null}
         </div>
       </div>
       <div
@@ -758,7 +1053,13 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'data'}
       >
         <div className="engineering-workspace-module">
-          <PersonalDataBackupPanel />
+          {loadedTabs.has('data') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <PersonalDataBackupPanel />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -771,12 +1072,18 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'search'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceSearchPanel
-            onOpenCalculator={
-              onOpenCalculator
-            }
-            onOpenTab={selectTab}
-          />
+          {loadedTabs.has('search') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceSearchPanel
+                          onOpenCalculator={
+                            onOpenCalculator
+                          }
+                          onOpenTab={selectTab}
+                        />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -789,7 +1096,13 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'metadata'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceMetadataPanel />
+          {loadedTabs.has('metadata') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceMetadataPanel />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -802,7 +1115,13 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'management'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceRecordManagementPanel />
+          {loadedTabs.has('management') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceRecordManagementPanel />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -815,12 +1134,18 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'dashboard'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceDashboardPanel
-            onOpenCalculator={
-              onOpenCalculator
-            }
-            onOpenTab={selectTab}
-          />
+          {loadedTabs.has('dashboard') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceDashboardPanel
+                          onOpenCalculator={
+                            onOpenCalculator
+                          }
+                          onOpenTab={selectTab}
+                        />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -833,12 +1158,18 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'templates'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceTemplatesPanel
-            onOpenCalculator={
-              onOpenCalculator
-            }
-            onOpenTab={selectTab}
-          />
+          {loadedTabs.has('templates') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceTemplatesPanel
+                          onOpenCalculator={
+                            onOpenCalculator
+                          }
+                          onOpenTab={selectTab}
+                        />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -851,12 +1182,18 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'collections'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceCollectionsPanel
-            onOpenCalculator={
-              onOpenCalculator
-            }
-            onOpenTab={selectTab}
-          />
+          {loadedTabs.has('collections') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceCollectionsPanel
+                          onOpenCalculator={
+                            onOpenCalculator
+                          }
+                          onOpenTab={selectTab}
+                        />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
@@ -869,7 +1206,13 @@ export function EngineeringWorkspace({
         hidden={activeTab !== 'reports'}
       >
         <div className="engineering-workspace-module">
-          <WorkspaceReportBuilderPanel />
+          {loadedTabs.has('reports') ? (
+            <Suspense
+              fallback={<WorkspaceModuleFallback />}
+            >
+              <WorkspaceReportBuilderPanel />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 

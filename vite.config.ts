@@ -77,6 +77,39 @@ export default defineConfig({
             }
           }
 
+          const workspaceLazyModules = [
+            '/src/components/CalculationComparisonPanel',
+            '/src/components/CalculationExportPanel',
+            '/src/components/CalculationHistoryPanel',
+            '/src/components/PersonalDataBackupPanel',
+            '/src/components/ProjectFilesPanel',
+            '/src/components/ProjectWorkspacesPanel',
+            '/src/components/SavedComparisonsPanel',
+            '/src/components/WorkspaceActivityFeedPanel',
+            '/src/components/WorkspaceCollectionsPanel',
+            '/src/components/WorkspaceCommandCenterPanel',
+            '/src/components/WorkspaceDashboardPanel',
+            '/src/components/WorkspaceDataQualityAssistantPanel',
+            '/src/components/WorkspaceInsightsPanel',
+            '/src/components/WorkspaceMetadataPanel',
+            '/src/components/WorkspaceRecordManagementPanel',
+            '/src/components/WorkspaceReportBuilderPanel',
+            '/src/components/WorkspaceSearchPanel',
+            '/src/components/WorkspaceSmartLauncherPanel',
+            '/src/components/WorkspaceTemplatesPanel',
+          ]
+
+          if (
+            workspaceLazyModules.some(
+              (modulePath) =>
+                normalized.includes(
+                  modulePath,
+                ),
+            )
+          ) {
+            return undefined
+          }
+
           const workspaceModules = [
             '/src/components/EngineeringWorkspace',
             '/src/components/Workspace',
