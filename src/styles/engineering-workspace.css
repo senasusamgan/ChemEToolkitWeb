@@ -904,3 +904,130 @@ textarea:focus {
     min-height: 60px;
   }
 }
+
+
+/* PHASE 3.3A GROUPED WORKSPACE NAVIGATION */
+
+.engineering-workspace-groups {
+  margin: 22px 32px 0;
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.engineering-workspace-groups button {
+  min-width: 0;
+  padding: 13px 14px;
+  display: grid;
+  gap: 4px;
+  border:
+    1px solid
+    rgba(181, 167, 142, 0.58);
+  border-radius: 10px;
+  background:
+    rgba(255, 255, 255, 0.58);
+  color:
+    var(--ink, #0b3556);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.engineering-workspace-groups button strong {
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.engineering-workspace-groups button span {
+  color:
+    var(--muted, #647a8e);
+  font-size: 0.65rem;
+  line-height: 1.35;
+}
+
+.engineering-workspace-groups button:hover {
+  border-color:
+    rgba(7, 156, 153, 0.42);
+  background: #ffffff;
+}
+
+.engineering-workspace-groups button.is-active {
+  border-color:
+    rgba(7, 156, 153, 0.58);
+  background:
+    rgba(228, 243, 240, 0.72);
+  box-shadow:
+    0 5px 16px
+    rgba(12, 54, 88, 0.07);
+}
+
+.engineering-workspace-groups button:focus-visible {
+  outline:
+    3px solid
+    rgba(7, 156, 153, 0.18);
+  outline-offset: 2px;
+}
+
+.workspace-page-section
+.engineering-workspace-tabs {
+  margin-top: 10px;
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(150px, 1fr)
+    ) !important;
+}
+
+.workspace-page-section
+.engineering-workspace-tabs button {
+  min-height: 54px;
+}
+
+@media (max-width: 900px) {
+  .engineering-workspace-groups {
+    margin-left: 20px;
+    margin-right: 20px;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .workspace-page-section
+  .engineering-workspace-tabs {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr))
+      !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .engineering-workspace-groups {
+    margin: 16px 16px 0;
+    gap: 6px;
+  }
+
+  .engineering-workspace-groups button {
+    padding: 10px 11px;
+  }
+
+  .engineering-workspace-groups button span {
+    display: none;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-tabs {
+    margin-top: 8px;
+    grid-template-columns:
+      minmax(0, 1fr)
+      !important;
+  }
+
+  .workspace-page-section
+  .engineering-workspace-tabs button {
+    min-height: 48px;
+  }
+}

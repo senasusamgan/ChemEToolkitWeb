@@ -161,6 +161,62 @@ const WORKSPACE_TABS = [
 type WorkspaceTabId =
   (typeof WORKSPACE_TABS)[number]['id']
 
+const WORKSPACE_GROUPS: Array<{
+  id: 'core' | 'projects' | 'knowledge' | 'data'
+  label: string
+  description: string
+  tabs: WorkspaceTabId[]
+}> = [
+  {
+    id: 'core',
+    label: 'Core tools',
+    description:
+      'Launch, save and compare engineering work.',
+    tabs: [
+      'command',
+      'launcher',
+      'records',
+      'compare',
+    ],
+  },
+  {
+    id: 'projects',
+    label: 'Projects',
+    description:
+      'Organize projects, reports and activity.',
+    tabs: [
+      'projects',
+      'reports',
+      'activity',
+    ],
+  },
+  {
+    id: 'knowledge',
+    label: 'Knowledge',
+    description:
+      'Search, annotate and reuse saved work.',
+    tabs: [
+      'search',
+      'metadata',
+      'management',
+      'templates',
+      'collections',
+    ],
+  },
+  {
+    id: 'data',
+    label: 'Data',
+    description:
+      'Review insights, quality and backups.',
+    tabs: [
+      'dashboard',
+      'insights',
+      'quality',
+      'data',
+    ],
+  },
+]
+
 interface EngineeringWorkspaceProps {
   calculator: CalculatorDefinition
   onOpenCalculator: (
@@ -214,6 +270,22 @@ export function EngineeringWorkspace({
       (tab) =>
         tab.id === activeTab,
     ) ?? WORKSPACE_TABS[0]
+
+  const activeGroup =
+    WORKSPACE_GROUPS.find(
+      (group) =>
+        group.tabs.includes(
+          activeTab,
+        ),
+    ) ?? WORKSPACE_GROUPS[0]
+
+  const visibleTabs =
+    WORKSPACE_TABS.filter(
+      (tab) =>
+        activeGroup.tabs.includes(
+          tab.id,
+        ),
+    )
 
   useEffect(() => {
     localStorage.setItem(
@@ -295,6 +367,24 @@ export function EngineeringWorkspace({
     setActiveTab(tabId)
   }
 
+  function selectGroup(
+    groupId:
+      (typeof WORKSPACE_GROUPS)[number]['id'],
+  ) {
+    const group =
+      WORKSPACE_GROUPS.find(
+        (candidate) =>
+          candidate.id === groupId,
+      )
+
+    const firstTab =
+      group?.tabs[0]
+
+    if (firstTab) {
+      selectTab(firstTab)
+    }
+  }
+
   function handleTabKeyDown(
     event:
       React.KeyboardEvent<HTMLButtonElement>,
@@ -312,7 +402,7 @@ export function EngineeringWorkspace({
           currentIndex +
           1
         ) %
-        WORKSPACE_TABS.length
+        visibleTabs.length
     } else if (
       key === 'ArrowLeft'
     ) {
@@ -320,9 +410,9 @@ export function EngineeringWorkspace({
         (
           currentIndex -
           1 +
-          WORKSPACE_TABS.length
+          visibleTabs.length
         ) %
-        WORKSPACE_TABS.length
+        visibleTabs.length
     } else if (
       key === 'Home'
     ) {
@@ -331,7 +421,7 @@ export function EngineeringWorkspace({
       key === 'End'
     ) {
       nextIndex =
-        WORKSPACE_TABS.length -
+        visibleTabs.length -
         1
     } else {
       return
@@ -340,7 +430,7 @@ export function EngineeringWorkspace({
     event.preventDefault()
 
     const nextTab =
-      WORKSPACE_TABS[nextIndex]
+      visibleTabs[nextIndex]
 
     selectTab(nextTab.id)
 
@@ -391,12 +481,49 @@ export function EngineeringWorkspace({
       </header>
 
       <div
+        className="engineering-workspace-groups"
+        aria-label="Workspace tool groups"
+      >
+        {WORKSPACE_GROUPS.map(
+          (group) => {
+            const isActive =
+              group.id ===
+              activeGroup.id
+
+            return (
+              <button
+                key={group.id}
+                type="button"
+                className={
+                  isActive
+                    ? 'is-active'
+                    : ''
+                }
+                aria-pressed={isActive}
+                onClick={() =>
+                  selectGroup(group.id)
+                }
+              >
+                <strong>
+                  {group.label}
+                </strong>
+
+                <span>
+                  {group.description}
+                </span>
+              </button>
+            )
+          },
+        )}
+      </div>
+
+      <div
         className="engineering-workspace-tabs"
         role="tablist"
-        aria-label="Engineering workspace tools"
+        aria-label={`${activeGroup.label} workspace tools`}
         aria-orientation="horizontal"
       >
-        {WORKSPACE_TABS.map(
+        {visibleTabs.map(
           (tab, index) => {
             const isActive =
               activeTab === tab.id
