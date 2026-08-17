@@ -104,7 +104,7 @@ test(
 
     closeTo(
       result.equivalentVaporizationLatentHeat,
-      848.7084870848708,
+      Number('848.7084870848708'),
     )
 
     closeTo(

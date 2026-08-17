@@ -2,7 +2,6 @@ import {
   existsSync,
   readFileSync,
   readdirSync,
-  statSync,
   writeFileSync,
 } from 'node:fs'
 

@@ -168,7 +168,7 @@ if (
   )
 }
 
-const separationCategoryLine =
+const _separationCategoryLine =
   categories
     .split('\n')
     .find(
@@ -214,7 +214,7 @@ const separationCatalogIndex =
       ),
   )
 
-const separationCatalogWindow =
+const _separationCatalogWindow =
   separationCatalogIndex >= 0
     ? separationCatalogLines
         .slice(

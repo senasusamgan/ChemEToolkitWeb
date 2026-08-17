@@ -147,7 +147,7 @@ test(
 
     closeTo(
       result.nominalCrestSpecificEnergy,
-      1.1864424144302307,
+      Number('1.1864424144302307'),
       1e-12,
     )
 

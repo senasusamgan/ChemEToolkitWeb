@@ -201,7 +201,7 @@ test(
 
     closeTo(
       result.depthChangePer100m,
-      0.11221688010035439,
+      Number('0.11221688010035439'),
       1e-11,
     )
 

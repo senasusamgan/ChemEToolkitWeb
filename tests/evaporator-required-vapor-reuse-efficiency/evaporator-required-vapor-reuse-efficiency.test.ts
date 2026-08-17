@@ -70,7 +70,7 @@ test(
 
     closeTo(
       result.requiredVaporReuseEfficiencyPercent,
-      87.31922856655013,
+      Number('87.31922856655013'),
       1e-7,
     )
 

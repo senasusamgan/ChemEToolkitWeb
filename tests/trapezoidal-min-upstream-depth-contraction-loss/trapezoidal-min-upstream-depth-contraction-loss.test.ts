@@ -201,7 +201,7 @@ test(
 
     closeTo(
       result.transitionLossHeadAtThreshold,
-      0.027542252245997196,
+      Number('0.027542252245997196'),
       1e-9,
     )
 

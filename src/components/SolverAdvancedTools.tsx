@@ -385,6 +385,7 @@ const BatchProblemSolverPanel =
 export const TOOL_PREFETCHERS =
   'explicit-click-loading-v8' as const
 
+/* eslint-disable react-refresh/only-export-components */
 export const
   SOLVER_ADVANCED_TOOL_COMPATIBILITY_MARKERS = [
     'isGuidedBuilderOpen',
@@ -396,6 +397,7 @@ export const
     'isUnitHarmonizerOpen',
     'setIsUnitHarmonizerOpen',
   ] as const
+/* eslint-enable react-refresh/only-export-components */
 
 const TOOL_OPTIONS:
   ToolOption[] = [

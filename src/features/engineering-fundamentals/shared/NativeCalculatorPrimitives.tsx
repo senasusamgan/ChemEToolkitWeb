@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 export {
   ActionBar,
   NumericInput,
@@ -6,6 +7,7 @@ export {
   ResultPanel,
   formatEngineeringNumber,
 } from '../../mass-transfer/shared/NativeCalculatorPrimitives'
+/* eslint-enable react-refresh/only-export-components */
 
 interface CalculatorHeaderProps {
   code: string

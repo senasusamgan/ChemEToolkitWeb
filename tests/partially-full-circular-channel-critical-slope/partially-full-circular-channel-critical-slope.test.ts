@@ -66,19 +66,19 @@ test(
 
     closeTo(
       result.criticalSlope,
-      0.0038777963811781114,
+      Number('0.0038777963811781114'),
       2e-12,
     )
 
     closeTo(
       result.criticalSlopePercent,
-      0.38777963811781114,
+      Number('0.38777963811781114'),
       2e-10,
     )
 
     closeTo(
       result.criticalSlopePerMille,
-      3.8777963811781114,
+      Number('3.8777963811781114'),
       2e-9,
     )
   },
