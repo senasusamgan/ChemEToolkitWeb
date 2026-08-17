@@ -509,18 +509,18 @@ export function LegacyWorkbench({
         @media (min-width: 701px) {
           .native-calculator {
             padding:
-              12px
-              18px
-              18px !important;
+              16px
+              20px
+              20px !important;
           }
 
           .native-calculator-header {
             margin:
               0 !important;
             padding:
-              8px
+              6px
               2px
-              10px !important;
+              8px !important;
           }
 
           .native-calculator-header > * {
@@ -534,10 +534,10 @@ export function LegacyWorkbench({
             margin:
               0
               0
-              10px !important;
+              12px !important;
             padding:
               8px
-              14px !important;
+              12px !important;
           }
 
           .native-reference > * {
@@ -599,9 +599,9 @@ export function LegacyWorkbench({
           .native-input-shell input,
           .native-input-shell select {
             min-height:
-              38px !important;
+              36px !important;
             height:
-              38px !important;
+              36px !important;
           }
 
           .native-actions {
@@ -610,9 +610,13 @@ export function LegacyWorkbench({
             max-width:
               100% !important;
             margin:
-              10px
+              12px
               0
               0 !important;
+            padding-top:
+              12px !important;
+            border-top:
+              1px solid rgba(11, 54, 88, 0.1) !important;
           }
 
           .native-result-panel {
@@ -621,12 +625,12 @@ export function LegacyWorkbench({
             max-width:
               100% !important;
             margin:
-              10px
+              12px
               0
               0 !important;
             padding:
-              12px
-              14px !important;
+              10px
+              12px !important;
           }
 
           .native-formula {
