@@ -1,3 +1,4 @@
+import { SecondFiveLegacyNativeCalculator } from '../features/native-migrations/second-five-legacy/SecondFiveLegacyNativeCalculator'
 import { TopFiveLegacyNativeCalculator } from '../features/native-migrations/top-five-legacy/TopFiveLegacyNativeCalculator'
 import { BinaryFlashCalculator } from '../features/mass-transfer/binary-flash/BinaryFlashCalculator'
 import { CentrifugalSettlingCalculator } from '../features/mass-transfer/centrifugal-settling/CentrifugalSettlingCalculator'
@@ -218,6 +219,46 @@ export function CalculatorWorkbench({
   calculatorId,
   title,
 }: CalculatorWorkbenchProps) {
+  if (calculatorId === 'evaporatorBalance') {
+    return (
+      <SecondFiveLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'massBalance') {
+    return (
+      <SecondFiveLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'phaseChangeEnergyBalance') {
+    return (
+      <SecondFiveLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'sensibleHeatBalance') {
+    return (
+      <SecondFiveLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
+  if (calculatorId === 'flowRate') {
+    return (
+      <SecondFiveLegacyNativeCalculator
+        calculatorId={calculatorId}
+      />
+    )
+  }
+
   if (calculatorId === 'heatExchangerEnergyBalance') {
     return (
       <TopFiveLegacyNativeCalculator
