@@ -11,6 +11,7 @@ import { FavoriteCalculators } from './FavoriteCalculators'
 import { CategoryGrid } from './CategoryGrid'
 import { HomeProblemSolverEntry } from './HomeProblemSolverEntry'
 import { CalculatorStage } from '../CalculatorStage'
+import { EngineeringErrorBoundary } from '../EngineeringErrorBoundary'
 
 interface HomeDashboardProps {
   calculators: CalculatorDefinition[]
@@ -49,9 +50,65 @@ export function HomeDashboard({
   ).length
 
   const [
-    linkCopied,
-    setLinkCopied,
-  ] = useState(false)
+    copyState,
+    setCopyState,
+  ] = useState<
+    'idle' | 'copied' | 'failed'
+  >('idle')
+
+  async function writeClipboardText(
+    value: string,
+  ): Promise<boolean> {
+    try {
+      if (
+        window.isSecureContext &&
+        navigator.clipboard?.writeText
+      ) {
+        await navigator.clipboard.writeText(
+          value,
+        )
+
+        return true
+      }
+    } catch {
+      // Continue to the DOM fallback.
+    }
+
+    const textArea =
+      document.createElement(
+        'textarea',
+      )
+
+    textArea.value = value
+    textArea.setAttribute(
+      'readonly',
+      '',
+    )
+
+    textArea.style.position =
+      'fixed'
+    textArea.style.opacity =
+      '0'
+    textArea.style.pointerEvents =
+      'none'
+
+    document.body.appendChild(
+      textArea,
+    )
+
+    textArea.focus()
+    textArea.select()
+
+    try {
+      return document.execCommand(
+        'copy',
+      )
+    } catch {
+      return false
+    } finally {
+      textArea.remove()
+    }
+  }
 
   async function copyCalculatorLink() {
     const calculatorUrl =
@@ -67,15 +124,20 @@ export function HomeDashboard({
     calculatorUrl.hash =
       'workbench'
 
-    await navigator.clipboard.writeText(
-      calculatorUrl.toString(),
-    )
+    const copied =
+      await writeClipboardText(
+        calculatorUrl.toString(),
+      )
 
-    setLinkCopied(true)
+    setCopyState(
+      copied
+        ? 'copied'
+        : 'failed',
+    )
 
     window.setTimeout(
       () => {
-        setLinkCopied(false)
+        setCopyState('idle')
       },
       1600,
     )
@@ -160,7 +222,11 @@ export function HomeDashboard({
                 aria-live="polite"
               >
                 <span aria-hidden="true">↗</span>
-                {linkCopied ? 'Copied' : 'Copy link'}
+                {copyState === 'copied'
+                  ? 'Copied'
+                  : copyState === 'failed'
+                    ? 'Copy failed'
+                    : 'Copy link'}
               </button>
 
               <button
@@ -233,11 +299,16 @@ export function HomeDashboard({
           </div>
 
           <div className="home-workspace-live-body">
-            <CalculatorStage
-              activeCalculator={activeCalculator}
-              liveCalculators={liveCalculators}
-              onSelect={onOpenCalculator}
-            />
+            <EngineeringErrorBoundary
+              key={activeCalculator.id}
+              area={`${activeCalculator.title} calculator`}
+            >
+              <CalculatorStage
+                activeCalculator={activeCalculator}
+                liveCalculators={liveCalculators}
+                onSelect={onOpenCalculator}
+              />
+            </EngineeringErrorBoundary>
           </div>
         </div>
       </section>

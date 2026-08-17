@@ -939,3 +939,69 @@ button {
       24px 18px;
   }
 }
+
+.engineering-error-boundary {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+  border: 1px solid rgba(11, 54, 88, 0.16);
+  border-radius: 18px;
+  background: rgba(255, 253, 250, 0.96);
+}
+
+.engineering-error-boundary-kicker {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.engineering-error-boundary strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.engineering-error-boundary p {
+  margin: 8px 0 0;
+  max-width: 58ch;
+}
+
+.engineering-error-boundary-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.engineering-error-boundary-actions button {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.engineering-error-boundary-actions button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+@media (max-width: 620px) {
+  .engineering-error-boundary {
+    padding: 18px;
+  }
+
+  .engineering-error-boundary-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .engineering-error-boundary-actions button {
+    width: 100%;
+  }
+}

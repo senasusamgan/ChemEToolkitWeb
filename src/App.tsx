@@ -28,6 +28,7 @@ import { FeedbackPanel } from './components/FeedbackPanel'
 import { AppShell } from './components/layout/AppShell'
 import { AppHeader } from './components/layout/AppHeader'
 import { HomeDashboard } from './components/home/HomeDashboard'
+import { EngineeringErrorBoundary } from './components/EngineeringErrorBoundary'
 const HomepageProblemSolverPanel =
   lazy(() =>
     import(
@@ -84,6 +85,40 @@ function readCalculatorIdFromLocation(): string {
   return (
     matchedCalculator?.id ??
     defaultCalculator.id
+  )
+}
+
+function canonicalizeCalculatorLocation(
+  calculatorId: string,
+) {
+  const calculatorUrl =
+    new URL(
+      window.location.href,
+    )
+
+  const requestedCalculatorId =
+    calculatorUrl.searchParams.get(
+      'calculator',
+    )
+
+  if (
+    requestedCalculatorId === null ||
+    requestedCalculatorId === calculatorId
+  ) {
+    return
+  }
+
+  calculatorUrl.searchParams.set(
+    'calculator',
+    calculatorId,
+  )
+
+  window.history.replaceState(
+    {
+      calculatorId,
+    },
+    '',
+    calculatorUrl,
   )
 }
 
@@ -222,10 +257,19 @@ function App() {
 
   useEffect(() => {
     function syncCalculatorFromHistory() {
+      const calculatorId =
+        readCalculatorIdFromLocation()
+
+      canonicalizeCalculatorLocation(
+        calculatorId,
+      )
+
       setActiveCalculatorId(
-        readCalculatorIdFromLocation(),
+        calculatorId,
       )
     }
+
+    syncCalculatorFromHistory()
 
     window.addEventListener(
       'popstate',
@@ -621,34 +665,75 @@ function App() {
   }
 
   function openCalculator(calculatorId: string) {
-    setActiveCalculatorId(calculatorId)
+    const matchedCalculator =
+      calculators.find(
+        (calculator) =>
+          calculator.id === calculatorId &&
+          calculator.available,
+      )
+
+    if (!matchedCalculator) {
+      return
+    }
+
+    const resolvedCalculatorId =
+      matchedCalculator.id
+
+    setActiveCalculatorId(
+      resolvedCalculatorId,
+    )
 
     const calculatorUrl =
       new URL(
         window.location.href,
       )
 
+    const currentCalculatorId =
+      calculatorUrl.searchParams.get(
+        'calculator',
+      )
+
+    const currentHash =
+      calculatorUrl.hash
+
     calculatorUrl.searchParams.set(
       'calculator',
-      calculatorId,
+      resolvedCalculatorId,
     )
 
     calculatorUrl.hash =
       'workbench'
 
-    window.history.pushState(
-      {
-        calculatorId,
-      },
-      '',
-      calculatorUrl,
-    )
+    const historyState = {
+      calculatorId:
+        resolvedCalculatorId,
+    }
+
+    if (
+      currentCalculatorId ===
+        resolvedCalculatorId &&
+      currentHash ===
+        '#workbench'
+    ) {
+      window.history.replaceState(
+        historyState,
+        '',
+        calculatorUrl,
+      )
+    } else {
+      window.history.pushState(
+        historyState,
+        '',
+        calculatorUrl,
+      )
+    }
 
     setRecentCalculatorIds((currentIds) => [
-      calculatorId,
+      resolvedCalculatorId,
       ...currentIds.filter(
         (currentId) =>
-          currentId !== calculatorId,
+          currentId !==
+          resolvedCalculatorId,
       ),
     ].slice(0, 5))
 
@@ -917,6 +1002,9 @@ function App() {
         </div>
 
         {shouldLoadProblemSolver ? (
+          <EngineeringErrorBoundary
+            area="Problem Solver"
+          >
           <Suspense
             fallback={
               <div
@@ -941,6 +1029,7 @@ function App() {
               }
             />
           </Suspense>
+          </EngineeringErrorBoundary>
         ) : (
           <div
             className="problem-solver-lazy-placeholder"
@@ -977,6 +1066,9 @@ function App() {
       >
         <div className="workspace-page-inner">
           {shouldLoadWorkspace ? (
+            <EngineeringErrorBoundary
+              area="Engineering Workspace"
+            >
             <Suspense
               fallback={
                 <div
@@ -1003,6 +1095,7 @@ function App() {
                 }
               />
             </Suspense>
+            </EngineeringErrorBoundary>
           ) : (
             <div
               className="workspace-lazy-placeholder"
