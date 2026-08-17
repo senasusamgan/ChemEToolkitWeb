@@ -10,6 +10,7 @@ import {
   printNotebookEngineeringReport,
 } from '../lib/scientificNotebookReport'
 
+
 import '../styles/scientific-notebook-library.css'
 
 const STORAGE_KEY =
@@ -523,6 +524,21 @@ export function ScientificNotebookLibrary({
 
 
   const [
+    projectReportIds,
+    setProjectReportIds,
+  ] = useState<string[]>(
+    [],
+  )
+
+  const [
+    projectReportTitle,
+    setProjectReportTitle,
+  ] = useState(
+    'Engineering Project Report',
+  )
+
+
+  const [
     importMode,
     setImportMode,
   ] = useState<ImportMode>(
@@ -721,6 +737,14 @@ export function ScientificNotebookLibrary({
       ],
     )
 
+  const selectedProjectNotebooks =
+    notebooks.filter(
+      (record) =>
+        projectReportIds.includes(
+          record.calculatorId,
+        ),
+    )
+
   const totalSnapshots =
     notebooks.reduce(
       (
@@ -746,6 +770,120 @@ export function ScientificNotebookLibrary({
           ),
       0,
     )
+
+  function toggleProjectReportNotebook(
+    calculatorId: string,
+  ) {
+    setProjectReportIds(
+      (current) =>
+        current.includes(
+          calculatorId,
+        )
+          ? current.filter(
+              (id) =>
+                id !==
+                calculatorId,
+            )
+          : [
+              ...current,
+              calculatorId,
+            ],
+    )
+  }
+
+  function selectVisibleForProjectReport() {
+    setProjectReportIds(
+      (current) =>
+        Array.from(
+          new Set(
+            [
+              ...current,
+              ...visibleNotebooks.map(
+                (record) =>
+                  record.calculatorId,
+              ),
+            ],
+          ),
+        ),
+    )
+  }
+
+  function clearProjectReportSelection() {
+    setProjectReportIds(
+      [],
+    )
+  }
+
+  async function exportProjectReport() {
+    if (
+      selectedProjectNotebooks.length === 0
+    ) {
+      setStatus(
+        'Select at least one notebook for the project report.',
+      )
+      return
+    }
+
+    try {
+      const {
+        downloadProjectEngineeringReport,
+      } = await import(
+        '../lib/scientificNotebookProjectReport'
+      )
+
+      downloadProjectEngineeringReport({
+        title:
+          projectReportTitle,
+        notebooks:
+          selectedProjectNotebooks,
+      })
+
+      setStatus(
+        `Project report exported (${selectedProjectNotebooks.length} calculators).`,
+      )
+    } catch {
+      setStatus(
+        'Project report export failed.',
+      )
+    }
+  }
+
+  async function printProjectReport() {
+    if (
+      selectedProjectNotebooks.length === 0
+    ) {
+      setStatus(
+        'Select at least one notebook for the project report.',
+      )
+      return
+    }
+
+    try {
+      const {
+        printProjectEngineeringReport,
+      } = await import(
+        '../lib/scientificNotebookProjectReport'
+      )
+
+      const opened =
+        printProjectEngineeringReport({
+          title:
+            projectReportTitle,
+          notebooks:
+            selectedProjectNotebooks,
+        })
+
+      setStatus(
+        opened
+          ? `Print-ready project report opened (${selectedProjectNotebooks.length} calculators).`
+          : 'Print preview was blocked by the browser.',
+      )
+    } catch {
+      setStatus(
+        'Project report preview failed.',
+      )
+    }
+  }
 
   function exportArchive() {
     const archive = {
@@ -966,6 +1104,100 @@ export function ScientificNotebookLibrary({
             Visible
           </span>
         </article>
+      </section>
+
+      <section
+        className="scientific-notebook-project-builder"
+        aria-label="Engineering project report builder"
+      >
+        <header>
+          <div>
+            <span>
+              Project Report Builder
+            </span>
+
+            <strong>
+              {selectedProjectNotebooks.length}
+              {' '}
+              selected
+            </strong>
+          </div>
+
+          <p>
+            Combine multiple calculator notebooks into one engineering project report.
+          </p>
+        </header>
+
+        <div className="scientific-notebook-project-builder-controls">
+          <label>
+            <span>
+              Project title
+            </span>
+
+            <input
+              type="text"
+              value={
+                projectReportTitle
+              }
+              onChange={(event) =>
+                setProjectReportTitle(
+                  event.target.value,
+                )
+              }
+              placeholder="Engineering Project Report"
+            />
+          </label>
+
+          <div>
+            <button
+              type="button"
+              onClick={
+                selectVisibleForProjectReport
+              }
+              disabled={
+                visibleNotebooks.length === 0
+              }
+            >
+              Select visible
+            </button>
+
+            <button
+              type="button"
+              onClick={
+                clearProjectReportSelection
+              }
+              disabled={
+                projectReportIds.length === 0
+              }
+            >
+              Clear selection
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                void exportProjectReport()
+              }}
+              disabled={
+                selectedProjectNotebooks.length === 0
+              }
+            >
+              Export project .md
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                void printProjectReport()
+              }}
+              disabled={
+                selectedProjectNotebooks.length === 0
+              }
+            >
+              Print project report
+            </button>
+          </div>
+        </div>
       </section>
 
       <section
@@ -1221,6 +1453,26 @@ export function ScientificNotebookLibrary({
                   </dl>
 
                   <footer>
+                    <button
+                      type="button"
+                      aria-pressed={
+                        projectReportIds.includes(
+                          record.calculatorId,
+                        )
+                      }
+                      onClick={() =>
+                        toggleProjectReportNotebook(
+                          record.calculatorId,
+                        )
+                      }
+                    >
+                      {projectReportIds.includes(
+                        record.calculatorId,
+                      )
+                        ? '✓ In project report'
+                        : 'Add to project report'}
+                    </button>
+
                     <button
                       type="button"
                       onClick={() =>
