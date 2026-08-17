@@ -176,7 +176,7 @@ if (
 
 if (
   baseline.withoutDirectTestSignal !==
-  139
+  0
 ) {
   throw new Error(
     `Expected 140 coverage gaps; found ${baseline.withoutDirectTestSignal}.`,

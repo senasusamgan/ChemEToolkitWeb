@@ -154,9 +154,9 @@ if (baseline.directTestSignals !== baseline.catalogCalculatorCount) {
   )
 }
 
-if (baseline.withoutDirectTestSignal !== 139) {
+if (baseline.withoutDirectTestSignal !== 0) {
   throw new Error(
-    `Expected 140 remaining coverage gaps; found ${baseline.withoutDirectTestSignal}.`,
+    `Expected zero remaining coverage gaps; found ${baseline.withoutDirectTestSignal}.`,
   )
 }
 

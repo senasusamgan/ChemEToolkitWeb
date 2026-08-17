@@ -145,10 +145,10 @@ if (
 
 if (
   baseline.withoutDirectTestSignal !==
-  139
+  0
 ) {
   throw new Error(
-    `Expected 141 remaining coverage gaps; found ${baseline.withoutDirectTestSignal}.`,
+    `Expected zero remaining coverage gaps; found ${baseline.withoutDirectTestSignal}.`,
   )
 }
 
@@ -182,5 +182,5 @@ console.log(
 )
 
 console.log(
-  'Remaining tracked coverage gaps: 141',
+  'Remaining tracked coverage gaps: 0',
 )
