@@ -1,7 +1,10 @@
 import {
+  getProjectSetActivityTimestamp,
   normalizeProjectDueDate,
   normalizeProjectPriority,
   normalizeProjectProgress,
+  normalizeProjectReviewInterval,
+  normalizeProjectReviewTimestamp,
   type NotebookProjectSet,
 } from './scientificNotebookProjectSets'
 
@@ -11,6 +14,8 @@ interface PortfolioMetrics {
   active: number
   blocked: number
   complete: number
+  reviewDue: number
+  reviewSoon: number
   averageProgress: number
 }
 
@@ -38,6 +43,148 @@ function projectProgress(
       )
 }
 
+type ProjectReviewState =
+  | 'complete'
+  | 'overdue'
+  | 'due-soon'
+  | 'scheduled'
+
+function projectReviewInterval(
+  projectSet:
+    NotebookProjectSet,
+): number {
+  return normalizeProjectReviewInterval(
+    projectSet.reviewIntervalDays,
+  )
+}
+
+function projectNextReviewTimestamp(
+  projectSet:
+    NotebookProjectSet,
+): number {
+  if (
+    projectSet.status ===
+    'complete'
+  ) {
+    return Number.POSITIVE_INFINITY
+  }
+
+  return (
+    getProjectSetActivityTimestamp(
+      projectSet,
+    )
+    + projectReviewInterval(
+        projectSet,
+      )
+      * 86_400_000
+  )
+}
+
+function projectReviewState(
+  projectSet:
+    NotebookProjectSet,
+): ProjectReviewState {
+  if (
+    projectSet.status ===
+    'complete'
+  ) {
+    return 'complete'
+  }
+
+  const remaining =
+    projectNextReviewTimestamp(
+      projectSet,
+    )
+    - Date.now()
+
+  if (
+    remaining <= 0
+  ) {
+    return 'overdue'
+  }
+
+  if (
+    remaining <=
+      3 * 86_400_000
+  ) {
+    return 'due-soon'
+  }
+
+  return 'scheduled'
+}
+
+function projectReviewStateLabel(
+  projectSet:
+    NotebookProjectSet,
+): string {
+  const state =
+    projectReviewState(
+      projectSet,
+    )
+
+  if (
+    state === 'complete'
+  ) {
+    return 'Complete'
+  }
+
+  if (
+    state === 'overdue'
+  ) {
+    return 'Review due'
+  }
+
+  if (
+    state === 'due-soon'
+  ) {
+    return 'Review in 3 days'
+  }
+
+  return 'Scheduled'
+}
+
+function projectLastReviewed(
+  projectSet:
+    NotebookProjectSet,
+): string | undefined {
+  return normalizeProjectReviewTimestamp(
+    projectSet.lastReviewedAt,
+  )
+}
+
+function projectNextReview(
+  projectSet:
+    NotebookProjectSet,
+): string | undefined {
+  const timestamp =
+    projectNextReviewTimestamp(
+      projectSet,
+    )
+
+  if (
+    !Number.isFinite(
+      timestamp,
+    )
+  ) {
+    return undefined
+  }
+
+  return new Date(
+    timestamp,
+  ).toISOString()
+}
+
+function projectLastActivity(
+  projectSet:
+    NotebookProjectSet,
+): string {
+  return new Date(
+    getProjectSetActivityTimestamp(
+      projectSet,
+    ),
+  ).toISOString()
+}
+
 function buildMetrics(
   projectSets:
     NotebookProjectSet[],
@@ -46,6 +193,8 @@ function buildMetrics(
   let active = 0
   let blocked = 0
   let complete = 0
+  let reviewDue = 0
+  let reviewSoon = 0
   let progressTotal = 0
 
   for (
@@ -75,6 +224,23 @@ function buildMetrics(
       planned += 1
     }
 
+    const reviewState =
+      projectReviewState(
+        projectSet,
+      )
+
+    if (
+      reviewState ===
+      'overdue'
+    ) {
+      reviewDue += 1
+    } else if (
+      reviewState ===
+      'due-soon'
+    ) {
+      reviewSoon += 1
+    }
+
     progressTotal +=
       projectProgress(
         projectSet,
@@ -88,6 +254,8 @@ function buildMetrics(
     active,
     blocked,
     complete,
+    reviewDue,
+    reviewSoon,
     averageProgress:
       projectSets.length
         ? Math.round(
@@ -226,12 +394,14 @@ export function buildProjectPortfolioMarkdown(
     `- Active: ${metrics.active}`,
     `- Blocked: ${metrics.blocked}`,
     `- Complete: ${metrics.complete}`,
+    `- Reviews due: ${metrics.reviewDue}`,
+    `- Reviews due soon: ${metrics.reviewSoon}`,
     `- Average progress: ${metrics.averageProgress}%`,
     '',
     '## Project Register',
     '',
-    '| Project | Status | Priority | Progress | Due date | Next action | Calculators | Tags |',
-    '| --- | --- | --- | ---: | --- | --- | ---: | --- |',
+    '| Project | Status | Priority | Progress | Due date | Review cadence | Last reviewed | Next review | Review status | Next action | Calculators | Tags |',
+    '| --- | --- | --- | ---: | --- | ---: | --- | --- | --- | --- | ---: | --- |',
   ]
 
   for (
@@ -259,6 +429,26 @@ export function buildProjectPortfolioMarkdown(
         markdownCell(
           normalizeProjectDueDate(
             projectSet.dueDate,
+          ),
+        ),
+        String(
+          projectReviewInterval(
+            projectSet,
+          ),
+        ),
+        markdownCell(
+          projectLastReviewed(
+            projectSet,
+          ),
+        ),
+        markdownCell(
+          projectNextReview(
+            projectSet,
+          ),
+        ),
+        markdownCell(
+          projectReviewStateLabel(
+            projectSet,
           ),
         ),
         markdownCell(
@@ -306,6 +496,16 @@ export function buildProjectPortfolioMarkdown(
         '',
         `Due date: ${clean(normalizeProjectDueDate(projectSet.dueDate))}`,
         '',
+        `Review cadence: ${projectReviewInterval(projectSet)} days`,
+        '',
+        `Last reviewed: ${clean(projectLastReviewed(projectSet))}`,
+        '',
+        `Next review: ${clean(projectNextReview(projectSet))}`,
+        '',
+        `Review status: ${projectReviewStateLabel(projectSet)}`,
+        '',
+        `Last activity: ${projectLastActivity(projectSet)}`,
+        '',
         `Next action: ${clean(projectSet.nextAction)}`,
         '',
         `Description: ${clean(projectSet.description)}`,
@@ -344,6 +544,11 @@ export function buildProjectPortfolioCsv(
       'Priority',
       'Progress %',
       'Due Date',
+      'Review Cadence Days',
+      'Last Reviewed At',
+      'Next Review At',
+      'Review Status',
+      'Last Activity At',
       'Next Action',
       'Description',
       'Calculator Count',
@@ -375,6 +580,25 @@ export function buildProjectPortfolioCsv(
           projectSet.dueDate,
         )
         ?? '',
+        String(
+          projectReviewInterval(
+            projectSet,
+          ),
+        ),
+        projectLastReviewed(
+          projectSet,
+        )
+        ?? '',
+        projectNextReview(
+          projectSet,
+        )
+        ?? '',
+        projectReviewStateLabel(
+          projectSet,
+        ),
+        projectLastActivity(
+          projectSet,
+        ),
         projectSet.nextAction
         ?? '',
         projectSet.description
@@ -553,6 +777,40 @@ export function buildProjectPortfolioHtml(
             </td>
 
             <td>
+              ${projectReviewInterval(
+                projectSet,
+              )}d
+            </td>
+
+            <td>
+              ${escapeHtml(
+                clean(
+                  projectLastReviewed(
+                    projectSet,
+                  ),
+                ),
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                clean(
+                  projectNextReview(
+                    projectSet,
+                  ),
+                ),
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                projectReviewStateLabel(
+                  projectSet,
+                ),
+              )}
+            </td>
+
+            <td>
               ${escapeHtml(
                 clean(
                   projectSet.nextAction,
@@ -634,6 +892,52 @@ export function buildProjectPortfolioHtml(
                 <span>Calculators</span>
                 <strong>
                   ${projectSet.calculatorIds.length}
+                </strong>
+              </div>
+
+              <div>
+                <span>Review cadence</span>
+                <strong>
+                  ${projectReviewInterval(
+                    projectSet,
+                  )} days
+                </strong>
+              </div>
+
+              <div>
+                <span>Last reviewed</span>
+                <strong>
+                  ${escapeHtml(
+                    clean(
+                      projectLastReviewed(
+                        projectSet,
+                      ),
+                    ),
+                  )}
+                </strong>
+              </div>
+
+              <div>
+                <span>Next review</span>
+                <strong>
+                  ${escapeHtml(
+                    clean(
+                      projectNextReview(
+                        projectSet,
+                      ),
+                    ),
+                  )}
+                </strong>
+              </div>
+
+              <div>
+                <span>Review status</span>
+                <strong>
+                  ${escapeHtml(
+                    projectReviewStateLabel(
+                      projectSet,
+                    ),
+                  )}
                 </strong>
               </div>
             </div>
@@ -752,7 +1056,7 @@ export function buildProjectPortfolioHtml(
       display: grid;
       grid-template-columns:
         repeat(
-          6,
+          4,
           minmax(0, 1fr)
         );
       gap: 8px;
@@ -930,6 +1234,16 @@ export function buildProjectPortfolioHtml(
     </div>
 
     <div>
+      <span>Reviews due</span>
+      <strong>${metrics.reviewDue}</strong>
+    </div>
+
+    <div>
+      <span>Review soon</span>
+      <strong>${metrics.reviewSoon}</strong>
+    </div>
+
+    <div>
       <span>Avg. progress</span>
       <strong>${metrics.averageProgress}%</strong>
     </div>
@@ -948,6 +1262,10 @@ export function buildProjectPortfolioHtml(
           <th>Priority</th>
           <th>Progress</th>
           <th>Due date</th>
+          <th>Review cadence</th>
+          <th>Last reviewed</th>
+          <th>Next review</th>
+          <th>Review status</th>
           <th>Next action</th>
         </tr>
       </thead>
