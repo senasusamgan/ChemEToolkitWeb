@@ -220,6 +220,21 @@ function getProjectAttentionReasons(
     )
   }
 
+  if (
+    (
+      projectSet.status ===
+        'active'
+      || projectSet.status ===
+        'blocked'
+    )
+    && !projectSet.nextAction
+      ?.trim()
+  ) {
+    reasons.push(
+      'Next action missing',
+    )
+  }
+
   return reasons
 }
 
@@ -285,6 +300,19 @@ function getProjectAttentionScore(
     ) <= 25
   ) {
     score += 10
+  }
+
+  if (
+    (
+      projectSet.status ===
+        'active'
+      || projectSet.status ===
+        'blocked'
+    )
+    && !projectSet.nextAction
+      ?.trim()
+  ) {
+    score += 15
   }
 
   return score
@@ -361,6 +389,12 @@ export function ScientificNotebookProjectSets({
   const [
     dueDate,
     setDueDate,
+  ] = useState('')
+
+
+  const [
+    nextAction,
+    setNextAction,
   ] = useState('')
 
   const [
@@ -516,6 +550,7 @@ export function ScientificNotebookProjectSets({
                 projectSet.name,
                 projectSet.reportTitle,
                 projectSet.description,
+                projectSet.nextAction,
                 ...(
                   projectSet.tags
                   ?? []
@@ -782,6 +817,7 @@ export function ScientificNotebookProjectSets({
       () => {
         let needsAttention = 0
         let urgent = 0
+        let missingNextAction = 0
 
         for (
           const projectSet
@@ -805,11 +841,26 @@ export function ScientificNotebookProjectSets({
           ) {
             urgent += 1
           }
+
+
+          if (
+            (
+              projectSet.status ===
+                'active'
+              || projectSet.status ===
+                'blocked'
+            )
+            && !projectSet.nextAction
+              ?.trim()
+          ) {
+            missingNextAction += 1
+          }
         }
 
         return {
           needsAttention,
           urgent,
+          missingNextAction,
         }
       },
       [
@@ -842,6 +893,7 @@ export function ScientificNotebookProjectSets({
       'normal',
     )
     setDueDate('')
+    setNextAction('')
   }
 
   function saveProjectSet() {
@@ -929,6 +981,10 @@ export function ScientificNotebookProjectSets({
               dueDate,
             ),
 
+          nextAction:
+            nextAction.trim()
+            || undefined,
+
           calculatorIds:
             Array.from(
               new Set(
@@ -982,6 +1038,9 @@ export function ScientificNotebookProjectSets({
 
           dueDate:
             dueDate,
+
+          nextAction:
+            nextAction,
 
           calculatorIds:
             currentCalculatorIds,
@@ -1227,6 +1286,11 @@ export function ScientificNotebookProjectSets({
       ?? '',
     )
 
+    setNextAction(
+      projectSet.nextAction
+      ?? '',
+    )
+
     setStatus(
       `Editing "${projectSet.name}". Save current selection to update it.`,
     )
@@ -1402,6 +1466,17 @@ export function ScientificNotebookProjectSets({
 
             <strong>
               {attentionMetrics.urgent}
+            </strong>
+          </div>
+
+
+          <div>
+            <span>
+              Missing next action
+            </span>
+
+            <strong>
+              {attentionMetrics.missingNextAction}
             </strong>
           </div>
         </div>
@@ -1682,6 +1757,25 @@ export function ScientificNotebookProjectSets({
               Critical
             </option>
           </select>
+        </label>
+
+        <label className="scientific-notebook-project-next-action-field">
+          <span>
+            Next action
+          </span>
+
+          <input
+            type="text"
+            value={
+              nextAction
+            }
+            onChange={(event) =>
+              setNextAction(
+                event.target.value,
+              )
+            }
+            placeholder="e.g. Validate heat-duty assumptions"
+          />
         </label>
 
         <label>
@@ -2000,6 +2094,18 @@ export function ScientificNotebookProjectSets({
                           </span>
                         ),
                       )}
+                    </div>
+                  ) : null}
+
+                  {projectSet.nextAction ? (
+                    <div className="scientific-notebook-project-set-next-action">
+                      <span>
+                        Next action
+                      </span>
+
+                      <strong>
+                        {projectSet.nextAction}
+                      </strong>
                     </div>
                   ) : null}
 

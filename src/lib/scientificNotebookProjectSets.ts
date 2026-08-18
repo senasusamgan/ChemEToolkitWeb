@@ -24,6 +24,7 @@ export interface NotebookProjectSet {
   progress?: number
   priority?: NotebookProjectPriority
   dueDate?: string
+  nextAction?: string
   calculatorIds: string[]
   createdAt: string
   updatedAt: string
@@ -293,6 +294,13 @@ export function isProjectSet(
         candidate.dueDate,
       ) !== undefined
 
+
+  const nextActionValid =
+    candidate.nextAction ===
+      undefined
+    || typeof candidate.nextAction ===
+      'string'
+
   return (
     typeof candidate.id === 'string'
     && typeof candidate.name === 'string'
@@ -303,6 +311,7 @@ export function isProjectSet(
     && progressValid
     && priorityValid
     && dueDateValid
+    && nextActionValid
     && Array.isArray(
       candidate.calculatorIds,
     )
@@ -357,6 +366,11 @@ function normalizeProjectSet(
       normalizeProjectDueDate(
         projectSet.dueDate,
       ),
+
+    nextAction:
+      projectSet.nextAction
+        ?.trim()
+      || undefined,
   }
 }
 
@@ -503,6 +517,7 @@ export function createNotebookProjectSet({
   progress,
   priority,
   dueDate,
+  nextAction,
   calculatorIds,
 }: {
   name: string
@@ -513,6 +528,7 @@ export function createNotebookProjectSet({
   progress?: number
   priority?: NotebookProjectPriority
   dueDate?: string
+  nextAction?: string
   calculatorIds: string[]
 }): NotebookProjectSet {
   const now =
@@ -566,6 +582,11 @@ export function createNotebookProjectSet({
       normalizeProjectDueDate(
         dueDate,
       ),
+
+    nextAction:
+      nextAction
+        ?.trim()
+      || undefined,
 
     calculatorIds:
       Array.from(
