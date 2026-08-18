@@ -209,16 +209,16 @@ function formatProjectAge(
   if (
     days === 0
   ) {
-    return 'Updated today'
+    return 'Last touch today'
   }
 
   if (
     days === 1
   ) {
-    return 'Updated 1 day ago'
+    return 'Last touch 1 day ago'
   }
 
-  return `Updated ${days} days ago`
+  return `Last touch ${days} days ago`
 }
 
 function getProjectAttentionReasons(
@@ -1464,6 +1464,41 @@ export function ScientificNotebookProjectSets({
     )
   }
 
+  function markProjectReviewed(
+    projectSet:
+      NotebookProjectSet,
+  ) {
+    if (
+      projectSet.status ===
+      'complete'
+  ) {
+      return
+    }
+
+    const reviewed:
+      NotebookProjectSet = {
+        ...projectSet,
+
+        updatedAt:
+          new Date()
+            .toISOString(),
+      }
+
+    persist(
+      projectSets.map(
+        (item) =>
+          item.id ===
+            projectSet.id
+            ? reviewed
+            : item,
+      ),
+    )
+
+    setStatus(
+      `Project "${projectSet.name}" reviewed.`,
+    )
+  }
+
   function deleteProjectSet(
     projectSet:
       NotebookProjectSet,
@@ -2325,7 +2360,7 @@ export function ScientificNotebookProjectSets({
             </option>
 
             <option value="updated">
-              Recently updated
+              Recent touch
             </option>
 
             <option value="name">
@@ -2365,6 +2400,7 @@ export function ScientificNotebookProjectSets({
             && deadlineFilter ===
               'all'
             && !attentionOnly
+            && !staleOnly
           }
         >
           Clear filters
@@ -2377,7 +2413,7 @@ export function ScientificNotebookProjectSets({
         </span>
       </div>
 
-      {visibleProjectSets.length > 0 ? (
+      {displayedProjectSets.length > 0 ? (
         <div className="scientific-notebook-project-set-list">
           {displayedProjectSets.map(
             (projectSet) => (
@@ -2642,6 +2678,22 @@ export function ScientificNotebookProjectSets({
                         ? 'Reopen'
                         : 'Complete'}
                     </button>
+
+
+                    {isProjectStale(
+                      projectSet,
+                    ) ? (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          markProjectReviewed(
+                            projectSet,
+                          )
+                        }
+                      >
+                        Mark reviewed
+                      </button>
+                    ) : null}
                   </div>
 
                   <button
@@ -2673,7 +2725,7 @@ export function ScientificNotebookProjectSets({
       ) : (
         <p className="scientific-notebook-project-set-empty">
           {projectSets.length > 0
-            ? 'No project sets match the current search or tag filter.'
+            ? 'No project sets match the current filters.'
             : 'No saved project sets yet.'}
         </p>
       )}

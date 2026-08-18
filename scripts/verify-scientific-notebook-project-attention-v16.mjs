@@ -65,7 +65,7 @@ const contracts = [
         'Lowest progress',
       )
       && component.includes(
-        'Recently updated',
+        'value="updated"',
       ),
     'Smart project sorting missing.',
   ],
