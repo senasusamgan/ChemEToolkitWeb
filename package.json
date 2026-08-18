@@ -373,7 +373,8 @@
     "verify:scientific-notebook-review-aware-reports-v27": "node scripts/verify-scientific-notebook-review-aware-reports-v27.mjs",
     "verify:scientific-notebook-review-calendar-v28": "node scripts/verify-scientific-notebook-review-calendar-v28.mjs",
     "verify:scientific-notebook-project-dashboard-v29": "node scripts/verify-scientific-notebook-project-dashboard-v29.mjs",
-    "verify:scientific-notebook-regression-v30": "node --experimental-strip-types --test tests/scientific-notebook-regression-v30/*.test.ts && node scripts/verify-scientific-notebook-release-contract-v30.mjs"
+    "verify:scientific-notebook-regression-v30": "node --experimental-strip-types --test tests/scientific-notebook-regression-v30/*.test.ts && node scripts/verify-scientific-notebook-release-contract-v30.mjs",
+    "verify:scientific-notebook-final-audit-v31": "node scripts/verify-scientific-notebook-final-audit-v31.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
