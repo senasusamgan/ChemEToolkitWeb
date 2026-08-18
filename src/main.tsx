@@ -5,6 +5,7 @@ import './styles/foundation/reset.css'
 import './styles/foundation/globals.css'
 import './index.css'
 import App from './App'
+import './styles/mobile-experience.css'
 
 import './heroStatsRuntimeCleanup'
 const rootElement = document.getElementById('root')
