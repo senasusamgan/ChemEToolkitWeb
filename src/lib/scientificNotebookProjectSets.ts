@@ -14,6 +14,13 @@ export type NotebookProjectPriority =
   | 'high'
   | 'critical'
 
+
+export type NotebookProjectReviewInterval =
+  | 7
+  | 14
+  | 30
+  | 60
+
 export interface NotebookProjectSet {
   id: string
   name: string
@@ -25,6 +32,7 @@ export interface NotebookProjectSet {
   priority?: NotebookProjectPriority
   dueDate?: string
   nextAction?: string
+  reviewIntervalDays?: NotebookProjectReviewInterval
   calculatorIds: string[]
   createdAt: string
   updatedAt: string
@@ -185,6 +193,22 @@ export function normalizeProjectDueDate(
   return normalized
 }
 
+export function normalizeProjectReviewInterval(
+  value:
+    | number
+    | undefined,
+): NotebookProjectReviewInterval {
+  if (
+    value === 7
+    || value === 30
+    || value === 60
+  ) {
+    return value
+  }
+
+  return 14
+}
+
 export function normalizeProjectPriority(
   priority:
     | NotebookProjectPriority
@@ -301,6 +325,19 @@ export function isProjectSet(
     || typeof candidate.nextAction ===
       'string'
 
+
+  const reviewIntervalValid =
+    candidate.reviewIntervalDays ===
+      undefined
+    || candidate.reviewIntervalDays ===
+      7
+    || candidate.reviewIntervalDays ===
+      14
+    || candidate.reviewIntervalDays ===
+      30
+    || candidate.reviewIntervalDays ===
+      60
+
   return (
     typeof candidate.id === 'string'
     && typeof candidate.name === 'string'
@@ -312,6 +349,7 @@ export function isProjectSet(
     && priorityValid
     && dueDateValid
     && nextActionValid
+    && reviewIntervalValid
     && Array.isArray(
       candidate.calculatorIds,
     )
@@ -371,6 +409,11 @@ function normalizeProjectSet(
       projectSet.nextAction
         ?.trim()
       || undefined,
+
+    reviewIntervalDays:
+      normalizeProjectReviewInterval(
+        projectSet.reviewIntervalDays,
+      ),
   }
 }
 
@@ -518,6 +561,7 @@ export function createNotebookProjectSet({
   priority,
   dueDate,
   nextAction,
+  reviewIntervalDays,
   calculatorIds,
 }: {
   name: string
@@ -529,6 +573,7 @@ export function createNotebookProjectSet({
   priority?: NotebookProjectPriority
   dueDate?: string
   nextAction?: string
+  reviewIntervalDays?: NotebookProjectReviewInterval
   calculatorIds: string[]
 }): NotebookProjectSet {
   const now =
@@ -587,6 +632,11 @@ export function createNotebookProjectSet({
       nextAction
         ?.trim()
       || undefined,
+
+    reviewIntervalDays:
+      normalizeProjectReviewInterval(
+        reviewIntervalDays,
+      ),
 
     calculatorIds:
       Array.from(

@@ -8,8 +8,10 @@ import {
   normalizeProjectDueDate,
   normalizeProjectPriority,
   normalizeProjectProgress,
+  normalizeProjectReviewInterval,
   normalizeProjectSetTags,
   type NotebookProjectPriority,
+  type NotebookProjectReviewInterval,
   type NotebookProjectSet,
   type NotebookProjectStatus,
   writeNotebookProjectSets,
@@ -193,7 +195,10 @@ function isProjectStale(
       'complete'
     && getProjectAgeDays(
       projectSet,
-    ) >= 14
+    ) >=
+      normalizeProjectReviewInterval(
+        projectSet.reviewIntervalDays,
+      )
   )
 }
 
@@ -307,7 +312,7 @@ function getProjectAttentionReasons(
     )
   ) {
     reasons.push(
-      'Stale update',
+      'Review due',
     )
   }
 
@@ -480,6 +485,16 @@ export function ScientificNotebookProjectSets({
     nextAction,
     setNextAction,
   ] = useState('')
+
+
+  const [
+    reviewIntervalDays,
+    setReviewIntervalDays,
+  ] = useState<
+    NotebookProjectReviewInterval
+  >(
+    14,
+  )
 
   const [
     query,
@@ -1139,6 +1154,9 @@ export function ScientificNotebookProjectSets({
     )
     setDueDate('')
     setNextAction('')
+    setReviewIntervalDays(
+      14,
+    )
   }
 
   function saveProjectSet() {
@@ -1230,6 +1248,9 @@ export function ScientificNotebookProjectSets({
             nextAction.trim()
             || undefined,
 
+          reviewIntervalDays:
+            reviewIntervalDays,
+
           calculatorIds:
             Array.from(
               new Set(
@@ -1286,6 +1307,9 @@ export function ScientificNotebookProjectSets({
 
           nextAction:
             nextAction,
+
+          reviewIntervalDays:
+            reviewIntervalDays,
 
           calculatorIds:
             currentCalculatorIds,
@@ -1571,6 +1595,12 @@ export function ScientificNotebookProjectSets({
       ?? '',
     )
 
+    setReviewIntervalDays(
+      normalizeProjectReviewInterval(
+        projectSet.reviewIntervalDays,
+      ),
+    )
+
     setStatus(
       `Editing "${projectSet.name}". Save current selection to update it.`,
     )
@@ -1832,7 +1862,7 @@ export function ScientificNotebookProjectSets({
             }
           >
             <span>
-              Stale 14d+
+              Review due
             </span>
 
             <strong>
@@ -2115,6 +2145,41 @@ export function ScientificNotebookProjectSets({
 
             <option value="critical">
               Critical
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <span>
+            Review cadence
+          </span>
+
+          <select
+            value={
+              reviewIntervalDays
+            }
+            onChange={(event) =>
+              setReviewIntervalDays(
+                Number(
+                  event.target.value,
+                ) as NotebookProjectReviewInterval,
+              )
+            }
+          >
+            <option value={7}>
+              Every 7 days
+            </option>
+
+            <option value={14}>
+              Every 14 days
+            </option>
+
+            <option value={30}>
+              Every 30 days
+            </option>
+
+            <option value={60}>
+              Every 60 days
             </option>
           </select>
         </label>
@@ -2469,6 +2534,19 @@ export function ScientificNotebookProjectSets({
                       </strong>
                     </div>
                   ) : null}
+
+                  <div className="scientific-notebook-project-set-review-cadence">
+                    <span>
+                      Review every
+                    </span>
+
+                    <strong>
+                      {normalizeProjectReviewInterval(
+                        projectSet.reviewIntervalDays,
+                      )}
+                      d
+                    </strong>
+                  </div>
 
                   <div
                     className="scientific-notebook-project-set-updated"

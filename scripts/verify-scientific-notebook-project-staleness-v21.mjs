@@ -29,15 +29,15 @@ const contracts = [
       'function isProjectStale(',
     )
       && component.includes(
-        '>= 14',
+        'normalizeProjectReviewInterval(',
       ),
-    '14-day stale-project detection missing.',
+    'Cadence-aware stale-project detection missing.',
   ],
   [
     component.includes(
-      "'Stale update'",
+      "'Review due'",
     ),
-    'Stale attention reason missing.',
+    'Review-due attention reason missing.',
   ],
   [
     component.includes(
@@ -53,15 +53,15 @@ const contracts = [
       'staleOnly',
     )
       && component.includes(
-        'Stale 14d+',
+        'Review due',
       ),
-    'Stale-only portfolio filter missing.',
+    'Review-due portfolio filter missing.',
   ],
   [
     component.includes(
       'attentionMetrics.stale',
     ),
-    'Stale portfolio metric missing.',
+    'Review-due portfolio metric missing.',
   ],
   [
     component.includes(
@@ -70,7 +70,7 @@ const contracts = [
       && component.includes(
         'scientific-notebook-project-set-updated',
       ),
-    'Last-updated project indicator missing.',
+    'Last-touch project indicator missing.',
   ],
   [
     component.includes(
@@ -122,17 +122,17 @@ console.log(
 )
 
 console.log(
-  'PASS: 14-day stale project detection.',
+  'PASS: cadence-aware project review detection.',
 )
 
 console.log(
-  'PASS: stale attention scoring.',
+  'PASS: review-due attention scoring.',
 )
 
 console.log(
-  'PASS: stale-only filtering.',
+  'PASS: review-due filtering.',
 )
 
 console.log(
-  'PASS: last-updated project indicators.',
+  'PASS: last-touch project indicators.',
 )

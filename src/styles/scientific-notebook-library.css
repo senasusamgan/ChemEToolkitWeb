@@ -1477,3 +1477,23 @@
     grid-template-columns: 1fr;
   }
 }
+
+.scientific-notebook-project-set-review-cadence {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  margin-top: 0.4rem;
+  padding: 0.22rem 0.42rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 999px;
+}
+
+.scientific-notebook-project-set-review-cadence span {
+  font-size: 0.61rem;
+  opacity: 0.62;
+}
+
+.scientific-notebook-project-set-review-cadence strong {
+  font-size: 0.64rem;
+}
