@@ -9,6 +9,7 @@ import {
   normalizeProjectPriority,
   normalizeProjectProgress,
   normalizeProjectReviewInterval,
+  normalizeProjectReviewTimestamp,
   normalizeProjectSetTags,
   type NotebookProjectPriority,
   type NotebookProjectReviewInterval,
@@ -157,7 +158,7 @@ function formatDueDate(
   )
 }
 
-function getProjectAgeDays(
+function getProjectTouchTimestamp(
   projectSet:
     NotebookProjectSet,
 ): number {
@@ -166,10 +167,44 @@ function getProjectAgeDays(
       projectSet.updatedAt,
     ).getTime()
 
-  if (
-    !Number.isFinite(
+  const reviewedAt =
+    projectSet.lastReviewedAt
+      ? new Date(
+          projectSet.lastReviewedAt,
+        ).getTime()
+      : Number.NaN
+
+  const safeUpdatedAt =
+    Number.isFinite(
       updatedAt,
     )
+      ? updatedAt
+      : 0
+
+  const safeReviewedAt =
+    Number.isFinite(
+      reviewedAt,
+    )
+      ? reviewedAt
+      : 0
+
+  return Math.max(
+    safeUpdatedAt,
+    safeReviewedAt,
+  )
+}
+
+function getProjectAgeDays(
+  projectSet:
+    NotebookProjectSet,
+): number {
+  const touchAt =
+    getProjectTouchTimestamp(
+      projectSet,
+    )
+
+  if (
+    touchAt <= 0
   ) {
     return 0
   }
@@ -179,7 +214,7 @@ function getProjectAgeDays(
     Math.floor(
       (
         Date.now()
-        - updatedAt
+        - touchAt
       )
       / 86_400_000,
     ),
@@ -224,6 +259,37 @@ function formatProjectAge(
   }
 
   return `Last touch ${days} days ago`
+}
+
+function formatReviewTimestamp(
+  value:
+    | string
+    | undefined,
+): string | null {
+  const normalized =
+    normalizeProjectReviewTimestamp(
+      value,
+    )
+
+  if (!normalized) {
+    return null
+  }
+
+  return new Intl.DateTimeFormat(
+    undefined,
+    {
+      year:
+        'numeric',
+      month:
+        'short',
+      day:
+        'numeric',
+    },
+  ).format(
+    new Date(
+      normalized,
+    ),
+  )
 }
 
 function getProjectAttentionReasons(
@@ -789,12 +855,12 @@ export function ScientificNotebookProjectSets({
             }
 
             return (
-              new Date(
-                right.updatedAt,
-              ).getTime()
-              - new Date(
-                  left.updatedAt,
-                ).getTime()
+              getProjectTouchTimestamp(
+                right,
+              )
+              - getProjectTouchTimestamp(
+                  left,
+                )
             )
           },
         )
@@ -1503,7 +1569,7 @@ export function ScientificNotebookProjectSets({
       NotebookProjectSet = {
         ...projectSet,
 
-        updatedAt:
+        lastReviewedAt:
           new Date()
             .toISOString(),
       }
@@ -2531,6 +2597,20 @@ export function ScientificNotebookProjectSets({
 
                       <strong>
                         {projectSet.nextAction}
+                      </strong>
+                    </div>
+                  ) : null}
+
+                  {projectSet.lastReviewedAt ? (
+                    <div className="scientific-notebook-project-set-reviewed">
+                      <span>
+                        Reviewed
+                      </span>
+
+                      <strong>
+                        {formatReviewTimestamp(
+                          projectSet.lastReviewedAt,
+                        )}
                       </strong>
                     </div>
                   ) : null}

@@ -33,6 +33,7 @@ export interface NotebookProjectSet {
   dueDate?: string
   nextAction?: string
   reviewIntervalDays?: NotebookProjectReviewInterval
+  lastReviewedAt?: string
   calculatorIds: string[]
   createdAt: string
   updatedAt: string
@@ -209,6 +210,41 @@ export function normalizeProjectReviewInterval(
   return 14
 }
 
+export function normalizeProjectReviewTimestamp(
+  value:
+    | string
+    | undefined,
+): string | undefined {
+  if (
+    typeof value !==
+      'string'
+  ) {
+    return undefined
+  }
+
+  const normalized =
+    value.trim()
+
+  if (!normalized) {
+    return undefined
+  }
+
+  const timestamp =
+    new Date(
+      normalized,
+    ).getTime()
+
+  if (
+    !Number.isFinite(
+      timestamp,
+    )
+  ) {
+    return undefined
+  }
+
+  return normalized
+}
+
 export function normalizeProjectPriority(
   priority:
     | NotebookProjectPriority
@@ -338,6 +374,14 @@ export function isProjectSet(
     || candidate.reviewIntervalDays ===
       60
 
+
+  const lastReviewedAtValid =
+    candidate.lastReviewedAt ===
+      undefined
+    || normalizeProjectReviewTimestamp(
+        candidate.lastReviewedAt,
+      ) !== undefined
+
   return (
     typeof candidate.id === 'string'
     && typeof candidate.name === 'string'
@@ -350,6 +394,7 @@ export function isProjectSet(
     && dueDateValid
     && nextActionValid
     && reviewIntervalValid
+    && lastReviewedAtValid
     && Array.isArray(
       candidate.calculatorIds,
     )
@@ -413,6 +458,11 @@ function normalizeProjectSet(
     reviewIntervalDays:
       normalizeProjectReviewInterval(
         projectSet.reviewIntervalDays,
+      ),
+
+    lastReviewedAt:
+      normalizeProjectReviewTimestamp(
+        projectSet.lastReviewedAt,
       ),
   }
 }

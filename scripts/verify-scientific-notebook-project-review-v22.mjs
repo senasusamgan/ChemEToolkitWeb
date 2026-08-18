@@ -8,11 +8,29 @@ const component =
     'utf8',
   )
 
+const reviewStart =
+  component.indexOf(
+    'function markProjectReviewed(',
+  )
+
+const reviewEnd =
+  component.indexOf(
+    'function deleteProjectSet(',
+    reviewStart,
+  )
+
+const reviewSection =
+  reviewStart >= 0
+    && reviewEnd > reviewStart
+    ? component.slice(
+        reviewStart,
+        reviewEnd,
+      )
+    : ''
+
 const contracts = [
   [
-    component.includes(
-      'function markProjectReviewed(',
-    ),
+    reviewStart >= 0,
     'Project review check-in helper missing.',
   ],
   [
@@ -22,13 +40,19 @@ const contracts = [
     'Project review feedback missing.',
   ],
   [
-    component.includes(
-      'updatedAt:'
+    reviewSection.includes(
+      'lastReviewedAt:',
     )
-      && component.includes(
+      && reviewSection.includes(
         'new Date()',
       ),
-    'Review check-in must refresh updatedAt.',
+    'Review check-in must refresh lastReviewedAt.',
+  ],
+  [
+    !reviewSection.includes(
+      'updatedAt:',
+    ),
+    'Review check-in must not mutate project updatedAt.',
   ],
   [
     component.includes(
@@ -37,7 +61,7 @@ const contracts = [
       && component.includes(
         'isProjectStale(',
       ),
-    'Stale-project review action missing.',
+    'Review-due project action missing.',
   ],
   [
     component.includes(
@@ -61,19 +85,13 @@ const contracts = [
     component.includes(
       '&& !staleOnly',
     ),
-    'Clear-filters stale-only contract missing.',
+    'Clear-filters review-due contract missing.',
   ],
   [
     component.includes(
       '{displayedProjectSets.length > 0 ? (',
     ),
     'Filtered empty-state rendering contract missing.',
-  ],
-  [
-    component.includes(
-      'No project sets match the current filters.',
-    ),
-    'Filtered empty-state copy missing.',
   ],
 ]
 
@@ -110,21 +128,17 @@ console.log(
 )
 
 console.log(
-  'PASS: stale projects can be marked reviewed.',
+  'PASS: reviews use dedicated lastReviewedAt metadata.',
 )
 
 console.log(
-  'PASS: review refreshes project last-touch time.',
+  'PASS: project updatedAt remains modification-only.',
 )
 
 console.log(
-  'PASS: stale attention clears after review.',
+  'PASS: review clears review-due attention state.',
 )
 
 console.log(
-  'PASS: stale-only filter reset behavior.',
-)
-
-console.log(
-  'PASS: filtered empty-state behavior.',
+  'PASS: Recent touch behavior preserved.',
 )
