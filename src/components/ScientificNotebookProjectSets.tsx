@@ -34,6 +34,14 @@ type ProjectDeadlineState =
   | 'scheduled'
   | 'complete'
 
+
+type ProjectSortMode =
+  | 'attention'
+  | 'due-date'
+  | 'progress'
+  | 'updated'
+  | 'name'
+
 function getTodayUtcDay(): number {
   const today =
     new Date()
@@ -147,6 +155,153 @@ function formatDueDate(
   )
 }
 
+function getProjectAttentionReasons(
+  projectSet:
+    NotebookProjectSet,
+): string[] {
+  if (
+    projectSet.status ===
+    'complete'
+  ) {
+    return []
+  }
+
+  const reasons:
+    string[] = []
+
+  const projectPriority =
+    normalizeProjectPriority(
+      projectSet.priority,
+    )
+
+  const deadlineState =
+    getDeadlineState(
+      projectSet,
+    )
+
+  if (
+    projectSet.status ===
+    'blocked'
+  ) {
+    reasons.push(
+      'Blocked',
+    )
+  }
+
+  if (
+    deadlineState ===
+    'overdue'
+  ) {
+    reasons.push(
+      'Overdue',
+    )
+  } else if (
+    deadlineState ===
+    'due-soon'
+  ) {
+    reasons.push(
+      'Due soon',
+    )
+  }
+
+  if (
+    projectPriority ===
+    'critical'
+  ) {
+    reasons.push(
+      'Critical priority',
+    )
+  } else if (
+    projectPriority ===
+    'high'
+  ) {
+    reasons.push(
+      'High priority',
+    )
+  }
+
+  return reasons
+}
+
+function getProjectAttentionScore(
+  projectSet:
+    NotebookProjectSet,
+): number {
+  if (
+    projectSet.status ===
+    'complete'
+  ) {
+    return 0
+  }
+
+  let score = 0
+
+  const projectPriority =
+    normalizeProjectPriority(
+      projectSet.priority,
+    )
+
+  const deadlineState =
+    getDeadlineState(
+      projectSet,
+    )
+
+  if (
+    projectPriority ===
+    'critical'
+  ) {
+    score += 40
+  } else if (
+    projectPriority ===
+    'high'
+  ) {
+    score += 20
+  }
+
+  if (
+    projectSet.status ===
+    'blocked'
+  ) {
+    score += 35
+  }
+
+  if (
+    deadlineState ===
+    'overdue'
+  ) {
+    score += 45
+  } else if (
+    deadlineState ===
+    'due-soon'
+  ) {
+    score += 25
+  }
+
+  if (
+    projectSet.status ===
+      'active'
+    && normalizeProjectProgress(
+      projectSet.progress,
+    ) <= 25
+  ) {
+    score += 10
+  }
+
+  return score
+}
+
+function getDueDateSortValue(
+  projectSet:
+    NotebookProjectSet,
+): string {
+  return (
+    normalizeProjectDueDate(
+      projectSet.dueDate,
+    )
+    ?? '9999-12-31'
+  )
+}
+
 function parseTags(
   value: string,
 ): string[] {
@@ -235,6 +390,21 @@ export function ScientificNotebookProjectSets({
     deadlineFilter,
     setDeadlineFilter,
   ] = useState('all')
+
+
+  const [
+    attentionOnly,
+    setAttentionOnly,
+  ] = useState(false)
+
+  const [
+    sortMode,
+    setSortMode,
+  ] = useState<
+    ProjectSortMode
+  >(
+    'attention',
+  )
 
   const [
     status,
@@ -379,6 +549,107 @@ export function ScientificNotebookProjectSets({
       ],
     )
 
+  const displayedProjectSets =
+    useMemo(
+      () => {
+        const next =
+          visibleProjectSets.filter(
+            (projectSet) =>
+              !attentionOnly
+              || getProjectAttentionReasons(
+                projectSet,
+              ).length > 0,
+          )
+
+        return [
+          ...next,
+        ].sort(
+          (
+            left,
+            right,
+          ) => {
+            if (
+              sortMode ===
+              'attention'
+            ) {
+              const scoreDifference =
+                getProjectAttentionScore(
+                  right,
+                )
+                - getProjectAttentionScore(
+                    left,
+                  )
+
+              if (
+                scoreDifference !== 0
+              ) {
+                return scoreDifference
+              }
+
+              return (
+                new Date(
+                  right.updatedAt,
+                ).getTime()
+                - new Date(
+                    left.updatedAt,
+                  ).getTime()
+              )
+            }
+
+            if (
+              sortMode ===
+              'due-date'
+            ) {
+              return getDueDateSortValue(
+                left,
+              ).localeCompare(
+                getDueDateSortValue(
+                  right,
+                ),
+              )
+            }
+
+            if (
+              sortMode ===
+              'progress'
+            ) {
+              return (
+                normalizeProjectProgress(
+                  left.progress,
+                )
+                - normalizeProjectProgress(
+                    right.progress,
+                  )
+              )
+            }
+
+            if (
+              sortMode ===
+              'name'
+            ) {
+              return left.name.localeCompare(
+                right.name,
+              )
+            }
+
+            return (
+              new Date(
+                right.updatedAt,
+              ).getTime()
+              - new Date(
+                  left.updatedAt,
+                ).getTime()
+            )
+          },
+        )
+      },
+      [
+        attentionOnly,
+        sortMode,
+        visibleProjectSets,
+      ],
+    )
+
   const portfolioMetrics =
     useMemo(
       () => {
@@ -499,6 +770,46 @@ export function ScientificNotebookProjectSets({
         return {
           high,
           critical,
+        }
+      },
+      [
+        projectSets,
+      ],
+    )
+
+  const attentionMetrics =
+    useMemo(
+      () => {
+        let needsAttention = 0
+        let urgent = 0
+
+        for (
+          const projectSet
+          of projectSets
+        ) {
+          const reasons =
+            getProjectAttentionReasons(
+              projectSet,
+            )
+
+          if (
+            reasons.length > 0
+          ) {
+            needsAttention += 1
+          }
+
+          if (
+            getProjectAttentionScore(
+              projectSet,
+            ) >= 60
+          ) {
+            urgent += 1
+          }
+        }
+
+        return {
+          needsAttention,
+          urgent,
         }
       },
       [
@@ -771,6 +1082,7 @@ export function ScientificNotebookProjectSets({
     setStatusFilter('all')
     setPriorityFilter('all')
     setDeadlineFilter('all')
+    setAttentionOnly(false)
   }
 
   return (
@@ -903,6 +1215,39 @@ export function ScientificNotebookProjectSets({
               {portfolioMetrics.complete}
             </strong>
           </button>
+        </div>
+
+        <div className="scientific-notebook-project-attention-summary">
+          <button
+            type="button"
+            aria-pressed={
+              attentionOnly
+            }
+            onClick={() =>
+              setAttentionOnly(
+                (current) =>
+                  !current,
+              )
+            }
+          >
+            <span>
+              Needs attention
+            </span>
+
+            <strong>
+              {attentionMetrics.needsAttention}
+            </strong>
+          </button>
+
+          <div>
+            <span>
+              Urgent
+            </span>
+
+            <strong>
+              {attentionMetrics.urgent}
+            </strong>
+          </div>
         </div>
 
         <div className="scientific-notebook-project-priority-summary">
@@ -1377,6 +1722,58 @@ export function ScientificNotebookProjectSets({
           </select>
         </label>
 
+        <label>
+          <span>
+            Sort
+          </span>
+
+          <select
+            value={
+              sortMode
+            }
+            onChange={(event) =>
+              setSortMode(
+                event.target.value as ProjectSortMode,
+              )
+            }
+          >
+            <option value="attention">
+              Attention first
+            </option>
+
+            <option value="due-date">
+              Due date
+            </option>
+
+            <option value="progress">
+              Lowest progress
+            </option>
+
+            <option value="updated">
+              Recently updated
+            </option>
+
+            <option value="name">
+              Name
+            </option>
+          </select>
+        </label>
+
+        <button
+          type="button"
+          aria-pressed={
+            attentionOnly
+          }
+          onClick={() =>
+            setAttentionOnly(
+              (current) =>
+                !current,
+            )
+          }
+        >
+          Attention only
+        </button>
+
         <button
           type="button"
           onClick={
@@ -1392,13 +1789,14 @@ export function ScientificNotebookProjectSets({
               'all'
             && deadlineFilter ===
               'all'
+            && !attentionOnly
           }
         >
           Clear filters
         </button>
 
         <span>
-          {visibleProjectSets.length}
+          {displayedProjectSets.length}
           {' '}
           visible
         </span>
@@ -1406,7 +1804,7 @@ export function ScientificNotebookProjectSets({
 
       {visibleProjectSets.length > 0 ? (
         <div className="scientific-notebook-project-set-list">
-          {visibleProjectSets.map(
+          {displayedProjectSets.map(
             (projectSet) => (
               <article
                 key={
@@ -1428,6 +1826,26 @@ export function ScientificNotebookProjectSets({
                     {projectSet.reportTitle}
                   </small>
 
+
+                  {getProjectAttentionReasons(
+                    projectSet,
+                  ).length > 0 ? (
+                    <div className="scientific-notebook-project-set-attention">
+                      {getProjectAttentionReasons(
+                        projectSet,
+                      ).map(
+                        (reason) => (
+                          <span
+                            key={
+                              reason
+                            }
+                          >
+                            {reason}
+                          </span>
+                        ),
+                      )}
+                    </div>
+                  ) : null}
 
                   <div
                     className="scientific-notebook-project-set-priority"
