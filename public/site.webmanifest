@@ -1,7 +1,7 @@
 {
   "name": "ChemE Toolkit",
   "short_name": "ChemE Toolkit",
-  "description": "A verified chemical engineering workspace with 380 calculators across 11 disciplines.",
+  "description": "A verified chemical engineering workspace with 473 calculators across 11 disciplines.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -20,5 +20,6 @@
       "type": "image/svg+xml",
       "purpose": "any"
     }
-  ]
+  ],
+  "id": "/"
 }

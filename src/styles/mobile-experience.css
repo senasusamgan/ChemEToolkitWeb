@@ -1879,3 +1879,72 @@
 }
 
 /* MOBILE EXPERIENCE FINAL V3 */
+
+
+@media (max-width: 768px) {
+  :root {
+    --mobile-safe-top:
+      env(
+        safe-area-inset-top,
+        0px
+      );
+    --mobile-safe-bottom:
+      env(
+        safe-area-inset-bottom,
+        0px
+      );
+  }
+
+  html {
+    scroll-padding-top:
+      calc(
+        var(--mobile-header-height)
+        + var(--mobile-safe-top)
+        + 12px
+      );
+  }
+
+  #root {
+    min-height: 100dvh;
+    box-sizing: border-box;
+    padding-bottom:
+      var(--mobile-safe-bottom);
+  }
+
+  .app-header.site-header {
+    height:
+      calc(
+        var(--mobile-header-height)
+        + var(--mobile-safe-top)
+      );
+    min-height:
+      calc(
+        var(--mobile-header-height)
+        + var(--mobile-safe-top)
+      );
+    box-sizing: border-box;
+    padding-top:
+      var(--mobile-safe-top);
+  }
+
+  .site-header .mobile-nav {
+    max-height:
+      calc(
+        100dvh
+        - var(--mobile-header-height)
+        - var(--mobile-safe-top)
+        - var(--mobile-safe-bottom)
+        - 24px
+      );
+  }
+
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+}
+
+/* MOBILE PLATFORM POLISH V5 */
