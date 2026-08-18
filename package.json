@@ -377,7 +377,8 @@
     "verify:scientific-notebook-final-audit-v31": "node scripts/verify-scientific-notebook-final-audit-v31.mjs",
     "verify:mobile-experience-v1": "node scripts/verify-mobile-experience-v1.mjs",
     "verify:mobile-calculator-experience-v2": "node scripts/verify-mobile-calculator-experience-v2.mjs",
-    "verify:mobile-experience-v3": "node scripts/verify-mobile-experience-v3.mjs"
+    "verify:mobile-experience-v3": "node scripts/verify-mobile-experience-v3.mjs",
+    "verify:mobile-release-contract-v4": "node scripts/verify-mobile-release-contract-v4.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
