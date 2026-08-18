@@ -1,0 +1,786 @@
+@media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden !important;
+  }
+
+  @supports (overflow-x: clip) {
+    html,
+    body,
+    #root {
+      overflow-x: clip !important;
+    }
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  main,
+  .app-shell,
+  .app-shell__main,
+  .home-dashboard,
+  .section,
+  .workspace-page-section,
+  .problem-solver-v7-section,
+  .site-footer-v6 {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .app-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+
+    width: 100% !important;
+    max-width: 100vw !important;
+
+    min-height:
+      calc(
+        64px
+        + env(
+          safe-area-inset-top,
+          0px
+        )
+      ) !important;
+
+    height:
+      calc(
+        64px
+        + env(
+          safe-area-inset-top,
+          0px
+        )
+      ) !important;
+
+    padding:
+      env(
+        safe-area-inset-top,
+        0px
+      )
+      14px
+      0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    gap: 10px !important;
+
+    overflow: visible !important;
+
+    background:
+      rgba(
+        251,
+        248,
+        239,
+        0.98
+      ) !important;
+  }
+
+  .app-header > .brand {
+    width: auto !important;
+    max-width:
+      calc(
+        100vw
+        - 86px
+      ) !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 8px !important;
+
+    flex:
+      1
+      1
+      auto !important;
+
+    overflow: hidden !important;
+
+    font-size: 1.05rem !important;
+    line-height: 1 !important;
+  }
+
+  .app-header .brand-logo {
+    width: 42px !important;
+    height: 42px !important;
+
+    min-width: 42px !important;
+
+    flex:
+      0
+      0
+      42px !important;
+  }
+
+  .app-header .brand-wordmark {
+    min-width: 0 !important;
+
+    display: block !important;
+
+    overflow: hidden !important;
+
+    color:
+      var(
+        --color-text-primary,
+        #0b3658
+      ) !important;
+
+    font-size: 1.08rem !important;
+    line-height: 1 !important;
+
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .app-header .app-header__nav {
+    width: 44px !important;
+    min-width: 44px !important;
+
+    margin-left: auto !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: flex-end !important;
+
+    gap: 0 !important;
+  }
+
+  .app-header .desktop-nav {
+    display: none !important;
+  }
+
+  .app-header .mobile-menu-toggle {
+    width: 44px !important;
+    min-width: 44px !important;
+
+    height: 44px !important;
+    min-height: 44px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    flex:
+      0
+      0
+      44px !important;
+
+    border:
+      1px solid
+      rgba(
+        7,
+        156,
+        153,
+        0.34
+      ) !important;
+
+    border-radius: 11px !important;
+
+    color:
+      var(
+        --teal-dark,
+        #007a79
+      ) !important;
+
+    background:
+      rgba(
+        255,
+        253,
+        250,
+        0.97
+      ) !important;
+
+    font-size: 1.35rem !important;
+    line-height: 1 !important;
+  }
+
+  .app-header .mobile-nav {
+    position: absolute !important;
+
+    top:
+      calc(
+        100%
+        + 6px
+      ) !important;
+
+    right: 12px !important;
+    left: 12px !important;
+
+    width: auto !important;
+    max-width: none !important;
+
+    max-height:
+      calc(
+        100dvh
+        - 92px
+        - env(
+          safe-area-inset-bottom,
+          0px
+        )
+      ) !important;
+
+    padding: 8px !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      ) !important;
+
+    gap: 4px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    border:
+      1px solid
+      rgba(
+        11,
+        54,
+        88,
+        0.12
+      ) !important;
+
+    border-radius: 14px !important;
+
+    background:
+      rgba(
+        255,
+        253,
+        250,
+        0.99
+      ) !important;
+
+    box-shadow:
+      0
+      20px
+      50px
+      rgba(
+        11,
+        54,
+        88,
+        0.16
+      ) !important;
+
+    backdrop-filter:
+      blur(
+        18px
+      );
+  }
+
+  .app-header .mobile-nav a {
+    width: 100% !important;
+
+    min-height: 48px !important;
+
+    padding:
+      0
+      14px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    border-radius: 9px !important;
+
+    color:
+      var(
+        --ink,
+        #0b3658
+      ) !important;
+
+    font-size: 0.92rem !important;
+    font-weight: 760 !important;
+
+    text-decoration: none !important;
+  }
+
+  .home-dashboard,
+  .home-workspace-hero,
+  .home-workspace-content,
+  .home-workspace-live,
+  .home-workspace-live-body,
+  .calculator-stage,
+  .calculator-stage-body {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .home-dashboard {
+    overflow-x: clip !important;
+  }
+
+  .calculators-section.section {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    padding-right:
+      var(
+        --mobile-gutter,
+        14px
+      ) !important;
+
+    padding-left:
+      var(
+        --mobile-gutter,
+        14px
+      ) !important;
+
+    overflow-x: clip !important;
+  }
+
+  .calculators-section.section
+  .calculator-list {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      ) !important;
+
+    gap: 10px !important;
+  }
+
+  .calculators-section.section
+  .calculator-list
+  article {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    padding:
+      14px !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      ) !important;
+
+    gap: 10px !important;
+
+    align-items: stretch !important;
+
+    overflow: hidden !important;
+
+    border-radius: 14px !important;
+  }
+
+  .calculators-section.section
+  .calculator-list
+  .list-index {
+    display: none !important;
+  }
+
+  .calculators-section.section
+  .calculator-list
+  article
+  > div:nth-child(2) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    grid-column: 1 !important;
+  }
+
+  .calculators-section.section
+  .calculator-list
+  article
+  > div:nth-child(2)
+  > p {
+    width: 100% !important;
+
+    margin:
+      0
+      0
+      5px !important;
+
+    font-size: 0.7rem !important;
+    line-height: 1.25 !important;
+
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  .calculators-section.section
+  .calculator-list
+  h3 {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin:
+      0
+      0
+      7px !important;
+
+    font-size: 1.24rem !important;
+    line-height: 1.12 !important;
+
+    letter-spacing:
+      -0.02em !important;
+
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
+  }
+
+  .calculators-section.section
+  .calculator-list
+  article
+  > div:nth-child(2)
+  > span {
+    width: 100% !important;
+
+    display: block !important;
+
+    color:
+      var(
+        --muted,
+        #557087
+      ) !important;
+
+    font-size: 0.78rem !important;
+    line-height: 1.45 !important;
+
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  .calculators-section.section
+  .calculator-list-item-actions {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    grid-column: 1 !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      44px
+      minmax(
+        0,
+        1fr
+      ) !important;
+
+    gap: 8px !important;
+
+    align-items: stretch !important;
+  }
+
+  .calculators-section.section
+  .calculator-list-favorite {
+    width: 44px !important;
+    min-width: 44px !important;
+
+    height: 46px !important;
+    min-height: 46px !important;
+
+    padding: 0 !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    border:
+      1px solid
+      rgba(
+        11,
+        54,
+        88,
+        0.13
+      ) !important;
+
+    border-radius: 10px !important;
+
+    background:
+      white !important;
+
+    font-size: 1.15rem !important;
+  }
+
+  .calculators-section.section
+  .calculator-list-item-actions
+  > button:last-child {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    min-height: 46px !important;
+
+    padding:
+      0
+      14px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    gap: 10px !important;
+
+    border:
+      1px solid
+      rgba(
+        7,
+        156,
+        153,
+        0.28
+      ) !important;
+
+    border-radius: 10px !important;
+
+    color:
+      var(
+        --teal-dark,
+        #007a79
+      ) !important;
+
+    background:
+      rgba(
+        223,
+        243,
+        239,
+        0.42
+      ) !important;
+
+    font-size: 0.83rem !important;
+    font-weight: 820 !important;
+
+    white-space: nowrap !important;
+  }
+
+  .calculators-section
+  .catalog-controls {
+    max-width: 100% !important;
+  }
+
+  .calculators-section
+  .catalog-controls
+  > select {
+    display: block !important;
+
+    width: 100% !important;
+  }
+
+  .calculators-section
+  .catalog-filter-chips {
+    display: none !important;
+  }
+
+  .site-footer-v6 {
+    --color-text-primary:
+      #f5f9fc;
+    --color-border-strong:
+      rgba(
+        255,
+        255,
+        255,
+        0.55
+      );
+    --color-accent:
+      #67d3cc;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    padding-right: 18px !important;
+    padding-left: 18px !important;
+
+    padding-bottom:
+      calc(
+        110px
+        + env(
+          safe-area-inset-bottom,
+          0px
+        )
+      ) !important;
+
+    overflow: hidden !important;
+  }
+
+  .site-footer-v6
+  .brand {
+    max-width: 100% !important;
+
+    color:
+      #f5f9fc !important;
+  }
+
+  .site-footer-v6
+  .brand-wordmark {
+    color:
+      #f5f9fc !important;
+
+    opacity: 1 !important;
+  }
+
+  .site-footer-v6
+  .brand-logo-frame {
+    stroke:
+      rgba(
+        241,
+        226,
+        192,
+        0.82
+      ) !important;
+  }
+
+  .site-footer-v6
+  .brand-logo-vessel,
+  .site-footer-v6
+  .brand-logo-process,
+  .site-footer-v6
+  .brand-logo-gauge {
+    stroke:
+      #e7f4fa !important;
+  }
+
+  .site-footer-v6
+  .brand-logo-valve {
+    fill:
+      #e7f4fa !important;
+  }
+
+  .site-footer-v6
+  .footer-v6-top,
+  .site-footer-v6
+  .footer-v6-links {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .site-footer-v6
+  .footer-v6-links {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+  }
+
+  .site-footer-v6
+  .footer-v6-links
+  a {
+    min-width: 0 !important;
+
+    overflow-wrap: anywhere !important;
+  }
+
+  button[
+    aria-label*="feedback" i
+  ],
+  button[
+    title*="feedback" i
+  ],
+  .feedback-panel-toggle,
+  .feedback-toggle,
+  .feedback-trigger,
+  .feedback-fab {
+    right: 14px !important;
+    left: auto !important;
+
+    bottom:
+      calc(
+        84px
+        + env(
+          safe-area-inset-bottom,
+          0px
+        )
+      ) !important;
+
+    width: 50px !important;
+    min-width: 50px !important;
+
+    height: 50px !important;
+    min-height: 50px !important;
+
+    border-radius:
+      50% !important;
+
+    z-index: 900 !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .app-header {
+    padding-right: 12px !important;
+    padding-left: 12px !important;
+  }
+
+  .app-header .brand-logo {
+    width: 40px !important;
+    height: 40px !important;
+
+    min-width: 40px !important;
+
+    flex-basis: 40px !important;
+  }
+
+  .app-header .brand-wordmark {
+    font-size: 1rem !important;
+  }
+
+  .calculators-section.section
+  .calculator-list
+  h3 {
+    font-size: 1.16rem !important;
+  }
+
+  .site-footer-v6 {
+    padding-right: 16px !important;
+    padding-left: 16px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .app-header .brand-wordmark {
+    font-size: 0.92rem !important;
+  }
+
+  .calculators-section.section
+  .calculator-list-item-actions {
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      ) !important;
+  }
+
+  .calculators-section.section
+  .calculator-list-favorite {
+    width: 100% !important;
+  }
+}
