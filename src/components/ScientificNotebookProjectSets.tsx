@@ -1303,6 +1303,48 @@ export function ScientificNotebookProjectSets({
     )
   }
 
+  async function exportReviewCalendar() {
+    const reviewableProjectSets =
+      projectSets.filter(
+        (projectSet) =>
+          projectSet.status !==
+            'complete',
+      )
+
+    if (
+      reviewableProjectSets.length ===
+      0
+    ) {
+      setStatus(
+        'No active project reviews are available for calendar export.',
+      )
+
+      return
+    }
+
+    const {
+      downloadProjectReviewCalendar,
+    } =
+      await import(
+        '../lib/scientificNotebookReviewCalendar'
+      )
+
+    downloadProjectReviewCalendar(
+      reviewableProjectSets,
+    )
+
+    setStatus(
+      `Review calendar exported for ${
+        reviewableProjectSets.length
+      } project${
+        reviewableProjectSets.length ===
+          1
+          ? ''
+          : 's'
+      }.`,
+    )
+  }
+
   async function printPortfolioReport() {
     if (
       projectSets.length ===
@@ -1938,6 +1980,23 @@ export function ScientificNotebookProjectSets({
             }
           >
             Print / PDF
+          </button>
+
+
+          <button
+            type="button"
+            disabled={
+              projectSets.every(
+                (projectSet) =>
+                  projectSet.status ===
+                    'complete',
+              )
+            }
+            onClick={
+              exportReviewCalendar
+            }
+          >
+            Review Calendar
           </button>
         </div>
       </div>
