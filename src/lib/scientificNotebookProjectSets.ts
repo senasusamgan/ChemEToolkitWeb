@@ -245,6 +245,47 @@ export function normalizeProjectReviewTimestamp(
   return normalized
 }
 
+export function getProjectSetActivityTimestamp(
+  projectSet:
+    NotebookProjectSet,
+): number {
+  const updatedAt =
+    new Date(
+      projectSet.updatedAt,
+    ).getTime()
+
+  const reviewedAt =
+    normalizeProjectReviewTimestamp(
+      projectSet.lastReviewedAt,
+    )
+
+  const reviewedTimestamp =
+    reviewedAt
+      ? new Date(
+          reviewedAt,
+        ).getTime()
+      : Number.NaN
+
+  const safeUpdatedAt =
+    Number.isFinite(
+      updatedAt,
+    )
+      ? updatedAt
+      : 0
+
+  const safeReviewedAt =
+    Number.isFinite(
+      reviewedTimestamp,
+    )
+      ? reviewedTimestamp
+      : 0
+
+  return Math.max(
+    safeUpdatedAt,
+    safeReviewedAt,
+  )
+}
+
 export function normalizeProjectPriority(
   priority:
     | NotebookProjectPriority
@@ -498,12 +539,12 @@ export function readNotebookProjectSets():
           left,
           right,
         ) =>
-          new Date(
-            right.updatedAt,
-          ).getTime()
-          - new Date(
-              left.updatedAt,
-            ).getTime(),
+          getProjectSetActivityTimestamp(
+            right,
+          )
+          - getProjectSetActivityTimestamp(
+              left,
+            ),
       )
   } catch {
     return []
@@ -568,12 +609,63 @@ export function mergeNotebookProjectSets(
           normalized.updatedAt,
         ).getTime()
 
+      const safeExistingUpdated =
+        Number.isFinite(
+          existingUpdated,
+        )
+          ? existingUpdated
+          : 0
+
+      const safeIncomingUpdated =
+        Number.isFinite(
+          incomingUpdated,
+        )
+          ? incomingUpdated
+          : 0
+
+      const preferred =
+        safeIncomingUpdated >=
+          safeExistingUpdated
+          ? normalized
+          : existing
+
+      const existingReviewedAt =
+        normalizeProjectReviewTimestamp(
+          existing.lastReviewedAt,
+        )
+
+      const incomingReviewedAt =
+        normalizeProjectReviewTimestamp(
+          normalized.lastReviewedAt,
+        )
+
+      const existingReviewTimestamp =
+        existingReviewedAt
+          ? new Date(
+              existingReviewedAt,
+            ).getTime()
+          : 0
+
+      const incomingReviewTimestamp =
+        incomingReviewedAt
+          ? new Date(
+              incomingReviewedAt,
+            ).getTime()
+          : 0
+
+      const lastReviewedAt =
+        incomingReviewTimestamp >
+          existingReviewTimestamp
+          ? incomingReviewedAt
+          : existingReviewedAt
+
       merged.set(
         normalized.id,
-        incomingUpdated >=
-          existingUpdated
-          ? normalized
-          : existing,
+        {
+          ...preferred,
+
+          lastReviewedAt,
+        },
       )
     }
 
@@ -592,12 +684,12 @@ export function mergeNotebookProjectSets(
       left,
       right,
     ) =>
-      new Date(
-        right.updatedAt,
-      ).getTime()
-      - new Date(
-          left.updatedAt,
-        ).getTime(),
+      getProjectSetActivityTimestamp(
+        right,
+      )
+      - getProjectSetActivityTimestamp(
+          left,
+        ),
   )
 }
 
