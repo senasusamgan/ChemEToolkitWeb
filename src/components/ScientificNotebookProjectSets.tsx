@@ -155,6 +155,72 @@ function formatDueDate(
   )
 }
 
+function getProjectAgeDays(
+  projectSet:
+    NotebookProjectSet,
+): number {
+  const updatedAt =
+    new Date(
+      projectSet.updatedAt,
+    ).getTime()
+
+  if (
+    !Number.isFinite(
+      updatedAt,
+    )
+  ) {
+    return 0
+  }
+
+  return Math.max(
+    0,
+    Math.floor(
+      (
+        Date.now()
+        - updatedAt
+      )
+      / 86_400_000,
+    ),
+  )
+}
+
+function isProjectStale(
+  projectSet:
+    NotebookProjectSet,
+): boolean {
+  return (
+    projectSet.status !==
+      'complete'
+    && getProjectAgeDays(
+      projectSet,
+    ) >= 14
+  )
+}
+
+function formatProjectAge(
+  projectSet:
+    NotebookProjectSet,
+): string {
+  const days =
+    getProjectAgeDays(
+      projectSet,
+    )
+
+  if (
+    days === 0
+  ) {
+    return 'Updated today'
+  }
+
+  if (
+    days === 1
+  ) {
+    return 'Updated 1 day ago'
+  }
+
+  return `Updated ${days} days ago`
+}
+
 function getProjectAttentionReasons(
   projectSet:
     NotebookProjectSet,
@@ -232,6 +298,16 @@ function getProjectAttentionReasons(
   ) {
     reasons.push(
       'Next action missing',
+    )
+  }
+
+  if (
+    isProjectStale(
+      projectSet,
+    )
+  ) {
+    reasons.push(
+      'Stale update',
     )
   }
 
@@ -313,6 +389,14 @@ function getProjectAttentionScore(
       ?.trim()
   ) {
     score += 15
+  }
+
+  if (
+    isProjectStale(
+      projectSet,
+    )
+  ) {
+    score += 10
   }
 
   return score
@@ -429,6 +513,12 @@ export function ScientificNotebookProjectSets({
   const [
     attentionOnly,
     setAttentionOnly,
+  ] = useState(false)
+
+
+  const [
+    staleOnly,
+    setStaleOnly,
   ] = useState(false)
 
   const [
@@ -589,11 +679,27 @@ export function ScientificNotebookProjectSets({
       () => {
         const next =
           visibleProjectSets.filter(
-            (projectSet) =>
-              !attentionOnly
-              || getProjectAttentionReasons(
-                projectSet,
-              ).length > 0,
+            (projectSet) => {
+              if (
+                attentionOnly
+                && getProjectAttentionReasons(
+                  projectSet,
+                ).length === 0
+              ) {
+                return false
+              }
+
+              if (
+                staleOnly
+                && !isProjectStale(
+                  projectSet,
+                )
+              ) {
+                return false
+              }
+
+              return true
+            },
           )
 
         return [
@@ -680,6 +786,7 @@ export function ScientificNotebookProjectSets({
       },
       [
         attentionOnly,
+        staleOnly,
         sortMode,
         visibleProjectSets,
       ],
@@ -818,6 +925,7 @@ export function ScientificNotebookProjectSets({
         let needsAttention = 0
         let urgent = 0
         let missingNextAction = 0
+        let stale = 0
 
         for (
           const projectSet
@@ -855,12 +963,21 @@ export function ScientificNotebookProjectSets({
           ) {
             missingNextAction += 1
           }
+
+          if (
+            isProjectStale(
+              projectSet,
+            )
+          ) {
+            stale += 1
+          }
         }
 
         return {
           needsAttention,
           urgent,
           missingNextAction,
+          stale,
         }
       },
       [
@@ -1431,6 +1548,7 @@ export function ScientificNotebookProjectSets({
     setPriorityFilter('all')
     setDeadlineFilter('all')
     setAttentionOnly(false)
+    setStaleOnly(false)
   }
 
   return (
@@ -1664,6 +1782,28 @@ export function ScientificNotebookProjectSets({
               {attentionMetrics.missingNextAction}
             </strong>
           </div>
+
+
+          <button
+            type="button"
+            aria-pressed={
+              staleOnly
+            }
+            onClick={() =>
+              setStaleOnly(
+                (current) =>
+                  !current,
+              )
+            }
+          >
+            <span>
+              Stale 14d+
+            </span>
+
+            <strong>
+              {attentionMetrics.stale}
+            </strong>
+          </button>
         </div>
 
         <div className="scientific-notebook-project-priority-summary">
@@ -2293,6 +2433,21 @@ export function ScientificNotebookProjectSets({
                       </strong>
                     </div>
                   ) : null}
+
+                  <div
+                    className="scientific-notebook-project-set-updated"
+                    data-project-stale={
+                      isProjectStale(
+                        projectSet,
+                      )
+                    }
+                  >
+                    <span>
+                      {formatProjectAge(
+                        projectSet,
+                      )}
+                    </span>
+                  </div>
 
                   <div
                     className="scientific-notebook-project-set-priority"
