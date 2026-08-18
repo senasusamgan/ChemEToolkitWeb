@@ -924,6 +924,78 @@ export function ScientificNotebookProjectSets({
     )
   }
 
+  async function printPortfolioReport() {
+    if (
+      projectSets.length ===
+      0
+    ) {
+      setStatus(
+        'Save at least one project set before printing the portfolio.',
+      )
+
+      return
+    }
+
+    const printWindow =
+      window.open(
+        '',
+        '_blank',
+      )
+
+    if (!printWindow) {
+      setStatus(
+        'Allow pop-ups to open the printable portfolio report.',
+      )
+
+      return
+    }
+
+    printWindow.document.open()
+
+    printWindow.document.write(
+      '<!doctype html><title>Preparing portfolio</title><p>Preparing portfolio report…</p>',
+    )
+
+    printWindow.document.close()
+
+    try {
+      const {
+        buildProjectPortfolioHtml,
+      } =
+        await import(
+          '../lib/scientificNotebookPortfolioReport'
+        )
+
+      printWindow.document.open()
+
+      printWindow.document.write(
+        buildProjectPortfolioHtml(
+          projectSets,
+        ),
+      )
+
+      printWindow.document.close()
+      printWindow.focus()
+
+      window.setTimeout(
+        () => {
+          printWindow.print()
+        },
+        150,
+      )
+
+      setStatus(
+        'Portfolio opened for printing or PDF export.',
+      )
+    } catch {
+      printWindow.close()
+
+      setStatus(
+        'Portfolio print report could not be generated.',
+      )
+    }
+  }
+
   function persist(
     nextProjectSets:
       NotebookProjectSet[],
@@ -1421,6 +1493,20 @@ export function ScientificNotebookProjectSets({
             }
           >
             Export CSV
+          </button>
+
+
+          <button
+            type="button"
+            disabled={
+              projectSets.length ===
+              0
+            }
+            onClick={
+              printPortfolioReport
+            }
+          >
+            Print / PDF
           </button>
         </div>
       </div>
