@@ -46,6 +46,13 @@ type ProjectSortMode =
   | 'updated'
   | 'name'
 
+type ProjectHealthState =
+  | 'critical'
+  | 'watch'
+  | 'on-track'
+  | 'complete'
+
+
 function getTodayUtcDay(): number {
   const today =
     new Date()
@@ -611,6 +618,37 @@ function getProjectAttentionScore(
   }
 
   return score
+}
+
+function getProjectHealthState(
+  projectSet:
+    NotebookProjectSet,
+): ProjectHealthState {
+  if (
+    projectSet.status ===
+    'complete'
+  ) {
+    return 'complete'
+  }
+
+  const score =
+    getProjectAttentionScore(
+      projectSet,
+    )
+
+  if (
+    score >= 60
+  ) {
+    return 'critical'
+  }
+
+  if (
+    score > 0
+  ) {
+    return 'watch'
+  }
+
+  return 'on-track'
 }
 
 function getDueDateSortValue(
@@ -1242,6 +1280,120 @@ export function ScientificNotebookProjectSets({
           reviewSoon,
         }
       },
+      [
+        projectSets,
+      ],
+    )
+
+  const portfolioHealth =
+    useMemo(
+      () => {
+        let critical = 0
+        let watch = 0
+        let onTrack = 0
+        let complete = 0
+
+        for (
+          const projectSet
+          of projectSets
+        ) {
+          const health =
+            getProjectHealthState(
+              projectSet,
+            )
+
+          if (
+            health ===
+            'critical'
+          ) {
+            critical += 1
+          } else if (
+            health ===
+            'watch'
+          ) {
+            watch += 1
+          } else if (
+            health ===
+            'complete'
+          ) {
+            complete += 1
+          } else {
+            onTrack += 1
+          }
+        }
+
+        return {
+          critical,
+          watch,
+          onTrack,
+          complete,
+        }
+      },
+      [
+        projectSets,
+      ],
+    )
+
+  const focusProjects =
+    useMemo(
+      () =>
+        [
+          ...projectSets,
+        ]
+          .filter(
+            (projectSet) =>
+              projectSet.status !==
+                'complete'
+              && getProjectAttentionReasons(
+                projectSet,
+              ).length > 0,
+          )
+          .sort(
+            (
+              left,
+              right,
+            ) => {
+              const scoreDifference =
+                getProjectAttentionScore(
+                  right,
+                )
+                - getProjectAttentionScore(
+                    left,
+                  )
+
+              if (
+                scoreDifference !== 0
+              ) {
+                return scoreDifference
+              }
+
+              const reviewDifference =
+                getProjectNextReviewTimestamp(
+                  left,
+                )
+                - getProjectNextReviewTimestamp(
+                    right,
+                  )
+
+              if (
+                reviewDifference !== 0
+              ) {
+                return reviewDifference
+              }
+
+              return getDueDateSortValue(
+                left,
+              ).localeCompare(
+                getDueDateSortValue(
+                  right,
+                ),
+              )
+            },
+          )
+          .slice(
+            0,
+            3,
+          ),
       [
         projectSets,
       ],
@@ -2005,6 +2157,137 @@ export function ScientificNotebookProjectSets({
         className="scientific-notebook-project-portfolio"
         aria-label="Project portfolio overview"
       >
+        <div
+          className="scientific-notebook-project-dashboard"
+          aria-label="Portfolio health dashboard"
+        >
+          <div className="scientific-notebook-project-health-overview">
+            <div>
+              <span>
+                Critical
+              </span>
+
+              <strong>
+                {portfolioHealth.critical}
+              </strong>
+            </div>
+
+            <div>
+              <span>
+                Watch
+              </span>
+
+              <strong>
+                {portfolioHealth.watch}
+              </strong>
+            </div>
+
+            <div>
+              <span>
+                On track
+              </span>
+
+              <strong>
+                {portfolioHealth.onTrack}
+              </strong>
+            </div>
+
+            <div>
+              <span>
+                Complete
+              </span>
+
+              <strong>
+                {portfolioHealth.complete}
+              </strong>
+            </div>
+          </div>
+
+          <div className="scientific-notebook-project-focus">
+            <header>
+              <div>
+                <span>
+                  Focus next
+                </span>
+
+                <strong>
+                  {focusProjects.length}
+                </strong>
+              </div>
+
+              <small>
+                Highest-priority project signals
+              </small>
+            </header>
+
+            {focusProjects.length > 0 ? (
+              <div className="scientific-notebook-project-focus-list">
+                {focusProjects.map(
+                  (focusProject) => (
+                    <article
+                      key={
+                        focusProject.id
+                      }
+                      data-project-health={
+                        getProjectHealthState(
+                          focusProject,
+                        )
+                      }
+                    >
+                      <div>
+                        <strong>
+                          {focusProject.name}
+                        </strong>
+
+                        <span>
+                          Score
+                          {' '}
+                          {getProjectAttentionScore(
+                            focusProject,
+                          )}
+                        </span>
+                      </div>
+
+                      <div className="scientific-notebook-project-focus-reasons">
+                        {getProjectAttentionReasons(
+                          focusProject,
+                        )
+                          .slice(
+                            0,
+                            3,
+                          )
+                          .map(
+                            (reason) => (
+                              <span
+                                key={
+                                  reason
+                                }
+                              >
+                                {reason}
+                              </span>
+                            ),
+                          )}
+                      </div>
+
+                      <p>
+                        {focusProject.nextAction
+                          ?.trim()
+                          || formatProjectReviewSchedule(
+                            focusProject,
+                          )}
+                      </p>
+                    </article>
+                  ),
+                )}
+              </div>
+            ) : (
+              <p className="scientific-notebook-project-focus-clear">
+                No active project currently needs attention.
+              </p>
+            )}
+          </div>
+        </div>
+
         <div className="scientific-notebook-project-portfolio-metrics">
           <button
             type="button"

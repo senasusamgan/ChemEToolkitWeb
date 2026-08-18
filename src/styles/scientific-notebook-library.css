@@ -1577,3 +1577,138 @@
     grid-template-columns: 1fr;
   }
 }
+
+.scientific-notebook-project-dashboard {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 0.85fr)
+    minmax(0, 1.65fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.scientific-notebook-project-health-overview {
+  display: grid;
+  grid-template-columns:
+    1fr
+    1fr;
+  gap: 0.55rem;
+}
+
+.scientific-notebook-project-health-overview > div {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+  padding: 0.7rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 10px;
+}
+
+.scientific-notebook-project-health-overview span {
+  font-size: 0.67rem;
+  opacity: 0.65;
+}
+
+.scientific-notebook-project-health-overview strong {
+  font-size: 1.05rem;
+}
+
+.scientific-notebook-project-focus {
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 10px;
+}
+
+.scientific-notebook-project-focus > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.65rem;
+}
+
+.scientific-notebook-project-focus > header > div {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.scientific-notebook-project-focus > header span,
+.scientific-notebook-project-focus > header small {
+  font-size: 0.67rem;
+  opacity: 0.65;
+}
+
+.scientific-notebook-project-focus-list {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+  gap: 0.55rem;
+}
+
+.scientific-notebook-project-focus-list article {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.65rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 8px;
+}
+
+.scientific-notebook-project-focus-list article[data-project-health="critical"] {
+  border-width: 2px;
+}
+
+.scientific-notebook-project-focus-list article > div:first-child {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.scientific-notebook-project-focus-list article > div:first-child span {
+  flex: 0 0 auto;
+  font-size: 0.62rem;
+  opacity: 0.65;
+}
+
+.scientific-notebook-project-focus-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.scientific-notebook-project-focus-reasons span {
+  padding: 0.18rem 0.35rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 999px;
+  font-size: 0.58rem;
+}
+
+.scientific-notebook-project-focus-list p,
+.scientific-notebook-project-focus-clear {
+  margin: 0;
+  font-size: 0.68rem;
+  opacity: 0.75;
+}
+
+@media (max-width: 1000px) {
+  .scientific-notebook-project-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .scientific-notebook-project-focus-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .scientific-notebook-project-health-overview {
+    grid-template-columns: 1fr;
+  }
+}
