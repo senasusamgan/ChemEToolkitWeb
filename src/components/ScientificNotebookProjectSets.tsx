@@ -41,6 +41,7 @@ type ProjectDeadlineState =
 type ProjectSortMode =
   | 'attention'
   | 'due-date'
+  | 'review-date'
   | 'progress'
   | 'updated'
   | 'name'
@@ -217,6 +218,145 @@ function getProjectAgeDays(
         - touchAt
       )
       / 86_400_000,
+    ),
+  )
+}
+
+function getProjectReviewDaysRemaining(
+  projectSet:
+    NotebookProjectSet,
+): number {
+  if (
+    projectSet.status ===
+    'complete'
+  ) {
+    return Number.POSITIVE_INFINITY
+  }
+
+  return (
+    normalizeProjectReviewInterval(
+      projectSet.reviewIntervalDays,
+    )
+    - getProjectAgeDays(
+        projectSet,
+      )
+  )
+}
+
+function isProjectReviewDueSoon(
+  projectSet:
+    NotebookProjectSet,
+): boolean {
+  const daysRemaining =
+    getProjectReviewDaysRemaining(
+      projectSet,
+    )
+
+  return (
+    Number.isFinite(
+      daysRemaining,
+    )
+    && daysRemaining > 0
+    && daysRemaining <= 3
+  )
+}
+
+function getProjectNextReviewTimestamp(
+  projectSet:
+    NotebookProjectSet,
+): number {
+  if (
+    projectSet.status ===
+    'complete'
+  ) {
+    return Number.POSITIVE_INFINITY
+  }
+
+  return (
+    getProjectTouchTimestamp(
+      projectSet,
+    )
+    + normalizeProjectReviewInterval(
+        projectSet.reviewIntervalDays,
+      )
+      * 86_400_000
+  )
+}
+
+function formatProjectReviewSchedule(
+  projectSet:
+    NotebookProjectSet,
+): string {
+  if (
+    projectSet.status ===
+    'complete'
+  ) {
+    return 'Review complete'
+  }
+
+  const daysRemaining =
+    getProjectReviewDaysRemaining(
+      projectSet,
+    )
+
+  if (
+    daysRemaining === 0
+  ) {
+    return 'Review due today'
+  }
+
+  if (
+    daysRemaining < 0
+  ) {
+    const overdueDays =
+      Math.abs(
+        daysRemaining,
+      )
+
+    return overdueDays === 1
+      ? 'Review overdue by 1 day'
+      : `Review overdue by ${overdueDays} days`
+  }
+
+  if (
+    daysRemaining === 1
+  ) {
+    return 'Review in 1 day'
+  }
+
+  return `Review in ${daysRemaining} days`
+}
+
+function formatProjectNextReviewDate(
+  projectSet:
+    NotebookProjectSet,
+): string | null {
+  const timestamp =
+    getProjectNextReviewTimestamp(
+      projectSet,
+    )
+
+  if (
+    !Number.isFinite(
+      timestamp,
+    )
+  ) {
+    return null
+  }
+
+  return new Intl.DateTimeFormat(
+    undefined,
+    {
+      year:
+        'numeric',
+      month:
+        'short',
+      day:
+        'numeric',
+    },
+  ).format(
+    new Date(
+      timestamp,
     ),
   )
 }
@@ -602,6 +742,12 @@ export function ScientificNotebookProjectSets({
     setStaleOnly,
   ] = useState(false)
 
+
+  const [
+    reviewSoonOnly,
+    setReviewSoonOnly,
+  ] = useState(false)
+
   const [
     sortMode,
     setSortMode,
@@ -779,6 +925,15 @@ export function ScientificNotebookProjectSets({
                 return false
               }
 
+              if (
+                reviewSoonOnly
+                && !isProjectReviewDueSoon(
+                  projectSet,
+                )
+              ) {
+                return false
+              }
+
               return true
             },
           )
@@ -833,6 +988,20 @@ export function ScientificNotebookProjectSets({
 
             if (
               sortMode ===
+              'review-date'
+            ) {
+              return (
+                getProjectNextReviewTimestamp(
+                  left,
+                )
+                - getProjectNextReviewTimestamp(
+                    right,
+                  )
+              )
+            }
+
+            if (
+              sortMode ===
               'progress'
             ) {
               return (
@@ -868,6 +1037,7 @@ export function ScientificNotebookProjectSets({
       [
         attentionOnly,
         staleOnly,
+        reviewSoonOnly,
         sortMode,
         visibleProjectSets,
       ],
@@ -1007,6 +1177,7 @@ export function ScientificNotebookProjectSets({
         let urgent = 0
         let missingNextAction = 0
         let stale = 0
+        let reviewSoon = 0
 
         for (
           const projectSet
@@ -1052,6 +1223,15 @@ export function ScientificNotebookProjectSets({
           ) {
             stale += 1
           }
+
+
+          if (
+            isProjectReviewDueSoon(
+              projectSet,
+            )
+          ) {
+            reviewSoon += 1
+          }
         }
 
         return {
@@ -1059,6 +1239,7 @@ export function ScientificNotebookProjectSets({
           urgent,
           missingNextAction,
           stale,
+          reviewSoon,
         }
       },
       [
@@ -1680,6 +1861,7 @@ export function ScientificNotebookProjectSets({
     setDeadlineFilter('all')
     setAttentionOnly(false)
     setStaleOnly(false)
+    setReviewSoonOnly(false)
   }
 
   return (
@@ -1933,6 +2115,28 @@ export function ScientificNotebookProjectSets({
 
             <strong>
               {attentionMetrics.stale}
+            </strong>
+          </button>
+
+
+          <button
+            type="button"
+            aria-pressed={
+              reviewSoonOnly
+            }
+            onClick={() =>
+              setReviewSoonOnly(
+                (current) =>
+                  !current,
+              )
+            }
+          >
+            <span>
+              Review in 3d
+            </span>
+
+            <strong>
+              {attentionMetrics.reviewSoon}
             </strong>
           </button>
         </div>
@@ -2486,6 +2690,10 @@ export function ScientificNotebookProjectSets({
               Due date
             </option>
 
+            <option value="review-date">
+              Next review
+            </option>
+
             <option value="progress">
               Lowest progress
             </option>
@@ -2532,6 +2740,7 @@ export function ScientificNotebookProjectSets({
               'all'
             && !attentionOnly
             && !staleOnly
+            && !reviewSoonOnly
           }
         >
           Clear filters
@@ -2610,6 +2819,35 @@ export function ScientificNotebookProjectSets({
                       <strong>
                         {formatReviewTimestamp(
                           projectSet.lastReviewedAt,
+                        )}
+                      </strong>
+                    </div>
+                  ) : null}
+
+                  {projectSet.status !==
+                    'complete' ? (
+                    <div
+                      className="scientific-notebook-project-review-schedule"
+                      data-review-due={
+                        isProjectStale(
+                          projectSet,
+                        )
+                      }
+                      data-review-soon={
+                        isProjectReviewDueSoon(
+                          projectSet,
+                        )
+                      }
+                    >
+                      <span>
+                        {formatProjectReviewSchedule(
+                          projectSet,
+                        )}
+                      </span>
+
+                      <strong>
+                        {formatProjectNextReviewDate(
+                          projectSet,
                         )}
                       </strong>
                     </div>
