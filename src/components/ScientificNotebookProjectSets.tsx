@@ -1004,6 +1004,162 @@ export function ScientificNotebookProjectSets({
     clearEditor()
   }
 
+  function quickUpdateProject(
+    projectSet:
+      NotebookProjectSet,
+    updates:
+      Partial<
+        Pick<
+          NotebookProjectSet,
+          'status'
+          | 'progress'
+        >
+      >,
+  ) {
+    const nextStatus =
+      updates.status
+      ?? projectSet.status
+      ?? 'planned'
+
+    const nextProgress =
+      nextStatus ===
+        'complete'
+        ? 100
+        : normalizeProjectProgress(
+            updates.progress
+            ?? projectSet.progress,
+          )
+
+    const updated:
+      NotebookProjectSet = {
+        ...projectSet,
+
+        status:
+          nextStatus,
+
+        progress:
+          nextProgress,
+
+        updatedAt:
+          new Date()
+            .toISOString(),
+      }
+
+    persist(
+      projectSets.map(
+        (item) =>
+          item.id ===
+            projectSet.id
+            ? updated
+            : item,
+      ),
+    )
+
+    setStatus(
+      `Project "${projectSet.name}" updated.`,
+    )
+  }
+
+  function increaseProjectProgress(
+    projectSet:
+      NotebookProjectSet,
+  ) {
+    if (
+      projectSet.status ===
+      'complete'
+    ) {
+      return
+    }
+
+    const nextProgress =
+      normalizeProjectProgress(
+        (
+          projectSet.progress
+          ?? 0
+        )
+        + 10,
+      )
+
+    quickUpdateProject(
+      projectSet,
+      {
+        progress:
+          nextProgress,
+
+        status:
+          projectSet.status ===
+            'planned'
+            ? 'active'
+            : (
+                projectSet.status
+                ?? 'active'
+              ),
+      },
+    )
+  }
+
+  function toggleBlockedProject(
+    projectSet:
+      NotebookProjectSet,
+  ) {
+    if (
+      projectSet.status ===
+      'complete'
+    ) {
+      return
+    }
+
+    quickUpdateProject(
+      projectSet,
+      {
+        status:
+          projectSet.status ===
+            'blocked'
+            ? 'active'
+            : 'blocked',
+      },
+    )
+  }
+
+  function toggleCompleteProject(
+    projectSet:
+      NotebookProjectSet,
+  ) {
+    if (
+      projectSet.status ===
+      'complete'
+    ) {
+      quickUpdateProject(
+        projectSet,
+        {
+          status:
+            'active',
+
+          progress:
+            Math.min(
+              90,
+              normalizeProjectProgress(
+                projectSet.progress,
+              ),
+            ),
+        },
+      )
+
+      return
+    }
+
+    quickUpdateProject(
+      projectSet,
+      {
+        status:
+          'complete',
+
+        progress:
+          100,
+      },
+    )
+  }
+
   function deleteProjectSet(
     projectSet:
       NotebookProjectSet,
@@ -1971,6 +2127,76 @@ export function ScientificNotebookProjectSets({
                   >
                     Load
                   </button>
+
+                  <div
+                    className="scientific-notebook-project-quick-actions"
+                    aria-label={`${projectSet.name} quick project updates`}
+                  >
+                    {projectSet.status ===
+                      'planned' ? (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          quickUpdateProject(
+                            projectSet,
+                            {
+                              status:
+                                'active',
+                            },
+                          )
+                        }
+                      >
+                        Start
+                      </button>
+                    ) : null}
+
+                    <button
+                      type="button"
+                      disabled={
+                        projectSet.status ===
+                        'complete'
+                      }
+                      onClick={() =>
+                        increaseProjectProgress(
+                          projectSet,
+                        )
+                      }
+                    >
+                      +10%
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={
+                        projectSet.status ===
+                        'complete'
+                      }
+                      onClick={() =>
+                        toggleBlockedProject(
+                          projectSet,
+                        )
+                      }
+                    >
+                      {projectSet.status ===
+                        'blocked'
+                        ? 'Resume'
+                        : 'Block'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        toggleCompleteProject(
+                          projectSet,
+                        )
+                      }
+                    >
+                      {projectSet.status ===
+                        'complete'
+                        ? 'Reopen'
+                        : 'Complete'}
+                    </button>
+                  </div>
 
                   <button
                     type="button"
