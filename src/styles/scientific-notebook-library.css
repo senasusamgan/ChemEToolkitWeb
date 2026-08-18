@@ -1370,3 +1370,65 @@
     grid-template-columns: 1fr;
   }
 }
+
+.scientific-notebook-project-portfolio-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line, #d7dde5);
+  border-radius: 10px;
+}
+
+.scientific-notebook-project-portfolio-actions > div:first-child {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.scientific-notebook-project-portfolio-actions strong {
+  font-size: 0.74rem;
+}
+
+.scientific-notebook-project-portfolio-actions span {
+  font-size: 0.66rem;
+  opacity: 0.66;
+}
+
+.scientific-notebook-project-portfolio-actions > div:last-child {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.scientific-notebook-project-portfolio-actions button {
+  min-height: 2rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.68rem;
+}
+
+.scientific-notebook-project-portfolio-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+@media (max-width: 720px) {
+  .scientific-notebook-project-portfolio-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .scientific-notebook-project-portfolio-actions > div:last-child {
+    display: grid;
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .scientific-notebook-project-portfolio-actions > div:last-child {
+    grid-template-columns: 1fr;
+  }
+}

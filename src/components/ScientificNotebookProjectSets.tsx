@@ -868,6 +868,62 @@ export function ScientificNotebookProjectSets({
       ],
     )
 
+  async function exportPortfolioMarkdown() {
+    if (
+      projectSets.length ===
+      0
+    ) {
+      setStatus(
+        'Save at least one project set before exporting the portfolio.',
+      )
+
+      return
+    }
+
+    const {
+      downloadProjectPortfolioMarkdown,
+    } =
+      await import(
+        '../lib/scientificNotebookPortfolioReport'
+      )
+
+    downloadProjectPortfolioMarkdown(
+      projectSets,
+    )
+
+    setStatus(
+      'Project portfolio exported as Markdown.',
+    )
+  }
+
+  async function exportPortfolioCsv() {
+    if (
+      projectSets.length ===
+      0
+    ) {
+      setStatus(
+        'Save at least one project set before exporting the portfolio.',
+      )
+
+      return
+    }
+
+    const {
+      downloadProjectPortfolioCsv,
+    } =
+      await import(
+        '../lib/scientificNotebookPortfolioReport'
+      )
+
+    downloadProjectPortfolioCsv(
+      projectSets,
+    )
+
+    setStatus(
+      'Project portfolio exported as CSV.',
+    )
+  }
+
   function persist(
     nextProjectSets:
       NotebookProjectSet[],
@@ -1325,6 +1381,49 @@ export function ScientificNotebookProjectSets({
           {status}
         </p>
       </header>
+
+      <div
+        className="scientific-notebook-project-portfolio-actions"
+        aria-label="Project portfolio export"
+      >
+        <div>
+          <strong>
+            Portfolio snapshot
+          </strong>
+
+          <span>
+            Export project status, priority, progress, deadlines and next actions.
+          </span>
+        </div>
+
+        <div>
+          <button
+            type="button"
+            disabled={
+              projectSets.length ===
+              0
+            }
+            onClick={
+              exportPortfolioMarkdown
+            }
+          >
+            Export Markdown
+          </button>
+
+          <button
+            type="button"
+            disabled={
+              projectSets.length ===
+              0
+            }
+            onClick={
+              exportPortfolioCsv
+            }
+          >
+            Export CSV
+          </button>
+        </div>
+      </div>
 
       <section
         className="scientific-notebook-project-portfolio"
