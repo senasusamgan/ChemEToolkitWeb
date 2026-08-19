@@ -2,8 +2,6 @@ import {
   readFileSync,
 } from 'node:fs'
 
-const EXPECTED_CALCULATOR_COUNT = 475
-
 const catalog =
   readFileSync(
     'src/data/calculators.ts',
@@ -68,17 +66,8 @@ const unknown =
 const errors = []
 
 if (
-  catalogIds.length !==
-  EXPECTED_CALCULATOR_COUNT
-) {
-  errors.push(
-    `catalog=${catalogIds.length}`,
-  )
-}
-
-if (
   routeIds.length !==
-  EXPECTED_CALCULATOR_COUNT
+  catalogIds.length
 ) {
   errors.push(
     `routes=${routeIds.length}`,
@@ -87,7 +76,7 @@ if (
 
 if (
   routeSet.size !==
-  EXPECTED_CALCULATOR_COUNT
+  catalogIds.length
 ) {
   errors.push(
     `unique routes=${routeSet.size}`,
@@ -157,10 +146,10 @@ console.log(
   'CALCULATOR ROUTING VERIFICATION PASSED',
 )
 console.log(
-  'Catalog calculators: 475',
+  `Catalog calculators: ${catalogIds.length}`,
 )
 console.log(
-  'Native routes: 475',
+  `Native routes: ${routeSet.size}`,
 )
 console.log(
   'Legacy routes: 0',

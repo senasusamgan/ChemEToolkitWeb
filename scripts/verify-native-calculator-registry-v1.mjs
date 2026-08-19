@@ -2,8 +2,6 @@ import {
   readFileSync,
 } from 'node:fs'
 
-const EXPECTED = 475
-
 const catalog =
   readFileSync(
     'src/data/calculators.ts',
@@ -83,15 +81,7 @@ const lazyImports =
 const errors = []
 
 if (
-  catalogIds.length !== EXPECTED
-) {
-  errors.push(
-    `catalog=${catalogIds.length}`,
-  )
-}
-
-if (
-  registryIds.length !== EXPECTED
+  registryIds.length !== catalogIds.length
 ) {
   errors.push(
     `registry=${registryIds.length}`,
@@ -99,7 +89,7 @@ if (
 }
 
 if (
-  registrySet.size !== EXPECTED
+  registrySet.size !== catalogIds.length
 ) {
   errors.push(
     `unique=${registrySet.size}`,
@@ -144,7 +134,7 @@ console.log(
   'NATIVE CALCULATOR REGISTRY VERIFICATION PASSED',
 )
 console.log(
-  'Registry routes: 475',
+  `Registry routes: ${registrySet.size}`,
 )
 console.log(
   'Lazy category modules: 11',

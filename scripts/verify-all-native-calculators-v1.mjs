@@ -2,8 +2,6 @@ import {
   readFileSync,
 } from 'node:fs'
 
-const EXPECTED_CALCULATOR_COUNT = 475
-
 const catalog =
   readFileSync(
     'src/data/calculators.ts',
@@ -56,12 +54,10 @@ const missing =
   )
 
 if (
-  calculators.length !==
-    EXPECTED_CALCULATOR_COUNT
-  || routeIds.length !==
-    EXPECTED_CALCULATOR_COUNT
+  routeIds.length !==
+    calculators.length
   || routeSet.size !==
-    EXPECTED_CALCULATOR_COUNT
+    calculators.length
   || missing.length
 ) {
   console.error(
@@ -103,10 +99,10 @@ console.log(
   '======================================',
 )
 console.log(
-  'Catalog calculators: 475',
+  `Catalog calculators: ${calculators.length}`,
 )
 console.log(
-  'Native catalog calculators: 475',
+  `Native catalog calculators: ${routeSet.size}`,
 )
 console.log(
   'Legacy catalog calculators: 0',
@@ -129,7 +125,7 @@ for (
 
 console.log('')
 console.log(
-  'PASS: 475/475 calculator catalog is native.',
+  `PASS: ${routeSet.size}/${calculators.length} calculator catalog is native.`,
 )
 console.log(
   'PASS: 0 legacy catalog calculators.',

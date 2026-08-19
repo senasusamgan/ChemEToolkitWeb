@@ -2776,6 +2776,7 @@ const CATEGORY_BY_CALCULATOR: Record<
   "particleSettling": "fluid-mechanics",
   "minimumFluidizationVelocity": "fluid-mechanics",
   "fluidizedBedPressureDropCheck": "fluid-mechanics",
+  "geldartParticleClassification": "fluid-mechanics",
   "reynoldsNumber": "fluid-mechanics",
   "tankDrainTime": "fluid-mechanics",
   "uTubeManometer": "fluid-mechanics",

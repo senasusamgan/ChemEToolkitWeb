@@ -209,15 +209,36 @@ if (
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 475',
+  'src/data/calculators.ts',
   'routing global count',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 475',
+  'src/data/calculators.ts',
   'coverage global count',
 )
+
+const catalogDrivenGlobalVerifierSourcesV1 =
+  [
+    routingVerifier,
+    coverageVerifier,
+  ]
+
+for (
+  const source
+  of catalogDrivenGlobalVerifierSourcesV1
+) {
+  if (
+    !source.includes(
+      'src/data/calculators.ts',
+    )
+  ) {
+    throw new Error(
+      'A core calculator verifier is not catalog-driven.',
+    )
+  }
+}
 
 const baseline =
   JSON.parse(

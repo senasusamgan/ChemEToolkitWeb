@@ -23,8 +23,6 @@ const NATIVE_REGISTRY_PATH =
 const PACKAGE_PATH =
   'package.json'
 
-const EXPECTED_CALCULATOR_COUNT = 475
-
 const COVERAGE_BASELINE_PATH =
   'scripts/calculator-test-coverage-baseline-v1.json'
 
@@ -159,15 +157,6 @@ const calculators = [
   available:
     match[4] === 'true',
 }))
-
-if (
-  calculators.length !==
-  EXPECTED_CALCULATOR_COUNT
-) {
-  addError(
-    `Expected ${EXPECTED_CALCULATOR_COUNT} calculators, found ${calculators.length}.`,
-  )
-}
 
 const calculatorIdSet =
   new Set(
@@ -599,10 +588,10 @@ const legacyRows =
 
 if (
   nativeRows.length !==
-  EXPECTED_CALCULATOR_COUNT
+  calculators.length
 ) {
   addError(
-    `Expected ${EXPECTED_CALCULATOR_COUNT} native calculators, found ${nativeRows.length}.`,
+    `Expected ${calculators.length} native calculators, found ${nativeRows.length}.`,
   )
 }
 

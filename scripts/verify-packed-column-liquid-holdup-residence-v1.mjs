@@ -266,7 +266,7 @@ for (
 ) {
   if (
     !source.match(
-      /EXPECTED_CALCULATOR_COUNT\s*=\s*475/,
+      /src\/data\/calculators\.ts/,
     )
   ) {
     throw new Error(
@@ -285,6 +285,27 @@ for (
   if (!packageSource.includes(marker)) {
     throw new Error(
       `Calculator 387 package script missing: ${marker}`,
+    )
+  }
+}
+
+const catalogDrivenGlobalVerifierSourcesV1 =
+  [
+    routingVerifier,
+    coverageVerifier,
+  ]
+
+for (
+  const source
+  of catalogDrivenGlobalVerifierSourcesV1
+) {
+  if (
+    !source.includes(
+      'src/data/calculators.ts',
+    )
+  ) {
+    throw new Error(
+      'A core calculator verifier is not catalog-driven.',
     )
   }
 }

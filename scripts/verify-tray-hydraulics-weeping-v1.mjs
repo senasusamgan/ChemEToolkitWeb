@@ -167,10 +167,10 @@ for (
   ]
 ) {
   if (
-    !/(?:EXPECTED_CALCULATOR_COUNT|EXPECTED_COUNT)\s*=\s*475/.test(source)
+    !/src\/data\/calculators\.ts/.test(source)
   ) {
     throw new Error(
-      'A calculator verifier does not expect 383 calculators.',
+      'A core calculator verifier is not catalog-driven.',
     )
   }
 }
@@ -202,6 +202,27 @@ for (
   if (!packageSource.includes(marker)) {
     throw new Error(
       `Tray package script missing: ${marker}`,
+    )
+  }
+}
+
+const catalogDrivenGlobalVerifierSourcesV1 =
+  [
+    routingVerifier,
+    coverageVerifier,
+  ]
+
+for (
+  const source
+  of catalogDrivenGlobalVerifierSourcesV1
+) {
+  if (
+    !source.includes(
+      'src/data/calculators.ts',
+    )
+  ) {
+    throw new Error(
+      'A core calculator verifier is not catalog-driven.',
     )
   }
 }
