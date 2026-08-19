@@ -24,6 +24,7 @@ import './styles/category-cards-ultra-compact-v11.css'
 import './styles/category-executive-v12.css'
 import './styles/footer-experience-v13.css'
 import './styles/homepage-phase-2.css'
+import './styles/footer-experience-v14.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { AppShell } from './components/layout/AppShell'
@@ -2138,7 +2139,7 @@ function App() {
 
       <footer
         id="about"
-        className="site-footer-v6 site-footer-v13"
+        className="site-footer-v6 site-footer-v13 site-footer-v14"
       >
         <div className="footer-v6-top footer-v13-top">
           <div className="footer-v6-brand footer-v13-brand">
