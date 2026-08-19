@@ -5,6 +5,7 @@
 // if (calculatorId === "minimumFluidizationVelocity") { return ( <MinimumFluidizationVelocityCalculator /> ) }
 // if (calculatorId === "fluidizedBedPressureDropCheck") { return ( <FluidizedBedPressureDropCalculator /> ) }
 // if (calculatorId === "geldartParticleClassification") { return ( <GeldartParticleClassificationCalculator /> ) }
+// if (calculatorId === "fluidizedBedExpansionRichardsonZaki") { return ( <FluidizedBedExpansionRichardsonZakiCalculator /> ) }
 // if (calculatorId === "reynoldsNumber") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
 // if (calculatorId === "tankDrainTime") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }
 // if (calculatorId === "uTubeManometer") { return ( <PhaseThirteenNativeCalculator calculatorId={calculatorId} /> ) }

@@ -7,6 +7,7 @@ import { PhaseThirteenNativeCalculator } from '../../../features/native-migratio
 import { MinimumFluidizationVelocityCalculator } from '../../../features/fluid-mechanics/minimum-fluidization-velocity/MinimumFluidizationVelocityCalculator'
 import { FluidizedBedPressureDropCalculator } from '../../../features/fluid-mechanics/fluidized-bed-pressure-drop-check/FluidizedBedPressureDropCalculator'
 import { GeldartParticleClassificationCalculator } from '../../../features/fluid-mechanics/geldart-particle-classification/GeldartParticleClassificationCalculator'
+import { FluidizedBedExpansionRichardsonZakiCalculator } from '../../../features/fluid-mechanics/fluidized-bed-expansion-richardson-zaki/FluidizedBedExpansionRichardsonZakiCalculator'
 import { PriorityTenNativeCalculator } from '../../../features/native-migrations/priority-ten-native/PriorityTenNativeCalculator'
 
 interface FluidMechanicsShardProps {
@@ -67,6 +68,11 @@ const RENDERERS: Record<
 "geldartParticleClassification": () => {
     return (
       <GeldartParticleClassificationCalculator />
+    )
+  },
+"fluidizedBedExpansionRichardsonZaki": () => {
+    return (
+      <FluidizedBedExpansionRichardsonZakiCalculator />
     )
   },
 "reynoldsNumber": () => {

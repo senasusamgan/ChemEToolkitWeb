@@ -3,17 +3,17 @@ import {
 } from 'node:fs'
 
 const calculatorId =
-  'geldartParticleClassification'
+  'fluidizedBedExpansionRichardsonZaki'
 
 const engine =
   readFileSync(
-    'src/features/fluid-mechanics/geldart-particle-classification/engine.ts',
+    'src/features/fluid-mechanics/fluidized-bed-expansion-richardson-zaki/engine.ts',
     'utf8',
   )
 
 const component =
   readFileSync(
-    'src/features/fluid-mechanics/geldart-particle-classification/GeldartParticleClassificationCalculator.tsx',
+    'src/features/fluid-mechanics/fluidized-bed-expansion-richardson-zaki/FluidizedBedExpansionRichardsonZakiCalculator.tsx',
     'utf8',
   )
 
@@ -55,7 +55,7 @@ const routingContract =
 
 const tests =
   readFileSync(
-    'tests/geldart-particle-classification/geldart-particle-classification.test.ts',
+    'tests/fluidized-bed-expansion-richardson-zaki/fluidized-bed-expansion-richardson-zaki.test.ts',
     'utf8',
   )
 
@@ -123,7 +123,7 @@ const releaseSteps =
     )
 
 const calculatorVerifierStep =
-  'npm run verify:geldart-particle-classification-v1'
+  'npm run verify:fluidized-bed-expansion-richardson-zaki-v1'
 
 const regressionStep =
   'npm run verify:scientific-notebook-regression-v30'
@@ -134,24 +134,30 @@ const finalStep =
 const contracts = [
   [
     engine.includes(
-      'calculateGeldartParticleClassification',
+      'calculateFluidizedBedExpansionRichardsonZaki',
     )
       && engine.includes(
-        'GROUP_AB_INDEX_LIMIT',
+        'calculateRichardsonZakiExponent',
       )
       && engine.includes(
-        'GROUP_D_INDEX_LIMIT',
+        '4.65',
+      )
+      && engine.includes(
+        '2.4',
       ),
-    'Engine contract missing.',
+    'Richardson-Zaki engine contract missing.',
   ],
   [
     component.includes(
-      'Geldart Particle Classification',
+      'Fluidized-Bed Expansion',
     )
       && component.includes(
-        'Geldart (1973)',
+        'Richardson & Zaki (1954)',
+      )
+      && component.includes(
+        'H/H₀',
       ),
-    'Calculator component or reference basis missing.',
+    'Calculator component or engineering reference missing.',
   ],
   [
     catalogMatches.filter(
@@ -171,11 +177,11 @@ const contracts = [
     category.includes(
       `"${calculatorId}": "shard-01"`,
     ),
-    'Geldart Fluid Mechanics shard assignment missing.',
+    'Fluid Mechanics shard assignment missing.',
   ],
   [
     shard.includes(
-      'GeldartParticleClassificationCalculator',
+      'FluidizedBedExpansionRichardsonZakiCalculator',
     )
       && shard.includes(
         `"${calculatorId}"`,
@@ -193,18 +199,15 @@ const contracts = [
       `'${calculatorId}'`,
     )
       && tests.includes(
-        "result.group,\n      'A'",
+        '3.0426127255974524',
       )
       && tests.includes(
-        "result.group,\n      'B'",
+        '0.5360559464608008',
       )
       && tests.includes(
-        "result.group,\n      'C'",
-      )
-      && tests.includes(
-        "result.group,\n      'D'",
+        '1.2501507360110935',
       ),
-    'Direct calculator tests are incomplete.',
+    'Direct engineering regression tests are incomplete.',
   ],
   [
     categoryMatch
@@ -228,12 +231,12 @@ const contracts = [
   [
     Boolean(
       pkg.scripts[
-        'test:geldart-particle-classification-v1'
+        'test:fluidized-bed-expansion-richardson-zaki-v1'
       ],
     )
       && Boolean(
         pkg.scripts[
-          'verify:geldart-particle-classification-v1'
+          'verify:fluidized-bed-expansion-richardson-zaki-v1'
         ],
       ),
     'Calculator package scripts missing.',
@@ -286,7 +289,7 @@ const failures =
 
 if (failures.length) {
   console.error(
-    'GELDART PARTICLE CLASSIFICATION VERIFICATION FAILED',
+    'FLUIDIZED BED EXPANSION RICHARDSON-ZAKI VERIFICATION FAILED',
   )
 
   for (
@@ -302,15 +305,15 @@ if (failures.length) {
 }
 
 console.log(
-  'GELDART PARTICLE CLASSIFICATION VERIFICATION PASSED',
+  'FLUIDIZED BED EXPANSION RICHARDSON-ZAKI VERIFICATION PASSED',
 )
 
 console.log(
-  `PASS: ${calculatorId} native routing registered.`,
+  'PASS: Richardson-Zaki exponent regimes verified.',
 )
 
 console.log(
-  'PASS: Geldart A/B/C/D screening cases covered.',
+  'PASS: voidage and solids-inventory bed expansion verified.',
 )
 
 console.log(
@@ -318,5 +321,5 @@ console.log(
 )
 
 console.log(
-  'PASS: release-chain final ordering preserved.',
+  'PASS: full native routing path and release ordering preserved.',
 )
