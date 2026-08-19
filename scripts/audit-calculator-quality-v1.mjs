@@ -47,7 +47,7 @@ const calculators = [
 
 if (calculators.length !== 473) {
   throw new Error(
-    `Expected 473 calculators, found ${calculators.length}.`,
+    `Expected 474 calculators, found ${calculators.length}.`,
   )
 }
 

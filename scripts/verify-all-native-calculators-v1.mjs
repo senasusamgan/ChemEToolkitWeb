@@ -2,7 +2,7 @@ import {
   readFileSync,
 } from 'node:fs'
 
-const EXPECTED_CALCULATOR_COUNT = 473
+const EXPECTED_CALCULATOR_COUNT = 474
 
 const catalog =
   readFileSync(
@@ -103,10 +103,10 @@ console.log(
   '======================================',
 )
 console.log(
-  'Catalog calculators: 473',
+  'Catalog calculators: 474',
 )
 console.log(
-  'Native catalog calculators: 473',
+  'Native catalog calculators: 474',
 )
 console.log(
   'Legacy catalog calculators: 0',
@@ -129,7 +129,7 @@ for (
 
 console.log('')
 console.log(
-  'PASS: 473/473 calculator catalog is native.',
+  'PASS: 474/474 calculator catalog is native.',
 )
 console.log(
   'PASS: 0 legacy catalog calculators.',

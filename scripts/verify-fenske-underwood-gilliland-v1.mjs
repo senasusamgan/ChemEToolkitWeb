@@ -158,10 +158,10 @@ for (
   ]
 ) {
   if (
-    !/(?:EXPECTED_CALCULATOR_COUNT|EXPECTED_COUNT)\s*=\s*473/.test(source)
+    !/(?:EXPECTED_CALCULATOR_COUNT|EXPECTED_COUNT)\s*=\s*474/.test(source)
   ) {
     throw new Error(
-      'A calculator verifier does not expect 473 calculators.',
+      'A calculator verifier does not expect 474 calculators.',
     )
   }
 }
@@ -199,7 +199,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  473
+  474
 ) {
   throw new Error(
     'Coverage baseline calculator count is not 390.',

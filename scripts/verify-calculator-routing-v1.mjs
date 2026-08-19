@@ -2,7 +2,7 @@ import {
   readFileSync,
 } from 'node:fs'
 
-const EXPECTED_CALCULATOR_COUNT = 473
+const EXPECTED_CALCULATOR_COUNT = 474
 
 const catalog =
   readFileSync(
@@ -157,10 +157,10 @@ console.log(
   'CALCULATOR ROUTING VERIFICATION PASSED',
 )
 console.log(
-  'Catalog calculators: 473',
+  'Catalog calculators: 474',
 )
 console.log(
-  'Native routes: 473',
+  'Native routes: 474',
 )
 console.log(
   'Legacy routes: 0',

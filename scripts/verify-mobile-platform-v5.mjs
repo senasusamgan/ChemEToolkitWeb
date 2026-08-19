@@ -49,13 +49,13 @@ const contracts = [
       '380 calculators',
     )
       && html.includes(
-        '473 calculators',
+        '474 calculators',
       ),
     'HTML calculator count metadata is stale.',
   ],
   [
     manifest.description.includes(
-      '473 calculators',
+      '474 calculators',
     ),
     'Manifest calculator count is stale.',
   ],
@@ -152,7 +152,7 @@ console.log(
 )
 
 console.log(
-  'PASS: 473 calculator metadata synchronized.',
+  'PASS: 474 calculator metadata synchronized.',
 )
 
 console.log(

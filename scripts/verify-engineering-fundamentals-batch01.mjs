@@ -127,7 +127,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  473
+  474
 ) {
   throw new Error(
     'Coverage baseline catalog count must remain 390.',

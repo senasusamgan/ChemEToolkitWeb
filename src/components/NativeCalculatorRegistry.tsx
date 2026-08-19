@@ -2774,6 +2774,7 @@ const CATEGORY_BY_CALCULATOR: Record<
   "minorLosses": "fluid-mechanics",
   "orificeMeter": "fluid-mechanics",
   "particleSettling": "fluid-mechanics",
+  "minimumFluidizationVelocity": "fluid-mechanics",
   "reynoldsNumber": "fluid-mechanics",
   "tankDrainTime": "fluid-mechanics",
   "uTubeManometer": "fluid-mechanics",
