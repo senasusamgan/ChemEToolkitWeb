@@ -22,6 +22,34 @@ const mobile =
     'utf8',
   )
 
+const calculatorSource =
+  readFileSync(
+    'src/data/calculators.ts',
+    'utf8',
+  )
+
+const catalogCalculatorCount =
+  calculatorSource.match(
+    /\{\s*id\s*:/g,
+  )?.length ?? 0
+
+if (
+  catalogCalculatorCount <= 0
+) {
+  console.error(
+    'MOBILE PLATFORM V5 VERIFICATION FAILED',
+  )
+
+  console.error(
+    '- Unable to determine calculator catalog count.',
+  )
+
+  process.exit(1)
+}
+
+const calculatorCountLabel =
+  `${catalogCalculatorCount} calculators`
+
 const contracts = [
   [
     html.includes(
@@ -45,19 +73,18 @@ const contracts = [
     'Apple mobile app title missing.',
   ],
   [
-    !html.includes(
-      '380 calculators',
-    )
-      && html.includes(
-        '474 calculators',
-      ),
-    'HTML calculator count metadata is stale.',
+    html.includes(
+      calculatorCountLabel,
+    ),
+    `HTML calculator count metadata is stale; expected ${calculatorCountLabel}.`,
   ],
   [
-    manifest.description.includes(
-      '474 calculators',
-    ),
-    'Manifest calculator count is stale.',
+    typeof manifest.description ===
+      'string'
+      && manifest.description.includes(
+        calculatorCountLabel,
+      ),
+    `Manifest calculator count is stale; expected ${calculatorCountLabel}.`,
   ],
   [
     manifest.id === '/',
@@ -152,7 +179,7 @@ console.log(
 )
 
 console.log(
-  'PASS: 474 calculator metadata synchronized.',
+  `PASS: ${catalogCalculatorCount} calculator metadata synchronized.`,
 )
 
 console.log(

@@ -30,6 +30,7 @@ export const calculators: CalculatorDefinition[] = [
   { id: "orificeMeter", title: "Orifice Meter", category: "Fluid Mechanics", available: true },
   { id: "particleSettling", title: "Particle Settling — Stokes Law", category: "Fluid Mechanics", available: true },
   { id: "minimumFluidizationVelocity", title: "Minimum Fluidization Velocity — Wen & Yu", category: "Fluid Mechanics", available: true },
+  { id: "fluidizedBedPressureDropCheck", title: "Fluidized-Bed Pressure Drop & Fluidization Check", category: "Fluid Mechanics", available: true },
   { id: "frictionFactor", title: "Pipe Friction Factor", category: "Fluid Mechanics", available: true },
   { id: "pumpPower", title: "Pump Power & Head", category: "Fluid Mechanics", available: true },
   { id: "reynoldsNumber", title: "Reynolds Number & Flow Regime", category: "Fluid Mechanics", available: true },

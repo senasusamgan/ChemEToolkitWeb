@@ -2,7 +2,7 @@ import {
   readFileSync,
 } from 'node:fs'
 
-const EXPECTED = 474
+const EXPECTED = 475
 
 const catalog =
   readFileSync(
@@ -144,7 +144,7 @@ console.log(
   'NATIVE CALCULATOR REGISTRY VERIFICATION PASSED',
 )
 console.log(
-  'Registry routes: 474',
+  'Registry routes: 475',
 )
 console.log(
   'Lazy category modules: 11',

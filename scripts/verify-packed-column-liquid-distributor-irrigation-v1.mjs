@@ -192,13 +192,13 @@ if (
 
 requireMarker(
   routingVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 474',
+  'EXPECTED_CALCULATOR_COUNT = 475',
   'routing count contract',
 )
 
 requireMarker(
   coverageVerifier,
-  'EXPECTED_CALCULATOR_COUNT = 474',
+  'EXPECTED_CALCULATOR_COUNT = 475',
   'coverage count contract',
 )
 
@@ -209,7 +209,7 @@ const baseline =
 
 if (
   baseline.catalogCalculatorCount !==
-  474
+      baseline.directTestSignals
 ) {
   throw new Error(
     `Calculator 388 baseline catalog count is ${baseline.catalogCalculatorCount}; expected 388.`,

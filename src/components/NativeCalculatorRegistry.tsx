@@ -2775,6 +2775,7 @@ const CATEGORY_BY_CALCULATOR: Record<
   "orificeMeter": "fluid-mechanics",
   "particleSettling": "fluid-mechanics",
   "minimumFluidizationVelocity": "fluid-mechanics",
+  "fluidizedBedPressureDropCheck": "fluid-mechanics",
   "reynoldsNumber": "fluid-mechanics",
   "tankDrainTime": "fluid-mechanics",
   "uTubeManometer": "fluid-mechanics",

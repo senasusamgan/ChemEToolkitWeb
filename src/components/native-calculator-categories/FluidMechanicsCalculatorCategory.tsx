@@ -29,6 +29,7 @@ const SHARD_BY_CALCULATOR: Record<
   "orificeMeter": "shard-01",
   "particleSettling": "shard-01",
   "minimumFluidizationVelocity": "shard-01",
+  "fluidizedBedPressureDropCheck": "shard-01",
   "reynoldsNumber": "shard-01",
   "tankDrainTime": "shard-01",
   "uTubeManometer": "shard-01",

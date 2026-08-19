@@ -4,13 +4,13 @@ import {
 
 const engine =
   readFileSync(
-    'src/features/fluid-mechanics/minimum-fluidization-velocity/engine.ts',
+    'src/features/fluid-mechanics/fluidized-bed-pressure-drop-check/engine.ts',
     'utf8',
   )
 
 const component =
   readFileSync(
-    'src/features/fluid-mechanics/minimum-fluidization-velocity/MinimumFluidizationVelocityCalculator.tsx',
+    'src/features/fluid-mechanics/fluidized-bed-pressure-drop-check/FluidizedBedPressureDropCalculator.tsx',
     'utf8',
   )
 
@@ -63,7 +63,7 @@ const shard =
 
 const tests =
   readFileSync(
-    'tests/minimum-fluidization-velocity/minimum-fluidization-velocity.test.ts',
+    'tests/fluidized-bed-pressure-drop-check/fluidized-bed-pressure-drop-check.test.ts',
     'utf8',
   )
 
@@ -86,110 +86,116 @@ const pkg =
 const contracts = [
   [
     engine.includes(
-      'calculateMinimumFluidizationVelocity',
+      'calculateFluidizedBedPressureDrop',
     )
       && engine.includes(
-        '33.7 ** 2',
+        '150'
       )
       && engine.includes(
-        '0.0408',
+        '1.75'
       ),
-    'Wen-Yu calculation engine missing.',
+    'Ergun pressure-drop engine missing.',
   ],
   [
     engine.includes(
-      'archimedesNumber',
+      'bedWeightPressureDrop',
     )
       && engine.includes(
-        'minimumFluidizationReynoldsNumber',
-      )
-      && engine.includes(
-        'minimumFluidizationVelocity',
+        'fluidizationRatio',
       ),
-    'Fluidization result contract missing.',
+    'Fluidization threshold comparison missing.',
+  ],
+  [
+    engine.includes(
+      "'at-or-above-threshold'",
+    )
+      && engine.includes(
+        "'below-threshold'",
+      ),
+    'Fluidization state contract missing.',
   ],
   [
     component.includes(
-      'Minimum Fluidization Velocity',
+      'Fluidized-Bed Pressure Drop',
     )
       && component.includes(
-        'Wen–Yu',
-      )
-      && component.includes(
-        'AIChE Journal 12(3), 610–612',
+        'Ergun (1952)',
       ),
-    'Calculator reference UI missing.',
+    'Calculator engineering reference missing.',
   ],
   [
     component.includes(
-      'Archimedes number',
+      'Bed-weight threshold',
     )
       && component.includes(
-        'Minimum-fluidization Reynolds number',
+        'Viscous contribution',
+      )
+      && component.includes(
+        'Inertial contribution',
       ),
-    'Engineering result context missing.',
+    'Pressure-drop engineering outputs missing.',
   ],
   [
     catalog.includes(
-      'id: "minimumFluidizationVelocity"',
+      'id: "fluidizedBedPressureDropCheck"',
     ),
-    'Calculator 474 catalog entry missing.',
+    'Calculator 475 catalog entry missing.',
   ],
   [
     Number.isFinite(
       fluidMechanicsTotal,
     )
       && fluidMechanicsTotal >=
-        91
+        92
       && fluidMechanicsLive ===
         fluidMechanicsTotal,
-    'Fluid Mechanics metadata must remain consistent and include Calculator 474.',
+    'Fluid Mechanics metadata must remain consistent and include Calculator 475.',
   ],
   [
     registry.includes(
-      '"minimumFluidizationVelocity": "fluid-mechanics"',
+      '"fluidizedBedPressureDropCheck": "fluid-mechanics"',
     ),
     'Native registry route missing.',
   ],
   [
     category.includes(
-      '"minimumFluidizationVelocity": "shard-01"',
+      '"fluidizedBedPressureDropCheck": "shard-01"',
     ),
     'Fluid Mechanics shard assignment missing.',
   ],
   [
     shard.includes(
-      '<MinimumFluidizationVelocityCalculator />',
+      '<FluidizedBedPressureDropCalculator />',
     ),
-    'Fluid Mechanics renderer missing.',
+    'Fluid Mechanics native renderer missing.',
   ],
   [
     tests.includes(
-      "'minimumFluidizationVelocity'",
+      "'fluidizedBedPressureDropCheck'",
     )
       && tests.includes(
-        '0.09443050633678475',
+        '0.575508325738931',
       ),
-    'Direct regression tests missing.',
+    'Direct engineering regression test missing.',
   ],
   [
     baseline.catalogCalculatorCount >=
-      474
+      475
       && baseline.directTestSignals ===
         baseline.catalogCalculatorCount
       && baseline.withoutDirectTestSignal ===
         0,
-    'Coverage baseline must include Calculator 474 and remain gap-free.',
+    'Coverage baseline must include Calculator 475 and remain gap-free.',
   ],
   [
     Boolean(
       pkg.scripts[
-        'test:minimum-fluidization-velocity-v1'
+        'test:fluidized-bed-pressure-drop-v1'
       ],
     )
       && Boolean(
         pkg.scripts[
-          'verify:minimum-fluidization-velocity-v1'
+          'verify:fluidized-bed-pressure-drop-v1'
         ],
       ),
     'Calculator package scripts missing.',
@@ -198,7 +204,7 @@ const contracts = [
     pkg.scripts[
       'verify:release'
     ]?.includes(
-      'verify:minimum-fluidization-velocity-v1',
+      'verify:fluidized-bed-pressure-drop-v1',
     ),
     'Calculator verifier missing from release chain.',
   ],
@@ -217,7 +223,7 @@ const failures =
 
 if (failures.length) {
   console.error(
-    'MINIMUM FLUIDIZATION VELOCITY V1 VERIFICATION FAILED',
+    'FLUIDIZED BED PRESSURE DROP V1 VERIFICATION FAILED',
   )
 
   for (
@@ -233,19 +239,19 @@ if (failures.length) {
 }
 
 console.log(
-  'MINIMUM FLUIDIZATION VELOCITY V1 VERIFICATION PASSED',
+  'FLUIDIZED BED PRESSURE DROP V1 VERIFICATION PASSED',
 )
 
 console.log(
-  'PASS: Wen-Yu engine.',
+  'PASS: Ergun viscous + inertial pressure drop.',
 )
 
 console.log(
-  'PASS: Ar → Re_mf → U_mf calculation chain.',
+  'PASS: bed-weight fluidization threshold.',
 )
 
 console.log(
-  'PASS: Fluid Mechanics contains Calculator 474.',
+  'PASS: Fluid Mechanics contains Calculator 475.',
 )
 
 console.log(

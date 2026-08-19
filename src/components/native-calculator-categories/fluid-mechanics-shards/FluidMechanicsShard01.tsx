@@ -5,6 +5,7 @@ import type {
 import { PhaseNineNativeCalculator } from '../../../features/native-migrations/phase-nine/PhaseNineNativeCalculator'
 import { PhaseThirteenNativeCalculator } from '../../../features/native-migrations/phase-thirteen/PhaseThirteenNativeCalculator'
 import { MinimumFluidizationVelocityCalculator } from '../../../features/fluid-mechanics/minimum-fluidization-velocity/MinimumFluidizationVelocityCalculator'
+import { FluidizedBedPressureDropCalculator } from '../../../features/fluid-mechanics/fluidized-bed-pressure-drop-check/FluidizedBedPressureDropCalculator'
 import { PriorityTenNativeCalculator } from '../../../features/native-migrations/priority-ten-native/PriorityTenNativeCalculator'
 
 interface FluidMechanicsShardProps {
@@ -55,6 +56,11 @@ const RENDERERS: Record<
 "minimumFluidizationVelocity": () => {
     return (
       <MinimumFluidizationVelocityCalculator />
+    )
+  },
+"fluidizedBedPressureDropCheck": () => {
+    return (
+      <FluidizedBedPressureDropCalculator />
     )
   },
 "reynoldsNumber": () => {
