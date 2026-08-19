@@ -22,6 +22,7 @@ import './styles/catalog-compact-pagination-v9.css'
 import './styles/category-cards-compact-v10.css'
 import './styles/category-cards-ultra-compact-v11.css'
 import './styles/category-executive-v12.css'
+import './styles/footer-experience-v13.css'
 import './styles/homepage-phase-2.css'
 import { Brand } from './components/Brand'
 import { FeedbackPanel } from './components/FeedbackPanel'
@@ -2099,57 +2100,81 @@ function App() {
           </article>
         </div>
         <aside
-          className="engineering-use-note"
+          className="engineering-use-note engineering-responsibility-strip"
           role="note"
-          aria-label="Engineering-use note"
+          aria-label="Engineering responsibility"
         >
-          <h3>
-            Engineering-use
-            <br />
-            note
-          </h3>
-          <p>
-            Results are intended for education, preliminary screening and
-            independent design checks. Safety-critical or final design
-            decisions must be verified against the applicable code, standard,
-            property data and a qualified engineer’s review.
+          <div className="engineering-responsibility-heading">
+            <span
+              className="engineering-responsibility-icon"
+              aria-hidden="true"
+            >
+              ✓
+            </span>
+
+            <div>
+              <p className="engineering-responsibility-kicker">
+                Engineering responsibility
+              </p>
+
+              <h3>
+                Use with professional judgment.
+              </h3>
+            </div>
+          </div>
+
+          <p className="engineering-responsibility-text">
+            Built for education, preliminary design and independent
+            engineering checks. Safety-critical or final decisions require
+            applicable standards, validated property data and qualified
+            professional review.
           </p>
+
+          <span className="engineering-responsibility-badge">
+            Transparent basis · verified release
+          </span>
         </aside>
       </section>
 
       <footer
         id="about"
-        className="site-footer-v6"
+        className="site-footer-v6 site-footer-v13"
       >
-        <div className="footer-v6-top">
-          <div className="footer-v6-brand">
+        <div className="footer-v6-top footer-v13-top">
+          <div className="footer-v6-brand footer-v13-brand">
             <Brand />
 
-            <p>
-              A chemical engineering workspace
-              for transparent calculations,
-              engineering checks and structured
-              problem solving.
+            <p className="footer-v13-tagline">
+              Verified calculations for engineering work.
             </p>
 
-            <div className="footer-v6-status">
+            <p className="footer-v13-description">
+              Transparent formulas, unit-aware inputs and structured
+              engineering tools in one workspace.
+            </p>
+
+            <div className="footer-v6-status footer-v13-status">
               <span>
                 <b aria-hidden="true" />
                 Release verified
               </span>
 
               <span>
-                {liveCalculatorCount} live tools
+                {liveCalculatorCount} native calculators
+              </span>
+
+              <span>
+                {categories.length} disciplines
               </span>
             </div>
           </div>
 
-          <div className="footer-v6-links">
+          <div className="footer-v6-links footer-v13-links">
             <nav
-              aria-label="Toolkit footer navigation"
+              aria-label="Explore footer navigation"
             >
               <strong>
-                Toolkit
+                Explore
               </strong>
 
               <a href="#calculators">
@@ -2157,15 +2182,11 @@ function App() {
               </a>
 
               <a href="#categories">
-                Disciplines
+                Categories
               </a>
 
               <a href="#your-toolkit">
                 Your Toolkit
-              </a>
-
-              <a href="#workbench">
-                Workbench
               </a>
             </nav>
 
@@ -2176,14 +2197,6 @@ function App() {
                 Engineering
               </strong>
 
-              <a href="#method">
-                Method
-              </a>
-
-              <a href="#references">
-                References
-              </a>
-
               <a
                 href="#problem-solver"
                 onClick={(event) => {
@@ -2193,49 +2206,56 @@ function App() {
               >
                 Problem Solver
               </a>
+
+              <a href="#method">
+                Method
+              </a>
+
+              <a href="#references">
+                References
+              </a>
             </nav>
 
             <nav
-              aria-label="Page footer navigation"
+              aria-label="Product footer navigation"
             >
               <strong>
-                Page
+                Product
               </strong>
 
-              <a href="#top">
-                Back to top
+              <a href="#workbench">
+                Workbench
               </a>
 
               <a href="#about">
                 About
               </a>
+
+              <a href="#top">
+                Back to top
+              </a>
             </nav>
           </div>
         </div>
 
-        <div className="footer-v6-bottom">
+        <div className="footer-v6-bottom footer-v13-bottom">
           <p>
-            Chemical Engineering Toolkit
+            © 2026 ChemE Toolkit
           </p>
 
           <div>
             <span>
-              {calculators.length} calculators
+              {liveCalculatorCount} native calculators
             </span>
 
             <span>
-              {liveCalculatorCount} live engines
+              {calculators.length - liveCalculatorCount} legacy
             </span>
 
             <span>
               {categories.length} disciplines
             </span>
           </div>
-
-          <p>
-            Educational and preliminary
-            engineering use.
-          </p>
         </div>
       </footer>
 
